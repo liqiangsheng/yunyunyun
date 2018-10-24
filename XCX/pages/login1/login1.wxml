@@ -1,0 +1,30 @@
+<!--pages/login1/login1.wxml-->
+
+<scroll-view scroll-y id='login1Box'>
+  <view class='loginTitle1'><image src='../../images/zs1.png'></image></view>
+  <view class="telPhone1">
+    <view class='telPhoneImae1'> <image src='../../images/tel.png'></image><text class='add861'>+86</text> </view>
+    <view class='telPhoneImae11'><input type='number' bindblur='telPhone' placeholder="请输入手机号码" value='{{telValue}}'/></view>
+  </view>
+  
+    <view class="verificatioCode1">
+       <view class='verificatioCodeImage1'><image src='../../images/code.png'></image></view>
+       <view class='verificatioCodeImage11'><input  bindblur='codePsd' placeholder="请输入验证码" value='{{psdValue}}'/>
+            <button bindtap="ObtainCode" wx:if='{{isShow}}'>{{code}}</button>
+            <button disabled wx:else='{{!isShow}}'>{{codeNum}}秒</button>
+       </view>
+       
+    </view>
+ <view class='gocegister' bindtap='gocegister'>
+      >去注册
+    </view>
+    <view class='loginBnt1' bindtap='loginBnt'>
+       <button>登录</button>
+    </view>
+    <view class='loginItem1'>
+        <view><text class='loginItem1FZ'>承办单位：</text>深圳市工业设计行业协会</view>
+        <view><text class='loginItem1FZ'>联系电话：</text>+86-(0)755-83205121-8042</view>
+        <view><text class='loginItem1FZ'>会展地址：</text> 深圳会展中心2号馆 会</view>
+        <view><text class='loginItem1FZ'>会展日期：</text>2018年11月5-7日</view>
+    </view>
+</scroll-view>

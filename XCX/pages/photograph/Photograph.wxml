@@ -1,0 +1,41 @@
+<!--pages/photograph/Photograph.wxml-->
+<view class='PhotographBox'>
+    <view class='PhotographBoxItem1'>
+       <view class='PhotographBoxItem2'>注意事项</view>
+        <view class='PhotographBoxItem3'><image src='../../images/ok1.png'></image></view>  
+        <view class='PhotographBoxItem4'>正确案例</view>  
+        <view class='PhotographBoxItem5'>
+          <view>
+            <image src='../../images/6.png'></image>
+            不可多人
+          </view>
+           <view>
+            <image src='../../images/5.png'></image>
+            不能挡脸
+          </view>
+           <view>
+            <image src='../../images/4.png'></image>
+            不能模糊
+          </view>
+        </view>
+         <view  class='PhotographBoxItem5'>
+            <view>
+              <image src='../../images/3.png'></image>
+              人脸姿态端正
+            </view>
+            <view>
+              <image src='../../images/4.png'></image>
+              不能带墨镜
+            </view>
+            <view>
+              <image src='../../images/1.png'></image>
+              不可侧脸过大
+            </view>
+        </view>
+        <view  class='PhotographBoxItem6'>
+           <view bindtap='cacelClick'>取 消</view>
+           <view bindtap="PhotographClick">点击拍照</view>
+        </view>
+    </view>
+   
+</view>

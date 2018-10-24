@@ -1,0 +1,169 @@
+<!--pages/detail/detail.wxml-->
+<scroll-view id='detailBox' scroll-y>
+  
+   <!-- 滑动 -->
+<view class='homeBox' wx:if='{{state=="true"}}'>
+    <image src='../../images/bg1.png' class='homeBj' />
+    <view class='homeCentent'>
+    
+      <view class='homeBoxHeader' >
+        <text></text>
+        <text>{{dataObj.title}}</text>
+        <text></text>
+        <text>{{dataObj.summary}}</text>
+      </view>
+
+    <swiper class='swiperClass' duration="1000" previous-margin="50px" next-margin="50px" circular='true' bindchange="scrollFun">
+      <block wx:for="{{dataObj.children}}" wx:key="{{index}}"> 
+      <swiper-item>
+        <view  class="slide-image {{swiperIndex == index ? 'active' : 'quiet'}}" mode='aspectFill'>
+           <image src="{{item.bannerUrl}}"> </image>
+            <view class='slide-imageitem'>{{item.title}}</view>
+            <view class='slide-imageitem1'>
+              <view>{{item.summary}}</view>
+            </view>
+        </view>
+       </swiper-item> 
+      </block> 
+     </swiper>
+
+      <view class='homeBoxFoot'>
+             <text>{{swiperIndex+1}}</text>/<text>{{dataObj.children.length}}</text>
+      </view>
+    
+    </view>
+    
+</view>
+<!-- ---------- -->
+<view class='detailItem'>
+    <image src='{{banner.bannerUrl}}' class='headerImg'></image>
+    <view class='detailItemTitle'>
+      {{banner.title}}
+    </view>
+      <view class='detailItem1'>
+      <image src='../../images/time.png'></image><text class='detailItemCommon'>{{startTimes}}</text> 
+    </view>
+      <view class='detailItem2' bindtap='mapClick'>
+      <image src='../../images/position.png'></image>
+      <view class='detailItemCommon1'>
+         {{banner.address}}
+      </view> 
+       <view class='map'>
+         地图
+         <image src='../../images/right.png'></image>
+       </view>
+     </view>
+      <view class='detailItem3'>
+       <image src='../../images/price.png'></image>
+       <text style='color:#FE5F5F' class='detailItemCommon' wx:if='{{banner.expenses>0}}'>¥ {{banner.expenses}}</text>
+       <text style='color:#21CB61' class='detailItemCommon' wx:if='{{banner.expenses<=0}}'>免费</text>
+       <text class='detailItemCommon detailItemFontcolor' wx:if='{{banner.expenses>0}}'>购买两张以上可优惠50元</text> 
+      </view>
+      <view class='detailItem4'>
+          <view class='detailItem4Index'>
+            <text class='company'>主办单位：</text>
+            <view wx:for="{{hosts}}" wx:key="{{index}}">{{item}}</view> 
+          </view>
+          <view class='detailItem4Index'>
+            <text class='company'>承办单位：</text>
+            <view wx:for="{{organizers}}" wx:key="{{index}}">{{item}}</view>
+           </view>
+          <view class='detailItem4Index'>
+            <text class='company'>承办单位：</text>
+            <view wx:for="{{coOrganizers}}" wx:key="{{index}}">{{item}}</view> 
+          </view>
+      </view>
+</view>
+<!-- --------- -->
+<view class='activityArrangement'>
+    <view class='activityArrangementItem'><text></text>活动安排<text></text></view>
+    <scroll-view class='activityArrangementItem1'>
+            <view wx:for='{{peopleArr}}' wx:key='index' class='activityArrangementItemBox'>
+               <view class='activityArrangementItem1Left'>
+                 {{item.startTime}}-{{item.endTime}}
+                 <image src='../../images/timePosition.png'></image>
+               </view>
+               <view class='activityArrangementItem1Right'>
+                 <view class='value'>{{item.subject}}</view>
+                 <view wx:for='{{item.honoredGuestVoList}}' wx:key='index'>
+                     <view class='name'>{{item.name}}</view>
+                     <view class='founder'>{{item.honor}}</view>
+                 </view>
+                 <view class='position'><image src='../../images/position.png'></image> {{item.location}}</view>
+               </view>
+            </view>
+    </scroll-view>
+      <!-- ---------- -->
+          <view class='mattersNeedingAttention'>
+              <text>注意事项：</text> 本论坛配备同声翻译，请记得携带您本人身份证到达
+              会场，现场入口处将提供免费同传耳机租借服务。
+          </view>
+      <!-- ------嘉宾介绍------ -->
+      <view class='guestIntroductionItem'>
+         <view class='activityArrangementItem'><text></text>嘉宾介绍<text></text></view>
+          <scroll-view class='guestIntroductionItem1'>
+               <view wx:for='{{guests}}' wx:key='index' class='guestIntroductionItem1Box'>
+                 <view class='header'>
+                    <view class='headerLeft'><image src='{{item.headerUrl}}'></image> </view>
+                    <view class='headerRight'>
+                       <view class='headerRightTop'><text>{{item.name}}</text><text wx:if='item.alias&item.alias!=""'>/{{item.alias}}</text></view>
+                       <view class='headerRightBot'>{{item.honor}}</view>
+
+                    </view>
+                 </view>
+
+                  <view class='centent'>
+                      <view class='{{item.centerIsshow==true?"cententActive":"cententQiut"}}'>{{item.introduce}}
+                          <view class='more'  data-index='{{index}}' bindtap='moreClick' wx-if='{{item.centerIsshow==true}}'> <text>更多详情>></text> </view>
+                          <view class='takeUp'  data-index='{{index}}' bindtap='takeUpClick' wx-if='{{item.centerIsshow==false}}'>
+                              收起 <text>>></text>
+                           </view>
+                      </view> 
+                    </view>
+                    
+               </view>
+          </scroll-view>
+      </view>
+      <!-- ----其他---- -->
+      <view  class='Other'>
+          <view class='activityArrangementItem'><text></text>其他<text></text></view>
+            <view class='OtherBox'>
+               <view class='OtherBoxItem1'>时间：{{startTimes}}</view>
+               <view class='OtherBoxItem2'>地点：{{banner.address}} </view>
+               <view class='OtherBoxItem3'  bindtap='mapClick'><image src='../../images/position.png'></image> <text>查看地点位置</text> </view>
+            
+               <view class='detailItemFoot4'>
+                    <view class='detailItem4Index'>
+                      <text class='company'>主办单位：</text>
+                      <view wx:for="{{hosts}}" wx:key="{{index}}">{{item}}</view> 
+                    </view>
+                    <view class='detailItem4Index'>
+                      <text class='company'>承办单位：</text>
+                      <view wx:for="{{organizers}}" wx:key="{{index}}">{{item}}</view>
+                    </view>
+                    <view class='detailItem4Index'>
+                      <text class='company'>承办单位：</text>
+                      <view wx:for="{{coOrganizers}}" wx:key="{{index}}">{{item}}</view> 
+                    </view>
+                </view>
+               <view class='OtherBoxItem7'><image src='{{banner.bannerUrl}}'></image></view>
+            </view>
+      </view>
+       <!-- ---------- -->
+          <view class='mattersNeedingAttention mattersNeedingAttentionFoot'>
+              <text>注意事项：</text> 本论坛配备同声翻译，请记得携带您本人身份证到达
+              会场，现场入口处将提供免费同传耳机租借服务。
+          </view>
+ 
+</view>
+
+
+<!-- ---------------- -->
+</scroll-view>
+<view class='scrollTop' wx:if="{{scrollTopShow}}" bindtap='goTop'>
+   <image src="../../images/scrollTop.png"></image>
+</view>
+<view class='detailBoxFoot'>
+   <view class='detailBoxFootItem1'> <button  bindtap='forwardClick' open-type="share">转发</button> </view>
+   <view class='detailBoxFootItem2' bindtap='nextClick'>+立即报名</view>
+</view>

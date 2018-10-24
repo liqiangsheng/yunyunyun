@@ -1,0 +1,97 @@
+/* pages/photograph/Photograph.wxss */
+.PhotographBox{
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: #0F0F19;
+}
+.PhotographBoxItem1{
+  width: 90%;
+  height: 80%;
+  margin: 10% 5%;
+  background:rgba(255,255,255,1);
+  border-radius:5px;
+  overflow: hidden;
+  position: relative;
+} 
+.PhotographBoxItem2{
+  width:100%;
+  height:32px;
+  font-size:17px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(5,5,9,1);
+  line-height:32px;
+  margin-top: 10px;
+  text-align: center;
+}
+.PhotographBoxItem3{
+  width: 74px;
+  height: 74px;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+.PhotographBoxItem3 image{
+  display: block;
+  width: 74px;
+  height: 74px;
+}
+.PhotographBoxItem4{
+  width: 100%;
+  height:26px;
+  font-size:14px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(33,203,97,1);
+  line-height:36px;
+  text-align: center;
+}
+.PhotographBoxItem5{
+  width: 100%;
+  display: flex;
+  text-align: center;
+  margin-top:10px; 
+}
+.PhotographBoxItem5 view{
+  flex: 1;
+  font-size:14px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(102,102,102,1);
+  line-height:24px;
+}
+.PhotographBoxItem5 view image{
+  display: block;
+  width: 62px;
+  height: 62px;
+  margin: 0 auto
+}
+.PhotographBoxItem6{
+  width: 100%;
+  height: 49px;
+  display: flex;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  border-top: 1px solid #DCDCDC;
+}
+.PhotographBoxItem6 view{
+  flex: 1;
+  text-align: center;
+  line-height: 49px;
+}
+.PhotographBoxItem6 view:nth-child(1){
+  font-size:14px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(153,153,153,1);
+  border-right:  1px solid #DCDCDC;
+}
+.PhotographBoxItem6 view:nth-child(2){
+  font-size:14px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(33,203,97,1);
+}

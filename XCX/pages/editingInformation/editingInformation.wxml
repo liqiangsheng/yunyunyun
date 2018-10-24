@@ -1,0 +1,86 @@
+<!--pages/editingInformation/editingInformation.wxml-->
+<scroll-view scroll-y id='editingInformationBox'> 
+   <view class='header'>
+      <view class='editingInformationBoxItem' bindtap='headPortrait'>
+         <text>头像</text>
+         <view class='headPortrait'>
+             <image src='{{imgSrc}}'></image>
+         </view>
+        
+           <image class='editingInformationBoxImage' style='top:20px;' src='../../images/right.png'></image>
+      </view>
+      <view class='editingInformationBoxItem1' bindtap='userName'>
+         <text>用户名</text>
+         <text class='editingInformationBoxRight'>{{userName}}</text>
+         <image class='editingInformationBoxImage' src='../../images/right.png'></image> 
+      </view>
+      <view class='editingInformationBoxItem11'  bindtap='personalProfile'>
+           <text class='editingInformationBoxItemValue1'>个人简介</text>
+           <text class='editingInformationBoxItemValue'>{{personal}}</text>
+           <image class='editingInformationBoxImage' src='../../images/right.png'></image>
+      </view>
+   </view>
+  <view class='center'>
+  
+      <view class='editingInformationBoxItem1'>
+            <text>性别</text>
+            <view class='editingInformationBoxRight'>
+              <picker bindchange="sexChange" value="{{sexIndex}}" range="{{array}}">
+                  <view class="picker">
+                   {{array[sexIndex]}}
+                  </view>
+                </picker>
+          </view>
+          <image class='editingInformationBoxImage' src='../../images/right.png'></image> 
+       </view>
+      <view class='editingInformationBoxItem1' bindtap='birthdayClick'>
+         <text>生日</text>
+         <view class='editingInformationBoxRight'>
+              <!-- {{year}}{{month}}{{day}} -->
+              {{yearmonthday}}
+          </view>
+          <image class='editingInformationBoxImage' src='../../images/right.png'></image> 
+      </view>
+ <picker-view  wx:if='{{birthdayShow==true}}' indicator-style="height: 50px;" style="width: 100%; height: 200px;" value="{{value}}" bindchange="bindChange">
+    <picker-view-column>
+      <view wx:for="{{years}}" wx:key="{{index}}"  style="line-height: 50px">{{item}}年</view>
+    </picker-view-column>
+    <picker-view-column>
+      <view wx:for="{{months}}" wx:key="{{index}}" style="line-height: 50px">{{item}}月</view>
+    </picker-view-column>
+    <picker-view-column>
+      <view wx:for="{{days}}" wx:key="{{index}}" style="line-height: 50px">{{item}}日</view>
+    </picker-view-column>
+  </picker-view>
+      
+      <view class='editingInformationBoxItem1' bindtap='cityClick'>
+        <text>地区</text>
+        <!-- <view class='editingInformationBoxRight'>
+                  {{provArr}}-{{cityArr}}-{{areaArr}}
+            </view>        -->
+            <view class='editingInformationBoxRight'>
+                  {{areaArr}}
+            </view>  
+          <image class='editingInformationBoxImage' src='../../images/right.png'></image>
+      </view>
+  </view>
+   <picker-view wx:if='{{cityShow==true}}' indicator-style="height: 50px;" style="width: 100%; height: 200px;" value="{{value}}" bindchange="bindChange1">
+    <picker-view-column>
+      <view wx:for="{{provArrs}}" wx:key="{{index}}" style="line-height: 50px">{{item.name}}</view>
+    </picker-view-column>
+    <picker-view-column>
+      <view wx:for="{{cityArrs}}" wx:key="{{index}}" style="line-height: 50px">{{item.name}}</view>
+    </picker-view-column>
+    <picker-view-column>
+      <view wx:for="{{areaArrs}}" wx:key="{{index}}" style="line-height: 50px">{{item.name}}</view>
+    </picker-view-column>
+  </picker-view>
+   <view class='editingInformationBoxOK'  bindtap='okClick'>确定编辑</view>
+   
+</scroll-view>
+<modal title="用户名" confirm-text="确认" cancel-text="取消" hidden="{{onOff}}" data-index="1" bindconfirm="modalConfirm" bindcancel="modalCancel">
+ <input placeholder='请输入用户名' bindblur='userNameBlur' class='commonCententinput'></input>
+</modal>
+<modal title="个人简介" confirm-text="确认" cancel-text="取消" hidden="{{onOff1}}" data-index="2" bindconfirm="modalConfirm" bindcancel="modalCancel">
+ <textarea placeholder='请输入个人简介' auto-height bindblur='textareaBlur' class='commonCententTextarea'></textarea>
+</modal>

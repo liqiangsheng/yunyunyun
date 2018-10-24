@@ -1,0 +1,346 @@
+/* pages/meActivity/meActivity.wxss */
+.meActivityBox{
+  width: 100%;
+}
+.meActivityBoxItem{
+  width: 100%;
+  height: 40px;
+  overflow: hidden;
+  background:rgba(255,255,255,1);
+  margin-top: 1px;
+  font-size:14px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(153,153,153,1);
+}
+.meActivityBoxItemView1{
+  float: left;
+  width: 30%;
+  text-align: right;
+  line-height: 40px;
+}
+.meActivityBoxItemView1 text{
+  display: inline-block;
+  height: 38px;
+  margin-right:20%; 
+}
+.meActivityBoxItemView2{
+  width: 20%;
+  float: left;
+  text-align: center;
+  line-height: 40px;
+}
+.meActivityBoxItemView2 text{
+  display: inline-block;
+  height: 38px;
+  margin-right:20%; 
+}
+.meActivityBoxItemView3{
+  width: 20%;
+  float: left;
+  text-align: center;
+  line-height: 40px;
+}
+.meActivityBoxItemView3 text{
+  display: inline-block;
+  height: 38px;
+  margin-right:20%; 
+}
+.meActivityBoxItemView4{
+  width: 30%;
+  float: left;
+  text-align: left;
+  line-height: 40px;
+}
+.meActivityBoxItemView4 text{
+  display: inline-block;
+  height: 38px;
+  margin-left:20%; 
+}
+.meActivityBoxItemViewActive{
+  border-bottom: 2px solid #050509; 
+  color: #050509;
+}
+.meActivityBoxItem1{
+  width: 100%;
+  height: 155px;
+  background: #fff;
+  margin-top: 11px;
+  padding: 20px 15px 17px 15px;
+  box-sizing: border-box;
+}
+.meActivityBoxItem1View1{
+  width: 100%;
+  height: 80px;
+  display: flex;
+}
+.meActivityBoxItem1View1 image{
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+}
+.meActivityBoxItem1ViewRight{
+  width: 100%;
+  height: 80px;
+  flex: 1;
+}
+
+.meActivityBoxItem1ViewRightHeader{
+  font-size:15px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(5,5,9,1);
+  line-height:19px;
+}
+.meActivityBoxItem1ViewRightPrice{
+  font-size:17px;
+  font-family:PingFangSC-Medium;
+  font-weight:500;
+  color:rgba(254,95,95,1);
+  line-height:23px;
+  margin-top: 15px;
+}
+.meActivityBoxItem1ViewRightPrice1{
+  font-size:17px;
+  font-family:PingFangSC-Medium;
+  font-weight:500;
+  color:#21CB61;
+  line-height:23px;
+  margin-top: 15px;
+}
+/* ------ */
+.meActivityBoxItem1View2{
+  width: 100%;
+  height: 36px;
+  border-top: 1px solid #DFDFDF;
+  margin-top: 10px;
+  line-height: 36px;
+}
+.meActivityBoxItem1Viewitem1{
+  display: inline-block;
+  font-size:12px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(51,51,51,1);
+}
+.meActivityBoxItem1Viewitem1 image{
+   display: inline-block;
+   width: 10px;height: 13px;
+   margin-right: 7px;
+}
+.meActivityBoxItem1Viewitem2{
+  display: inline-block;
+   font-size:10px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(51,51,51,1);
+}
+.meActivityBoxItem1Viewitem2 image{
+   display: inline-block;
+   width: 11px;height: 11px;
+   margin-right: 7px;
+   margin-left: 10px;
+}
+.meActivityBoxItem1Viewitem3{
+  display: inline-block;
+   font-size:12px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(51,51,51,1);
+  float: right;
+  margin-top: 5px;
+  line-height: 24px;
+}
+.meActivityBoxItem1Viewitem3Item{
+  font-size:12px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(5,5,9,1);
+}
+.meActivityBoxItem1Viewitem3Item image{
+ display: inline-block;
+ width: 11px;height: 20px;
+ transform: translateY(5px);
+ margin-left: 10px;
+}
+.meActivityBoxItem1Viewitem3Item1{
+  width: 60px;
+  height: 29px;
+  background:rgba(254,95,69,1);
+  border-radius:5px;
+  font-size:12px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(255,255,255,1);
+  text-align: center;
+  line-height: 29px;
+  }
+  .meActivityBoxItem1Viewitem3Item2{
+    display: inline-block;
+    width: 60px;
+    height: 29px;
+    background:#21CB61;
+    border-radius:5px;
+    font-size:12px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    text-align: center;
+    line-height: 29px;
+    margin-right: 5px;
+  }
+  .meActivityBoxItem1Viewitem3Item3{
+    display: inline-block;
+    width: 60px;
+    height: 29px;
+    background:#EFEDED;
+    border-radius:5px;
+    font-size:12px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:#999999;
+    text-align: center;
+    line-height: 29px;
+  }
+  .meActivityBoxItem1Viewitem3Item4{
+    display: inline-block;
+    width: 60px;
+    height: 29px;
+    background:#EFEDED;
+    border-radius:5px;
+    font-size:12px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:#999999;
+    text-align: center;
+    line-height: 29px;
+  }
+  .meActivityBoxItem2{
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    font-size:12px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(149,149,149,1);
+    text-align: center;
+    position: relative;
+  }
+  .meActivityBoxItem2 text:first-child{
+    position: absolute;
+    top: 17px;
+    left: 29%;
+    display: inline-block;
+    width: 37px;
+    height: 2px;
+    background:rgba(204,204,204,1);
+  }
+   .meActivityBoxItem2 text:last-child{
+    position: absolute;
+    top: 17px;
+    right: 29%;
+    display: inline-block;
+    width: 37px;
+    height: 2px;
+    background:rgba(204,204,204,1);
+  }
+  /* ********************* */
+  .meActivityBoxItem3{
+  width: 100%;
+  height: 155px;
+  background: #fff;
+  margin-top: 11px;
+  padding: 20px 15px 17px 15px;
+  box-sizing: border-box;
+  margin-bottom: 10px;
+}
+.meActivityBoxItem3View1{
+  width: 100%;
+  height: 80px;
+  display: flex;
+}
+.meActivityBoxItem3View1 image{
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+  margin-right: 10px;
+}
+.meActivityBoxItem3ViewRight{
+  width: 100%;
+  height: 80px;
+  flex: 1;
+}
+
+.meActivityBoxItem3ViewRightHeader{
+  font-size:15px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(5,5,9,1);
+  line-height:19px;
+}
+.meActivityBoxItem3ViewRightPrice{
+  font-size:17px;
+  font-family:PingFangSC-Medium;
+  font-weight:500;
+  color:rgba(254,95,95,1);
+  line-height:23px;
+  margin-top: 15px;
+}
+/* ------ */
+.meActivityBoxItem3View2{
+  width: 100%;
+  height: 36px;
+  border-top: 1px solid #DFDFDF;
+  margin-top: 10px;
+  line-height: 36px;
+}
+.meActivityBoxItem3Viewitem1{
+  display: inline-block;
+  font-size:12px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(51,51,51,1);
+}
+.meActivityBoxItem3Viewitem1 image{
+   display: inline-block;
+   width: 10px;height: 13px;
+   margin-right: 7px;
+}
+.meActivityBoxItem3Viewitem2{
+  display: inline-block;
+   font-size:12px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(51,51,51,1);
+}
+.meActivityBoxItem3Viewitem2 image{
+   display: inline-block;
+   width: 11px;height: 11px;
+   margin-right: 7px;
+   margin-left: 10px;
+}
+.meActivityBoxItem3Viewitem3{
+  display: inline-block;
+   font-size:12px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(51,51,51,1);
+  float: right;
+  margin-top: 5px;
+}
+
+  .meActivityBoxItem3Viewitem3Item2{
+    display: inline-block;
+    width: 60px;
+    height: 29px;
+    background:#21CB61;
+    border-radius:5px;
+    font-size:12px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    text-align: center;
+    line-height: 29px;
+    margin-right: 5px;
+  }

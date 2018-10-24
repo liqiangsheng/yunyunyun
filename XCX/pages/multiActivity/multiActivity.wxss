@@ -1,0 +1,294 @@
+/* pages/news/news.wxss */
+.multiActivityBox{
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 49px;
+}
+.multiActivityBoxHeader{
+  width: 94%;
+  padding: 20px 3%;
+  background: #fff;
+  height: 80px;
+  display: flex;
+  margin-top: 1px solid #eeeeee;
+}
+.multiActivityBoxHeader image{
+  width: 80px;
+  height: 80px;
+  display: inline-block;
+}
+.multiActivityBoxHeader view{
+  flex: 1;
+}
+.multiActivityBoxHeader view view:nth-child(1){
+  height: 30px;
+  width: 100%;
+  line-height: 30px;
+  font-size:14px;
+  font-family:PingFangSC-Medium;
+  font-weight:500;
+  color:rgba(5,5,9,1);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient:vertical;
+  text-indent: 10px;
+}
+.multiActivityBoxHeader view view:nth-child(2){
+  width:100%;
+  height:25px;
+  font-size:14px;
+  font-family:PingFangSC-Medium;
+  font-weight:500;
+  color:rgba(254,95,95,1);
+  line-height:25px;
+  text-indent: 10px;
+}
+.multiActivityBoxHeader view view:nth-child(3){
+  width: 100%;
+  height: 25px;
+  font-size:12px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(102,102,102,1);
+  line-height:25px;
+  padding-left:10px; 
+}
+.multiActivityBoxHeader view view:nth-child(3) image,.multiActivityBoxHeader view view:nth-child(4) image{
+  display: inline-block;
+  width: 11px;
+  height: 11px
+
+}
+/* --------------- */
+.multiActivitycenter{
+  width: 100%;
+  margin-top:10px;  
+}
+.multiActivitycenter .multiActivityItem{
+  width: 94%;
+  height:  138px;
+  margin: 0 3% 10px 3%;
+  background: #fff;
+
+ position: relative;
+}
+.multiActivitycenter .multiActivityItemActive{
+  background: #FAFAFA;
+}
+
+.multiActivitycenter .multiActivityItem .bgItem{
+  width: 100%;
+  height: 138px;
+  display: inline-block;
+   position: absolute;
+
+}
+.multiActivitycenter .multiActivityItem .item1{
+  position: absolute;
+  width: 90%;
+  margin:0 5%;
+  height: 44px;
+   overflow:hidden;
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient:vertical;
+  font-size:14px;
+  font-family:PingFangSC-Medium;
+  font-weight:500;
+  color:rgba(5,5,9,1);
+  line-height:40px;
+  border-bottom: 1px solid rgba(223,223,223,1);
+}
+.multiActivitycenter .multiActivityItem .item2{
+   position: absolute;
+    width: 90%;
+    top: 45px;
+    margin:0 5%;
+   width: 100%;
+    height: 20px;
+    font-size:12px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(102,102,102,1);
+    line-height:20px;
+    padding-left:10px; 
+}
+.multiActivitycenter .multiActivityItem .item2 image{
+  display: inline-block;
+  width: 11px;
+  height: 11px
+
+}
+.multiActivitycenter .multiActivityItem .item4{
+  width: 100%;
+  height: 35px;
+  background:rgba(255,248,248,1);
+  position: absolute;
+  width: 90%;
+  top: 75px;
+  border-radius: 2px;
+  margin:0 5%;
+  font-size:12px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  line-height: 35px;
+  display: flex;
+  padding: 0 5px;
+}
+.multiActivitycenter .multiActivityItem .item4Active{
+  background: #EEEEEE;
+}
+.multiActivitycenter .multiActivityItem .item4Active1{
+  background: #EEEEEE;
+}
+
+.multiActivitycenter .multiActivityItem .item4 .multiActivityBoxPrice{
+  color:#FE5F5F;
+}
+.multiActivitycenter .multiActivityItem .item4 .multiActivityBoxPrice1{
+  margin-left:20px; 
+  color:#FE5F5F;
+}
+.multiActivitycenter .multiActivityItem .item4 .multiActivityBoxPriceActive{
+  color:#999999;
+}
+.multiActivitycenter .multiActivityItem .item4 .multiActivityBoxPriceActive1{
+  color:#999999;
+}
+.multiActivityBoxState1{
+  width: 55px;
+  height: 24px;
+  float: right;
+  margin-top: 5px;
+  border-radius:5px;
+  text-align: center;
+  line-height: 24px;
+  background:#FAFAFA;
+  color:#999999;
+}
+.multiActivityBoxState{
+  width: 55px;
+  height: 24px;
+  background: #21CB61;
+  border-radius:5px;
+  text-align: center;
+  line-height: 24px;
+  color:rgba(255,255,255,1);
+  position: absolute;
+  right: 10px;
+  top: 5px;
+}
+.multiActivityBoxStateActive{
+ background: #FAFAFA;
+ color: #999999;
+}
+
+.multiActivitycenter .multiActivityItem .item4 .Oprice{
+  position: relative;
+  display: inline-block;
+}
+.multiActivitycenter .multiActivityItem .item4 .Oprice .hr{
+  width: 100%;
+  height: 1px;
+  display: inline-block;
+  background: #999999;
+  position: absolute;
+  left: 0;
+  top: 48%;
+}
+.multiActivitycenter .multiActivityItem .reduceAdd{
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+.multiActivitycenter .multiActivityItem .reduceAdd image{
+  display: block;
+  width: 17px;
+  height: 17px;
+  
+}
+.multiActivitycenter .multiActivityItem .reduce{
+  position: absolute;
+  left:10px;
+  top: 9px;
+}
+.multiActivitycenter .multiActivityItem .add{
+  position: absolute;
+  right: 10px;
+  top: 9px;
+}
+.multiActivitycenter .multiActivityItem .item5{
+  width: 100%;
+  height: 35px;
+  position: absolute;
+  width: 90%;
+  top: 115px;
+  margin:0 5%;
+  font-size:12px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  line-height: 20px;
+  display: flex;
+}
+
+/* -----foot----------- */
+ #multiActivityFoot{
+  width: 100%;
+  height: 49px;
+  background: #F7F7F7;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex
+}
+ #multiActivityFoot .footItem1{
+   width: 40%;
+   background: #050509;
+   height:39px;
+    font-size:13px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(255,255,255,1);
+    text-align: center;
+    padding-top: 10px;
+ }
+ #multiActivityFoot .footItem{
+   flex: 1;
+   padding-left: 3%;
+ }
+  #multiActivityFoot .footItem .total{
+    width: 100%;
+    font-size:15px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(5,5,9,1);
+    height:26px;
+    line-height: 26px;
+  }
+    #multiActivityFoot .footItem .totalDiscount{
+      width: 100%;
+      height:20px;
+      font-size:12px;
+      font-family:PingFangSC-Regular;
+      font-weight:400;
+      color:rgba(102,102,102,1);
+      line-height: 20px;
+      display: flex;
+    }
+    #multiActivityFoot .footItem .totalDiscount text{
+      flex: 1;
+    }
+    .multiActivitycenterDan{
+     padding-left: 8%;
+      width: 100%;
+      height: 50px;
+      line-height: 50px;
+      font-size: 18px;
+      font-weight: 900;
+    }

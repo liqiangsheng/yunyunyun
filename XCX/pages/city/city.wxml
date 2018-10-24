@@ -1,0 +1,18 @@
+<!--pages/city/city.wxml-->
+<scroll-view scroll-y="true" class='guoshengshi' scroll-with-animation="true" scroll-into-view="{{toView}}">
+   <view wx:for="{{cityAll}}" wx:key="{{index}}" class='guo'>
+   {{item.name}}
+       <view  wx:for="{{item.children}}" wx:for-item="items" wx:for-index="index1"  wx:key="{{index1}}"  class='sheng' id="{{items.pinyin}}">
+        <view>{{items.name}}</view>
+          <view wx:for="{{items.children}}" wx:for-item="items1" wx:for-index="index2"  wx:key="{{index2}}" class='shi {{cityName==items1.name?"cityActive":""}}' bindtap='shiClick' data-index="{{index2}}" data-item="{{items1}}">
+           {{items1.name}}
+          </view>
+       </view>
+   </view>
+</scroll-view>
+<view class='rightCity'>
+   <view class='rightCityItem' data-item="{{item}}"  wx:for="{{Letter}}" wx:key="{{index}}" bindtap='setScrollTop'>
+    {{item.name}}
+   </view>
+ 
+</view>

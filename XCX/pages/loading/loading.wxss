@@ -1,0 +1,30 @@
+/* pages/loading/loading.wxss */
+.loadingBox{
+   position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: #0F0F19;
+}
+.loadingBoxItem{
+  width: 43px;
+  height: 28px;
+  margin: 0 auto;
+  margin-top: 30%;
+}
+.loadingBoxItem image{
+  display: block;
+  width: 43px;
+  height: 28px;
+}
+.loadingBoxItem2{
+  width: 100%;
+  font-size:14px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(255,255,255,1);
+  line-height:30px;
+  text-align: center;
+  margin-top: 47px;
+  }

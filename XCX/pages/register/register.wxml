@@ -1,0 +1,21 @@
+<!--pages/register/register.wxml-->
+<view id='loginBox'>
+  <view class='loginTitle'>{{titleText}}</view>
+  <view class="telPhone">
+    <view class='telPhoneImae'> <image src='../../images/tel.png'></image><text class='add86'>+86</text> </view>
+    <view class='telPhoneImae1'><input type='number' bindblur='telPhone' placeholder="请输入手机号码"/></view>
+  </view>
+  
+    <view class="verificatioCode">
+       <view class='verificatioCodeImage'><image src='../../images/code.png'></image></view>
+       <view class='verificatioCodeImage1'><input  bindblur='codePsd' placeholder="请输入验证码"/></view>
+       <button bindtap="ObtainCode" wx:if='{{isShow}}'>{{code}}</button>
+       <button disabled wx:else='{{!isShow}}'>{{codeNum}}秒</button>
+    </view>
+
+    <view class='loginBnt' bindtap='loginBnt'>
+       <button>注册</button>
+    </view>
+ 
+</view>
+

@@ -1,0 +1,21 @@
+<!--pages/admission/admission.wxml-->
+<scroll-view class='admissionBox'>
+   <view class='admissionBoxItem1'><image src='../../images/success.png'></image></view>
+    <view class='admissionBoxItem2'>
+         <view><text>姓　　名</text><text>{{dataObj.name}}</text></view>
+         <view><text>注  册  码</text><text>{{dataObj.signCode}}</text></view>
+         <view wx:if='{{faceIs=="true"}}'><text>人像状态</text><text style='color:#FE5F5F'>已拍照</text></view>
+    </view>
+    <view class='admissionBoxItem3' wx:if='{{dataObj.faceUrl&&dataObj.faceUrl!=""}}'>
+       <image src='{{dataObj.faceUrl}}'></image>
+       <image src="{{Base64Img}}" bindtap='bingLongClick'bindtouchstart='timestart' bindtouchend='timeend'></image>
+    </view>
+    <view class='admissionBoxItem5' wx:else>
+       <image src="{{Base64Img}}" bindtap='bingLongClick'bindtouchstart='timestart' bindtouchend='timeend'></image>
+    </view>
+    <view class='admissionBoxItem4'>
+          <view>可凭该图片上面的二维码扫码入场或者刷脸入场</view>
+          <view><text style='font-size:16px;font-weight:900'>温馨提示：</text> 长按二维码可保存至手机。</view>
+          <view>仅限本人使用，转发无效。</view>
+    </view>
+</scroll-view>

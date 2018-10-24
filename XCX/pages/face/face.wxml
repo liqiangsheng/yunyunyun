@@ -1,0 +1,15 @@
+<!--pages/face/face.wxml-->
+<view class='faceBox'>
+     <view class='faceBoxItem1'>
+        <image src='../../images/face1.png'></image>
+        <image src='../../images/hengtiao1.png'></image>
+        
+     </view>
+     <view class='faceBoxItem2'>体验人脸识别快速入场</view>
+     <view class='faceBoxItem3' bindtap='experienceClick'>
+        马上体验
+     </view>
+     <view class='faceBoxItem4' bindtap='erweimaClick'>
+        不用了，我只用二维码入场
+     </view>
+</view>

@@ -1,0 +1,165 @@
+/* pages/login/login.wxss */
+#loginBox{
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+#loginBox .image{
+  display: block;
+  width: 100%;
+  height: 100%;
+ 
+}
+.loginTitle{
+  position: absolute;
+  top: 75px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  height:20px;
+  font-size:20px;
+  font-family:PingFangSC-Light;
+  font-weight:300;
+  color:rgba(5,5,9,1);
+  line-height:18px;
+  z-index: 1;
+}
+#loginBox .verificatioCode{
+ position: absolute;
+  z-index: 1;
+   top: 190px;
+  width: 90%;
+  margin: 10px 5%;
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 4px;
+  height: 50px;
+  display: flex;
+  margin-bottom: 30px;
+}
+#loginBox .telPhone{
+  position: absolute;
+  z-index: 1;
+   top:120px;
+  width: 90%;
+  margin: 10px 5%;
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 4px;
+  height: 50px;
+  display: flex;
+  margin-bottom: 30px;
+}
+
+#loginBox .telPhone .telPhoneImae{
+  width: 20%;
+  display: inline-block;
+  height: 26px;
+  margin:14px 0 14px 5%;
+}
+.add86{
+  display: inline-block;
+  font-size:15px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(5,5,9,1);
+  margin-left: 6px;
+  transform: translateY(-5px);
+}
+#loginBox .verificatioCode .verificatioCodeImage{
+   width: 10%;
+  display: inline-block;
+  height: 26px;
+  font-size:15px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(5,5,9,1);
+  margin:14px 0 14px 5%;
+}
+
+#loginBox .telPhone .telPhoneImae image{
+  display: inline-block;
+  width: 18px;
+  height: 22px;
+}
+#loginBox .verificatioCode .verificatioCodeImage image{
+  display: inline-block;
+  width: 18px;
+  height: 22px;
+}
+#loginBox .telPhone .telPhoneImae1{
+  flex:1;
+  display: inline-block;
+}
+#loginBox .verificatioCode .verificatioCodeImage1{
+   flex:1;
+  display: inline-block;
+}
+#loginBox .telPhone .telPhoneImae1 input{
+   width: 100%;
+   height: 30px;
+   margin-top: 10px;
+  line-height: 30px;
+  border-left: 1px solid #DCDCDC;
+  font-size:16px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#050509;
+  padding-left: 10px;
+}
+#loginBox .verificatioCode .verificatioCodeImage1 input{
+   width: 100%;
+   height: 30px;
+   margin-top: 10px;
+  line-height: 30px;
+  border-left: 1px solid #DCDCDC;
+  font-size:16px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#050509;
+  padding-left: 10px;
+}
+.loginBnt{
+  width: 90%;
+  height: 50px;
+  margin-left: 5%;
+   position: absolute;
+  z-index: 1;
+   top:285px;
+}
+.loginBnt button{
+  background-color: #050509;
+  color: #fff;
+   height: 50px;
+}
+.gocegister{
+    width: 90%;
+    position: absolute;
+    left: 5%;
+    z-index: 1;
+    top:260px;
+    height:14px;
+    font-size:13px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(153,153,153,1);
+    line-height:18px;
+}
+.loginDetail{
+   width: 100%;
+   text-align: center;
+   position: absolute;
+   z-index: 1;
+   top:350px;
+   height:14px;
+    font-size:13px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(153,153,153,1);
+    line-height:18px;
+}
+.loginDetail text{
+  color: #050509;
+}

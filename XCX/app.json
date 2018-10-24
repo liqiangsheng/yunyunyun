@@ -1,0 +1,45 @@
+{
+  "pages": [
+  
+    "pages/index/index",
+    "pages/city/city",
+    "pages/login/login",
+    "pages/register/register",
+    "pages/editingInformation/editingInformation",
+    "pages/meActivity/meActivity",
+    "pages/multiActivity/multiActivity",
+    "pages/face/face",
+    "pages/detail/detail",
+    "pages/admission/admission",
+    "pages/registrationInformation/registrationInformation",
+    "pages/me/me",
+    "pages/acknowledgementOfOrder/acknowledgementOfOrder",
+    "pages/photograph/Photograph",
+    "pages/loading/loading",
+   "pages/login1/login1",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "不同科技报名系统",
+    "backgroundColor": "#eeeeee",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "iconPath": "./images/homesmall1.png",
+        "selectedIconPath": "./images/homesmall.png",
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "iconPath": "./images/mesmall1.png",
+        "selectedIconPath": "./images/mesmall.png",
+        "pagePath": "pages/me/me",
+        "text": "我的"
+      }
+    ]
+  }
+}

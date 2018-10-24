@@ -1,0 +1,7 @@
+<!--pages/loading/loading.wxml-->
+<view class='loadingBox'>
+     <view class='loadingBoxItem'>
+          <image src='../../images/loding.png'></image>
+     </view>
+     <view class='loadingBoxItem2'>莫着急，正拼命加载中...</view>
+</view>
