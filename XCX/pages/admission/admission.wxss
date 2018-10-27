@@ -13,7 +13,6 @@
 }
 .admissionBoxItem1 image{
   width: 100%;
-  height: 150px;
 }
 .admissionBoxItem2{
   padding-top: 0;
@@ -83,4 +82,11 @@
   width: 115px;
   height: 115px;
   margin: 0 auto;
+}
+/* 二维码 */
+
+.canvas-box {
+    position: fixed;
+    top: 999999rpx;
+    left: 0;
 }

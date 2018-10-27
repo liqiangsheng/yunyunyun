@@ -175,18 +175,18 @@ Page({
   },
   meActivityBnt(){ //去我的活动
     var that = this
-    let data = wx.getStorageSync('userInfo')//获取本地存储信息
-    if (data) {
+    // let data = wx.getStorageSync('userInfo')//获取本地存储信息
+    // if (data) {
       wx.navigateTo({ 
         url: '../../pages/meActivity/meActivity',
       })
      
-    } else {
-      wx.showToast({
-        title: ' 请先登录！',
-        icon: 'success',
-        duration: 2000
-      })
-    }
+    // } else {
+    //   wx.showToast({
+    //     title: ' 请先登录！',
+    //     icon: 'success',
+    //     duration: 2000
+    //   })
+    // }
   }
 })

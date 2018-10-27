@@ -12,6 +12,8 @@ import { state } from "@/vuex/state";
 import { actions } from "@/vuex/actions";
 const common = window.common;
 import axios from "axios";
+import {UrlSearch} from  "./assets/js/Fun"  //导航栏url截取
+let Request = new UrlSearch(); //方法实力化
 // 引入vue-amap
 import VueAMap from 'vue-amap';
 // 初始化vue-amap
@@ -23,6 +25,7 @@ VueAMap.initAMapApiLoader({
   // 高德 sdk 版本，默认为 1.4.4
   v: '1.4.4'
 });
+Vue.prototype.$Request = Request;
 Vue.prototype.$Aiox = axios;
 Vue.prototype.$http = common.apiDomain;
 Vue.config.productionTip = false

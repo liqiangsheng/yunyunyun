@@ -1,5 +1,5 @@
 <!--pages/release/release.wxml-->
-<scroll-view scroll-y id='registrationInformationBox'>
+<scroll-view scroll-y id='registrationInformationBox' wx:if='{{!!registrationInformationBoxShow}}'>
       <view class='required'>
           <view class='requiredItem'>基本信息(必填)</view>
           <view class='requiredItem1' wx:for="{{allowEmptyData}}" wx:key="{{index}}">
@@ -62,6 +62,6 @@
 </modal>
 
 </scroll-view>
-<view id='registrationInformationFoot' bindtap='nextgo'>
+<view id='registrationInformationFoot' bindtap='nextgo' wx:if='{{!!registrationInformationBoxShow}}'>
         下一步
 </view>

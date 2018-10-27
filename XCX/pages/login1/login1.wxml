@@ -15,9 +15,9 @@
        </view>
        
     </view>
- <view class='gocegister' bindtap='gocegister'>
+ <!-- <view class='gocegister' bindtap='gocegister'>
       >去注册
-    </view>
+    </view> -->
     <view class='loginBnt1' bindtap='loginBnt'>
        <button>登录</button>
     </view>

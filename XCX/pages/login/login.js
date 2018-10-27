@@ -139,14 +139,17 @@ Page({
     }else{
       //请求数据
       wx.request({
-        url: API.apiDomain1+'/sec/oauth/token',
-        data: {
-          "grant_type": "msgAuthCode", "mobile": that.data.telValue, "msgAuthCode": that.data.psdValue, "mobileType": "XCX" },
+        url: API.apiDomain + '/apis/operation/sysUserOperation/bindMobile',
+        data: { "mobile": that.data.telValue, "verifyCode": that.data.psdValue, "mobileType": "XCX" },
         method: "POST",
+        header: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         success(res) {
           console.log(res.data.status)
           if (res.data.status ==true){
-            wx.setStorageSync("userInfo", res.data)
+            wx.setStorageSync("userInfo", res.data.data)
             wx.showToast({
               title: '登录成功',
               icon: 'success',
@@ -176,11 +179,7 @@ Page({
             duration: 2000
           })
         },
-        header: {
-          'Content-type': 'application/x-www-form-urlencoded',
-          "Accept": "application/json", // 默认值
-          "Authorization": that.make_base_auth('acme', 'acmesecret')
-        },
+      
       })
     }
     

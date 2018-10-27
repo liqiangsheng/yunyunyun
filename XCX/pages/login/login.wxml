@@ -13,9 +13,9 @@
        <button bindtap="ObtainCode" wx:if='{{isShow}}'>{{code}}</button>
        <button disabled wx:else='{{!isShow}}'>{{codeNum}}秒</button>
     </view>
-     <view class='gocegister' bindtap='gocegister'>
+     <!-- <view class='gocegister' bindtap='gocegister'>
       >去注册
-    </view>
+    </view> -->
     <view class='loginDetail'>
       点击查看 <text bindtap='loginDetail1'>“用户协议” </text> 和  <text bindtap='loginDetail'>“隐私政策” </text>
     </view>

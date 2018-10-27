@@ -1,6 +1,5 @@
 {
   "pages": [
-  
     "pages/index/index",
     "pages/city/city",
     "pages/login/login",
@@ -16,8 +15,9 @@
     "pages/acknowledgementOfOrder/acknowledgementOfOrder",
     "pages/photograph/Photograph",
     "pages/loading/loading",
-   "pages/login1/login1",
-    "pages/logs/logs"
+    "pages/login1/login1",
+    "pages/logs/logs",
+    "template/template"
   ],
   "window": {
     "backgroundTextStyle": "light",

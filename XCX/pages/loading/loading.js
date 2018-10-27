@@ -9,7 +9,7 @@ Page({
    */
   data: {
     qiniuToken: "",
-    qiniuUrl:"http://pgf8indq4.bkt.clouddn.com", //七牛的地址
+    qiniuUrl:"https://pub.qinius.butongtech.com", //七牛的地址
   },
 
   /**
@@ -118,7 +118,7 @@ Page({
             if(res1.data.status == true){
                let dataUrl = res1.data.data;
               dataUrl.map((item,index)=>{ //赋值七牛的url
-                if (item.code == "qiniu_pub_url"){
+                if (item.code == "qiniu_pub_https_url"){
                  that.setData({
                    qiniuUrl:item.name
                  })

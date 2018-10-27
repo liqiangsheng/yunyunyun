@@ -79,14 +79,24 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    let that = this;
     let data = wx.getStorageSync("provinceDetailAll")
     
     if(data){
-        this.setData({
-          cityAll: data
-        })
+     data.map((res,index)=>{
+       
+        if (res.name == "中国"){
+          console.log(res)
+          that.setData({
+            cityAll: [res]
+          })
+         
+        }
+      
+      })
+      
     }
-    console.log(this.data.cityAll)
+    console.log(that.data.cityAll)
   
   },
 

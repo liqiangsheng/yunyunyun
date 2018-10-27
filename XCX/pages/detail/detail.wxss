@@ -1,3 +1,4 @@
+
 /* pages/detail/detail.wxss */
  #detailBox{
    position: absolute;
@@ -9,7 +10,7 @@
  .homeBox{
   width: 100%;
   min-height: 574px;
-  margin-top: 20px;
+  margin: 20px 0;
   overflow: hidden;
   position: relative;
   
@@ -21,6 +22,7 @@
    width: 100%;
    height: 50px;
    display: flex;
+   z-index: 2;
 
  }
  .detailBoxFootItem1{
@@ -59,10 +61,11 @@
   width: 96%;
   display: block;
   height: 185px;
-  margin: 0 2%;
+  margin: 0 auto;
 }
 .detailItem{
-  margin-top: 20px;
+  margin-top: 1px;
+  padding-top: 19px;
   width: 100%;
   background: #FFFFFF;
 }
@@ -160,7 +163,6 @@ font-size:14px;
 .activityArrangement{
   width: 100%;
   min-height: 100px;
-  margin-top: 20px;
   background: #FFFFFF;
   padding: 26px 0;
 }
@@ -426,75 +428,14 @@ font-size:14px;
     margin-top: 20px;
   }
   .OtherBox{
-    width: 94%;
-    margin: 0 3%; 
+    width: 90%;
+    margin: 0 auto; 
+    box-sizing: border-box;
   }
-  .OtherBoxItem1{
+  .OtherBox img{
     width: 100%;
-    height:24px;
-    font-size:14px;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
-    color:rgba(5,5,9,1);
-    line-height:23px;
-    margin-top: 20px;
   }
-  .OtherBoxItem2{
-     width: 100%;
-    font-size:14px;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
-    color:rgba(5,5,9,1);
-    line-height:23px;
-    margin-bottom: 5px;
-    position: relative;
-  }
-  .OtherBoxItem3{
-    width: 100%;
-    height:24px;
-    font-size:14px;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
-    color: #188BF6;
-    line-height:23px;
-  }
- 
-    .OtherBoxItem3 image{
-       display: inline-block;
-       width: 14px;
-       height: 19px;
-    }
-    .OtherBoxItem3 text{
-      display: inline-block;
-      margin-left: 10px;
-      transform: translateY(-3px)
-    }
-  .OtherBoxItem4{
-    height: 24px;
-    font-size:14px;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
-    color:rgba(5,5,9,1);
-    line-height:23px;
-  }
-   .OtherBoxItem6{
-    height: 24px;
-    font-size:14px;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
-    color:rgba(5,5,9,1);
-    line-height:23px;
-    margin-left: 70px;
-  }
-  .OtherBoxItem7{
-    width: 100%;
-    margin: 10px 0;
-  }
-  .OtherBoxItem7 image{
-    display: block;
-    width: 100%;
-    min-height: 150px;
-  }
+  
   /* .mattersNeedingAttentionFoot{
     margin-bottom:10px;
   } */
@@ -503,6 +444,7 @@ font-size:14px;
     display: inline-block;
    width: 100%;
    height: 574px;
+  
   }
    #detailBox .homeBox .homeCentent{
      position: absolute;
@@ -614,12 +556,6 @@ box-shadow:0px 18px 25px 0px rgba(0,0,0,0.15);transform: translateY(-20px)}
 /* --------------------------- */
 
 
-
-
-
-
-
-
 .detailItemFoot4{
   width: 96%;
   margin: 0 2%; 
@@ -654,10 +590,42 @@ font-size:14px;
   height: 34px;
   position: fixed;
   right: 0;
-  bottom: 30px;
+  bottom: 50px;
+  z-index: 3;
 }
 .scrollTop image{
   display: inline-block;
   width: 100%;
   height: 100%;
+}
+
+
+
+
+
+
+.activityJieShao{
+  width: 100%;
+  background: #FFFFFF;
+  margin-top: 15px;
+  padding:20px 0 20px 0;
+}
+.activityJieShaoItem{
+  width: 90%;
+  margin: 0 auto;
+}
+.activityJieShaoItem2{
+  width: 90%;
+  height: 50px;
+  background:rgba(255,255,255,1);
+  border:1px solid rgba(5, 5, 9, 1);
+  border-radius:2px;
+  font-size:14px;
+  font-family:PingFangSC-Medium;
+  font-weight:500;
+  line-height: 50px;
+  color:rgba(5,5,9,1);
+  margin:20 0px; 
+  text-align: center;
+  margin: 0 auto;
 }

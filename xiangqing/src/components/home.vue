@@ -1,7 +1,6 @@
 <template>
-   <div id="homeBox">
-     <HomeMap v-if="mapShow==true" :zoom="zoom" :center="center" :markers="markers"></HomeMap>
-        <div class="homeBoxHeader">
+   <div class="homeBox" v-show="boxShow==true">
+        <div class="homeBoxHeader" v-if="!!acivityArr.multiActivity&&!!isShow">
             <div class="boxCententHeader">
               <h5><span></span> {{acivityArr.title}} <span class="span"></span></h5>
               <p>{{acivityArr.summary}}</p>
@@ -30,7 +29,7 @@
         </div>
          <!---->
           <div class="homeBoxItem">
-             <div class="homeBoxItemImg">
+             <div class="homeBoxItemImg" v-if="!!objData.bannerUrl">
                <img :src="objData.bannerUrl" v-if="imagesShow=='true'">
                <img style="width: 0.8rem;height: 0.8rem;margin: 14% 0 0 35%"src="/static/images/loding.gif" v-else>
              </div>
@@ -42,7 +41,7 @@
             <div class="homeBoxItemThree">
               <img src="/static/images/position.png" alt="">
               {{objData.address}}
-              <div class="a" @click="getAddressHregs">地图 <img src="/static/images/right.png"></div>
+              <div class="a" @click="getAddressHregs">地图<img src="/static/images/right.png"></div>
             </div>
             <div class="homeBoxItemFour">
               <img src="/static/images/price.png" alt="">
@@ -57,6 +56,13 @@
 
             </div>
           </div>
+     <!--互文本内容-->
+     <div class="homeBoxItemTen" v-if="!!objData.content">
+       <div class='activityArrangementItem' style="margin-bottom: 20px;"><span></span>活动介绍<span></span></div>
+       <div class="homeBoxItemTenContent" v-html="objData.content">
+       </div>
+     </div>
+
      <!---->
          <div class="homeBoxItem1">
            <div class='activityArrangementItem'><span></span>活动安排<span></span></div>
@@ -94,13 +100,14 @@
 
                    </div>
                  </div>
-
+                 <div class='more' @click='moreClick(item,index)' v-if='item.centerIsshow==true'> 更多详情 </div>
+                 <div class='takeUp' @click='takeUpClick(item,index)'  v-if='item.centerIsshow==false'>收起</div>
                  <div class='centent'>
-                   <div class='cententQiut' :class="{cententActive:item.centerIsshow==true}">{{item.introduce}}
-                     <div class='more' @click='moreClick(item,index)' v-if='item.centerIsshow==true'> <span>更多详情>></span> </div>
-                     <div class='takeUp' @click='takeUpClick(item,index)'  v-if='item.centerIsshow==false'>收起 <span>>></span> </div>
+                   <div class='cententQiut' :class="{cententActive:item.centerIsshow==true}">
+                     {{item.introduce}}
+
                    </div>
-                   <div></div>
+
                  </div>
 
                </div>
@@ -110,28 +117,9 @@
            <!-- ----其他---- -->
            <div  class='Other'>
              <div class='activityArrangementItem'><span></span>其他<span></span></div>
-             <!--<div class='OtherBox'>-->
-               <!--<div class='OtherBoxItem1'>时间：{{objData.startTime}}</div>-->
-               <!--<div class='OtherBoxItem2'>地点：{{objData.address}}</div>-->
-               <!--&lt;!&ndash;<div class='OtherBoxItem3'  @click='mapClick'><img src='/static/images/position.png'/> <span>查看地点位置</span> </div>&ndash;&gt;-->
-               <!--<div  class='OtherBoxItem3'>-->
-                 <!--<div class="amap-page-container">-->
-                      <!--<el-amap ref="map" vid="amapDemo"  :center="center" :zoom="zoom"  class="amap-demo">-->
-                        <!--<el-amap-marker v-for="(marker, index) in markers" :key="index" :position="marker.position"  :visible="marker.visible" :vid="index"></el-amap-marker>-->
-                   <!--</el-amap>-->
-
-                 <!--</div>-->
-               <!--</div>-->
-               <!--<div class="homeBoxItemFive">-->
-                 <!--<div v-if="!!objData.organizers"><span>承办单位：</span><span class="homeBoxItemFiveLeft" v-for="(item,index) in objData.organizers">{{item}}</span></div>-->
-                 <!--<div v-if="!!objData.coOrganizers"><span>协办单位：</span><span class="homeBoxItemFiveLeft" v-for="(item,index) in objData.coOrganizers">{{item}}</span></div>-->
-
-               <!--</div>-->
-               <!--<div class='OtherBoxItem7'>-->
-                 <!--<img :src='objData.bannerUrl' v-if="imagesShow=='true'"/>-->
-                 <!--<img style="width: 0.8rem;height: 0.8rem; margin: 13% 0  0 35%" src="/static/images/loding.gif" v-else/>-->
-               <!--</div>-->
-             <!--</div>-->
+             <!--互文本内容-->
+              <div v-html="objData.customContent" class="homeBoxItemTenContent">
+              </div>
            </div>
            <!-- ---------- -->
            <div class='mattersNeedingAttention mattersNeedingAttentionFoot'>
@@ -141,27 +129,27 @@
 
      </div>
  <!---->
-     <img src="/static/images/scrollTop.png" alt="回到顶部" id="scrollTop" @click="goScrillTop" v-if="topScroll">
 
+     <img src="/static/images/scrollTop.png" alt="回到顶部" id="scrollTop" @click="goScrillTop" v-if="topScroll">
    </div>
+
+
 </template>
 
 <script>
   import {AMapManager} from 'vue-amap'; //地图
   import { Toast } from 'mint-ui';  //弹框
-  import HomeMap from "./homeMap.vue"
-  import {Base64,formatTime3,formatTime4} from  "../assets/js/common"  //base转换
+  import { Indicator } from 'mint-ui';
+  import {Base64,formatTime3,formatTime4,quiryData} from  "../assets/js/common"  //base转换
   let base = new Base64;
-  import {UrlSearch} from  "../assets/js/Fun"  //导航栏url截取
-  let Request = new UrlSearch(); //方法实力化
+  import {InitializationData} from  "../assets/js/promiseHttp"  //导航栏url截取
 
 export default {
 
   name: 'Home',
   data(){
     return{
-      mapShow:false,
-      zoom: 16,
+      isShow:false, //获取数据在显示dom
       center: [114.06003, 22.53086],
       markers: [
         {
@@ -169,6 +157,8 @@ export default {
           visible: true,
         }
       ],
+      mapShow:false,
+      boxShow:false, //没数据前空白
       swiperIndex:0, //滑动选中的图片
       topScroll:false,  //回到顶部的按钮出现
       acivityArr:{},
@@ -179,49 +169,78 @@ export default {
       imagesShow:true,// 有没有关闭wifi
       guests:[], //宾客
       schedules:[], //时间表
-      cityData:{},//城市数据
     }
   },
+  watch:{
+
+  },
   components:{
-    HomeMap
+  },
+  //跳轉路由前更新数据
+  beforeRouteEnter(to,from,next){
+    next(Vue=>{
+      Vue.quiry();
+    })
+  },
+  beforeRouterLeave(to,from,next){
+    next()
   },
   created(){
-     this.imagesShow = Request.imgIsShow;// 图片是否加载
-
-     this.id = Request.id; //截取导航栏url获取参数
-     let url = `${this.$http}/apis/activity/activityInfo/findOne?id=`+this.id;
-     this.$Aiox.get(url).then(res=>{  //初始化数据
-       if(res.data.status == true){
-             this.acivityArr = res.data.data;
-             this.acivityArr.children.forEach((item,index)=>{
-             this.acivityArr.children[index].hosts = this.acivityArr.children[index].hosts.split(",");
-             this.acivityArr.children[index].organizers = this.acivityArr.children[index].organizers.split(",");
-             this.acivityArr.children[index].coOrganizers = this.acivityArr.children[index].coOrganizers.split(",");
-             this.acivityArr.children[index].startTime = formatTime3(this.acivityArr.children[index].startTime );
-             })
-             this.length = this.acivityArr.children.length?this.acivityArr.children.length:0;
-              this.initialData();
-
-
-       }else{
-         Toast(res.data.message);
-       }
-     });
-   //国省市
-      let url1 = this.$http + '/apis/system/sysRegion/threelevel';
-        this.$Aiox.get(url1).then(res=>{
-          if (res.data.status == true) {
-               this.cityData = res.data.data;
-          } else {
-            Toast(res.data.message);
-          }
-       })
-
-
-
-
+    this.quiry();
   },
   methods:{
+
+    quiry(){ //初始化数据
+      this.imagesShow =this.$Request.imgIsShow;// 图片是否加载
+      this.id = this.$Request.id; //截取导航栏url获取参数
+      Indicator.open('加载中...')
+       InitializationData( this.id ).then(res=>{  //数据加载
+         if(!!res.data.status){
+
+           if(res.data.data.multiActivity == true){
+
+             this.acivityArr = res.data.data;
+             this.acivityArr.children.forEach((item,index)=>{
+               this.acivityArr.children[index].hosts = this.acivityArr.children[index].hosts.split(",");
+               this.acivityArr.children[index].organizers = this.acivityArr.children[index].organizers.split(",");
+               this.acivityArr.children[index].coOrganizers = this.acivityArr.children[index].coOrganizers.split(",");
+               this.acivityArr.children[index].startTime = formatTime3(this.acivityArr.children[index].startTime );
+             })
+             this.isShow = true;
+             this.length = this.acivityArr.children.length?this.acivityArr.children.length:0;
+             this.initialData();
+
+           }else{
+             let that =this;
+             res.data.data.hosts =  res.data.data.hosts.split(",");
+             res.data.data.organizers =  res.data.data.organizers.split(",");
+             res.data.data.coOrganizers =  res.data.data.coOrganizers.split(",");
+             res.data.data.startTime = formatTime3(res.data.data.startTime );
+
+             that.objData = res.data.data;
+             that.center = [that.objData.longitude,that.objData.latitude];
+             that.markers= [ {position: [that.objData.longitude, 22.53086],visible: true, }],
+               that.UserLocation =that.objData.address;
+             that.arrange(that.objData.id)
+           }
+           this.boxShow = true;
+           Indicator.close();
+         }else{
+           this.boxShow = false;
+           if(res.data.message){
+             Toast(res.data.message);
+           }else{
+             Toast("数据请求失败了");
+           }
+
+         }
+
+      }) //数据请求
+
+
+
+
+    },
     initialData(){ // 方法封装 初始化数据 滑动数据
       let that =this;
       that.objData = that.acivityArr.children[that.swiperIndex];
@@ -256,7 +275,9 @@ export default {
       })
     },
     getAddressHregs(){ // 点地图页面
-      this.mapShow = !this.mapShow;
+//      this.mapShow = !this.mapShow;
+      this.$store.dispatch("mapData",[this.center,this.markers])
+      this.$router.push({path:"/homeMap"})
     },
     moreClick(v,i){//点击更多详情
       v.centerIsshow = !v.centerIsshow
@@ -284,31 +305,35 @@ export default {
   mounted() {
     window.addEventListener('scroll', this.handleScroll) //监听回到顶部按钮出现
     let that = this;
-    setTimeout(()=>{
-      //     滑动
-      var mySwiper = new Swiper ('.swiper-container', {
-        effect : 'coverflow',
-        slidesPerView: 1.56,
-        centeredSlides: true,
-        coverflowEffect: {
-          rotate: 0,
-          stretch: -15,
-          depth:100,
-          modifier: 8,
-          slideShadows : false
-        },
-        on: {
-          slideChangeTransitionEnd: function () {
-//             console.log(this.activeIndex);//切换结束时，告诉我现在是第几个slide
-            that.swiperIndex = this.activeIndex;
-            //数据请求
-            that.initialData()
-            console.log(that.objData ,"liqiangs9468")
-          },
-        }
+    this.$nextTick(()=>{
 
-      })
-    },150)
+      setTimeout(()=>{
+        //     滑动
+        var mySwiper = new Swiper ('.swiper-container', {
+          effect : 'coverflow',
+          slidesPerView: 1.56,
+          centeredSlides: true,
+          coverflowEffect: {
+            rotate: 0,
+            stretch: -15,
+            depth:100,
+            modifier: 8,
+            slideShadows : false
+          },
+          on: {
+            transitionEnd: function () {
+              console.log(this.activeIndex);//切换结束时，告诉我现在是第几个slide
+              that.swiperIndex = this.activeIndex;
+              //数据请求
+              that.initialData()
+            },
+          }
+
+        })
+      },250)
+
+    })
+
 
   },
 }

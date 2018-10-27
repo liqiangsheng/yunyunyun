@@ -16,6 +16,7 @@ Page({
     price: 0,
     numPrice: 0,
     reduceGo: 0,
+   
 
   },
 
@@ -27,6 +28,9 @@ Page({
     let data = wx.getStorageSync("userInfo");
    
     if (data){
+      wx.showLoading({
+        title: '加载中',
+      })
       wx.request({
         url: API.apiDomain + "/apis/activity/activityInfo/findOneWithGoods",
         method: "GET",
@@ -38,6 +42,7 @@ Page({
         },
         success: (res => {
            if(res.data.status==true){
+
                 that.setData({
                   arr:res.data.data
                 })
@@ -97,14 +102,20 @@ Page({
                }
              })
              that.setData({
-               arr: that.data.arr
+               arr: that.data.arr,
+               meActivityBoxIsSHOW:true
              })
+             wx.hideLoading()
            }else{
+             that.setData({
+               meActivityBoxIsSHOW: false
+             })
              wx.showModal({
                showCancel: false,
                title: res.data.message,
                icon: 'success',
              })
+             wx.hideLoading()
            }
         })
       })

@@ -43,7 +43,7 @@ Page({
     array: [ '男', '女'],//性别
     sexIndex:0, //性别的下标
     index: 0,
-    imgSrc: "http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png",//7牛云的url
+    imgSrc: "https://pub.qinius.butongtech.com/defult_photo@3x.png",//7牛云的url
     userName: "520", //用户名
     onOff: true,//用户名弹框
     personal: "我是设计师", //个人简介
@@ -104,6 +104,7 @@ Page({
     let that = this;
     
     let data =  wx.getStorageSync("userInfo");
+    console.log(data)
     if(data){
       wx.request({ //请求七牛的token
         url: API.apiDomain + '/apis/system/sysAttachment/upPublicToken',
@@ -111,6 +112,7 @@ Page({
           "Authorization": "bearer " + data.access_token
         },
         success: (res => {
+          console.log(res,"bianji")
           if (res.data.status == true) {
             that.setData({
               qiniuToken: res.data.data.upToken
@@ -330,11 +332,19 @@ Page({
   birthdayClick() { //生日事件
   
     let that = this;
+    that.data.birthdayShow = !that.data.birthdayShow
+    if(that.data.birthdayShow == true){
+      that.data.yearmonthday = "确定"
+    }else{
+      that.data.yearmonthday = that.data.year + "" + that.data.month + "" + that.data.day;;
+    }
     that.setData({
-      birthdayShow: !that.data.birthdayShow
+      yearmonthday: that.data.yearmonthday,
+      birthdayShow: that.data.birthdayShow
     })
+    console.log(that.data.yearmonthday,"dahkdkak")
   },
-  bindChange: function (e) {//城市事件
+  bindChange: function (e) {//生日事件
     const val = e.detail.value
     let that = this;
     that.setData({
@@ -342,8 +352,11 @@ Page({
       month: that.data.months[val[1]],
       day: that.data.days[val[2]],
     })
+    
+      that.data.yearmonthday = "确定"
+   
     that.setData({
-      yearmonthday: that.data.year + "" + that.data.month + "" + that.data.day
+      yearmonthday: that.data.yearmonthday
     })
   },
  uploadQiniu(a, b) { //上传图片的方法
@@ -371,7 +384,7 @@ Page({
             if (res1.data.status == true) {
               let dataUrl = res1.data.data;
               dataUrl.map((item, index) => { //赋值七牛的url
-                if (item.code == "qiniu_pub_url") {
+                if (item.code == "qiniu_pub_https_url") {
 
                   that.data.imgSrc = item.name + "/" + data.key
                   that.setData({

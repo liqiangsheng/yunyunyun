@@ -62,15 +62,21 @@
               <view class='homeBottomdataItem1'><image src='../../images/time.png'></image><text>{{item.startTime}}</text> </view>
                <view class='homeBottomdataItem1'><image src='../../images/position.png'></image><text>{{item.cityName}}</text> </view>
           </view>
-          <view class='homeBottomstate start' wx:if="{{item.stateName=='立即报名'}}" catchtap='signUpIng'>
+          <view class='homeBottomstate start' wx:if="{{item.stateName=='立即报名'}}">
             立即报名
           </view>
-            <view class='homeBottomstate HaveInHand' wx:elif="{{item.stateName=='正在进行'}}" bindtap='signUpHaveInHand'>
+          <view class='homeBottomstate start' wx:if="{{item.stateName=='报名即将开始'}}">
+            报名即将开始
+          </view>
+            <view class='homeBottomstate HaveInHand' wx:if="{{item.stateName=='正在进行'}}">
             正在进行
           </view>
-            <view class='homeBottomstate end' wx:else="{{item.stateName=='已结束'}}" bindtap='signUpend'>
-              已结束
+            <view class='homeBottomstate end' wx:if="{{item.stateName=='已结束'}}">
+              活动结束
           </view>
+           <view class='homeBottomstate end' wx:if="{{item.stateName=='报名结束'}}">
+              报名结束
+           </view>
         </view>
     </view>
 

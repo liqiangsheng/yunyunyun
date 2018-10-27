@@ -124,8 +124,13 @@ Page({
     } else{
       //请求数据
       wx.request({
-        url: API.apiDomain1 + '/sec/oauth/token',
-        data: { "grant_type": "msgAuthCode", "mobile": that.data.telValue, "msgAuthCode": that.data.psdValue, "mobileType": "XCX" },
+        url: API.apiDomain + '/apis/operation/sysUserOperation/bindMobile',
+        data: { "mobile": that.data.telValue, "verifyCode": that.data.psdValue, "mobileType": "XCX" },
+        method: "POST",
+        header: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         method: "POST",
         success(res) {
           if (res.data.status == true) {
@@ -153,11 +158,6 @@ Page({
             title: "协议",
             content: res.message,
           })
-        },
-        header: {
-          'Content-type': 'application/x-www-form-urlencoded',
-          "Accept": "application/json", // 默认值
-          "Authorization": that.make_base_auth('acme', 'acmesecret')
         },
       })
     }
@@ -202,6 +202,7 @@ Page({
     })
   },
   CODE_FUC(TEL) {
+    let that = this;
     wx.request({
       url: API.apiDomain + "/apis/operation/sysUserOperation/generateMobileVerifyCode",
       method: "GET",
@@ -214,6 +215,10 @@ Page({
       },
       success: (res => {
         if (res.data.status == true) {
+          that.data.psdValue = res.data.data
+         that.setData({
+           psdValue: that.data.psdValue
+         })
           wx.showToast({
             title: '短信获取成功',
             icon: 'success',

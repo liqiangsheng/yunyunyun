@@ -1,5 +1,5 @@
 export let actions={ //异步处理VUEX
-  objData(store,data){
-    store.commit("objData",data)
+  mapData(store,data){
+    store.commit("mapData",data)
   },
 };

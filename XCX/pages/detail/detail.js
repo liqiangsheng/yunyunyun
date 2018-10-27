@@ -1,3 +1,6 @@
+
+
+var WxParse = require('../../wxParse/wxParse.js'); //富文本解析
 var apiDomian = require("../../js/api.js");  //数据请求api
 var formatTime = require("../../js/formatTime.js"); // 时间戳转时间
 let API = apiDomian.apidmain();
@@ -22,6 +25,26 @@ Page({
     hosts:[], //主办单位
     organizers:[],//承办单位
     coOrganizers: [],//承办单位
+    scrollTop:0,
+  },
+  scrollTopW(event){
+    if (event.detail.scrollTop>100){
+      this.setData({
+        scrollTopShow: true,
+      })
+    }else{
+      this.setData({
+        scrollTopShow: false,
+      })
+    }
+  },
+  goTop: function (e) {  // 一键回到顶部
+  
+    this.setData({
+      scrollTop: 0,
+    })
+   
+    
   },
 
   /**
@@ -41,7 +64,7 @@ Page({
         
         if (res.data.status == true){
           if (that.data.state == "true") {
-           
+            console.log(111111111)
             let datas = res.data.data;
             that.setData({
               dataObj: datas,
@@ -61,12 +84,14 @@ Page({
               longitude: banners.longitude,// 后台传
               addressname: banners.address,
             })
-            
+            WxParse.wxParse('article1', 'html', that.data.banner.content, this, 5);
+            WxParse.wxParse('article', 'html', that.data.banner.customContent, this, 5);
             that.arrange(that.data.banner.id) ;// 活动安排
 
           } else {
+             console.log(2222222222)
               let datas = res.data.data;
-            let startTime = formatTime.formatTime3(datas.startTime)
+              let startTime = formatTime.formatTime3(datas.startTime)
               let hostss = res.data.data.hosts.split(",");
               let organizerss = res.data.data.organizers.split(",");
               let coOrganizerss = res.data.data.coOrganizers.split(",");
@@ -82,7 +107,11 @@ Page({
                     addressname: datas.address,
                   })
               }
+          WxParse.wxParse('article1', 'html', that.data.banner.content, this, 5);
+          WxParse.wxParse('article', 'html', that.data.banner.customContent, this, 5);
+             
               that.arrange(that.data.banner.id);// 活动安排
+          
           }else{
             wx.showModal({
               showCancel: false,
@@ -166,39 +195,20 @@ Page({
       longitude: banners.longitude,// 后台传
       addressname: banners.address,
     })
+    WxParse.wxParse('article1', 'html', that.data.banner.content, this, 5);
+    WxParse.wxParse('article', 'html', that.data.banner.customContent, this, 5);
     that.arrange(that.data.id);// 活动安排
   },
-  onPageScroll: function (e) { //回到顶部按钮出现
-    if (e.scrollTop > 100) {
-      this.setData({
-        scrollTopShow: true,
-      })
-    } else {
-      this.setData({
-        scrollTopShow: false,
-      })
-    }
-  },
-  goTop: function (e) {  // 一键回到顶部
-    if (wx.pageScrollTo) {
-      wx.pageScrollTo({
-        scrollTop: 0
-      })
-    } else {
-      wx.showModal({
-        title: '提示',
-        content: '当前微信版本过低，无法使用该功能，请升级到最新微信版本后重试。'
-      })
-    }
-  },
+ 
+ 
   mapClick(){ // 地图
   let that= this;
     wx.openLocation({
-      latitude: that.data.latitude, // 后台传
-      longitude: that.data.longitude,// 后台传
+      latitude: that.data.banner.latitude, // 后台传
+      longitude: that.data.banner.longitude,// 后台传
       scale: 18,
-      name: that.data.addressname,
-      address: that.data.addressname
+      name: that.data.banner.address,
+      address: that.data.banner.address
     })
   },
   moreClick(e){//点击更多详情
@@ -236,6 +246,20 @@ Page({
       wx.showModal({
         showCancel: false,
         title: "活动正在进行中，请选择其他活动！",
+        icon: 'success',
+      })
+      return;
+    } else if (nowTime < that.data.banner.signStartTime) {
+      wx.showModal({
+        showCancel: false,
+        title: "活动尚未开始报名！",
+        icon: 'success',
+      })
+      return;
+    } else if (nowTime > that.data.banner["signEndTime"] && nowTime < that.data.banner["startTime"]) {
+      wx.showModal({
+        showCancel: false,
+        title: "活动报名已结束！",
         icon: 'success',
       })
       return;

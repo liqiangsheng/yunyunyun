@@ -1,6 +1,6 @@
 <!--pages/admission/admission.wxml-->
 <scroll-view class='admissionBox'>
-   <view class='admissionBoxItem1'><image src='../../images/success.png'></image></view>
+   <view class='admissionBoxItem1'><image src='../../images/okOrder.png'></image></view>
     <view class='admissionBoxItem2'>
          <view><text>姓　　名</text><text>{{dataObj.name}}</text></view>
          <view><text>注  册  码</text><text>{{dataObj.signCode}}</text></view>
@@ -15,7 +15,10 @@
     </view>
     <view class='admissionBoxItem4'>
           <view>可凭该图片上面的二维码扫码入场或者刷脸入场</view>
-          <view><text style='font-size:16px;font-weight:900'>温馨提示：</text> 长按二维码可保存至手机。</view>
+          <view><text style='font-size:16px;font-weight:900'>温馨提示：</text> 手机截图或者长按二维码可保存至手机。</view>
           <view>仅限本人使用，转发无效。</view>
     </view>
 </scroll-view>
+<view class="canvas-box">
+    <canvas hidden="{{canvasHidden}}" style="width: 686rpx;height: 686rpx;background:#f1f1f1;" canvas-id="mycanvas" />
+</view>

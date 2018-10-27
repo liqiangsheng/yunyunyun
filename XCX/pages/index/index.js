@@ -10,7 +10,7 @@ Page({
     dataStroge:"",
     swiperIndex: 0, //这里不写第一次启动展示的时候会有问题
     scrollTopShow:false, //面板指示
-    banner1: ["../../images/banner1.png", "../../images/banner2.png","../../images/banner3.png","../../images/banner4.png"],
+    banner1: [], //轮播
     banner:[],
     page:1,
     row:20,
@@ -25,6 +25,23 @@ Page({
   onLoad: function () {
     
     var that = this;
+    wx.request({ //轮播数据
+      url: 'https://dcloud.butongtech.com' +"/tsconfigjson",
+      method:"GET",
+      success(res){
+        if (res.statusCode == 200){
+          that.setData({
+            banner1: res.data.img
+          })
+
+        }else{
+          wx.showModal({
+            title: '提示',
+            content: '轮播数据出错了'
+          })
+        }
+      }
+    })
    
     //请求首页数据
     that.pageData();
@@ -85,24 +102,7 @@ Page({
     
 
   },
-  signUpIng(){ //立即报名
-   let that=this;
-   let data = wx.getStorageSync("userInfo")  // 获取登录的数据
-      if (data.access_token){
-         console.log("去报名页面")
-       
 
-      }else{
-        wx.navigateTo({ //去我的页面登录
-          url: "../../pages/login/login"
-        })
-
-      }
-   
-    
-    
-
-  },
   pageData(){ // 页面数据
     wx.showLoading({
       title: '加载中。。。',
@@ -124,12 +124,18 @@ Page({
             datas[i]["stateName"] = "";
             var date = new Date();
             var nowTime = date.getTime();
-            if (nowTime < datas[i]["startTime"]) {
+            if (nowTime >= datas[i]["signStartTime"] && nowTime <= datas[i]["signEndTime"]) {
               datas[i]["stateName"] = "立即报名";
             } else if (nowTime > datas[i]["endTime"]) {
               datas[i]["stateName"] = "已结束";
-            } else if (nowTime < datas[i]["endTime"] && nowTime > datas[i]["startTime"]) {
+            } else if (nowTime <= datas[i]["endTime"] && nowTime >= datas[i]["startTime"]) {
               datas[i]["stateName"] = "正在进行";
+            } else if (nowTime > datas[i]["signEndTime"] && nowTime < datas[i]["startTime"]) {
+              datas[i]["stateName"] = "报名结束";
+            } else if (nowTime < datas[i]["signStartTime"]) {
+              datas[i]["stateName"] = "报名即将开始";
+            }else{
+              datas[i]["stateName"] = "";
             }
             datas[i]["startTime"] = formatTime.formatTime(datas[i]["startTime"])
             datas[i]["cityName"] = "";

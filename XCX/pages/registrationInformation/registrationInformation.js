@@ -1,6 +1,7 @@
 // pages/release/release.js
 var apiDomian = require("../../js/api.js");  //数据请求api
 var formatTime = require("../../js/formatTime.js"); // 时间戳转时间
+var reg = require("../../js/reg.js"); //正则
 let API = apiDomian.apidmain();
 Page({
 
@@ -8,6 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    registrationInformationBoxShow:false, //初始页面显示不显示
     activityId: "", //去除的id
     userId: "",  //去除的id
     hiddenmodalput: true,//领域
@@ -42,7 +44,6 @@ Page({
         checkboxChangeValueIndex1: dataIndex    //感兴趣领域选择
       })
     }
-    console.log(that.data.allowEmptyData1,"dchakdkasdkaskdkas")
   },
   //取消按钮
   cancel: function () {
@@ -94,11 +95,26 @@ Page({
     })
   },
   information(e){ //必填失去焦点
+    console.log(e.detail.value)
     let dataIndex = e.currentTarget.dataset.index;
-   let that = this;
-    that.data.allowEmptyData[dataIndex].value=e.detail.value;
-  that.setData({
-    allowEmptyData: that.data.allowEmptyData
+    console.log(this.data.allowEmptyData[dataIndex])
+    let that = this;
+
+    if (that.data.allowEmptyData[dataIndex].code == "mobile1CountryNo"){  //正则判断手机号码1
+
+      reg.phone(e.detail.value)
+    }
+    if (that.data.allowEmptyData[dataIndex].code == "mobile1No") { //正则判断手机号码2
+      reg.phone(e.detail.value)
+    }
+    if (that.data.allowEmptyData[dataIndex].code == "idNo") { //正则判断手机号码2
+      reg.ID(e.detail.value)
+    }
+    that.data.allowEmptyData[dataIndex].value = e.detail.value;
+    that.setData({
+
+      allowEmptyData: that.data.allowEmptyData
+
   })
      
   },
@@ -194,6 +210,9 @@ Page({
       }
     })
     let cityDetail = wx.getStorageSync("cityDetail"); // 城市
+    wx.showLoading({
+      title: '加载中...',
+    })
     let url = "/apis/activity/activitySignupNoteSetting/findByVersionToClient";
     wx.request({
       url: API.apiDomain + url,
@@ -202,7 +221,7 @@ Page({
         Authorization: "Bearer " + data.access_token
       },
       success:(res=>{
-        console.log(res,"fsdjkfksdjfk")
+        wx.hideLoading() // 关闭弹窗
         let allowEmptyDatas=[], allowEmptyData1s=[];
         if(res.data.status==true){
           res.data.data.map((item,index)=>{
@@ -277,10 +296,14 @@ Page({
              }
            })
            that.setData({
+             registrationInformationBoxShow:true,
              allowEmptyData: allowEmptyDatas,
              allowEmptyData1: allowEmptyData1s
            })
         }else{
+          that.setData({
+            registrationInformationBoxShow: false,
+          })
           wx.showModal({
             showCancel: false,
             title: res.data.message,

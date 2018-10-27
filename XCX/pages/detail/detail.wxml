@@ -1,5 +1,6 @@
 <!--pages/detail/detail.wxml-->
-<scroll-view id='detailBox' scroll-y>
+<import src="../../template/template.wxml"/>
+<scroll-view id='detailBox' scroll-y bindscroll='scrollTopW' scroll-top="{{scrollTop}}">
   
    <!-- 滑动 -->
 <view class='homeBox' wx:if='{{state=="true"}}'>
@@ -34,6 +35,7 @@
     </view>
     
 </view>
+
 <!-- ---------- -->
 <view class='detailItem'>
     <image src='{{banner.bannerUrl}}' class='headerImg'></image>
@@ -74,7 +76,15 @@
           </view>
       </view>
 </view>
-<!-- --------- -->
+<!-- ---活动介绍------ -->
+ <view class='activityJieShao'>
+       <view class='activityArrangementItem'><text></text>活动介绍<text></text></view>
+       <view class='activityJieShaoItem'>
+         <template is='templateData1' data="{{wxParseData:article1.nodes}}"/>  
+       </view>
+       <view class='activityJieShaoItem2'>继续拖动，查看活动详情</view>
+      
+ </view>
 <view class='activityArrangement'>
     <view class='activityArrangementItem'><text></text>活动安排<text></text></view>
     <scroll-view class='activityArrangementItem1'>
@@ -126,28 +136,11 @@
       </view>
       <!-- ----其他---- -->
       <view  class='Other'>
-          <view class='activityArrangementItem'><text></text>其他<text></text></view>
-            <view class='OtherBox'>
-               <view class='OtherBoxItem1'>时间：{{startTimes}}</view>
-               <view class='OtherBoxItem2'>地点：{{banner.address}} </view>
-               <view class='OtherBoxItem3'  bindtap='mapClick'><image src='../../images/position.png'></image> <text>查看地点位置</text> </view>
-            
-               <view class='detailItemFoot4'>
-                    <view class='detailItem4Index'>
-                      <text class='company'>主办单位：</text>
-                      <view wx:for="{{hosts}}" wx:key="{{index}}">{{item}}</view> 
-                    </view>
-                    <view class='detailItem4Index'>
-                      <text class='company'>承办单位：</text>
-                      <view wx:for="{{organizers}}" wx:key="{{index}}">{{item}}</view>
-                    </view>
-                    <view class='detailItem4Index'>
-                      <text class='company'>承办单位：</text>
-                      <view wx:for="{{coOrganizers}}" wx:key="{{index}}">{{item}}</view> 
-                    </view>
-                </view>
-               <view class='OtherBoxItem7'><image src='{{banner.bannerUrl}}'></image></view>
-            </view>
+          <view class='activityArrangementItem' style='margin:0 0 20px 0'><text></text>其他<text></text></view>
+          <!-- 富文本 -->
+           <view class='OtherBox'>
+                <template is='templateData' data="{{wxParseData:article.nodes}}"/>  
+           </view>
       </view>
        <!-- ---------- -->
           <view class='mattersNeedingAttention mattersNeedingAttentionFoot'>

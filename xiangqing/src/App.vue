@@ -7,17 +7,7 @@
 <script>
 export default {
   name: 'App',
-  created(){
-    //国省市
-    let url1 = this.$http + '/apis/system/sysRegion/threelevel';
-    this.$Aiox.get(url1).then(res=>{
-      if (res.data.status == true) {
-        window.localStorage.setItem("cityData",JSON.stringify(res.data.data))
-      } else {
-        Toast(res.data.message);
-      }
-    })
-  }
+  created(){}
 }
 
 </script>

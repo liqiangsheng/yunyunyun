@@ -1,8 +1,7 @@
 
 export let mutations = {
-  objData(state,data){
-    console.log(data)
-    state.objData=data;
+  mapData(state,data){
+    state.mapData=data;
   },
 
 }

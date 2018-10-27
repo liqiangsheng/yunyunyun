@@ -1,5 +1,6 @@
 let wxqrCode = require("../../js/wxqrcode.js")//生成二维码的插件
 var apiDomian = require("../../js/api.js");
+var QR = require("../../js/qrcode.js"); //二维码生成
 let API = apiDomian.apidmain();
 // pages/admission/admission.js
 Page({
@@ -8,10 +9,12 @@ Page({
    * 页面的初始数据
    */
   data: {
-    timestart:0,
-    timestend:0,
-    Base64Img: "",
+    timestart:0, //判断是不是长按
+    timestend: 0,//判断是不是长按
+    Base64Img: "", //图片路径
     dataObj:{}, //二维码数据
+    canvasHidden: false, //画布显示小时
+   
   },
 
   /**
@@ -20,7 +23,6 @@ Page({
   onLoad: function (options) {
     let that = this;
     let Logindata = wx.getStorageSync("userInfo");
-    console.log(options.orderid)
     if (options.orderid && options.orderid!=""){  //是不是我的活动来的
       wx.request({
         method: 'GET',
@@ -35,9 +37,11 @@ Page({
         success(res){
           console.log(res.data.data,"sdadas")
           if(res.data.status == true){
-            var imgData = wxqrCode.createQrCodeImg(res.data.data.signCode, { size: 300 });//生成二维码
+            // var imgData = wxqrCode.createQrCodeImg(res.data.data.signCode, { size: 300 });//生成二维码
+            var size = this.setCanvasSize(); //动态设置画布大小 
+            this.createQrCode(res.data.data.signCode, "mycanvas", size.w, size.h);
             that.setData({
-              Base64Img: imgData,
+              // Base64Img: imgData,
               dataObj: res.data.data
             })
 
@@ -56,31 +60,83 @@ Page({
 
       let data = wx.getStorageSync("objList");
      
-      if (Logindata) { //登录
-        var imgData = wxqrCode.createQrCodeImg(data.signCode, { size: 300 });//生成二维码
-        console.log(imgData, "fsjklfjks")
+      // if (Logindata) { //登录
+        // var imgData = wxqrCode.createQrCodeImg(data.signCode, { size: 300 });//生成二维码
+      var size = this.setCanvasSize(); //动态设置画布大小 
+      this.createQrCode(data.signCode, "mycanvas", size.w, size.h);
+        // console.log(imgData, "fsjklfjks")
         that.setData({
-          Base64Img: imgData,
+          // Base64Img: imgData,
           dataObj: data
         })
         console.log(that.data.dataObj)
-      } else { //登陆出错
-        wx.showToast({
-          title: ' 登录异常！',
-          icon: 'success',
-          duration: 2000
-        })
-        setTimeout(() => {
-          wx.navigateTo({ //去我的页面登录
-            url: "../../pages/login/login"
-          })
-        }, 1000)
-      }
+      // } else { //登陆出错
+      //   wx.showToast({
+      //     title: ' 登录异常！',
+      //     icon: 'success',
+      //     duration: 2000
+      //   })
+      //   setTimeout(() => {
+      //     wx.navigateTo({ //去我的页面登录
+      //       url: "../../pages/login/login"
+      //     })
+      //   }, 1000)
+      // }
 
     }
    
   
   },
+  //适配不同屏幕大小的canvas
+  setCanvasSize: function () {
+    var size = {};
+    try {
+      var res = wx.getSystemInfoSync();
+      var scale = 750 / 686; //不同屏幕下canvas的适配比例；设计稿是750宽  686是因为样式wxss文件中设置的大小
+      var width = res.windowWidth / scale;
+      var height = width; //canvas画布为正方形
+      size.w = width;
+      size.h = height;
+    } catch (e) {
+      // Do something when catch error
+      console.log("获取设备信息失败" + e);
+    }
+    return size;
+  },
+
+  /**
+   * 绘制二维码图片
+   */
+  createQrCode: function (url, canvasId, cavW, cavH) {
+    //调用插件中的draw方法，绘制二维码图片
+    QR.api.draw(url, canvasId, cavW, cavH);
+    setTimeout(() => {
+      this.canvasToTempImage();
+    }, 1000);
+  },
+
+  /**
+   * 获取临时缓存照片路径，存入data中
+   */
+  canvasToTempImage: function () {
+    var that = this;
+    //把当前画布指定区域的内容导出生成指定大小的图片，并返回文件路径。
+    wx.canvasToTempFilePath({
+      canvasId: 'mycanvas',
+      success: function (res) {
+        var tempFilePath = res.tempFilePath;
+        console.log(tempFilePath);
+        that.setData({
+          Base64Img: tempFilePath,
+          // canvasHidden:true
+        });
+      },
+      fail: function (res) {
+        console.log(res);
+      }
+    });
+  },
+
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -142,36 +198,24 @@ Page({
     　　_this.setData({ timeend: e.timeStamp });
   },
 
-  bingLongClick(){//长按事件 保存二维码
+  bingLongClick() {//长按事件 保存二维码
     var _this = this;
-    　　var times = _this.data.timeend - _this.data.timestart;
-    　　if (times > 300) {
-      　　　　console.log("长按");
-      　　　　wx.getSetting({
-        　　　　　　success: function (res) {
-          　　　　　　　　wx.authorize({
-            　　　　　　　　　　scope: 'scope.writePhotosAlbum',
-            　　　　　　　　　　success: function (res) {
-              　　　　　　　　　　　　console.log("授权成功");
-                        var imgUrl = "https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=4000347495,1320390870&fm=58&s=7FC6E81A8CB40E9049796BCC0300F026&bpow=121&bpoh=75";//图片地址
-                　　　　　　　　　　　　wx.downloadFile({//下载文件资源到本地，客户端直接发起一个 HTTP GET 请求，返回文件的本地临时路径
-                  　　　　　　　　　　　　　　url: imgUrl,
-                  　　　　　　　　　　　　　　success: function (res) {
-                    　　　　　　　　　　　　　　　　console.log(res);
-                    　　　　　　　　　　　　　　　　// 下载成功后再保存到本地
-                    　　　　　　　　　　　　　　　　wx.saveImageToPhotosAlbum({
-                      　　　　　　　　　　　　　　　　　　filePath: res.tempFilePath,//返回的临时文件路径，下载后的文件会存储到一个临时文件
-                      　　　　　　　　　　　　　　　　　　success: function (res) {
-
-                      　　　　　　　　　　　　　　　　　　　}
-                    　　　　　　　　　　　　　　　　})
-                  　　　　　　　　　　　　　　}
-                　　　　　　　　　　　　})
-            　　　　　　　　　　}
-          　　　　　　　　})
-        　　　　　　}
-      　　　　})
-     }
+    var times = _this.data.timeend - _this.data.timestart;
+    if (times > 300) {
+      wx.saveImageToPhotosAlbum({
+        filePath: _this.data.Base64Img,//返回的临时文件路径，下载后的文件会存储到一个临时文件
+        success: function (res) {
+          wx.showToast({
+            title: '保存成功',
+          })
+        },
+        fail(res) {
+          wx.showToast({
+            title: '保存失败请截屏',
+          })
+        }
+      })
+    }
   }
   
 })

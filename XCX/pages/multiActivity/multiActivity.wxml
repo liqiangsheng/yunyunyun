@@ -1,5 +1,5 @@
 <!--pages/news/news.wxml-->
-<scroll-view scroll-y class='multiActivityBox'>
+<scroll-view scroll-y class='multiActivityBox' wx:if='{{!!meActivityBoxIsSHOW}}'>
     <view class='multiActivityBoxHeader'>
       <image src='../../images/111.png'></image>
       <view>
@@ -103,7 +103,7 @@
        </view>
      </view>
 </scroll-view>
-<view id='multiActivityFoot'>
+<view id='multiActivityFoot' wx:if='{{!!meActivityBoxIsSHOW}}'>
     <view class='footItem'>
       <view class='total'>合计：<text style='color:#FE5F5F'>{{price}}</text></view>
       <view class='totalDiscount'>

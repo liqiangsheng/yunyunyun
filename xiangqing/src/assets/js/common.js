@@ -1,3 +1,4 @@
+import { Toast } from 'mint-ui';  //弹框
 export function Base64(){
   // var str = 'hello world!';
 // var enstr = BASE64.encode(str); 加密
@@ -121,6 +122,7 @@ export function formatTime4(inputTime) {
   second = second < 10 ? ('0' + second) : second;
   return h + ':' + minute ;
 }
+
 
 
 
