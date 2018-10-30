@@ -180,17 +180,24 @@ Page({
             pageNum: res.data.pageNum
           })
           res.data.data.map((item, index) => {
+            if (item.goodsAmount == 0 || !!item.payTime) {
+              item.isPay = true;
+            } else {
+              item.isPay = false;
+            }
             
             res.data.data[index].state = "正常";
             if (that.data.meActivityBoxItemViewIndex==0){ //判断是哪个按钮
 
-              if (!item.payTime && item.goodsAmount > 0 && nowTime <= item.endTime) {
+              if (!item.isPay && nowTime <= (item.createTime+3600000)) {
                 res.data.data[index].state = "待支付";
               }
-              if (!!item.payTime && item.goodsAmount == 0 && nowTime <= item.endTime) {
+            
+              if (!!item.isPay && nowTime <= item.endTime) {
                 res.data.data[index].state = "待参加";
               }
-              if (!!item.payTime && item.goodsAmount == 0 && nowTime > item.endTime) {
+             
+              if (!!item.isPay && nowTime > item.endTime) {
                 res.data.data[index].state = "已完成";
               }
             } else if (that.data.meActivityBoxItemViewIndex == 1){

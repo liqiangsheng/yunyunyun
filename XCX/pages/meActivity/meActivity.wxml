@@ -13,7 +13,7 @@
             <image src="{{item.bannerUrl}}"></image>
             <view class='meActivityBoxItem1ViewRight'>
                <view class='meActivityBoxItem1ViewRightHeader'>{{item.title}}</view>
-               <view class='meActivityBoxItem1ViewRightPrice' wx:if='{{item.goodsAmount>0}}'>{{item.goodsAmount}}</view>
+               <view class='meActivityBoxItem1ViewRightPrice' wx:if='{{item.goodsAmount>0&&item.goodsAmount}}'>{{item.goodsAmount}}</view>
                <view class='meActivityBoxItem1ViewRightPrice1' wx:else>免费</view>
             </view>
        </view>

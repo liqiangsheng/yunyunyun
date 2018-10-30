@@ -15,16 +15,26 @@ Page({
     codeNum: 60,
     telValue: "",
     psdValue: "",
+    infoData:{} //初始数据
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    let that = this;
+    wx.request({
+      url: 'https://dcloud.butongtech.com' + "/loginImgJson",
+      method: "GET",
+      success(res) {
+        that.setData({
+          infoData: res.data.info
+        })
+      }
+    })
 
     let data = wx.getStorage({ key: 'userInfo' })
-    let that = this;
+   
 
 
   },
@@ -79,89 +89,131 @@ Page({
   },
   ObtainCode() {//获取验证码
     var that = this;
-    that.setData({
-      isShow: false
-    });
-    console.log(this.data.codeNum)
-    var codeNum = this.data.codeNum;
-    //请求数据
-    that.CODE_FUC(that.data.telValue);
-
-
-    var clearTime = setInterval(function () {
-      codeNum--;
+    setTimeout(()=>{
+      if (!that.data.telValue) {
+        wx.showToast({
+          title: '请填写手机号',
+          icon: 'success',
+          duration: 2000
+        })
+        return;
+      }
       that.setData({
-        codeNum: codeNum
+        isShow: false
       });
-      if (codeNum <= 0) {
-        clearInterval(clearTime)
+      var codeNum = this.data.codeNum;
+      //请求数据
+      that.CODE_FUC(that.data.telValue);
+
+
+      var clearTime = setInterval(function () {
+        codeNum--;
         that.setData({
-          code: '重新发送',
-          codeNum: 60,
-          isShow: true,
+          codeNum: codeNum
+        });
+        if (codeNum <= 0) {
+          clearInterval(clearTime)
+          that.setData({
+            code: '重新发送',
+            codeNum: 60,
+            isShow: true,
+          })
+        }
+
+
+      }, 1000)
+    },100)
+   
+  },
+  loginBnt() {
+  
+    setTimeout(()=>{
+      var that = this;
+      if(!that.data.telValue) {
+        wx.showToast({
+          title: '请填写手机号',
+          icon: 'success',
+          duration: 2000
+        })
+        return;
+      } else if(!that.data.psdValue) {
+        wx.showToast({
+          title: '请填写验证码',
+          icon: 'success',
+          duration: 2000
+        })
+        return;
+      } else{
+        //请求数据
+        wx.request({
+          url: API.apiDomain + '/apis/operation/sysUserOperation/bindMobile',
+          data: { "mobile": that.data.telValue, "verifyCode": that.data.psdValue, "mobileType": "XCX" },
+          header: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          method: "POST",
+          success(res) {
+            if (res.data.status == true) {
+
+              wx.request({ // 登录成功去请求个人数据保存
+                url: API.apiDomain + '/apis/operation/commonUser/findCommonUserById',
+                method: "GET",
+                data: {
+                  userId: res.data.data.id
+                },
+                header: {
+                  'Content-Type': 'application/json',
+                  'Accept': 'application/json',
+                  "Authorization": "Bearer " + res.data.data.access_token
+                },
+                success(res) {
+                  if (res.data.status == true) {
+                    let obj = {};
+                    obj.name = res.data.data.name;
+                    obj.header = res.data.data.owner_url ? res.data.data.owner_url : "http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png";
+                    wx.setStorageSync("userInfoImgs", obj)
+                  } else {
+                    wx.removeStorageSync("userInfoImgs")
+                    wx.showModal({
+                      showCancel: false,
+                      title: res.data.message,
+                      icon: 'success',
+                      duration: 2000
+                    })
+                  }
+                }
+              })
+              wx.setStorageSync("userInfo", res.data.data)
+              wx.showToast({
+                title: '登录成功',
+                icon: 'success',
+                duration: 2000
+              })
+              wx.navigateBack({
+                delta: 1
+              })
+            } else {
+              wx.showModal({
+                showCancel: false,
+                title: res.data.message,
+                icon: 'success',
+              })
+
+            }
+
+          },
+          fail(res) {
+            wx.showModal({
+
+              content: res.message,
+            })
+          },
+
         })
       }
 
-
-    }, 1000)
-  },
-  loginBnt() {
-    var that = this;
-    if (!that.data.telValue) {
-      wx.showToast({
-        title: '请填写手机号',
-        icon: 'success',
-        duration: 2000
-      })
-      return;
-    } else if (!that.data.psdValue) {
-      wx.showToast({
-        title: '请填写验证码',
-        icon: 'success',
-        duration: 2000
-      })
-      return;
-    } else{
-      //请求数据
-      wx.request({
-        url: API.apiDomain + '/apis/operation/sysUserOperation/bindMobile',
-        data: { "mobile": that.data.telValue, "verifyCode": that.data.psdValue, "mobileType": "XCX" },
-        method: "POST",
-        header: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        method: "POST",
-        success(res) {
-          if (res.data.status == true) {
-            wx.setStorageSync("userInfo", res.data)
-            wx.showToast({
-              title: '登录成功',
-              icon: 'success',
-              duration: 2000
-            })
-            wx.navigateBack({
-              delta: 1
-            })
-          } else {
-            wx.showModal({
-              showCancel: false,
-              title: res.data.message,
-              icon: 'success',
-            })
-
-          }
-
-        },
-        fail(res) {
-          wx.showModal({
-            title: "协议",
-            content: res.message,
-          })
-        },
-      })
-    }
-  
+    },100)
 
   },
   telPhone(e) { //登录的手机号
@@ -215,10 +267,10 @@ Page({
       },
       success: (res => {
         if (res.data.status == true) {
-          that.data.psdValue = res.data.data
-         that.setData({
-           psdValue: that.data.psdValue
-         })
+        //   that.data.psdValue = res.data.data
+        //  that.setData({
+        //    psdValue: that.data.psdValue
+        //  })
           wx.showToast({
             title: '短信获取成功',
             icon: 'success',

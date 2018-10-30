@@ -71,18 +71,18 @@
             <view wx:for="{{organizers}}" wx:key="{{index}}">{{item}}</view>
            </view>
           <view class='detailItem4Index'>
-            <text class='company'>承办单位：</text>
+            <text class='company'>协办单位：</text>
             <view wx:for="{{coOrganizers}}" wx:key="{{index}}">{{item}}</view> 
           </view>
       </view>
 </view>
 <!-- ---活动介绍------ -->
  <view class='activityJieShao'>
-       <view class='activityArrangementItem'><text></text>活动介绍<text></text></view>
+       <view class='activityArrangementItem' style='padding-bottom:20px;'><text></text>活动介绍<text></text></view>
        <view class='activityJieShaoItem'>
          <template is='templateData1' data="{{wxParseData:article1.nodes}}"/>  
        </view>
-       <view class='activityJieShaoItem2'>继续拖动，查看活动详情</view>
+       <!-- <view class='activityJieShaoItem2'>继续拖动，查看活动详情</view> -->
       
  </view>
 <view class='activityArrangement'>
@@ -116,7 +116,7 @@
                  <view class='header'>
                     <view class='headerLeft'><image src='{{item.headerUrl}}'></image> </view>
                     <view class='headerRight'>
-                       <view class='headerRightTop'><text>{{item.name}}</text><text wx:if='item.alias&item.alias!=""'>/{{item.alias}}</text></view>
+                       <view class='headerRightTop'><text>{{item.name}}</text><text wx:if='item.engName&item.engName!=""'>/{{item.engName}}</text></view>
                        <view class='headerRightBot'>{{item.honor}}</view>
 
                     </view>
@@ -142,11 +142,7 @@
                 <template is='templateData' data="{{wxParseData:article.nodes}}"/>  
            </view>
       </view>
-       <!-- ---------- -->
-          <view class='mattersNeedingAttention mattersNeedingAttentionFoot'>
-              <text>注意事项：</text> 本论坛配备同声翻译，请记得携带您本人身份证到达
-              会场，现场入口处将提供免费同传耳机租借服务。
-          </view>
+     
  
 </view>
 

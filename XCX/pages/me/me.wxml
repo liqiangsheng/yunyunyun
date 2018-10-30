@@ -2,15 +2,11 @@
 <view class='meBox'>
   <view class="userinfo">
       <block>
-        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.header}}" mode="cover"></image>
-        <text class="userinfo-nickname">昵称：{{userInfo.name}}</text>
+        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.header}}" mode="cover" bindtap='loginBnt'></image>
+        <text class="userinfo-nickname">{{userInfo.name}}</text>
       </block> 
     </view>
     <view class='meList'>
-       <view bindtap='loginBnt'>
-        登录 
-        <image src='../../images/right.png'></image>
-       </view>
         <view bindtap='settingBnt'>
         设置
         <image src='../../images/right.png'></image>

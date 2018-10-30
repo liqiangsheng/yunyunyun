@@ -4,8 +4,8 @@
           <view class='requiredItem'>基本信息(必填)</view>
           <view class='requiredItem1' wx:for="{{allowEmptyData}}" wx:key="{{index}}">
               <text>{{item.displayName}}</text> 
-              <view class='input' wx:if="{{item.code=='sex'||item.code=='idType'}}">
-                <picker  wx:if="{{item.code=='sex'}}" bindchange="bindPickerChange" data-index='{{index}}'  data-item='{{item}}' value="{{arrayIndex1}}" range="{{item.valuesArr}}">
+              <view class='input' wx:if="{{item.code=='sex'||item.code=='idType'||item.code=='mobile1CountryNo'}}">
+                <picker  wx:if="{{item.code=='sex'||item.code=='mobile1CountryNo'}}" bindchange="bindPickerChange" data-index='{{index}}'  data-item='{{item}}' value="{{arrayIndex1}}" range="{{item.valuesArr}}">
                     <view class="picker">
                     {{item.valuesArr[arrayIndex1]}}
                     </view>
@@ -19,14 +19,14 @@
                   </picker>
               </view>
 
-    
+              <view wx:elif="{{item.code=='regionId'}}" class='input' bindtap="citySelection">{{areaArr}}</view>
                <input class='input' placeholder='请填写' wx:else data-index='{{index}}' bindblur='information'></input>
           </view>
           <!-- ----- -->
           <view class='requiredItem'>其他信息(可选填)</view>
            <view class='requiredItem1' wx:for="{{allowEmptyData1}}" wx:key="{{index}}">
               <text>{{item.displayName}}</text> 
-              <view class='input' wx:if="{{item.code=='regionId'||item.code=='gainChannel'}}">
+              <view class='input' wx:if="{{item.code=='gainChannel'||item.code=='mobile1CountryNo'||item.code=='sex'||item.code=='idType'}}">
                 <picker bindchange="bindPickerChange1"  data-item='{{item}}' data-index='{{index}}' value="{{arrayIndex2}}" range="{{item.valuesArr}}" wx:if="{{item.code=='regionId'}}">
                     <view class="picker">
                     {{item.valuesArr[arrayIndex2]}}
@@ -41,6 +41,7 @@
                   </picker>
               </view>
                <view class='input' wx:elif="{{item.code=='corpDomains'||item.code=='interestedDomains'}}" data-item='{{item}}'  data-index='{{index}}' bindtap='modalinput'> {{item.selerctorValue}}</view>
+               <view wx:elif="{{item.code=='regionId'}}" class='input' bindtap="citySelection">{{areaArr}}</view>
                <input class='input' placeholder='请填写' wx:else data-index='{{index}}'  bindblur='information1'></input>
           </view>
        

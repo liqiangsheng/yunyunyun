@@ -1,7 +1,7 @@
 <!--pages/acknowledgementOfOrder/acknowledgementOfOrder.wxml-->
 <scroll-view scroll-y class='acknowledgementOfOrderBox'>
    <view class='acknowledgementOfOrderBoxItem1'>
-      <view class='acknowledgementOfOrderBoxItem1Left'><image src='../../images/erweima.png'></image></view>
+      <view class='acknowledgementOfOrderBoxItem1Left'><image src='{{ActivityInfo.bannerUrl}}'></image></view>
       <view class='acknowledgementOfOrderBoxItem1Right'>
           <view>{{ActivityInfo.title}}</view>
           <!-- <view></view> -->

@@ -16,7 +16,11 @@ Page({
     canvasHidden: false, //画布显示小时
    
   },
-
+  goTop(){ //回到首页
+    wx.switchTab({
+      url: '../../pages/index/index'
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -35,11 +39,10 @@ Page({
           "id": options.orderid
         },
         success(res){
-          console.log(res.data.data,"sdadas")
           if(res.data.status == true){
             // var imgData = wxqrCode.createQrCodeImg(res.data.data.signCode, { size: 300 });//生成二维码
-            var size = this.setCanvasSize(); //动态设置画布大小 
-            this.createQrCode(res.data.data.signCode, "mycanvas", size.w, size.h);
+            var size = that.setCanvasSize(); //动态设置画布大小 
+            that.createQrCode(res.data.data.signCode, "mycanvas", size.w, size.h);
             that.setData({
               // Base64Img: imgData,
               dataObj: res.data.data
@@ -62,14 +65,13 @@ Page({
      
       // if (Logindata) { //登录
         // var imgData = wxqrCode.createQrCodeImg(data.signCode, { size: 300 });//生成二维码
-      var size = this.setCanvasSize(); //动态设置画布大小 
-      this.createQrCode(data.signCode, "mycanvas", size.w, size.h);
+      var size = that.setCanvasSize(); //动态设置画布大小 
+      that.createQrCode(data.signCode, "mycanvas", size.w, size.h);
         // console.log(imgData, "fsjklfjks")
         that.setData({
           // Base64Img: imgData,
           dataObj: data
         })
-        console.log(that.data.dataObj)
       // } else { //登陆出错
       //   wx.showToast({
       //     title: ' 登录异常！',
@@ -125,7 +127,6 @@ Page({
       canvasId: 'mycanvas',
       success: function (res) {
         var tempFilePath = res.tempFilePath;
-        console.log(tempFilePath);
         that.setData({
           Base64Img: tempFilePath,
           // canvasHidden:true

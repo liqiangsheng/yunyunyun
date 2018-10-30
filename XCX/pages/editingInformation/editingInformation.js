@@ -44,18 +44,13 @@ Page({
     sexIndex:0, //性别的下标
     index: 0,
     imgSrc: "https://pub.qinius.butongtech.com/defult_photo@3x.png",//7牛云的url
-    userName: "520", //用户名
+    userName: "设计云", //用户名
     onOff: true,//用户名弹框
-    personal: "我是设计师", //个人简介
+    personal: "设计云", //个人简介
     onOff1: true,//个人简介弹框
     threeLevelLinkage: [], //城市3级联动
     regionId:"", //城市的Id
-    provArrs: provArrs,
-    cityArrs: cityArrs,
-    areaArrs: areaArrs,
-    provArr: "中国",
-    cityArr: "北京",
-    areaArr: "西城区",
+    areaArr: "深圳市",
     showPickerView: false,
   },
   modalConfirm(e){ //用户名的确定
@@ -104,15 +99,19 @@ Page({
     let that = this;
     
     let data =  wx.getStorageSync("userInfo");
-    console.log(data)
+    
     if(data){
+      wx.showLoading({
+        title: '加载中...',
+      })
       wx.request({ //请求七牛的token
         url: API.apiDomain + '/apis/system/sysAttachment/upPublicToken',
         header: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
           "Authorization": "bearer " + data.access_token
         },
         success: (res => {
-          console.log(res,"bianji")
           if (res.data.status == true) {
             that.setData({
               qiniuToken: res.data.data.upToken
@@ -127,26 +126,55 @@ Page({
 
         })
       })
+
       wx.request({ //设置的默认东西
+      
         url: API.apiDomain + '/apis/operation/commonUser/findCommonUserById',
         method: "GET",
         data: {
           userId: data.id
         },
         header: {
-          Authorization: "Bearer " + data.access_token
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          "Authorization": "Bearer " + data.access_token
         },
         success: function (res) {
-          console.log(res,"fsfsdf");
           if (res.data.status == true) {
-           
+            
+            provArrs.map((item,index)=>{
+              if (item.id == res.data.data.region_id){
+                that.setData({
+                  areaArr: item.name,
+                 
+                })
+              }
+            })
+            cityArrs.map((item, index) => {
+              if (item.id == res.data.data.region_id) {
+                that.setData({
+                  areaArr: item.name,
+
+                })
+              }
+            })
+            areaArrs.map((item, index) => {
+              if (item.id == res.data.data.region_id) {
+                that.setData({
+                  areaArr: item.name,
+
+                })
+              }
+            })
               that.setData({
                 yearmonthday: res.data.data.birthday,
                 sexIndex: res.data.data.sex,
+                regionId: res.data.data.region_id,
                 personal: res.data.data.introduce,
                 userName: res.data.data.name ? res.data.data.name : data.name,
                 imgSrc: res.data.data.owner_url ? res.data.data.owner_url : data.header,
               })
+              wx.hideLoading();
 
           } else {
             wx.showModal({
@@ -155,6 +183,7 @@ Page({
               icon: 'success',
               
             })
+            wx.hideLoading();
           }
         }
       })
@@ -238,10 +267,9 @@ Page({
       success(res) {
         // tempFilePath可以作为img标签的src属性显示图片
         const tempFilePaths = res.tempFilePaths
-        console.log(tempFilePaths,"fasdfs")
        
         that.setData({
-          imgSrc: tempFilePaths
+          imgSrc: tempFilePaths[0]
         })
         that.uploadQiniu(that.data.qiniuToken,tempFilePaths);  // 上传图片到七牛
         
@@ -264,7 +292,6 @@ Page({
   okClick() {//确定编辑
     let that = this;
     let data = wx.getStorageSync("userInfo");
-    console.log(data,"dasdjaks")
     if(data){
       wx.request({
         url: API.apiDomain + '/apis/operation/sysUserOperation/updateUserInfo',
@@ -273,17 +300,25 @@ Page({
           "Authorization": "bearer " + data.access_token
         },
         data:{
-          "birthday": that.data.yearmonthday,
+          "birthday": that.data.yearmonthday ? that.data.yearmonthday:"19701001",
           "id": data.user_id,
-          "name": that.data.userName,
-          "sex": that.data.sexIndex+"",
-          "remark": that.data.personal,
-          "regionId": that.data.regionId,
-          "ownerUrl": that.data.imgSrc
+          "name": that.data.userName ? that.data.userName:"设计云",
+          "sex": that.data.sexIndex?that.data.sexIndex+"":"0",
+          "remark": that.data.personal ? that.data.personal:"设计云",
+          "regionId": that.data.regionId ? that.data.regionId : "2018042317050430c6a250e4044f94bb4cc074302b789a",
+          "ownerUrl": that.data.imgSrc ? that.data.imgSrc : "https://pub.qinius.butongtech.com/defult_photo@3x.png"
         },
         success:(res=>{
-          console.log(res,"fhasjdkfksd")
+          let obj ={};
+          obj.name = that.data.userName;
+          obj.header = that.data.imgSrc;
+          wx.setStorageSync("userInfoImgs", obj)
           if(res.data.status == true){
+            wx.showModal({
+              showCancel: false,
+              title: "资料编辑成功",
+              icon: 'success',
+            })
 
           }else{
             wx.showModal({
@@ -308,18 +343,18 @@ Page({
 
   },
   //三级联动触发方法
-  bindChange1: function (e) {
-    let that = this;
+  // bindChange1: function (e) {
+  //   let that = this;
     
-    const val = e.detail.value
+  //   const val = e.detail.value
     
-    that.setData({
-      provArr: that.data.provArrs[val[0]].name,
-      cityArr: that.data.cityArrs[val[1]].name,
-      areaArr: that.data.areaArrs[val[2]].name,
-      regionId: that.data.areaArrs[val[2]].id,
-    })
-  },
+  //   that.setData({
+  //     provArr: that.data.provArrs[val[0]].name,
+  //     cityArr: that.data.cityArrs[val[1]].name,
+  //     areaArr: that.data.areaArrs[val[2]].name,
+  //     regionId: that.data.areaArrs[val[2]].id,
+  //   })
+  // },
   cityClick() {// 地区事件
     // let that = this;
     // that.setData({
@@ -333,16 +368,40 @@ Page({
   
     let that = this;
     that.data.birthdayShow = !that.data.birthdayShow
+    that.setData({
+      birthdayShow: that.data.birthdayShow
+    })
     if(that.data.birthdayShow == true){
       that.data.yearmonthday = "确定"
     }else{
-      that.data.yearmonthday = that.data.year + "" + that.data.month + "" + that.data.day;;
+      if (that.data.month<10){
+        that.data.month = "0" + that.data.month
+        that.setData({
+          month: that.data.month,
+        })
+      }else{
+        that.data.month = "" + that.data.month
+        that.setData({
+          month: that.data.month,
+        })
+      }
+      if (that.data.day < 10) {
+        that.data.day = "0" + that.data.day
+        that.setData({
+          day: that.data.day,
+        })
+      } else {
+        that.data.day = "" + that.data.day
+        that.setData({
+          day: that.data.day,
+        })
+      }
+      that.data.yearmonthday = that.data.year + that.data.month +  that.data.day;
     }
     that.setData({
       yearmonthday: that.data.yearmonthday,
-      birthdayShow: that.data.birthdayShow
     })
-    console.log(that.data.yearmonthday,"dahkdkak")
+    console.log(that.data.yearmonthday)
   },
   bindChange: function (e) {//生日事件
     const val = e.detail.value

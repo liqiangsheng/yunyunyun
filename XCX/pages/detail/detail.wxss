@@ -72,13 +72,12 @@
 .detailItemTitle{
   width: 96%;
   margin: 0 2%;
-  height: 55px;
   font-size:14px;
   font-family:PingFangSC-Medium;
   font-weight:500;
   color:rgba(5,5,9,1);
   line-height:19px;
-  padding-top:10px; 
+  padding:20px 0; 
   border-bottom: 1px solid #DFDFDF;
 }
 .detailItem1,.detailItem2,.detailItem3{
@@ -339,6 +338,8 @@ font-size:14px;
 }
 .headerRightTop{
   width: 100%;
+  height: 20px;
+  overflow: hidden;
   }
   .headerRightTop text:nth-child(1){
     font-size:14px;
@@ -346,16 +347,19 @@ font-size:14px;
     font-weight:500;
     color:rgba(5,5,9,1);
     line-height:20px;
+
   }
    .headerRightTop text:nth-child(2){
-    font-size:14px;
+    
+    font-size:12px;
     font-family:PingFangSC-Medium;
     font-weight:500;
     color:rgba(153,153,153,1);
     line-height:20px;
+   
   }
   .headerRightBot{
-    font-size:14px;
+    font-size:12px;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(153,153,153,1);
@@ -376,6 +380,7 @@ font-size:14px;
     font-weight:400;
     color:rgba(5,5,9,1);
     outline: none;
+  
   }
 
   .cententActive .more{

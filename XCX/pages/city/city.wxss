@@ -1,4 +1,6 @@
 /* pages/city/city.wxss */
+page{ height: 100%;position: relative} 
+.content{padding-bottom: 20rpx; box-sizing: border-box; height: 100%;}
 
 .guo{
  text-indent: 10px;

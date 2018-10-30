@@ -1,5 +1,6 @@
 {
   "pages": [
+   
     "pages/index/index",
     "pages/city/city",
     "pages/login/login",
@@ -17,12 +18,13 @@
     "pages/loading/loading",
     "pages/login1/login1",
     "pages/logs/logs",
-    "template/template"
+    "template/template",
+    "pages/message/message"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "不同科技报名系统",
+    "navigationBarTitleText": "不同",
     "backgroundColor": "#eeeeee",
     "navigationBarTextStyle": "black"
   },

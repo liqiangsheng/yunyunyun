@@ -71,14 +71,19 @@ Page({
                if (that.data.arr.activityGoodsVoList[index].remaining<0){
                  that.data.arr.activityGoodsVoList[index].remainingState = "已售完";
                  that.data.arr.activityGoodsVoList[index].bntBj = false;
-               } else if (nowTime < that.data.arr.activityGoodsVoList[index].startTime){
+               } else if (nowTime < that.data.arr.startTime){  //活动的开始时间
+                 console.log(nowTime,"sdasdas")
+                 console.log(that.data.arr.activityGoodsVoList[index].endTime, "sdasdas")
                  that.data.arr.activityGoodsVoList[index].remainingState = "抢票中"
                  that.data.arr.activityGoodsVoList[index].bntBj = true;
                }else{
                  that.data.arr.activityGoodsVoList[index].remainingState = ""
                  that.data.arr.activityGoodsVoList[index].bntBj = false;
                }
+               console.log(nowTime, "sdasdas")
+               console.log(that.data.arr.startTime, "sdasdas")
              })
+
              that.data.arr.activityGoodsGroupVoList.map((item, index) => { // 组合票
 
                var date = new Date();
@@ -93,7 +98,7 @@ Page({
                if (that.data.arr.activityGoodsGroupVoList[index].remaining < 0) {
                  that.data.arr.activityGoodsGroupVoList[index].remainingState = "已售完";
                  that.data.arr.activityGoodsGroupVoList[index].bntBj = false;
-               } else if (nowTime < that.data.arr.activityGoodsGroupVoList[index].startTime) {
+               } else if (nowTime < that.data.arr.startTime) {
                  that.data.arr.activityGoodsGroupVoList[index].remainingState = "抢票中"
                  that.data.arr.activityGoodsGroupVoList[index].bntBj = true;
                } else {

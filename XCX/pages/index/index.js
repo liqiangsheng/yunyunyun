@@ -47,6 +47,12 @@ Page({
     that.pageData();
   },
   /**
+   * 用户点击右上角分享
+   */
+  onShareAppMessage: function () {
+
+  },
+  /**
  * 页面上拉触底事件的处理函数
  */
   onReachBottom: function (e) {
@@ -105,7 +111,7 @@ Page({
 
   pageData(){ // 页面数据
     wx.showLoading({
-      title: '加载中。。。',
+      title: '加载中...',
     })
     var that = this;
     wx.request({

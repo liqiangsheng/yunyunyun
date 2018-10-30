@@ -16,7 +16,6 @@ Page({
     hiddenmodalput1: true,//领域
     arrayIndex: 0, //身份证
     arrayIndex1: 0, //性别
-    arrayIndex2: 0, //所在地区
     arrayIndex3: 0, //获取渠道
     allowEmptyData:[], //必填
     allowEmptyData1: [],//非必填
@@ -24,8 +23,15 @@ Page({
     modalinputIndex:0,
     checkboxChangeValueIndex: "", //公司领域选择
     checkboxChangeValueIndex1: "", //感兴趣领域选择
-    obj:{}
+    obj:{},
+    areaArr:"请选择", // 城市选择的名字
+    regionId: "", // 城市选择的id
 
+  },
+  citySelection(){ //选择城市点击
+      wx.navigateTo({
+        url: '../../pages/city/city',
+      })
   },
   //点击按钮痰喘指定的hiddenmodalput弹出框
   modalinput: function (e) {
@@ -63,7 +69,6 @@ Page({
   },
   checkboxChange1(e) { ////感兴趣领域选择
     let that = this;
-    console.log(e.detail.value)
     that.data.allowEmptyData1[that.data.checkboxChangeValueIndex1].value = e.detail.value;
     that.setData({
       allowEmptyData1: that.data.allowEmptyData1
@@ -95,21 +100,16 @@ Page({
     })
   },
   information(e){ //必填失去焦点
-    console.log(e.detail.value)
     let dataIndex = e.currentTarget.dataset.index;
-    console.log(this.data.allowEmptyData[dataIndex])
     let that = this;
 
-    if (that.data.allowEmptyData[dataIndex].code == "mobile1CountryNo"){  //正则判断手机号码1
-
-      reg.phone(e.detail.value)
-    }
+   
     if (that.data.allowEmptyData[dataIndex].code == "mobile1No") { //正则判断手机号码2
       reg.phone(e.detail.value)
     }
-    if (that.data.allowEmptyData[dataIndex].code == "idNo") { //正则判断手机号码2
-      reg.ID(e.detail.value)
-    }
+    // if (that.data.allowEmptyData[dataIndex].code == "idNo") { //正则判断手机号码2
+    //   reg.ID(e.detail.value)
+    // }
     that.data.allowEmptyData[dataIndex].value = e.detail.value;
     that.setData({
 
@@ -133,6 +133,12 @@ Page({
         arrayIndex: e.detail.value
       })
     }
+    if (e.currentTarget.dataset.item.code == "gainChannel") { //获取渠道
+
+      that.setData({
+        arrayIndex3: e.detail.value
+      })
+    }
     that.data.allowEmptyData[dataIndex].value = e.detail.value;
     that.setData({
       allowEmptyData: that.data.allowEmptyData
@@ -151,16 +157,22 @@ Page({
 
     let dataIndex = e.currentTarget.dataset.index;
     let that = this;
-    if (e.currentTarget.dataset.item.code == "regionId") { //地区
-      that.setData({
-        arrayIndex2: e.detail.value
-      })
-    
-    }
+   
     if (e.currentTarget.dataset.item.code == "gainChannel") { //获取渠道
 
       that.setData({
         arrayIndex3: e.detail.value
+      })
+    }
+    if (e.currentTarget.dataset.item.code == "sex") { //性别
+      that.setData({
+        arrayIndex1: e.detail.value
+      })
+    }
+    if (e.currentTarget.dataset.item.code == "idType") { //身份证
+
+      that.setData({
+        arrayIndex: e.detail.value
       })
     }
     that.data.allowEmptyData1[dataIndex].value = e.detail.value;
@@ -170,7 +182,6 @@ Page({
   },
   nextgo() { //下一步
     let that = this;
-    
       for (let i = 0; i < that.data.allowEmptyData.length;i++){ //判断必填的有没有填
       if (that.data.allowEmptyData[i].value == "" || !that.data.allowEmptyData[i].value){
           wx.showModal({
@@ -184,6 +195,11 @@ Page({
     
     let arr = []; 
     arr = [...that.data.allowEmptyData, ...that.data.allowEmptyData1, that.data.activityId, that.data.userId]
+    arr.map((item,index)=>{
+      if (item.code == "regionId"){
+        arr[index].value = that.data.regionId;
+      }
+    })
     wx.setStorageSync("RegistrationData", arr) //报名信息存本地
     wx.navigateTo({ //数据保存成功跳转到订单确认页面
       url: '../../pages/face/face',
@@ -225,6 +241,7 @@ Page({
         let allowEmptyDatas=[], allowEmptyData1s=[];
         if(res.data.status==true){
           res.data.data.map((item,index)=>{
+            // console.log(item,"danjkdkaskdaksnk")
             res.data.data[index].value="";
             res.data.data[index].selerctorValue = "请选择";
             dictionaries.data.map((item1, index1) => {
@@ -251,6 +268,10 @@ Page({
             if (item.code == "sex"){ //性别
               res.data.data[index].value = "0",
               res.data.data[index].valuesArr = ["男","女"];
+            }
+            if (item.code == "mobile1CountryNo") { //国家码
+              res.data.data[index].value = "86",
+                res.data.data[index].valuesArr = ["86"];
             }
             if (item.code == "regionId") { //地区
               let cityArr = [];

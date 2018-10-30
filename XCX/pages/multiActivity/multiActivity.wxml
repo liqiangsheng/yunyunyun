@@ -1,7 +1,7 @@
 <!--pages/news/news.wxml-->
 <scroll-view scroll-y class='multiActivityBox' wx:if='{{!!meActivityBoxIsSHOW}}'>
     <view class='multiActivityBoxHeader'>
-      <image src='../../images/111.png'></image>
+      <image src='{{arr.bannerUrl}}'></image>
       <view>
           <view>{{arr.title}}</view>
           <view wx:if='{{arr.expenses>0}}'>{{arr.expenses}}</view>
@@ -10,7 +10,7 @@
          
       </view>
     </view>
-    <view class='multiActivitycenterDan'>
+    <view class='multiActivitycenterDan' wx:if="{{arr.activityGoodsVoList.length>0}}">
      单票
     </view>
     <!-- ------------ -->
@@ -35,7 +35,7 @@
                     <text class='hr'></text>
                 </view>
              </view> 
-             <view style='color:rgba(254,95,95,1)' wx:if="{{item.youhuijia<=0}}">{{item.originalPrice}} </view>
+             <view style='color:rgba(254,95,95,1)' wx:if="{{item.youhuijia<=0&&item.originalPrice>0}}">{{item.originalPrice}} </view>
              <view style='color:#21CB61' wx:if='{{item.originalPrice==0}}'>免费 </view>
               <!-- <view class='reduceAdd'>
                <image class='reduce' src='../../images/reduce.png' data-index='{{index}}' bindtap='reduceClick'></image>
@@ -60,7 +60,7 @@
 
     </view>
      <!-- -------组合票-------- -->
-       <view class='multiActivitycenterDan'>
+       <view class='multiActivitycenterDan' wx:if="{{arr.activityGoodsGroupVoList.length>0}}">
         组合票
        </view>
        <view class='multiActivitycenter'>
@@ -105,9 +105,9 @@
 </scroll-view>
 <view id='multiActivityFoot' wx:if='{{!!meActivityBoxIsSHOW}}'>
     <view class='footItem'>
-      <view class='total'>合计：<text style='color:#FE5F5F'>{{price}}</text></view>
+      <view class='total'>实付：<text style='color:#FE5F5F'>{{price}}</text></view>
       <view class='totalDiscount'>
-        <text>总额：¥{{numPrice}} </text>
+        <text>原价：¥{{numPrice}} </text>
         <text>立减：¥{{reduceGo}}</text>
       </view>
     </view>

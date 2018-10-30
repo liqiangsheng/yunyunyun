@@ -1,5 +1,5 @@
 <!--pages/city/city.wxml-->
-
+<scroll-view class="content" scroll-into-view="{{toView}}" scroll-y="true" scroll-with-animation="true"> 
    <view wx:for="{{cityAll}}" wx:key="{{index}}" class='guo'>
    {{item.name}}
        <view  wx:for="{{item.children}}" wx:for-item="items" wx:for-index="index1"  wx:key="{{index1}}"  class='sheng' id="{{items.pinyin}}">
@@ -9,7 +9,7 @@
           </view>
        </view>
    </view>
-
+</scroll-view> 
 <view class='rightCity'>
    <view class='rightCityItem' data-item="{{item}}"  wx:for="{{Letter}}" wx:key="{{index}}" bindtap='setScrollTop'>
     {{item.name}}

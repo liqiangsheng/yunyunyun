@@ -64,7 +64,6 @@ Page({
         
         if (res.data.status == true){
           if (that.data.state == "true") {
-            console.log(111111111)
             let datas = res.data.data;
             that.setData({
               dataObj: datas,
@@ -84,12 +83,11 @@ Page({
               longitude: banners.longitude,// 后台传
               addressname: banners.address,
             })
-            WxParse.wxParse('article1', 'html', that.data.banner.content, this, 5);
-            WxParse.wxParse('article', 'html', that.data.banner.customContent, this, 5);
+            WxParse.wxParse('article1', 'html', that.data.banner.content, that, 5);
+            WxParse.wxParse('article', 'html', that.data.banner.customContent, that, 5);
             that.arrange(that.data.banner.id) ;// 活动安排
 
           } else {
-             console.log(2222222222)
               let datas = res.data.data;
               let startTime = formatTime.formatTime3(datas.startTime)
               let hostss = res.data.data.hosts.split(",");
@@ -107,8 +105,8 @@ Page({
                     addressname: datas.address,
                   })
               }
-          WxParse.wxParse('article1', 'html', that.data.banner.content, this, 5);
-          WxParse.wxParse('article', 'html', that.data.banner.customContent, this, 5);
+          WxParse.wxParse('article1', 'html', that.data.banner.content, that, 5);
+          WxParse.wxParse('article', 'html', that.data.banner.customContent, that, 5);
              
               that.arrange(that.data.banner.id);// 活动安排
           
@@ -264,19 +262,13 @@ Page({
       })
       return;
     }
-    if(data){ //有没有登录
-      //登录了
-      if (that.data.state == "false" && that.data.banner.expenses <= 0){ //是不是单活动，是并且不要钱
-        wx.setStorageSync("activityInfo", that.data.banner) //保存活动信息
-        wx.navigateTo({  //直接去订单填写信息
-          url: '../../pages/registrationInformation/registrationInformation?id' + that.data.banner.id,
-        })
-      } else {//直接去选择票
+    if (data) { //有没有登录      //登录了
+
         wx.setStorageSync("activityInfo", that.data.banner) //保存活动信息
         wx.navigateTo({
           url: '../../pages/multiActivity/multiActivity?id='+that.data.banner.id,
         })
-       }
+   
     }else{ // 没有登录去活动详情的登录
       wx.navigateTo({
         url: '../../pages/login1/login1?id=' + that.data.banner.id,

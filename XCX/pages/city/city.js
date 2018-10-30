@@ -10,7 +10,7 @@ Page({
       cityAll:"",
     Letter:[
       { id: "ANHUISHENG", name: "安徽省" },
-      { id: "AOMENTEBIEXINGZHENGQU" , name: "澳门特别行政区" },
+      { id: "Macao" , name: "澳门特别行政区" },
       { id: "BEIJINGSHI", name: "北京市" },
       { id: "FUJIANSHENG", name: "福建省"  },
       { id: "GUANGDONGSHENG", name: "广东省" },
@@ -36,8 +36,8 @@ Page({
       { id: "SHANXISHENG", name: "山西省" },
       { id: "SHANXISHENG", name: "陕西省" },
       { id: "TIANJINSHI", name: "天津市" },
-      { id: "TAIWANSHENG", name: "台湾省" },
-      { id: "XIANGGANGTEBIEXINGZHENGQU", name: "香港特别行政区" },
+      { id: "TAIWAN", name: "台湾省" },
+      { id: "HongKong", name: "香港特别行政区" },
       { id: "XINJIANGWEIWUERZIZHIQU", name: "新疆维吾尔自治区" },
       { id: "XIZANGZIZHIQU", name: "西藏自治区" },
       { id: "YUNNANSHENG", name: "云南省" },
@@ -46,7 +46,6 @@ Page({
     ]
   },
   shiClick(e){ //点击城市
-    console.log(e.currentTarget.dataset.item)
     let that = this;
     let cityName = e.currentTarget.dataset.item.name;
     that.setData({
@@ -68,11 +67,9 @@ Page({
     let that = this;
     that.data.toView = e.target.dataset.item.id;
     let a = e.currentTarget.dataset.item.id;
-    console.log(e.target.dataset.item.id)
     that.setData({
       toView: that.data.toView
     })
-    // console.log(that.data.toView)
   },
 
   /**
@@ -86,7 +83,6 @@ Page({
      data.map((res,index)=>{
        
         if (res.name == "中国"){
-          console.log(res)
           that.setData({
             cityAll: [res]
           })
@@ -96,7 +92,6 @@ Page({
       })
       
     }
-    console.log(that.data.cityAll)
   
   },
 

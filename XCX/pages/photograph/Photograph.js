@@ -97,8 +97,6 @@ Page({
       sizeType: ['original', 'compressed'],
       sourceType: [type],
       success: function (res) {
-        console.log(res.tempFilePaths);
-        console.log(2222);  //在这图片保存起来 跳到等待页面
         if (res.tempFilePaths){
           wx.navigateTo({
             url: '../../pages/loading/loading?id=' + res.tempFilePaths

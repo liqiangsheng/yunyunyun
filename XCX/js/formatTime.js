@@ -55,7 +55,7 @@ function formatTime3(inputTime) {
   var second = date.getSeconds();
   minute = minute < 10 ? ('0' + minute) : minute;
   second = second < 10 ? ('0' + second) : second;
-  return y + '年' + m + '月' + d + '日 ' + h + '小时' + minute + '分' + second;
+  return y + '年' + m + '月' + d + '日 ' + h + '时' + minute + '分' + second;
 }
 /*
  * 时间戳转换为yyyy-MM-dd hh:mm:ss 格式  formatDate()

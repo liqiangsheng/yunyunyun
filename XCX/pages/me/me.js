@@ -111,7 +111,7 @@ Page({
   },
    userInfoFun(){ //登录本地拿
      var that = this
-     let data = wx.getStorageSync('userInfo')//获取本地存储信息
+     let data = wx.getStorageSync('userInfoImgs')//获取本地存储信息
      if (data){
        that.setData({
          userInfo: data
@@ -120,7 +120,7 @@ Page({
      }else{
        that.setData({
          userInfo: {
-           avatar: "../../images/defultphoto.png",
+           header: "../../images/defultphoto.png",
            name: "请登录",
          }
        })
@@ -133,19 +133,13 @@ Page({
     let data = wx.getStorageSync('userInfo')//获取本地存储信息
     if(data){
       wx.removeStorageSync('userInfo');
-      wx.removeStorageSync('countryDetail');
-      wx.removeStorageSync('dictionaries');
-      wx.removeStorageSync('qiniuUrl');
-      wx.removeStorageSync('provinceDetail');
-      wx.removeStorageSync('cityDetail');
-      wx.removeStorageSync('provinceDetailAll');
       wx.removeStorageSync('activityInfo');
       wx.removeStorageSync('RegistrationData');
       wx.removeStorageSync('faceUrl');
-
+      wx.removeStorageSync('userInfoImgs');
       that.setData({
         userInfo: {
-          avatar: "../../images/defultphoto.png",
+          header: "../../images/defultphoto.png",
           name: "请登录",
         }
       }),
@@ -154,7 +148,11 @@ Page({
           icon: 'success',
           duration: 2000
         })
+      wx.switchTab({
+        url: '../../pages/index/index'
+      })
     }else{
+      wx.setStorageSync("userInfoImgs", that.data.userInfo)
       wx.showToast({
         title: ' 请先登录！',
         icon: 'success',
@@ -164,12 +162,9 @@ Page({
    
   },
   aboutBnt(){ // 关于不同
-    let that = this;
     
-    wx.showModal({
-      showCancel: false,
-      title: "关于「不同」",
-      content: "「不同」，是一家致力于推动中国工业设计服务市场创新的技术服务公司。「不同」以“让科技赋能设计，设计驱动产业升级”为使命，致力于打造以设计师品牌为核心的设计资源生态圈，通过建立行业资源的数字化链接，提升设计服务与产业需求的匹配效率，推动设计向产业聚焦，产业与设计融合。同时，我们推动最前沿的设计资讯分享和跨行业深度交流，聚焦海量原生设计第一现场，让大众领略设计之美，与广大设计师一起探索未来生活。感谢无数关注、爱护我们的朋友，「不同」愿与充满活力的您，彼此相伴，共同成长！「不同」，开启设计探索之旅，让生活与众不同。欢迎加入「不同」，和大家一起交流设计，分享快乐吧！",
+    wx.navigateTo({
+      url: '../../pages/message/message?messid=1',
     })
 
   },

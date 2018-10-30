@@ -2,7 +2,7 @@ var apiDomian = require("../../js/api.js");  //数据请求api
 var formatTime = require("../../js/formatTime.js"); // 时间戳转时间
 let API = apiDomian.apidmain();
 let Logindata = wx.getStorageSync("userInfo");
-let faceURL = wx.getStorageSync("faceUrl");
+
 Page({
 
   /**
@@ -27,6 +27,7 @@ Page({
   },
 
   paymentClick() { //支付
+    let data = wx.getStorageSync("userInfo");
     let that= this;
     let obj = {};
     obj.customerActivitySignupNote={};
@@ -52,15 +53,11 @@ Page({
     }
     obj.settingVersion = that.data.registrationData[0].version;
     obj.activityId = that.data.ActivityInfo.id;
-    if (faceURL || faceURL==""){
+    let faceURL = wx.getStorageSync("faceUrl");
+    if (!!faceURL){
       obj.faceUrl = faceURL;
     }else{
-      wx.showModal({
-        showCancel: false,
-        title: "上传的图片地址出错",
-        icon: 'success',
-      })
-      return;
+      obj.faceUrl = "";
     }
    
     obj.activityOrder={},
@@ -74,11 +71,10 @@ Page({
      url: API.apiDomain + '/apis/activity/customerActivitySignupNote/insertSignupNoteAndOrder',
      method: "POST",
      header: {
-       Authorization: "Bearer " + Logindata.access_token
+       Authorization: "Bearer " + data.access_token
      },
      data: obj,
      success(res){
-       console.log(res,"liqiang")
        if(res.data.status == true){
          if (that.data.Total<=0){ //实付价格去
             wx.setStorageSync("objList", res.data.data)
@@ -104,15 +100,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
+    let data = wx.getStorageSync("userInfo");
     let that = this;
     that.setData({
       faceIs: options.faceIs
     })
   
-    if (Logindata){ //登录
+    if (data){ //登录
       that.setData({
-        userID: Logindata.user_id,
+        userID: data.user_id,
 
       })
       let ActivityInfos = wx.getStorageSync("activityInfo");
@@ -229,7 +225,6 @@ Page({
 
   },
   explain(e){ // 退款说明，付款说明
-    console.log(e.currentTarget.dataset.payment)
     let that = this;
     if (e.currentTarget.dataset.payment === "payment"){
       that.setData({
