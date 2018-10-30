@@ -85,10 +85,10 @@
 }
 .editingInformationBoxImage{
   display: inline-block;
-  width: 13px;
-  height: 19px;
+  width: 7px;
+  height: 13px;
   position: absolute;
-  top: 15px;
+  top: 19px;
   right: 10px;
 }
 .editingInformationBoxOK{

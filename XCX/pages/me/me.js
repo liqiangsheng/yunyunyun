@@ -8,9 +8,10 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bgImge:"../../images/bg.png",
     userInfo: {
       header: "http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png",
-      name: "请登录",
+      name: "登录",
     },
     hasUserInfo: false,
   },
@@ -114,14 +115,16 @@ Page({
      let data = wx.getStorageSync('userInfoImgs')//获取本地存储信息
      if (data){
        that.setData({
-         userInfo: data
+         userInfo: data,
+         bgImge: data.header
        })
        
      }else{
        that.setData({
+         bgImge:"../../images/bg.png",
          userInfo: {
            header: "../../images/defultphoto.png",
-           name: "请登录",
+           name: "登录",
          }
        })
      }
@@ -138,9 +141,10 @@ Page({
       wx.removeStorageSync('faceUrl');
       wx.removeStorageSync('userInfoImgs');
       that.setData({
+        bgImge: "../../images/bg.png",
         userInfo: {
           header: "../../images/defultphoto.png",
-          name: "请登录",
+          name: "登录",
         }
       }),
         wx.showToast({

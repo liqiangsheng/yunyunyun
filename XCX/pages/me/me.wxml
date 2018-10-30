@@ -1,8 +1,9 @@
 <!--pages/me/me.wxml-->
 <view class='meBox'>
   <view class="userinfo">
+      <image class='bgImge' src='{{bgImge}}'></image>
       <block>
-        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.header}}" mode="cover" bindtap='loginBnt'></image>
+        <image bindtap="bindViewTap" class="userinfoImage" src="{{userInfo.header}}" mode="cover" bindtap='loginBnt'></image>
         <text class="userinfo-nickname">{{userInfo.name}}</text>
       </block> 
     </view>

@@ -124,7 +124,7 @@
       font-weight:400;
       color:rgba(153,153,153,1);
       top: 0;}
-.map image{width: 13px;height: 19px;transform: translateY(5px);}
+.map image{width: 7px;height: 13px;transform: translateY(2px);}
 .detailItem .detailItem4{
    width: 96%;
   margin: 0 2%; 

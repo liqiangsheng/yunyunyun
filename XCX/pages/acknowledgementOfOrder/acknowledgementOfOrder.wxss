@@ -154,15 +154,15 @@
   }
   .acknowledgementOfOrderBoxItem4Top image{
     display: inline-block;
-    width: 13px;
-    height: 24px;
+    width: 7px;
+    height: 13px;
     float: right;
     margin-right:15px; 
   }
   .acknowledgementOfOrderBoxItem5Top image{
     display: inline-block;
-    width: 13px;
-    height: 24px;
+    width: 7px;
+    height: 13px;
     float: right;
     margin-right:15px; 
   }
