@@ -123,7 +123,7 @@ Page({
        that.setData({
          bgImge:"../../images/bg.png",
          userInfo: {
-           header: "../../images/defultphoto.png",
+           header: "http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png",
            name: "登录",
          }
        })
@@ -143,7 +143,7 @@ Page({
       that.setData({
         bgImge: "../../images/bg.png",
         userInfo: {
-          header: "../../images/defultphoto.png",
+          header: "http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png",
           name: "登录",
         }
       }),

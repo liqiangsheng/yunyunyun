@@ -28,9 +28,7 @@ Page({
     let data = wx.getStorageSync("userInfo");
    
     if (data){
-      wx.showLoading({
-        title: '加载中',
-      })
+     
       wx.request({
         url: API.apiDomain + "/apis/activity/activityInfo/findOneWithGoods",
         method: "GET",
@@ -110,7 +108,6 @@ Page({
                arr: that.data.arr,
                meActivityBoxIsSHOW:true
              })
-             wx.hideLoading()
            }else{
              that.setData({
                meActivityBoxIsSHOW: false
@@ -120,7 +117,6 @@ Page({
                title: res.data.message,
                icon: 'success',
              })
-             wx.hideLoading()
            }
         })
       })

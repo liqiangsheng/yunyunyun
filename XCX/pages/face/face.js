@@ -72,7 +72,7 @@ Page({
     //  有收费去收费
     wx.setStorageSync("faceUrl","") //面部识别参数
     wx.navigateTo({ //去拍照页面
-      url: "../../pages/acknowledgementOfOrder/acknowledgementOfOrder?faceIs="+false
+      url: "../../pages/acknowledgementOfOrder/acknowledgementOfOrder"
     })
 
      //没有去生成二维码页面

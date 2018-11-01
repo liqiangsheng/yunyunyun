@@ -1,4 +1,5 @@
 // pages/meActivity/meActivity.js
+
 var apiDomian = require("../../js/api.js");
 let API = apiDomian.apidmain();
 var formatTime = require("../../js/formatTime.js"); // 时间戳转时间
@@ -77,6 +78,9 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () { //分页加载
+    wx.showLoading({
+      title: '加载中...',
+    })
     var that = this;
     let pages = that.data.page;
     let  rows = that.data.page;
@@ -129,13 +133,17 @@ Page({
   }, 
   lookClick(e){//查看门票
     // 传订单id去二维码页面
+    console.log(e)
     wx.navigateTo({
-      url: '../../pages/admission/admission?orderid='+e.currentTarget.dataset.orderid,
+      url: '../../pages/admission/admission?orderid=' + e.currentTarget.dataset.orderid,
     })
   },
-  pendingClick(){ // 待付款
+  pendingClick(e){ // 待付款
+    console.log(e)
     //去支付页面，还没做
-     console.log("去支付页面")
+    wx.navigateTo({
+      url: '../../pages/payment/payment?id=' + e.currentTarget.dataset.id,
+    })
   },
   againClick(e){ //重新报名
     //e.currentTarget.dataset.multiactivity.multiActivity
@@ -150,9 +158,7 @@ Page({
     })
   },
   resetData(a){ //初始化数据
-    wx.showLoading({
-      title: '加载中...',
-    })
+   
     let data = wx.getStorageSync("userInfo"), that = this, cityDetail = wx.getStorageSync("cityDetail")
       , countryDetail = wx.getStorageSync("countryDetail"), provinceDetail = wx.getStorageSync("provinceDetail")
     wx.request({
@@ -168,6 +174,12 @@ Page({
         "s": that.data.rows+"",
       },
       success(res) {
+        wx.hideLoading();
+        wx.showToast({
+          title: '数据请求成功',
+          icon: 'success',
+          duration: 500
+        })
         let date = new Date();
         let nowTime = date.getTime();
         if (res.data.status == true) {
@@ -233,8 +245,9 @@ Page({
           that.setData({
             arr: that.data.arr.concat(res.data.data)
           })
-          wx.hideLoading()
+          
         } else {
+          wx.hideLoading();
           wx.showModal({
             showCancel: false,
             title: res.data.message,
@@ -242,6 +255,7 @@ Page({
             duration: 2000,
 
           })
+         
         }
       },
     

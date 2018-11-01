@@ -7,37 +7,17 @@ var uploadQiniu = require("../../js/uploadQiniu.js");
 let provArrs = wx.getStorageSync("countryDetail").data
 let cityArrs = wx.getStorageSync("provinceDetail").data
 let areaArrs = wx.getStorageSync("cityDetail").data;
-const date = new Date()
-const years = []
-const months = []
-const days = []
-for (let i = 1949; i <= date.getFullYear(); i++) {
-  years.push(i)
-}
-
-for (let i = 1; i <= 12; i++) {
-  months.push(i)
-}
-
-for (let i = 1; i <= 31; i++) {
-  days.push(i)
-}
-
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    year:"2018",  //年
+    month:"01", //月
+    day:"01",  //日
     qiniuToken:"", //七牛的token
-    years: years, //年
-    year: date.getFullYear(),//那一年
-    yearmonthday: date.getFullYear() + "" + date.getMonth() + "" + date.getDate(),
-    months: months, //月
-    month: date.getMonth(), //那一月
-    days: days, //日
-    day: date.getDate(), //那一天
-    value: [date.getFullYear(), date.getMonth(), date.getDate()-1], //生日默认进来
+    yearmonthday:"20180101", //  选中的日期
     birthdayShow: false, //生日弹框
     cityShow: false, //城市弹出
     array: [ '男', '女'],//性别
@@ -52,6 +32,26 @@ Page({
     regionId:"", //城市的Id
     areaArr: "深圳市",
     showPickerView: false,
+  },
+  dateTime(e){  //选择的日期
+    
+    let day = "",month = "",year="";
+    if (e.detail.day<10){
+      day = "0" + e.detail.day;
+    }else{
+      day = "" +e.detail.day;
+    }
+    if (e.detail.month < 10) {
+      month = "0" + e.detail.month;
+    } else {
+      month = "" +e.detail.month;
+    }
+    year = "" +e.detail.year
+    this.setData({
+      year: year,
+      month: month,
+      day: day,
+    })
   },
   modalConfirm(e){ //用户名的确定
     let that = this;
@@ -97,13 +97,12 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
-    
+     wx.showLoading({
+      title: '加载中...',
+    })
     let data =  wx.getStorageSync("userInfo");
     
     if(data){
-      wx.showLoading({
-        title: '加载中...',
-      })
       wx.request({ //请求七牛的token
         url: API.apiDomain + '/apis/system/sysAttachment/upPublicToken',
         header: {
@@ -140,50 +139,58 @@ Page({
           "Authorization": "Bearer " + data.access_token
         },
         success: function (res) {
+          wx.hideLoading();
+          wx.showToast({
+            title: '数据请求成功',
+            icon: 'success',
+            duration: 500
+          })
           if (res.data.status == true) {
-            
-            provArrs.map((item,index)=>{
-              if (item.id == res.data.data.region_id){
-                that.setData({
-                  areaArr: item.name,
+           
+            // provArrs.map((item,index)=>{
+            //   if (item.id == res.data.data.region_id){
+            //     that.setData({
+            //       areaArr: item.name,
                  
-                })
-              }
-            })
-            cityArrs.map((item, index) => {
-              if (item.id == res.data.data.region_id) {
-                that.setData({
-                  areaArr: item.name,
+            //     })
+            //   }
+            // })
+            // cityArrs.map((item, index) => {
+            //   if (item.id == res.data.data.region_id) {
+            //     that.setData({
+            //       areaArr: item.name,
 
-                })
-              }
-            })
-            areaArrs.map((item, index) => {
-              if (item.id == res.data.data.region_id) {
-                that.setData({
-                  areaArr: item.name,
+            //     })
+            //   }
+            // })
+            // areaArrs.map((item, index) => {
+            //   if (item.id == res.data.data.region_id) {
+            //     that.setData({
+            //       areaArr: item.name,
 
-                })
-              }
-            })
+            //     })
+            //   }
+            // })
               that.setData({
+                areaArr:res.data.data.regionName ? res.data.data.regionName:"深圳市",
                 yearmonthday: res.data.data.birthday,
                 sexIndex: res.data.data.sex,
-                regionId: res.data.data.region_id,
+                regionId: res.data.data.region_id ? res.data.data.region_id :"2018042317050430c6a250e4044f94bb4cc074302b789a",
                 personal: res.data.data.introduce,
                 userName: res.data.data.name ? res.data.data.name : data.name,
                 imgSrc: res.data.data.owner_url ? res.data.data.owner_url : data.header,
               })
-              wx.hideLoading();
-
+             
+           
           } else {
+            wx.hideLoading();
             wx.showModal({
               showCancel: false,
               title: res.data.message,
               icon: 'success',
               
             })
-            wx.hideLoading();
+            
           }
         }
       })
@@ -319,6 +326,11 @@ Page({
               title: "资料编辑成功",
               icon: 'success',
             })
+            setTimeout(()=>{
+              wx.navigateBack({
+                delta:1,
+              })
+            },500)
 
           }else{
             wx.showModal({
@@ -342,82 +354,36 @@ Page({
     }
 
   },
-  //三级联动触发方法
-  // bindChange1: function (e) {
-  //   let that = this;
-    
-  //   const val = e.detail.value
-    
-  //   that.setData({
-  //     provArr: that.data.provArrs[val[0]].name,
-  //     cityArr: that.data.cityArrs[val[1]].name,
-  //     areaArr: that.data.areaArrs[val[2]].name,
-  //     regionId: that.data.areaArrs[val[2]].id,
-  //   })
-  // },
+ 
   cityClick() {// 地区事件
-    // let that = this;
-    // that.setData({
-    //   cityShow: !that.data.cityShow
-    // })
+   
     wx.navigateTo({
       url: '../../pages/city/city',
     })
   },
-  birthdayClick() { //生日事件
+  birthdayClick() { //生日确定
   
     let that = this;
     that.data.birthdayShow = !that.data.birthdayShow
     that.setData({
       birthdayShow: that.data.birthdayShow
     })
+    console.log(that.data.birthdayShow,"dakdjkasdkjas")
     if(that.data.birthdayShow == true){
       that.data.yearmonthday = "确定"
+      that.setData({
+        yearmonthday: that.data.yearmonthday,
+      })
     }else{
-      if (that.data.month<10){
-        that.data.month = "0" + that.data.month
-        that.setData({
-          month: that.data.month,
-        })
-      }else{
-        that.data.month = "" + that.data.month
-        that.setData({
-          month: that.data.month,
-        })
-      }
-      if (that.data.day < 10) {
-        that.data.day = "0" + that.data.day
-        that.setData({
-          day: that.data.day,
-        })
-      } else {
-        that.data.day = "" + that.data.day
-        that.setData({
-          day: that.data.day,
-        })
-      }
-      that.data.yearmonthday = that.data.year + that.data.month +  that.data.day;
+      
+      that.setData({
+        yearmonthday: that.data.year + that.data.month + that.data.day,
+      })
     }
-    that.setData({
-      yearmonthday: that.data.yearmonthday,
-    })
     console.log(that.data.yearmonthday)
-  },
-  bindChange: function (e) {//生日事件
-    const val = e.detail.value
-    let that = this;
-    that.setData({
-      year: that.data.years[val[0]],
-      month: that.data.months[val[1]],
-      day: that.data.days[val[2]],
-    })
     
-      that.data.yearmonthday = "确定"
-   
-    that.setData({
-      yearmonthday: that.data.yearmonthday
-    })
   },
+
  uploadQiniu(a, b) { //上传图片的方法
  
     let token = a;

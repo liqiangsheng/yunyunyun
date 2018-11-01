@@ -60,7 +60,7 @@
           </view>
           <view class='homeBottomdata'>
               <view class='homeBottomdataItem1'><image src='../../images/time.png'></image><text>{{item.startTime}}</text> </view>
-               <view class='homeBottomdataItem1'><image src='../../images/position.png'></image><text>{{item.cityName}}</text> </view>
+               <view class='homeBottomdataItem1'><image src='../../images/position.png'></image><text>{{item.regionName}}</text> </view>
           </view>
           <view class='homeBottomstate start' wx:if="{{item.stateName=='立即报名'}}">
             立即报名

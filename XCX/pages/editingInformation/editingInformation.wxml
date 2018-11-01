@@ -36,28 +36,18 @@
       <view class='editingInformationBoxItem1' bindtap='birthdayClick'>
          <text>生日</text>
          <view class='editingInformationBoxRight'>
-              <!-- {{year}}{{month}}{{day}} -->
+            
               {{yearmonthday}}
           </view>
           <image class='editingInformationBoxImage' src='../../images/right.png'></image> 
       </view>
- <picker-view  wx:if='{{birthdayShow==true}}' indicator-style="height: 50px;" style="width: 100%; height: 200px;" value="{{value}}" bindchange="bindChange">
-    <picker-view-column>
-      <view wx:for="{{years}}" wx:key="{{index}}"  style="line-height: 50px">{{item}}年</view>
-    </picker-view-column>
-    <picker-view-column>
-      <view wx:for="{{months}}" wx:key="{{index}}" style="line-height: 50px">{{item}}月</view>
-    </picker-view-column>
-    <picker-view-column>
-      <view wx:for="{{days}}" wx:key="{{index}}" style="line-height: 50px">{{item}}日</view>
-    </picker-view-column>
-  </picker-view>
+ <view  wx:if='{{birthdayShow==true}}' indicator-style="height: 50px;" style="width: 100%; height: 250px;" >
+   <calendar binddayClick="dateTime" />
+  </view>
       
       <view class='editingInformationBoxItem1' bindtap='cityClick'>
         <text>地区</text>
-        <!-- <view class='editingInformationBoxRight'>
-                  {{provArr}}-{{cityArr}}-{{areaArr}}
-            </view>        -->
+      
             <view class='editingInformationBoxRight'>
                   {{areaArr}}
             </view>  

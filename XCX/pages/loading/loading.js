@@ -140,7 +140,7 @@ Page({
         let qiniu1url = that.data.qiniuUrl + "/" + data.key; //拼接图片地址保存
         wx.setStorageSync("faceUrl", qiniu1url) //面部识别参数
         wx.navigateTo({
-          url: '../../pages/acknowledgementOfOrder/acknowledgementOfOrder?faceIs='+true
+          url: '../../pages/acknowledgementOfOrder/acknowledgementOfOrder'
         })
       },
       fail: function (res) {

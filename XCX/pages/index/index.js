@@ -2,6 +2,9 @@
 //获取应用实例
 var formatTime = require("../../js/formatTime.js"); // 时间戳转时间
 var apiDomian = require("../../js/api.js");  //数据请求api
+var promiseData = require("../../js/promiseHttp.js");  //数据请求api
+
+
 let API = apiDomian.apidmain();
 const app = getApp();
 let dictionariesData = wx.getStorageSync("dictionaries");
@@ -23,6 +26,7 @@ Page({
     })
   },
   onLoad: function () {
+    this.dictionaries();
     
     var that = this;
     wx.request({ //轮播数据
@@ -42,9 +46,20 @@ Page({
         }
       }
     })
+    wx.showLoading({
+      title: '加载中...',
+    })
+    setTimeout(()=>{
+       that.pageData();
+    },1000)
+    // //请求首页数据
    
-    //请求首页数据
-    that.pageData();
+  },
+  /**
+  * 生命周期函数--监听页面显示
+  */
+  onShow: function () {
+    this.dictionaries();
   },
   /**
    * 用户点击右上角分享
@@ -72,7 +87,6 @@ Page({
   scrollFun(e) { //滑动效果
     var that = this;
     that.setData({
-      total: that.data.banner.length,
       swiperIndex: e.detail.current,
     })
   },
@@ -110,9 +124,7 @@ Page({
   },
 
   pageData(){ // 页面数据
-    wx.showLoading({
-      title: '加载中...',
-    })
+  
     var that = this;
     wx.request({
       url: API.apiDomain + '/apis/activity/activityInfo/list',
@@ -123,56 +135,121 @@ Page({
       data: { p: that.data.page, s: that.data.row },
       method: "POST",
       success(res) {
+        wx.hideLoading()
         if (res.data.status == true) {
           let cityArry = wx.getStorageSync("cityDetail").data;
-          let datas = res.data.data;
-          for (let i = 0; i < datas.length; i++) {
-            datas[i]["stateName"] = "";
-            var date = new Date();
-            var nowTime = date.getTime();
-            if (nowTime >= datas[i]["signStartTime"] && nowTime <= datas[i]["signEndTime"]) {
-              datas[i]["stateName"] = "立即报名";
-            } else if (nowTime > datas[i]["endTime"]) {
-              datas[i]["stateName"] = "已结束";
-            } else if (nowTime <= datas[i]["endTime"] && nowTime >= datas[i]["startTime"]) {
-              datas[i]["stateName"] = "正在进行";
-            } else if (nowTime > datas[i]["signEndTime"] && nowTime < datas[i]["startTime"]) {
-              datas[i]["stateName"] = "报名结束";
-            } else if (nowTime < datas[i]["signStartTime"]) {
-              datas[i]["stateName"] = "报名即将开始";
-            }else{
-              datas[i]["stateName"] = "";
-            }
-            datas[i]["startTime"] = formatTime.formatTime(datas[i]["startTime"])
-            datas[i]["cityName"] = "";
-            for (let a = 0; a < cityArry.length; a++) {
-              if (cityArry[a]["id"] == datas[i]["regionId"]) {
-                datas[i]["cityName"] = cityArry[a]["name"]
-              }
-            }
-          }
-          that.setData({
-            banner: that.data.banner.concat(datas), //分页数据拼接
-            total: that.data.banner.length,
-          })
-          wx.hideLoading()
+          // wx.showToast({
+          //   title: '数据请求成功',
+          //   icon: 'success',
+          //   duration: 500
+          // })
+            let datas = res.data.data;
+            promiseData.HomeList(datas, cityArry, formatTime).then(res => {
+              that.setData({
+                banner: that.data.banner.concat(res), //分页数据拼接
+              
+              })
+              console.log(that.data.banner, "dsajdkajkdkashk")
+            })
+          
         }else{
+          wx.hideLoading()
           wx.showModal({
             showCancel: false,
             title: res.data.message,
             icon: 'success',
             duration: 2000,
             
-          })
-          
-            wx.hideLoading()
+          }) 
          
         }
        
       },
       fail(res) {
-        console.log(res.data)
+        wx.showModal({
+          showCancel: false,
+          title: res+"数据失败了",
+          icon: 'success',
+          duration: 20000,
+
+        })
       }
+    })
+  },
+  dictionaries() {//字典缓存本地
+    wx.request({
+      url: API.apiDomain + '/apis/system/init/loadDicTree',
+      success(res) {
+        if (res.data.status == true) {
+          wx.setStorageSync("dictionaries", res.data)
+        } else {
+          wx.showModal({
+            showCancel: false,
+            title: res.data.message,
+            icon: 'success',
+            duration: 2000
+          })
+        }
+      },
+    })
+    wx.request({// 国
+      url: API.apiDomain + '/apis/system/sysRegion/singlelevel?level=country',
+      success(res) {
+        if (res.data.status == true) {
+          wx.setStorageSync("countryDetail", res.data)
+        } else {
+          wx.showModal({
+            showCancel: false,
+            title: res.data.message,
+            icon: 'success',
+          })
+        }
+      },
+    })
+    wx.request({// 省
+      url: API.apiDomain + '/apis/system/sysRegion/singlelevel?level=province',
+      success(res) {
+        if (res.data.status == true) {
+          wx.setStorageSync("provinceDetail", res.data)
+        } else {
+          wx.showModal({
+            showCancel: false,
+            title: res.data.message,
+            icon: 'success',
+          })
+        }
+      },
+    })
+    wx.request({// 城市
+      url: API.apiDomain + '/apis/system/sysRegion/singlelevel?level=city',
+      success(res) {
+        if (res.data.status == true) {
+          wx.setStorageSync("cityDetail", res.data)
+        } else {
+          wx.showModal({
+            showCancel: false,
+            title: res.data.message,
+            icon: 'success',
+            duration: 2000
+          })
+        }
+      },
+    })
+ 
+    wx.request({// 上传到七牛的url
+      url: API.apiDomain + '/apis/system/init/loadGlobalVariable',
+      success(res) {
+        if (res.data.status == true) {
+          wx.setStorageSync("qiniuUrl", res.data.data)
+        } else {
+          wx.showModal({
+            showCancel: false,
+            title: res.data.message,
+            icon: 'success',
+            duration: 2000
+          })
+        }
+      },
     })
   }
 

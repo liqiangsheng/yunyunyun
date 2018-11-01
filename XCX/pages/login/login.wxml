@@ -10,8 +10,8 @@
     <view class="verificatioCode">
        <view class='verificatioCodeImage'><image src='../../images/code.png'></image></view>
        <view class='verificatioCodeImage1'><input  bindblur='codePsd' placeholder="请输入验证码" value='{{psdValue}}'/></view>
-       <button bindtap="ObtainCode" wx:if='{{isShow}}'>{{code}}</button>
-       <button disabled wx:else='{{!isShow}}'>{{codeNum}}秒</button>
+       <button style='font-size:12px;line-height:50px;'  bindtap="ObtainCode" wx:if='{{isShow}}'>{{code}}</button>
+       <button style='font-size:12px;line-height:50px;' disabled wx:else='{{!isShow}}'>{{codeNum}}秒后重新发送</button>
     </view>
      <!-- <view class='gocegister' bindtap='gocegister'>
       >去注册

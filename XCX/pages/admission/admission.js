@@ -25,6 +25,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options,"sajdaskldla")
     let that = this;
     let Logindata = wx.getStorageSync("userInfo");
     if (options.orderid && options.orderid!=""){  //是不是我的活动来的
@@ -44,7 +45,7 @@ Page({
             var size = that.setCanvasSize(); //动态设置画布大小 
             that.createQrCode(res.data.data.signCode, "mycanvas", size.w, size.h);
             that.setData({
-              // Base64Img: imgData,
+           
               dataObj: res.data.data
             })
 
@@ -60,18 +61,24 @@ Page({
         }
       })
     }else{//下单流程来的
+      wx.showToast({
+          title: ' 数据异常',
+          icon: 'success',
+          duration: 2000
+        })
+       return;
 
-      let data = wx.getStorageSync("objList");
+      // let data = wx.getStorageSync("objList");
      
       // if (Logindata) { //登录
         // var imgData = wxqrCode.createQrCodeImg(data.signCode, { size: 300 });//生成二维码
-      var size = that.setCanvasSize(); //动态设置画布大小 
-      that.createQrCode(data.signCode, "mycanvas", size.w, size.h);
+      // var size = that.setCanvasSize(); //动态设置画布大小 
+      // that.createQrCode(data.signCode, "mycanvas", size.w, size.h);
         // console.log(imgData, "fsjklfjks")
-        that.setData({
+        // that.setData({
           // Base64Img: imgData,
-          dataObj: data
-        })
+        //   dataObj: data
+        // })
       // } else { //登陆出错
       //   wx.showToast({
       //     title: ' 登录异常！',

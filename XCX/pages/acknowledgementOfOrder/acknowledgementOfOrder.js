@@ -23,7 +23,6 @@ Page({
     single: [], //单票
     backstageData:{} , //后台数据
     userID:"", //用户id
-    faceIs:false, //是不是拍照了
   },
 
   paymentClick() { //支付
@@ -76,13 +75,21 @@ Page({
      data: obj,
      success(res){
        if(res.data.status == true){
-         if (that.data.Total<=0){ //实付价格去
+         console.log(res,"支付")
+         if (that.data.Total<=0){ //价格小于0去生成门票
             wx.setStorageSync("objList", res.data.data)
             wx.navigateTo({
-              url: '../../pages/admission/admission?faceIs=' + that.data.faceIs,
+              url: '../../pages/admission/admission?orderid=' + res.data.data.id,
             })
-         }else{
-            //去支付页面
+         } else {//去支付页面
+           wx.showModal({
+             showCancel: false,
+             title: "请选择免费活动",
+             icon: 'success',
+           })
+          //  wx.navigateTo({
+          //    url: '../../pages/payment/payment?id=' + res.data.data.id,
+          //  })  
          }
        }else{
          wx.showModal({
@@ -90,6 +97,7 @@ Page({
            title: res.data.message,
            icon: 'success',
          })
+         return;
        }
      }
    })
@@ -100,11 +108,15 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options.id)
+    if (options.id){
+      that.setData({
+        payId: options.id
+      })
+    }
     let data = wx.getStorageSync("userInfo");
     let that = this;
-    that.setData({
-      faceIs: options.faceIs
-    })
+   
   
     if (data){ //登录
       that.setData({
