@@ -154,5 +154,5 @@
 </view>
 <view class='detailBoxFoot'>
    <view class='detailBoxFootItem1'> <button  bindtap='forwardClick' open-type="share">转发</button> </view>
-   <view class='detailBoxFootItem2' bindtap='nextClick'>+立即报名</view>
+   <view class='detailBoxFootItem2' bindtap='nextClick'>立即报名</view>
 </view>

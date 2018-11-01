@@ -149,14 +149,14 @@ Page({
           "Authorization": "Bearer " + data.access_token
         },
         success: function (res) {
-          wx.hideLoading();
-          wx.showToast({
-            title: '数据请求成功',
-            icon: 'success',
-            duration: 500
-          })
+        
           if (res.data.status == true) {
-           
+            wx.hideLoading();
+            wx.showToast({
+              title: '数据请求成功',
+              icon: 'success',
+              duration: 500
+            })
             // provArrs.map((item,index)=>{
             //   if (item.id == res.data.data.region_id){
             //     that.setData({
@@ -182,7 +182,7 @@ Page({
             //   }
             // })
               that.setData({
-                areaArr:res.data.data.regionName ? res.data.data.regionName:"深圳市",
+                areaArr: res.data.data.region_name ? res.data.data.region_name:"深圳市",
                 yearmonthday: res.data.data.birthday,
                 sexIndex: res.data.data.sex,
                 regionId: res.data.data.region_id ? res.data.data.region_id :"2018042317050430c6a250e4044f94bb4cc074302b789a",
@@ -310,6 +310,9 @@ Page({
     let that = this;
     let data = wx.getStorageSync("userInfo");
     if(data){
+      wx.showLoading({
+        title: '加载中...',
+      })
       wx.request({
         url: API.apiDomain + '/apis/operation/sysUserOperation/updateUserInfo',
         method:"POST",
@@ -327,10 +330,12 @@ Page({
         },
         success:(res=>{
           let obj ={};
-          obj.name = that.data.userName;
-          obj.header = that.data.imgSrc;
-          wx.setStorageSync("userInfoImgs", obj)
+          
           if(res.data.status == true){
+            obj.name = that.data.userName;
+            obj.header = that.data.imgSrc;
+            wx.setStorageSync("userInfoImgs", obj)
+            wx.hideLoading();
             wx.showModal({
               showCancel: false,
               title: "资料编辑成功",
