@@ -163,8 +163,8 @@
 }
 .meActivityBoxItem1Viewitem3Item image{
  display: inline-block;
- width: 11px;height: 20px;
- transform: translateY(5px);
+ width: 7px;height: 13px;
+ transform: translateY(2px);
  margin-left: 10px;
 }
 .meActivityBoxItem1Viewitem3Item1{

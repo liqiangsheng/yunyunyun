@@ -13,6 +13,11 @@ Page({
    * 页面的初始数据
    */
   data: {
+    dayStyle: [
+      { month: 'current', day: new Date().getDate(), color: 'white', background: '#AAD4F5' },
+      { month: 'current', day: new Date().getDate(), color: 'white', background: '#AAD4F5' }
+    ],
+    
     year:"2018",  //年
     month:"01", //月
     day:"01",  //日
@@ -34,6 +39,9 @@ Page({
     showPickerView: false,
   },
   dateTime(e){  //选择的日期
+    let clickDay = e.detail.day;
+    let changeDay = `dayStyle[1].day`;
+    let changeBg = `dayStyle[1].background`;
     
     let day = "",month = "",year="";
     if (e.detail.day<10){
@@ -51,6 +59,8 @@ Page({
       year: year,
       month: month,
       day: day,
+      [changeDay]: clickDay,
+      [changeBg]: "#84e7d0"
     })
   },
   modalConfirm(e){ //用户名的确定

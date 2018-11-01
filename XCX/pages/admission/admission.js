@@ -21,6 +21,11 @@ Page({
       url: '../../pages/index/index'
     })
   },
+  voiceClick(){ //跳到语音介绍webview
+    wx.navigateTo({
+      url: '../../pages/voice/voice',
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */

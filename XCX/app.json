@@ -1,6 +1,8 @@
 {
   "pages": [
+    
     "pages/index/index",
+    "pages/voice/voice",
     "pages/payment/payment",
     "pages/city/city",
     "pages/login/login",
@@ -49,6 +51,6 @@
         "text": "我的"
       }
     ]
-  },
+  }
  
 }

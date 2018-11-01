@@ -42,7 +42,7 @@
           <image class='editingInformationBoxImage' src='../../images/right.png'></image> 
       </view>
  <view  wx:if='{{birthdayShow==true}}' indicator-style="height: 50px;" style="width: 100%; height: 250px;" >
-   <calendar binddayClick="dateTime" />
+   <calendar binddayClick="dateTime" days-color="{{dayStyle}}"/>
   </view>
       
       <view class='editingInformationBoxItem1' bindtap='cityClick'>
