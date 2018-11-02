@@ -33,12 +33,27 @@ Page({
           if(res.data.status == true){
             that.uploadQiniu(res.data.data.upToken, arr);
           }else{
-            wx.showModal({
-              showCancel: false,
-              title: res.data.message,
-              icon: 'success',
-              duration: 2000
-            })
+            if (res.statusCode == 500) {
+              wx.showModal({
+                showCancel: false,
+                title: "网络异常，请重试",
+
+              })
+            } else if (res.statusCode == 401) {
+              wx.showModal({
+                showCancel: false,
+                title: "网络异常",
+
+              })
+            } else {
+              wx.showModal({
+                showCancel: false,
+                title: res.data.message,
+                icon: 'success',
+                duration: 2000,
+
+              })
+            }
           }
           
         })
@@ -128,12 +143,27 @@ Page({
              
             }else{
               wx.setStorageSync("faceUrl", "") //面部识别参数
-              wx.showModal({
-                showCancel: false,
-                title: res.data.message,
-                icon: 'success',
-                duration: 2000
-              })
+              if (res.statusCode == 500) {
+                wx.showModal({
+                  showCancel: false,
+                  title: "网络异常，请重试",
+
+                })
+              } else if (res.statusCode == 401) {
+                wx.showModal({
+                  showCancel: false,
+                  title: "网络异常",
+
+                })
+              } else {
+                wx.showModal({
+                  showCancel: false,
+                  title: res.data.message,
+                  icon: 'success',
+                  duration: 2000,
+
+                })
+              }
             }
           }
         })
@@ -143,14 +173,7 @@ Page({
           url: '../../pages/acknowledgementOfOrder/acknowledgementOfOrder'
         })
       },
-      fail: function (res) {
-        wx.showModal({
-          showCancel: false,
-          title: "上传失败",
-          icon: 'success',
-          duration: 2000
-        })
-      }
+     
     })
   }
 })

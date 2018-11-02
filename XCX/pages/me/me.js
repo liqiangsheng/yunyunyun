@@ -22,7 +22,7 @@ Page({
 
   onLoad: function () {
      let that = this;
-     that.userInfoFun();
+    that.userInfoFun();
     
   },
 
@@ -39,6 +39,7 @@ Page({
   onShow: function () {
     let that = this;
     that.userInfoFun();
+    
 
   },
 
@@ -112,11 +113,67 @@ Page({
   },
    userInfoFun(){ //登录本地拿
      var that = this
-     let data = wx.getStorageSync('userInfoImgs')//获取本地存储信息
+     let data = wx.getStorageSync('userInfo')//获取本地存储信息
+     console.log(data)
      if (data){
-       that.setData({
-         userInfo: data,
-         bgImge: data.header
+       wx.request({ //设置的默认东西
+
+         url: API.apiDomain + '/apis/operation/commonUser/findCommonUserById',
+         method: "GET",
+         data: {
+           userId: data.id
+         },
+         header: {
+           'Content-Type': 'application/json',
+           'Accept': 'application/json',
+           "Authorization": "Bearer " + data.access_token
+         },
+         success: function (res) {
+          
+           if (res.data.status == true) {
+             console.log(res.data.data,"dbasdkas")
+             that.setData({
+               bgImge: res.data.data.owner_url ,
+               userInfo: {
+                 header: res.data.data.owner_url ,
+                 name: res.data.data.name,
+               }
+             })
+
+
+           } else {
+             that.setData({
+               bgImge: "../../images/bg.png",
+               userInfo: {
+                 header: "http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png",
+                 name: "登录",
+               }
+             })
+             if (res.statusCode == 500) {
+               wx.showModal({
+                 showCancel: false,
+                 title: "网络异常，请重试",
+
+               })
+             } else if (res.statusCode == 401) {
+               wx.showModal({
+                 showCancel: false,
+                 title: "网络异常",
+
+               })
+             } else {
+               wx.showModal({
+                 showCancel: false,
+                 title: res.data.message,
+                 icon: 'success',
+                 duration: 2000,
+
+               })
+               
+             }
+
+           }
+         }
        })
        
      }else{

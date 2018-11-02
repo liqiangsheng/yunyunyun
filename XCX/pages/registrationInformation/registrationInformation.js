@@ -191,6 +191,18 @@ Page({
           })
           return;
       }
+        if (that.data.allowEmptyData[i].code == "mobile1No") { //正则判断手机号码2
+          let msg = /^1[3456789]\d{9}$/;
+          if (msg.test(that.data.allowEmptyData[i].value) == false) {
+            wx.showModal({
+              showCancel: false,
+              title: "手机号码有误",
+              icon: 'success',
+            })
+            return;
+          }
+         
+        }
     }
     
     let arr = []; 
@@ -325,11 +337,27 @@ Page({
           that.setData({
             registrationInformationBoxShow: false,
           })
-          wx.showModal({
-            showCancel: false,
-            title: res.data.message,
-            icon: 'success',
-          })
+          if (res.statusCode == 500) {
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常，请重试",
+
+            })
+          } else if (res.statusCode == 401) {
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常",
+
+            })
+          } else {
+            wx.showModal({
+              showCancel: false,
+              title: res.data.message,
+              icon: 'success',
+              duration: 2000,
+
+            })
+          }
         }
       })
       

@@ -175,40 +175,62 @@ Page({
                     wx.setStorageSync("userInfoImgs", obj)
                   } else {
                     wx.removeStorageSync("userInfoImgs")
-                    wx.showModal({
-                      showCancel: false,
-                      title: res.data.message,
-                      icon: 'success',
-                      duration: 2000
-                    })
+                    if (res.statusCode == 500) {
+                      wx.showModal({
+                        showCancel: false,
+                        title: "网络异常，请重试",
+
+                      })
+                    } else if (res.statusCode == 401) {
+                      wx.showModal({
+                        showCancel: false,
+                        title: "网络异常",
+
+                      })
+                    } else {
+                      wx.showModal({
+                        showCancel: false,
+                        title: res.data.message,
+                        icon: 'success',
+                        duration: 2000,
+
+                      })
+                    }
                   }
                 }
               })
               wx.setStorageSync("userInfo", res.data.data)
-              wx.showToast({
-                title: '登录成功',
-                icon: 'success',
-                duration: 2000
-              })
+             
               wx.navigateBack({
                 delta: 1
               })
             } else {
-              wx.showModal({
-                showCancel: false,
-                title: res.data.message,
-                icon: 'success',
-              })
+              if (res.statusCode == 500) {
+                wx.showModal({
+                  showCancel: false,
+                  title: "网络异常，请重试",
+
+                })
+              } else if (res.statusCode == 401) {
+                wx.showModal({
+                  showCancel: false,
+                  title: "网络异常",
+
+                })
+              } else {
+                wx.showModal({
+                  showCancel: false,
+                  title: res.data.message,
+                  icon: 'success',
+                  duration: 2000,
+
+                })
+              }
 
             }
 
           },
-          fail(res) {
-            wx.showModal({
-
-              content: res.message,
-            })
-          },
+        
 
         })
       }
@@ -267,22 +289,29 @@ Page({
       },
       success: (res => {
         if (res.data.status == true) {
-        //   that.data.psdValue = res.data.data
-        //  that.setData({
-        //    psdValue: that.data.psdValue
-        //  })
-          wx.showToast({
-            title: '短信获取成功',
-            icon: 'success',
-            duration: 2000
-          })
+        
         } else {
-          wx.showModal({
-            showCancel: false,
-            title: res.data.message,
-            icon: 'success',
-            duration: 2000
-          })
+          if (res.statusCode == 500) {
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常，请重试",
+
+            })
+          } else if (res.statusCode == 401) {
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常",
+
+            })
+          } else {
+            wx.showModal({
+              showCancel: false,
+              title: res.data.message,
+              icon: 'success',
+              duration: 2000,
+
+            })
+          }
         }
       })
     })

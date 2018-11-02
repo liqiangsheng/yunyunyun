@@ -33,12 +33,14 @@ Page({
       url: 'https://dcloud.butongtech.com' +"/tsconfigjson",
       method:"GET",
       success(res){
+       
         if (res.statusCode == 200){
           that.setData({
             banner1: res.data.img
           })
 
         }else{
+          
           wx.showModal({
             title: '提示',
             content: '轮播数据出错了'
@@ -59,7 +61,7 @@ Page({
   * 生命周期函数--监听页面显示
   */
   onShow: function () {
-    this.dictionaries();
+   
   },
   /**
    * 用户点击右上角分享
@@ -138,11 +140,7 @@ Page({
         wx.hideLoading()
         if (res.data.status == true) {
           let cityArry = wx.getStorageSync("cityDetail").data;
-          // wx.showToast({
-          //   title: '数据请求成功',
-          //   icon: 'success',
-          //   duration: 500
-          // })
+         
             let datas = res.data.data;
             promiseData.HomeList(datas, cityArry, formatTime).then(res => {
               that.setData({
@@ -154,26 +152,33 @@ Page({
           
         }else{
           wx.hideLoading()
-          wx.showModal({
-            showCancel: false,
-            title: res.data.message,
-            icon: 'success',
-            duration: 2000,
-            
-          }) 
+          if (res.statusCode == 500){
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常，请重试",
+
+            }) 
+          } else if (res.statusCode == 401){
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常",
+
+            }) 
+          }else{
+            wx.showModal({
+              showCancel: false,
+              title: res.data.message,
+              icon: 'success',
+              duration: 2000,
+
+            }) 
+          }
+         
          
         }
        
       },
-      fail(res) {
-        wx.showModal({
-          showCancel: false,
-          title: res+"数据失败了",
-          icon: 'success',
-          duration: 20000,
-
-        })
-      }
+     
     })
   },
   dictionaries() {//字典缓存本地
@@ -183,74 +188,67 @@ Page({
         if (res.data.status == true) {
           wx.setStorageSync("dictionaries", res.data)
         } else {
-          wx.showModal({
-            showCancel: false,
-            title: res.data.message,
-            icon: 'success',
-            duration: 2000
-          })
+          if (res.statusCode == 500) {
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常，请重试",
+
+            })
+          } else if (res.statusCode == 401) {
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常",
+
+            })
+          } else {
+            wx.showModal({
+              showCancel: false,
+              title: res.data.message,
+              icon: 'success',
+              duration: 2000,
+
+            }) 
+          }
+         
         }
       },
     })
-    wx.request({// 国
-      url: API.apiDomain + '/apis/system/sysRegion/singlelevel?level=country',
-      success(res) {
-        if (res.data.status == true) {
-          wx.setStorageSync("countryDetail", res.data)
-        } else {
-          wx.showModal({
-            showCancel: false,
-            title: res.data.message,
-            icon: 'success',
-          })
-        }
-      },
-    })
-    wx.request({// 省
-      url: API.apiDomain + '/apis/system/sysRegion/singlelevel?level=province',
-      success(res) {
-        if (res.data.status == true) {
-          wx.setStorageSync("provinceDetail", res.data)
-        } else {
-          wx.showModal({
-            showCancel: false,
-            title: res.data.message,
-            icon: 'success',
-          })
-        }
-      },
-    })
-    wx.request({// 城市
-      url: API.apiDomain + '/apis/system/sysRegion/singlelevel?level=city',
-      success(res) {
-        if (res.data.status == true) {
-          wx.setStorageSync("cityDetail", res.data)
-        } else {
-          wx.showModal({
-            showCancel: false,
-            title: res.data.message,
-            icon: 'success',
-            duration: 2000
-          })
-        }
-      },
-    })
+    setTimeout(()=>{
+      wx.request({// 城市
+        url: API.apiDomain + '/apis/system/sysRegion/singlelevel?level=city',
+        success(res) {
+          if (res.data.status == true) {
+            wx.setStorageSync("cityDetail", res.data)
+          } else {
+            if (res.statusCode == 500) {
+              wx.showModal({
+                showCancel: false,
+                title: "网络异常，请重试",
+
+              })
+            } else if (res.statusCode == 401) {
+              wx.showModal({
+                showCancel: false,
+                title: "网络异常",
+
+              })
+            } else {
+              wx.showModal({
+                showCancel: false,
+                title: res.data.message,
+                icon: 'success',
+                duration: 2000,
+
+              })
+            }
+          }
+        },
+      })
+
+    },500)
+   
  
-    wx.request({// 上传到七牛的url
-      url: API.apiDomain + '/apis/system/init/loadGlobalVariable',
-      success(res) {
-        if (res.data.status == true) {
-          wx.setStorageSync("qiniuUrl", res.data.data)
-        } else {
-          wx.showModal({
-            showCancel: false,
-            title: res.data.message,
-            icon: 'success',
-            duration: 2000
-          })
-        }
-      },
-    })
+  
   }
 
 })

@@ -4,9 +4,6 @@ var apiDomian = require("../../js/api.js");
 let API = apiDomian.apidmain();
 var uploadQiniu = require("../../js/uploadQiniu.js");
 
-let provArrs = wx.getStorageSync("countryDetail").data
-let cityArrs = wx.getStorageSync("provinceDetail").data
-let areaArrs = wx.getStorageSync("cityDetail").data;
 Page({
 
   /**
@@ -126,84 +123,92 @@ Page({
               qiniuToken: res.data.data.upToken
             })
           } else {
-            wx.showModal({
-              showCancel: false,
-              title: res.data.message,
-              icon: 'success',
-            })
+            if (res.statusCode == 500) {
+              wx.showModal({
+                showCancel: false,
+                title: "网络异常，请重试",
+
+              })
+            } else if (res.statusCode == 401) {
+              wx.showModal({
+                showCancel: false,
+                title: "网络异常",
+
+              })
+            } else {
+              wx.showModal({
+                showCancel: false,
+                title: res.data.message,
+                icon: 'success',
+                duration: 2000,
+
+              })
+            }
           }
 
         })
       })
+     setTimeout(()=>{
 
-      wx.request({ //设置的默认东西
-      
-        url: API.apiDomain + '/apis/operation/commonUser/findCommonUserById',
-        method: "GET",
-        data: {
-          userId: data.id
-        },
-        header: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          "Authorization": "Bearer " + data.access_token
-        },
-        success: function (res) {
-        
-          if (res.data.status == true) {
-            wx.hideLoading();
-            wx.showToast({
-              title: '数据请求成功',
-              icon: 'success',
-              duration: 500
-            })
-            // provArrs.map((item,index)=>{
-            //   if (item.id == res.data.data.region_id){
-            //     that.setData({
-            //       areaArr: item.name,
-                 
-            //     })
-            //   }
-            // })
-            // cityArrs.map((item, index) => {
-            //   if (item.id == res.data.data.region_id) {
-            //     that.setData({
-            //       areaArr: item.name,
+        wx.request({ //设置的默认东西
 
-            //     })
-            //   }
-            // })
-            // areaArrs.map((item, index) => {
-            //   if (item.id == res.data.data.region_id) {
-            //     that.setData({
-            //       areaArr: item.name,
+         url: API.apiDomain + '/apis/operation/commonUser/findCommonUserById',
+         method: "GET",
+         data: {
+           userId: data.id
+         },
+         header: {
+           'Content-Type': 'application/json',
+           'Accept': 'application/json',
+           "Authorization": "Bearer " + data.access_token
+         },
+         success: function (res) {
 
-            //     })
-            //   }
-            // })
-              that.setData({
-                areaArr: res.data.data.region_name ? res.data.data.region_name:"深圳市",
-                yearmonthday: res.data.data.birthday,
-                sexIndex: res.data.data.sex,
-                regionId: res.data.data.region_id ? res.data.data.region_id :"2018042317050430c6a250e4044f94bb4cc074302b789a",
-                personal: res.data.data.introduce,
-                userName: res.data.data.name ? res.data.data.name : data.name,
-                imgSrc: res.data.data.owner_url ? res.data.data.owner_url : data.header,
-              })
-             
-           
-          } else {
-            wx.hideLoading();
-            wx.showModal({
-              showCancel: false,
-              title: res.data.message,
-              icon: 'success',
-              
-            })
-            
-          }
-        }
-      })
+           if (res.data.status == true) {
+             wx.hideLoading();
+             that.setData({
+               areaArr: res.data.data.region_name ? res.data.data.region_name : "深圳市",
+               yearmonthday: res.data.data.birthday,
+               sexIndex: res.data.data.sex,
+               regionId: res.data.data.region_id ? res.data.data.region_id : "2018042317050430c6a250e4044f94bb4cc074302b789a",
+               personal: res.data.data.introduce,
+               userName: res.data.data.name ? res.data.data.name : data.name,
+               imgSrc: res.data.data.owner_url ? res.data.data.owner_url : data.header,
+             })
+
+
+           } else {
+             wx.hideLoading();
+             if (res.statusCode == 500) {
+               wx.showModal({
+                 showCancel: false,
+                 title: "网络异常，请重试",
+
+               })
+             } else if (res.statusCode == 401) {
+               wx.showModal({
+                 showCancel: false,
+                 title: "网络异常",
+
+               })
+             } else {
+               wx.showModal({
+                 showCancel: false,
+                 title: res.data.message,
+                 icon: 'success',
+                 duration: 2000,
+
+               })
+             }
+
+           }
+         }
+       })
+
+       
+
+     },1000)
+    
 
     }else{
       wx.showModal({
@@ -322,9 +327,9 @@ Page({
         data:{
           "birthday": that.data.yearmonthday ? that.data.yearmonthday:"19701001",
           "id": data.user_id,
-          "name": that.data.userName ? that.data.userName:"设计云",
+          "name": that.data.userName ? that.data.userName:"",
           "sex": that.data.sexIndex?that.data.sexIndex+"":"0",
-          "remark": that.data.personal ? that.data.personal:"设计云",
+          "remark": that.data.personal ? that.data.personal:"",
           "regionId": that.data.regionId ? that.data.regionId : "2018042317050430c6a250e4044f94bb4cc074302b789a",
           "ownerUrl": that.data.imgSrc ? that.data.imgSrc : "https://pub.qinius.butongtech.com/defult_photo@3x.png"
         },
@@ -336,11 +341,7 @@ Page({
             obj.header = that.data.imgSrc;
             wx.setStorageSync("userInfoImgs", obj)
             wx.hideLoading();
-            wx.showModal({
-              showCancel: false,
-              title: "资料编辑成功",
-              icon: 'success',
-            })
+          
             setTimeout(()=>{
               wx.navigateBack({
                 delta:1,
@@ -348,11 +349,27 @@ Page({
             },500)
 
           }else{
-            wx.showModal({
-              showCancel: false,
-              title: res.data.message,
-              icon: 'success',
-            })
+            if (res.statusCode == 500) {
+              wx.showModal({
+                showCancel: false,
+                title: "网络异常，请重试",
+
+              })
+            } else if (res.statusCode == 401) {
+              wx.showModal({
+                showCancel: false,
+                title: "网络异常",
+
+              })
+            } else {
+              wx.showModal({
+                showCancel: false,
+                title: res.data.message,
+                icon: 'success',
+                duration: 2000,
+
+              })
+            }
           }
         })
       })
@@ -435,12 +452,27 @@ Page({
 
             } else {
               
-              wx.showModal({
-                showCancel: false,
-                title: res.data.message,
-                icon: 'success',
-                duration: 2000
-              })
+              if (res.statusCode == 500) {
+                wx.showModal({
+                  showCancel: false,
+                  title: "网络异常，请重试",
+
+                })
+              } else if (res.statusCode == 401) {
+                wx.showModal({
+                  showCancel: false,
+                  title: "网络异常",
+
+                })
+              } else {
+                wx.showModal({
+                  showCancel: false,
+                  title: res.data.message,
+                  icon: 'success',
+                  duration: 2000,
+
+                })
+              }
             }
             
           }

@@ -57,25 +57,30 @@ Page({
                 })
 
               } else {
-                // wx.showModal({
-                //   showCancel: false,
-                //   title: res.data.message,
-                //   icon: 'success',
-                // })
-                // wx.hideLoading();
+                if (payRes.statusCode == 500) {
+                  wx.showModal({
+                    showCancel: false,
+                    title: "网络异常，请重试",
+
+                  })
+                } else if (payRes.statusCode == 401) {
+                  wx.showModal({
+                    showCancel: false,
+                    title: "网络异常",
+
+                  })
+                } else {
+                  wx.showModal({
+                    showCancel: false,
+                    title: payRes.data.message
+
+                  })
+                }
+                wx.hideLoading();
               }
 
             },
-            fail(payRes) {
-              wx.hideLoading();
-              wx.showModal({
-                showCancel: false,
-                title: "支付接口请求失败",
-                icon: 'success',
-              })
-             
-              return;
-            }
+           
           })
 
         } else {

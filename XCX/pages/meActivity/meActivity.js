@@ -20,8 +20,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let data = wx.getStorageSync("userInfo"), that = this, cityDetail = wx.getStorageSync("cityDetail")
-      , countryDetail = wx.getStorageSync("countryDetail"), provinceDetail = wx.getStorageSync("provinceDetail")
+    let data = wx.getStorageSync("userInfo"), that = this;
     if(data){
       that.resetData("");
     }else{
@@ -159,8 +158,7 @@ Page({
   },
   resetData(a){ //初始化数据
    
-    let data = wx.getStorageSync("userInfo"), that = this, cityDetail = wx.getStorageSync("cityDetail")
-      , countryDetail = wx.getStorageSync("countryDetail"), provinceDetail = wx.getStorageSync("provinceDetail")
+    let data = wx.getStorageSync("userInfo"), that = this;
     wx.request({
       method: 'POST',
       url: API.apiDomain + '/apis/activity/customerActivitySignupNote/list',
@@ -175,11 +173,6 @@ Page({
       },
       success(res) {
         wx.hideLoading();
-        wx.showToast({
-          title: '数据请求成功',
-          icon: 'success',
-          duration: 500
-        })
         let date = new Date();
         let nowTime = date.getTime();
         if (res.data.status == true) {
@@ -204,7 +197,9 @@ Page({
               if (!item.isPay && nowTime <= (item.createTime+3600000)) {
                 res.data.data[index].state = "待支付";
               }
-            
+              if (!item.isPay && nowTime >= (item.createTime + 3600000)) {
+                res.data.data[index].state = "已失效";
+              }
               if (!!item.isPay && nowTime <= item.endTime) {
                 res.data.data[index].state = "待参加";
               }
@@ -223,24 +218,6 @@ Page({
             res.data.data[index].startTime1 = formatTime.formatTime(res.data.data[index].startTime);
             res.data.data[index].endTime1 = formatTime.formatTime(res.data.data[index].endTime);
 
-            cityDetail.data.map((item1, idnex1) => { //城市
-              if (cityDetail.data[idnex1].id == res.data.data[index].regionId) {
-                res.data.data[index].cityName = cityDetail.data[idnex1].name;
-              }
-            });
-
-            countryDetail.data.map((item1, idnex1) => {////省
-              if (countryDetail.data[idnex1].id == res.data.data[index].regionId) {
-                res.data.data[index].cityName = countryDetail.data[idnex1].name;
-              }
-            });
-
-            provinceDetail.data.map((item1, idnex1) => {//国家
-              if (provinceDetail.data[idnex1].id == res.data.data[index].regionId) {
-                res.data.data[index].cityName = provinceDetail.data[idnex1].name;
-              }
-            });
-
           })
           that.setData({
             arr: that.data.arr.concat(res.data.data)
@@ -248,13 +225,27 @@ Page({
           
         } else {
           wx.hideLoading();
-          wx.showModal({
-            showCancel: false,
-            title: res.data.message,
-            icon: 'success',
-            duration: 2000,
+          if (res.statusCode == 500) {
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常，请重试",
 
-          })
+            })
+          } else if (res.statusCode == 401) {
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常",
+
+            })
+          } else {
+            wx.showModal({
+              showCancel: false,
+              title: res.data.message,
+              icon: 'success',
+              duration: 2000,
+
+            })
+          }
          
         }
       },
