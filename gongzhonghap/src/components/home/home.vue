@@ -10,8 +10,7 @@
             <div class="swiper-wrapper">
               <div class="swiper-slide" v-for="(item,index) in acivityArr.children" >
                 <div class="imgIs">
-                  <img :src="item.bannerUrl"  v-if="imagesShow=='true'">
-                  <img style="width: 0.8rem;height: 0.8rem;margin: 0 auto;margin-top: 0.3rem" src="/static/images/loding.gif" v-else>
+                  <img :src="item.bannerUrl" />
                 </div>
 
                 <h5>{{item.title}}</h5>
@@ -30,8 +29,7 @@
          <!---->
           <div class="homeBoxItem">
              <div class="homeBoxItemImg" v-if="!!objData.bannerUrl">
-               <img :src="objData.bannerUrl" v-if="imagesShow=='true'">
-               <img style="width: 0.8rem;height: 0.8rem;margin: 14% 0 0 35%" src="/static/images/loding.gif" v-else>
+               <img :src="objData.bannerUrl" />
              </div>
              <div class="homeBoxItemOne">{{objData.title}}</div>
             <div class="homeBoxItemTwo">
@@ -166,7 +164,6 @@ export default {
       id:"",
       length:0, //滑动的长度
       objData:{}, // 子活动的数据
-      imagesShow:true,// 有没有关闭wifi
       guests:[], //宾客
       schedules:[], //时间表
     }
@@ -191,8 +188,9 @@ export default {
   methods:{
 
     quiry(){ //初始化数据
-      this.imagesShow =this.$Request.imgIsShow;// 图片是否加载
-      this.id = this.$Request.id; //截取导航栏url获取参数
+      // this.imagesShow =this.$Request.imgIsShow;// 图片是否加载
+      this.id = JSON.parse(window.sessionStorage.getItem("detailId")).id; //截取导航栏url获取参数
+     
       Indicator.open('加载中...')
        InitializationData( this.id ).then(res=>{  //数据加载
          if(!!res.data.status){
@@ -344,7 +342,8 @@ export default {
   @import "../../assets/css/homeBox.css";
 </style>
 <style lang="less">
-  .swiper-container{
+.homeBox{
+ .swiper-container{
     width: 100%;
     min-height: 3.1rem;
   }
@@ -418,4 +417,6 @@ export default {
     height: 0.34rem;
     z-index: 1;
   }
+}
+ 
 </style>
