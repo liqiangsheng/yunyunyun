@@ -1,0 +1,159 @@
+#login1Box{
+  width: 100%;
+  padding: 15px 0;
+  background: #fff;
+  margin-top: 1px;
+  position: absolute;
+  left: 0;
+  top:0;
+  bottom: 0;
+  right: 0; 
+}
+.loginTitle1{
+  width: 90%;
+  margin: 0 auto;
+  max-height: 150px;
+}
+.loginTitle1 img{
+  display: block;
+  width: 100%;
+  max-height: 150px;
+}
+.telPhone1{
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 36px;
+  background:rgba(255,255,255,1);
+  border-radius:2px;
+  height: 50px;
+  display: flex;
+  border: 1px solid #D7D7D7;
+}
+ .telPhoneImae1{
+  width: 20%;
+  display: inline-block;
+  height: 26px;
+  margin:14px 0 14px 5%;
+}
+.add861{
+  display: inline-block;
+  font-size:15px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(5,5,9,1);
+  margin-left: 6px;
+  transform: translateY(-5px);
+}
+ .telPhoneImae1 img{
+  display: inline-block;
+  width: 18px;
+  height: 22px;
+}
+.telPhoneImae11{
+  flex:1;
+  display: inline-block;
+}
+ .telPhoneImae11 input{
+   width: 100%;
+   height: 50px;
+  box-sizing: border-box;
+  line-height: 50px;
+  border-left: 1px solid #DCDCDC;
+  font-size:16px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#050509;
+  padding-left: 10px;
+  outline: none;
+}
+.verificatioCode1{
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 16px;
+  background:rgba(255,255,255,1);
+  border-radius:2px;
+  height: 50px;
+  border: 1px solid #D7D7D7;
+  display: flex;
+}
+
+ .verificatioCodeImage1{
+  width: 10%;
+  display: inline-block;
+  height: 26px;
+  font-size:15px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(5,5,9,1);
+  margin:14px 0 14px 5%;
+}
+ .verificatioCodeImage1 img{
+  display: inline-block;
+  width: 18px;
+  height: 22px;
+}
+.verificatioCodeImage11{
+   flex:1;
+   display: block;
+   position: relative;
+}
+.verificatioCodeImage11 button{
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 50px;
+   border: 0;
+   padding: 0 0.05rem;
+}
+.verificatioCodeImage11 input{
+   width: 60%;
+   height: 30px;
+   margin-top: 10px;
+  line-height: 30px;
+  border-left: 1px solid #DCDCDC;
+  font-size:16px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#050509;
+    outline: none;
+  padding-left: 10px;
+}
+
+.loginBnt1{
+  width: 90%;
+  height: 50px;
+  margin: 0 auto;
+  margin-top: 20px
+}
+.loginBnt1 button{
+  background-color: #050509;
+  color: #fff;
+   height: 50px;
+   width: 100%;
+   border: 0;
+   border-radius: 4px;
+}
+.loginItem1{
+   width: 90%;
+   margin: 0 auto;
+   margin-top: 25px;
+   font-size:13px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#050509;
+  line-height:21px;
+}
+.loginItem1FZ{
+  color:rgba(102,102,102,1);
+}
+.gocegister{
+    width: 90%;
+    margin: 0 auto;
+    height:14px;
+    font-size:13px;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(153,153,153,1);
+    line-height:18px;
+    margin-top: 5px;
+}

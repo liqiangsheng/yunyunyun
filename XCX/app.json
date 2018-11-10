@@ -1,6 +1,8 @@
 {
   "pages": [
     
+    "pages/Intelligence/Intelligence",
+    "pages/admission/admission",
     "pages/index/index",
     "pages/voice/voice",
     "pages/payment/payment",
@@ -12,7 +14,7 @@
     "pages/multiActivity/multiActivity",
     "pages/face/face",
     "pages/detail/detail",
-    "pages/admission/admission",
+    
     "pages/registrationInformation/registrationInformation",
     "pages/me/me",
     "pages/acknowledgementOfOrder/acknowledgementOfOrder",

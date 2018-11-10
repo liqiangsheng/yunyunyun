@@ -126,47 +126,47 @@ Page({
       success: function (res) {
         let data = JSON.parse(res.data)
         // to do ...
-        wx.request({  //获取7牛的保存地址
-          url: API.apiDomain + '/apis/system/init/loadGlobalVariable',
-          method: "GET",
-          success(res1) {
-            if(res1.data.status == true){
-               let dataUrl = res1.data.data;
-              dataUrl.map((item,index)=>{ //赋值七牛的url
-                if (item.code == "qiniu_pub_https_url"){
-                 that.setData({
-                   qiniuUrl:item.name
-                 })
+        // wx.request({  //获取7牛的保存地址
+        //   url: API.apiDomain + '/apis/system/init/loadGlobalVariable',
+        //   method: "GET",
+        //   success(res1) {
+        //     if(res1.data.status == true){
+        //        let dataUrl = res1.data.data;
+        //       dataUrl.map((item,index)=>{ //赋值七牛的url
+        //         if (item.code == "qiniu_pub_https_url"){
+        //          that.setData({
+        //            qiniuUrl:item.name
+        //          })
                   
-                }
-              })
+        //         }
+        //       })
              
-            }else{
-              wx.setStorageSync("faceUrl", "") //面部识别参数
-              if (res.statusCode == 500) {
-                wx.showModal({
-                  showCancel: false,
-                  title: "网络异常，请重试",
+        //     }else{
+        //       wx.setStorageSync("faceUrl", "") //面部识别参数
+        //       if (res.statusCode == 500) {
+        //         wx.showModal({
+        //           showCancel: false,
+        //           title: "网络异常，请重试",
 
-                })
-              } else if (res.statusCode == 401) {
-                wx.showModal({
-                  showCancel: false,
-                  title: "网络异常",
+        //         })
+        //       } else if (res.statusCode == 401) {
+        //         wx.showModal({
+        //           showCancel: false,
+        //           title: "网络异常",
 
-                })
-              } else {
-                wx.showModal({
-                  showCancel: false,
-                  title: res.data.message,
-                  icon: 'success',
-                  duration: 2000,
+        //         })
+        //       } else {
+        //         wx.showModal({
+        //           showCancel: false,
+        //           title: res.data.message,
+        //           icon: 'success',
+        //           duration: 2000,
 
-                })
-              }
-            }
-          }
-        })
+        //         })
+        //       }
+        //     }
+        //   }
+        // })
         let qiniu1url = that.data.qiniuUrl + "/" + data.key; //拼接图片地址保存
         wx.setStorageSync("faceUrl", qiniu1url) //面部识别参数
         wx.navigateTo({

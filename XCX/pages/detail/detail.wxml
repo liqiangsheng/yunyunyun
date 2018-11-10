@@ -102,6 +102,7 @@
                  <view class='position'><image src='../../images/position.png'></image> {{item.location}}</view>
                </view>
             </view>
+            <!-- <view class='moreItem'  data-rows='{{rows+20}}' bindtap='moreItemClick'>点击加载更多</view> -->
     </scroll-view>
       <!-- ---------- -->
           <view class='mattersNeedingAttention'>

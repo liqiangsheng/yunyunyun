@@ -2,7 +2,7 @@
 
 var apiDomian = require("../../js/api.js");
 let API = apiDomian.apidmain();
-var uploadQiniu = require("../../js/uploadQiniu.js");
+// var uploadQiniu = require("../../js/uploadQiniu.js");
 
 Page({
 
@@ -418,8 +418,8 @@ Page({
 
  uploadQiniu(a, b) { //上传图片的方法
  
-    let token = a;
-    let tempFilePaths = b;
+    let token = a;  //后台请求回来的token
+    let tempFilePaths = b; // 图片路径
     var that = this;
     wx.uploadFile({
       url: 'https://upload-z2.qiniup.com',
@@ -434,50 +434,55 @@ Page({
       success: function (res) {
         let data = JSON.parse(res.data)
         // to do ...
-        wx.request({  //获取7牛的保存地址
-          url: API.apiDomain + '/apis/system/init/loadGlobalVariable',
-          method: "GET",
-          success(res1) {
-            if (res1.data.status == true) {
-              let dataUrl = res1.data.data;
-              dataUrl.map((item, index) => { //赋值七牛的url
-                if (item.code == "qiniu_pub_https_url") {
-
-                  that.data.imgSrc = item.name + "/" + data.key
-                  that.setData({
-                    imgSrc: that.data.imgSrc
-                  })
-                }
-              })
-
-            } else {
-              
-              if (res.statusCode == 500) {
-                wx.showModal({
-                  showCancel: false,
-                  title: "网络异常，请重试",
-
-                })
-              } else if (res.statusCode == 401) {
-                wx.showModal({
-                  showCancel: false,
-                  title: "网络异常",
-
-                })
-              } else {
-                wx.showModal({
-                  showCancel: false,
-                  title: res.data.message,
-                  icon: 'success',
-                  duration: 2000,
-
-                })
-              }
-            }
-            
-          }
-         
+        that.data.imgSrc = "https://pub.qinius.butongtech.com" + "/" + data.key //地址拼接
+        that.setData({
+          imgSrc: that.data.imgSrc  
         })
+        // wx.request({  //获取7牛的保存地址
+        //   url: API.apiDomain + '/apis/system/init/loadGlobalVariable',
+        //   method: "GET",
+        //   success(res1) {
+        //     if (res1.data.status == true) {
+        //       let dataUrl = res1.data.data;
+        //       console.log(dataUrl,"dhsakdhkasdkaskdk")
+        //       // dataUrl.map((item, index) => { //赋值七牛的url
+        //         // if (item.code == "qiniu_pub_https_url") {
+
+        //           that.data.imgSrc = item.name + "/" + data.key
+        //           that.setData({
+        //             imgSrc: that.data.imgSrc
+        //           })
+        //         // }
+        //       // })
+
+        //     } else {
+              
+        //       if (res.statusCode == 500) {
+        //         wx.showModal({
+        //           showCancel: false,
+        //           title: "网络异常，请重试",
+
+        //         })
+        //       } else if (res.statusCode == 401) {
+        //         wx.showModal({
+        //           showCancel: false,
+        //           title: "网络异常",
+
+        //         })
+        //       } else {
+        //         wx.showModal({
+        //           showCancel: false,
+        //           title: res.data.message,
+        //           icon: 'success',
+        //           duration: 2000,
+
+        //         })
+        //       }
+        //     }
+            
+        //   }
+         
+        // })
         
         
       },

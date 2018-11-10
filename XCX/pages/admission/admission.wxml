@@ -19,6 +19,16 @@
           <view><text style='font-size:16px;font-weight:900'>温馨提示：</text> 手机截图或者长按二维码可保存至手机。</view>
           <view>仅限本人使用，转发无效。</view>
     </view>
+    <view class='IntelligenceBox'>
+       <view class='IntelligenceBoxItem'>一　参展商对接信息　一</view>
+       <view class='IntelligenceBoxItem1'>
+         <view class='IntelligenceBoxItem1Index'>Indare设计机构</view>
+         <view class='IntelligenceBoxItem1Index1'>11/05 10:30-11:00<text>　|　</text>威尔大厦一楼洽谈区<text></text>　<text class='IntelligenceBoxItem1Index2'>面谈</text></view>
+       </view>
+       <view class='IntelligenceBoxItem2'>
+       组委会咨询热线 400-800-99327
+       </view>
+    </view>
     <view class='scrollTop' bindtap='goTop'>
        首页
      </view>

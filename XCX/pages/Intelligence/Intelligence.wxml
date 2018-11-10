@@ -1,0 +1,7 @@
+<!--pages/Intelligence/Intelligence.wxml-->
+<!-- <web-view src="{{url}}">
+
+</web-view> -->
+<web-view src="http://172.16.0.55:8080/#/IntelligentMatchingB?ID=1"  bindmessage="Test">
+
+</web-view>

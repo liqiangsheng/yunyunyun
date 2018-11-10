@@ -26,6 +26,8 @@ Page({
     organizers:[],//承办单位
     coOrganizers: [],//承办单位
     scrollTop:0,
+    page:1, //页数
+    rows:20, //每页20
   },
   scrollTopW(event){
     if (event.detail.scrollTop>100){
@@ -243,6 +245,7 @@ Page({
        
   },
   nextClick(){ // 下一步
+    console.log(this.data.banner)
     let that = this;
     let data = wx.getStorageSync("userInfo");
    
@@ -251,28 +254,21 @@ Page({
       var nowTime = date.getTime();
     if (nowTime > that.data.banner.endTime) { //判断活动结束或者正在进行中  上线放开
       wx.showToast({
-        title: '活动已结束活动，请选择其他活动！',
+        title: '该活动已结束',
         icon: 'success',
       })
       return;
-    } else if (nowTime < that.data.banner.endTime && nowTime > that.data.banner.startTime) {
+    } else if (nowTime > that.data.banner.signEndTime) {
       wx.showModal({
         showCancel: false,
-        title: "活动正在进行中，请选择其他活动！",
+        title: "活动报名已结束",
         icon: 'success',
       })
       return;
     } else if (nowTime < that.data.banner.signStartTime) {
       wx.showModal({
         showCancel: false,
-        title: "活动尚未开始报名！",
-        icon: 'success',
-      })
-      return;
-    } else if (nowTime > that.data.banner["signEndTime"] && nowTime < that.data.banner["startTime"]) {
-      wx.showModal({
-        showCancel: false,
-        title: "活动报名已结束！",
+        title: "活动尚未开始报名，请选择其他活动！",
         icon: 'success',
       })
       return;
@@ -298,7 +294,7 @@ Page({
       data:{
         "activityId": i,
         "orderField": "start_time",
-        "orderString": "asc"
+        "orderString": "asc",
       },
       success:(res=>{
         if (res.data.status == true) { //
@@ -311,6 +307,7 @@ Page({
             res.data.data.guests[i].centerIsshow =  true;
 
           }
+          console.log(res.data.data.schedules,"dshakjdajk")
             that.setData({
               peopleArr: res.data.data.schedules,
               guests: res.data.data.guests
