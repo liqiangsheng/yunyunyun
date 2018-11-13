@@ -23,14 +23,15 @@ export default {
   },
   created(){
     console.log(this.$Request,"DASDKL")
+    localStorage.setItem("token",JSON.stringify(this.$Request.token));
   },
   methods:{
     IntelligentMatchingClick(v,i){ //点击选中的下标
       this.listIndex =i;
       if(this.listIndex== 0){ //去智能匹配页面
          this.$router.push({path:"/IntelligentMatchingA"})
-      }else { //去拍照页面
-
+      }else { //去拍照页面  //回到小程序
+        wx.miniProgram.navigateTo( { url:`/pages/face/face`});
       }
     }
   }

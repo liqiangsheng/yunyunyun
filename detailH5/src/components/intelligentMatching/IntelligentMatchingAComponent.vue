@@ -3,20 +3,17 @@
     <div id="IntelligentMatchingAComponent">
       <div class="IntelligentMatchingAComponentHeader">
         <img src="/static/images/close.png" alt="" @click="closeClick">
-        {{componentData.title}}
+        {{componentData.name}}
         <span  @click="preservationClick">保存</span>
       </div>
       <div class="IntelligentMatchingAComponentItem">
-        <h5 class="IntelligentMatchingAComponentItemIndex"><span>限选 {{componentData.xuanNum}} 个，{{componentData.bixuan}}</span></h5>
+        <h5 class="IntelligentMatchingAComponentItemIndex"><span>限选 {{componentData.limited}} 个，<span v-if="componentData.allowEmpty==true">必选</span><span  v-if="componentData.allowEmpty==false">非必选</span></span></h5>
         <div class="IntelligentMatchingAItemIndex">
-           <span v-for="(item,index) in componentData.listArr" :class="{active:item.check==true}" @click="selectClick(componentData,item,index)">{{item.name}} </span>
+           <span v-for="(item,index) in componentData.tagList" :class="{active:item.check==true}" @click="selectClick(componentData,item,index)">{{item.name}} </span>
         </div>
 
       </div>
     </div>
-
-
-
 
 </template>
 
@@ -49,7 +46,6 @@ export default {
       v.check = !v.check
 
       if( v.check == true){
-
         if( item.xuanArr.length>1&&item.title!="具体产品"){
           Toast("最多选择两个")
           v.check = !v.check;
@@ -68,8 +64,6 @@ export default {
           }
         })
       }
-      console.log(item.xuanArr,"最多选择两个")
-
     },
   }
 }
@@ -139,9 +133,9 @@ export default {
      .IntelligentMatchingAItemIndex{
        width: 100%;
        padding: 0 0.1rem ;
-       max-height: 0.94rem;
        overflow: hidden;
        box-sizing: border-box;
+       margin-bottom: 0.2rem;
        span{
          display: inline-block;
          background: rgba(255,255,255,0.3);

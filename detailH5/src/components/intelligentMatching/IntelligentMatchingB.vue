@@ -6,20 +6,20 @@
               <ul class="IntelligentMatchingBItemIndex2" v-if="listData.jingdu.length>0">
                 <li class="IntelligentMatchingBItemIndex1">已为您精确匹配多家参展商，请问是否对接？</li>
                 <li class="IntelligentMatchingBItemIndex2" v-for="(item,index) in listData.jingdu">
-                  <img :src="item.bannerUrl" alt="" @click="bannerUrlClick(item)">
-                  <div>{{item.title}}</div>
-                  <button v-if="item.cheack==false" @click="matchingClick(item,index)">{{item.value}}</button>
-                  <button style="background:rgba(33,203,97,1);color:rgba(255,255,255,1);" v-if="item.cheack==true" @click="matchingClick(item,index)"><img src="/static/images/gou.png" alt="">{{item.value1}}</button>
+                  <img :src="item.logoUrl" alt="" @click="bannerUrlClick(item)">
+                  <div>{{item.name}}</div>
+                  <button v-if="item.cheack==false" @click="matchingClick(item,index)">请求对接</button>
+                  <button style="background:rgba(33,203,97,1);color:rgba(255,255,255,1);" v-if="item.cheack==true" @click="matchingClick(item,index)"><img src="/static/images/gou.png" alt="">已请求</button>
                 </li>
               </ul>
 
             <ul v-if="listData.NoJingdu.length>0" class="IntelligentMatchingBItemIndex3">
               <li class="IntelligentMatchingBItemIndex3Li">以下结果为相似推荐，请问是否对接？</li>
               <li  class="IntelligentMatchingBItemIndex3Li1" v-for="(item,index) in listData.NoJingdu">
-                <img :src="item.bannerUrl" alt="" @click="bannerUrlClick(item)">
-                <div>{{item.title}}</div>
-                <button v-if="item.cheack==false" @click="matchingClick(item,index)">{{item.value}}</button>
-                <button style="background:rgba(33,203,97,1);color:rgba(255,255,255,1);" v-if="item.cheack==true" @click="matchingClick(item,index)"><img src="/static/images/gou.png" alt="">{{item.value1}}</button>
+                <img :src="item.logoUrl" alt="" @click="bannerUrlClick(item)">
+                <div>{{item.name}}</div>
+                <button v-if="item.cheack==false" @click="matchingClick(item,index)">请求对接</button>
+                <button style="background:rgba(33,203,97,1);color:rgba(255,255,255,1);" v-if="item.cheack==true" @click="matchingClick(item,index)"><img src="/static/images/gou.png" alt="">已请求</button>
               </li>
             </ul>
           </div>
@@ -32,43 +32,66 @@
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
+  import {getDataPost} from "../../assets/js/promiseHttp"  //数据请求
 export default {
 
   name: 'IntelligentMatchingB',
   data(){
     return{
-        listData:{
-          jingdu:[
-            {bannerUrl:"./static/images/1.png",title:"Indare设计机构",cheack:true,value:"请求对接",img:"",value1:"已请求",id:1},
-            {bannerUrl:"./static/images/2.png",title:"Indare设计机构文本溢出显示省略号",cheack:false,value:"请求对接",img:"",value1:"已请求",id:2},
-            {bannerUrl:"./static/images/3.png",title:"Indare设计机构",cheack:false,value:"请求对接",img:"",value1:"已请求",id:3},
-
-          ],
-          NoJingdu:[
-            {bannerUrl:"./static/images/4.png",title:"Indare设计机构",cheack:false,value:"请求对接",img:"",value1:"已请求",id:4},
-            {bannerUrl:"./static/images/5.png",title:"Indare设计机构",cheack:false,value:"请求对接",img:"",value1:"已请求",id:5},
-          ],
+        listData:{ //匹配的数据
+          jingdu:[], //精确匹配
+          NoJingdu:[], //不精确匹配
         }//数据显示
 
 
     }
   },
   created(){
-    console.log(this.$Request,"DASDKL")
+     let objData = JSON.parse(sessionStorage.getItem("IntelligentMatchingBData"))?JSON.parse(sessionStorage.getItem("IntelligentMatchingBData")):{};
+      let postData = (function(value){  //把参数拼接好
+        let oStr;
+        for(var key in value){
+          oStr += key+"="+value[key]+"&";
+        };
+        return oStr;
+      }(objData))
+     let token = JSON.parse(localStorage.getItem("token")); //获取token
+    getDataPost(token,"/apis/operation/tagLib/match",JSON.stringify(objData)).then(res=>{ //请求数据
+       if(res.status == true){
+           if(res.data.exact.length>0){
+             res.data.exact.forEach((item,index)=>{
+               item.cheack = false
+             })
+           }
+         if(res.data.inexact.length>0){
+           res.data.inexact.forEach((item,index)=>{
+             item.cheack = false
+           })
+         }
+           this.listData.jingdu = res.data.exact;
+           this.listData.NoJingdu = res.data.inexact;
+       }else{
+         Toast("网络出错了，请重试")
+       }
+    })
   },
   methods:{
     goBack(){ //去到小程序并且带参数
       let arrdata = [...this.listData.jingdu,...this.listData.NoJingdu];
+       let matchingArr = [];
       for (let i = 0;i<arrdata.length;i++){
         if(arrdata[i].cheack == true){
-
-          this.$router.push({path:"IntelligentMatchingC"});
-          break;
+          matchingArr.push(arrdata[i].id);
         }else{
           Toast("请至少选择一个匹配项")
         }
 
       }
+      setTimeout(()=>{
+        let matchingArrStr = matchingArr.join(',')
+        sessionStorage.setItem("matchingArrStr",JSON.stringify(matchingArrStr))
+        this.$router.push({path:"IntelligentMatchingC"});
+      },500)
 
 
     },
@@ -77,9 +100,10 @@ export default {
        console.log(this.listData,"askdkasdka")
     },
     bannerUrlClick(v) { //点击的头像
-      this.$router.push({path: "/homePage", query: {state: 1,id:v.id,source:"XCX"}}) //去企业主页 1是企业 2是个人
+      console.log(v)
+//      this.$router.push({path: "/homePage", query: {state: 1,id:v.id,source:"XCX"}}) //去企业主页 1是企业 2是个人
 //      this.$router.push({path: "/homePage?state=1&source=XCX&id="+v.id})
-      window.location.reload();
+//      window.location.reload();
     }
 
   }
@@ -155,6 +179,7 @@ export default {
          width: 0.8rem;
          height: 0.32rem;
          border: none;
+         outline: none;
          background:rgba(255,255,255,1);
          border-radius:0.05rem;
          font-size:0.13rem;
@@ -221,6 +246,7 @@ export default {
          width: 0.8rem;
          height: 0.32rem;
          border: none;
+         outline: none;
          background:rgba(255,255,255,1);
          border-radius:0.05rem;
          font-size:0.13rem;

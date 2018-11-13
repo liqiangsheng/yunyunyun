@@ -61,7 +61,6 @@ Page({
     wx.request({
       url: API.apiDomain + '/apis/activity/activityInfo/findOne?id=' + options.id,
       method:"GET",
-      data:{p:1,s:20},
       success:(res=>{
         
         if (res.data.status == true){

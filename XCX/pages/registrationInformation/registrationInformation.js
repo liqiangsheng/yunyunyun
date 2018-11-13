@@ -213,8 +213,8 @@ Page({
       }
     })
     wx.setStorageSync("RegistrationData", arr) //报名信息存本地
-    wx.navigateTo({ //数据保存成功跳转到订单确认页面
-      url: '../../pages/face/face',
+    wx.navigateTo({ //到是否智能匹配页面
+      url: '../../pages/Intelligence/Intelligence',
     })
   },
 

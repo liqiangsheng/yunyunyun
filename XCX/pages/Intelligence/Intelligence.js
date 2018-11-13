@@ -5,7 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    url:"https://dcloud.butongtech.com/#/IntelligentMatching?token="
+    url:"https://dcloud.butongtech.com/#/IntelligentMatching?token=",
+    url1: "http://172.16.0.55:8083/#/IntelligentMatching?token=",
   },
   Test(e){
     11111111111
@@ -19,10 +20,13 @@ Page({
        console.log(data,"111")
        if(data){
          that.data.url = this.data.url + data.access_token + "&id=" + data.id;
+         that.data.url1 = this.data.url1 + data.access_token + "&id=" + data.id;
          that.setData({
-           url: that.data.url
+           url: that.data.url,
+           url1: that.data.url1,
          })
          console.log(that.data.url,"dshakdk")
+         console.log(that.data.url1, "dshakdk")
        }else{
          wx.showModal({
            showCancel: false,

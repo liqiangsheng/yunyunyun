@@ -16,7 +16,11 @@
                <img src="/static/images/shuangying.png" alt="">
              </div>
         </div>
-        <div class="IntelligentMatchingDItem" v-html="htmlContent"></div>
+        <div class="IntelligentMatchingDItem" v-for="(item,index) in messageArr">
+          <h5><span></span>{{item.title}}</h5>
+          <div class="IntelligentMatchingDItemIndex">{{item.message}}</div>
+          <div v-if="!!item.logoUrl" class="IntelligentMatchingDItemIndex1"><img :src="item.logoUrl" alt=""></div>
+        </div>
         <div class="IntelligentMatchingDItem1">
           <img src="/static/images/zan1.png" alt="" @click="giveClick">1,970 赞
         </div>
@@ -77,6 +81,11 @@ export default {
   name: 'IntelligentMatchingD',
   data(){
     return{
+      messageArr:[
+        {title:"引诱型强制付费",message:"Equifax 这款软件主要提供信用卡方面的资讯，新用户会免费获得一个月的服务。这项服务在国外的市场需求还是很好的，所以会很诱人。",logoUrl:"./static/images/banner1.png"},
+        {title:"引诱型强制付费",message:"Equifax 这款软件主要提供信用卡方面的资讯，新用户会免费获得一个月的服务。这项服务在国外的市场需求还是很好的，所以会很诱人。",logoUrl:"./static/images/banner2.png"},
+        {title:"引诱型强制付费",message:"在我看来，黑暗模式在UI设计中并不是绝对的坏。如果我们仔细观察，黑暗模式可以帮助企业或赞助做广告，从而获得更高的订阅量，提高业绩公平地说，当UI设计师利用他们的创造力创造出这种模式时，并不意味着UI设计师不知道数字世界中道德界限的定义。UI设计人员可能必须在业务模型的一部分设计出这种模式，比如航空公司或旅游公司。",logoUrl:""}
+      ],
         htmlContent:"<div>11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的1 + 1111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的</div>",
         commenArr:[
           {banner:"./static/images/1.png",time:"3",title:"fanner Walker",commen:"你用的是什么软件啊你用的是什么软件啊你用的是什么软件啊你用的是什么软件啊你用的是什么软件啊你用的是什么软件啊？",zan:"9.48万",Reply:[
@@ -182,9 +191,41 @@ export default {
    }
    .IntelligentMatchingDItem{
      width: 100%;
-     overflow-y: auto;
      padding:0.15rem;
      box-sizing: border-box;
+     h5{
+       width: 100%;
+       font-size:0.14rem;
+       font-family:PingFangSC-Medium;
+       font-weight:500;
+       color:rgba(5,5,9,1);
+       line-height:0.42rem;
+       height: 0.42rem;
+       span{
+         display: inline-block;
+         width: 0.04rem;
+         height: 0.14rem;
+         background:rgba(5,5,9,1);
+         margin-right: 0.11rem;
+       }
+
+     }
+     .IntelligentMatchingDItemIndex{
+       width: 100%;
+       font-size:0.14rem;
+       font-family:PingFangSC-Regular;
+       font-weight:400;
+       color:rgba(5,5,9,1);
+       line-height: 0.28rem;
+       margin-bottom: 0.1rem;
+     }
+     .IntelligentMatchingDItemIndex1{
+       width: 100%;
+       img{
+         display: block;
+         width: 100%;
+       }
+     }
    }
    .IntelligentMatchingDItem1{
      width: 1.53rem;

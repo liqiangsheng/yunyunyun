@@ -25,10 +25,8 @@ VueAMap.initAMapApiLoader({
   // 高德 sdk 版本，默认为 1.4.4
   v: '1.4.4'
 });
-// Vue.prototype.HOST = '/api',
 Vue.prototype.$Request = Request;
 Vue.prototype.$Aiox = axios;
-// Vue.prototype.$http = '/api';
 Vue.prototype.$http = common.apiDomain;
 Vue.config.productionTip = false
 Vue.use(VueAMap);

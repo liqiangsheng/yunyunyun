@@ -1,9 +1,8 @@
 {
   "pages": [
-    
+    "pages/index/index",
     "pages/Intelligence/Intelligence",
     "pages/admission/admission",
-    "pages/index/index",
     "pages/voice/voice",
     "pages/payment/payment",
     "pages/city/city",
