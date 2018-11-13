@@ -12,13 +12,13 @@
 /*
 * 正式环境
 * ***/
-window.common = {
-  // apiDomain1: "http://dcloud.butongtech.com:10019",  //登录数据请求url
-  // apiDomain: "http://dcloud.butongtech.com:10020", //ajax数据请求url
-  // apiDomain1: "https://dcloud.butongtech.com:20019",  //登录数据请求url
-  // apiDomain: "https://dcloud.butongtech.com:20020", //ajax数据请求url
-
-}
+// window.common = {
+//   // apiDomain1: "http://dcloud.butongtech.com:10019",  //登录数据请求url
+//   // apiDomain: "http://dcloud.butongtech.com:10020", //ajax数据请求url
+//   apiDomain1: "https://dcloud.butongtech.com:20019",  //登录数据请求url
+//   apiDomain: "https://dcloud.butongtech.com:20020", //ajax数据请求url
+//
+// }
 // 12
 window.common = {
   // apiDomain1: "http://dcloud.butongtech.com:10019",  //登录数据请求url
