@@ -5,14 +5,16 @@
     top: 0;
     right: 0;
     background: #eeeeee;
-    overflow-y:auto; 
+  box-sizing: border-box;
+    overflow-y:auto;
+  overflow: hidden;
 }
 
  .userinfo{
   width: 100%;
   height: 1.68rem;
   position: relative;
-  
+
 }
 .bgImge{
   display: inline-block;
@@ -28,7 +30,7 @@
   position: absolute;
   left: 40%;
   top: .35rem;
- 
+
 }
 .userinfo-nickname{
   position: absolute;
@@ -36,7 +38,7 @@
   top: 1.1rem;
   display: block;
   width: 100%;
-  text-align: center; 
+  text-align: center;
   height:.16rem;
   font-size:.17rem;
   font-family:PingFangSC-Regular;
@@ -70,7 +72,7 @@
     left: 0;
     transform: scale(1,0.5);
     transform-origin: left bottom;
-} 
+}
 .meList div:last-child{
    border-bottom:none;
 }

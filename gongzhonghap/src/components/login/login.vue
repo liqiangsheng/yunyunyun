@@ -6,18 +6,18 @@
         <div class='telPhoneImae'> <img src='/static/images/tel.png'/><span class='add86'>+86</span> </div>
         <div class='telPhoneImae1'><input type='number' @blur='telPhone' placeholder="请输入手机号码" v-model='telValue'/></div>
     </div>
-    
+
         <div class="verificatioCode">
         <div class='verificatioCodeImage'><img src='/static/images/code.png'></div>
         <div class='verificatioCodeImage1'><input  @blur='codePsd' placeholder="请输入验证码" v-model='psdValue'/></div>
         <button class="ObtainCode"  @click="ObtainCode" v-if='isShow'>{{code}}</button>
         <button class="ObtainCode"  disabled v-if='!isShow'>{{codeNum}}秒后重新发送</button>
         </div>
-        
+
         <div class='loginDetail'>
-        点击查看 <span @click='loginDetail1'>“用户协议” </span> 和  <span @click='loginDetail1'>“隐私政策” </span>
+        点击查看 <span @click='loginDetail1(2,"用户协议")'>“用户协议” </span> 和  <span @click='loginDetail1(3,"隐私政策")'>“隐私政策” </span>
         </div>
-    
+
         <div class='loginBnt' @click='loginBnt'>
            <button>登录</button>
         </div>
@@ -25,7 +25,8 @@
 </template>
 
 <script>
-  import { telCode,login} from '../../assets/js/promiseHttp';
+//  import { telCode,login} from '../../assets/js/promiseHttp';
+  import { telCode} from '../../assets/js/promiseHttp';
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
 export default {
@@ -48,11 +49,15 @@ export default {
     }
   },
   created(){
-   
+
   },
   methods:{
-      loginDetail1(){ //协议，隐私
-
+      loginDetail1(v,v1){ //协议，隐私
+        let obj = {}
+        obj.v = v;
+        obj.v1= v1;
+       localStorage.setItem("messageShow1",JSON.stringify(obj));
+       this.$router.push({path:"/message"})
       },
     loginBnt(){ //登录
     console.log(111111)
@@ -61,12 +66,12 @@ export default {
         if(!that.telValue) {
           Toast( '请填写手机号');
           return
-        } 
+        }
         if(!that.psdValue) {
           Toast( '请填写验证码');
           return
-        } 
-        login(that.telValue,that.psdValue).then(res=>{
+        }
+        that.login(that.telValue,that.psdValue).then(res=>{
            console.log(res,"dshajd")
            if(res.data.status==true){
              window.sessionStorage.setItem("userInfo",JSON.stringify(item))
@@ -79,12 +84,21 @@ export default {
               } else {
                 Toat(res.data.message)
               }
-            
+
            }
         })
 
       },100)
 
+    },
+    login(tel,psd){  //登录的接口
+      return  new Promise((resolve,reject)=>{
+        let url = `${window.common.apiDomain20020}/apis/operation/sysUserOperation/bindMobile`;
+        let data = {mobile:tel,mobileType:"XCX",verifyCode:psd}
+        this.$Aiox.post(url,data,{ header: {'Content-Type': 'application/json','Accept': 'application/json'}}).then(res=>{
+          resolve(res)
+        })
+      })
     },
     telPhone(){ //手机失去焦点
             if (!(/^1\d{10}$/.test(this.telValue))) {
@@ -100,11 +114,11 @@ export default {
      let that = this;
     setTimeout(()=>{
       if (!this.telValue) {
-  
+
         Toast('请填写手机号')
         return;
       }
-    
+
         this.isShow= false;
       //请求数据
       telCode(this.telValue).then(res=>{
@@ -119,14 +133,14 @@ export default {
                   }
 
                 }, 1000)
-        
+
         }else{
           Toast("网络错误，请重试")
         }
       });
 
     },100)
-    
+
   }
 }
 }

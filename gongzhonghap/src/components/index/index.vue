@@ -16,37 +16,37 @@
       <div v-for="(item,index) in objList" @click="goDetail(item)">
 
         <!--&lt;!&ndash; 滑动 &ndash;&gt;-->
-        <!--<view class='homeBox' bindtap='goDetail' data-multiActivity='{{item}}' wx:if='{{item.multiActivity == true}}'>-->
+        <!--<div class='homeBox' bindtap='goDetail' data-multiActivity='{{item}}' wx:if='{{item.multiActivity == true}}'>-->
           <!--<image src='../../images/bg1.png' class='homeBj' />-->
-          <!--<view class='homeCentent'>-->
+          <!--<div class='homeCentent'>-->
 
-            <!--<view class='homeBoxHeader' >-->
-              <!--<text></text>-->
-              <!--<text>{{item.title}}</text>-->
-              <!--<text></text>-->
-              <!--<text>{{item.summary}}</text>-->
-            <!--</view>-->
+            <!--<div class='homeBoxHeader' >-->
+              <!--<spant></spant>-->
+              <!--<spant>{{item.title}}</spant>-->
+              <!--<spant></spant>-->
+              <!--<spant>{{item.summary}}</spant>-->
+            <!--</div>-->
             <!--<swiper class='swiperClass' duration="1000" previous-margin="50px" next-margin="50px" circular='true' bindchange="scrollFun">-->
               <!--<block wx:for="{{item.children}}" wx:key="{{index}}">-->
                 <!--<swiper-item>-->
-                  <!--<view  class="slide-image {{swiperIndex == index ? 'active' : 'quiet'}}" mode='aspectFill'>-->
+                  <!--<div  class="slide-image {{swiperIndex == index ? 'active' : 'quiet'}}" mode='aspectFill'>-->
                     <!--<image src="{{item.bannerUrl}}"> </image>-->
-                    <!--<view class='slide-imageitem'>{{item.name}}</view>-->
-                    <!--<view class='slide-imageitem1'>-->
-                      <!--<view>{{item.summary}}</view>-->
-                    <!--</view>-->
-                  <!--</view>-->
+                    <!--<div class='slide-imageitem'>{{item.name}}</div>-->
+                    <!--<div class='slide-imageitem1'>-->
+                      <!--<div>{{item.summary}}</div>-->
+                    <!--</div>-->
+                  <!--</div>-->
                 <!--</swiper-item>-->
               <!--</block>-->
             <!--</swiper>-->
 
-            <!--<view class='homeBoxFoot'>-->
-              <!--<text>{{swiperIndex+1}}</text>/<text>{{item.children.length}}</text>-->
-            <!--</view>-->
+            <!--<div class='homeBoxFoot'>-->
+              <!--<spant>{{swiperIndex+1}}</spant>/<spant>{{item.children.length}}</spant>-->
+            <!--</div>-->
 
-          <!--</view>-->
+          <!--</div>-->
 
-        <!--</view>-->
+        <!--</div>-->
 
         <!-- 活动列表 -->
         <div class='homeBottom'>
@@ -141,11 +141,11 @@ export default {
     },
       bannerCLICK(i){
         console.log(i)
-       
+
       },
     tabarClick(i){  //tabar点击事件
      this.tabbarAarrIndex = i;
-      this.$router.push({path:this.tabbarAarr[i].path}); 
+      this.$router.push({path:this.tabbarAarr[i].path});
 
     },
     handleScroll(){  //回到顶部按钮出现
@@ -196,7 +196,7 @@ export default {
     background: #fff;
     box-sizing: border-box;
     position: relative;
- 
+
     .imgIs{
       width: 100%;
       img{
@@ -216,5 +216,5 @@ export default {
   }
 }
 
-  
+
 </style>
