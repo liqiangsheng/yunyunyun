@@ -205,6 +205,7 @@ export default {
              return;
            }
            console.log(this.acivityArr)
+           sessionStorage.setItem("activityInfo", JSON.stringify(this.objData)) //保存活动信息
            this.$store.dispatch("multiActivityId",this.objData.id) //保存选中的Id 在vueX
            this.$router.push({path:"/multiActivity",})  //去选票
          }else{

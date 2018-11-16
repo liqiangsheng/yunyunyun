@@ -1,6 +1,7 @@
 
 import axios from "axios"
 import { Toast } from 'mint-ui';  //弹框
+import { Indicator } from 'mint-ui';
 // 字典缓存本地
 export function loadDicTree(id){
   return  new Promise((resolve,reject)=>{
@@ -10,6 +11,7 @@ export function loadDicTree(id){
     })
   })
 }
+
 
 // 详情数据
 export function InitializationData(id){
@@ -138,10 +140,12 @@ export function upImgQiniu(event,qiniuToken){
   formData.append('token',qiniuToken);
   let url='https://upload-z2.qiniup.com';
   let url1="https://pub.qinius.butongtech.com";
+  Indicator.open()
   return new Promise(function (resolve,reject) {
     axios.post(url,formData,{header:{ "Content-Type": "multipart/form-data"}}).then(res=>{
       if(res.status ==200){
         resolve(url1+ "/" + res.data.key)
+        Indicator.close()
       }else{
         Toast("头像上传失败，请重试");
         return
@@ -201,21 +205,70 @@ export function findByVersionToClient(token,id) { //请求数据
 
 
 
-//数据请求  有参数的 Post //获取手机认证码登录
-// export function login (tel,psd) { //请求数据
-//   let data = {mobile:tel,mobileType:"XCX",verifyCode:psd}
-//
-//   return new Promise(function (resolve,reject) {
-//     let ajax = new XMLHttpRequest();
-//     ajax.open('post',window.common.apiDomain20020+'/apis/operation/sysUserOperation/bindMobile',true);
-//     ajax.setRequestHeader("Content-Type","application/json");
-//     ajax.setRequestHeader("Accept","application/json");
-//     ajax.send(JSON.stringify(data));
-//     ajax.onreadystatechange = function () {
-//       if (ajax.readyState==4 &&ajax.status==200) {
-//         let res= JSON.parse(ajax.responseText)
-//         resolve(res) ;
-//       }
-//     }
-//   })
-// }
+//智能匹配数据请求列表
+export function tagGroupAll (token) { //请求数据
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/operation/tagGroup/all");
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//智能匹配数据匹配到的数据
+export function tagLibMatch (token,data) { //请求数据
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain20020+"/apis/operation/tagLib/match",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(data);
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+// 订单生成数据
+export function insertSignupNoteAndOrder (token,data) { //请求数据
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain20020+"/apis/activity/customerActivitySignupNote/insertSignupNoteAndOrder",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//  生成订单号
+export function findSimpleOneToClient (token,id) { //请求数据
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/activity/customerActivitySignupNote/findSimpleOneToClient?id="+id);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}

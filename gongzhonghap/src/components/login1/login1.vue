@@ -1,6 +1,6 @@
 <template>
   <div id="login1Box">
-    <div class='loginTitle1'><img :src='infoData.img'/></div>
+    <div class='loginTitle1'><img :src='infoData.bannerUrl'/></div>
     <div class="telPhone1">
       <div class='telPhoneImae1'> <img src='/static/images/tel.png'/><span class='add861'>+86</span> </div>
       <div class='telPhoneImae11'><input type='number' @blur='telPhone' placeholder="请输入手机号码" v-model='telValue'/></div>
@@ -14,21 +14,21 @@
       </div>
 
     </div>
-  
+
     <div class='loginBnt1' @click='loginBnt'>
       <button>登录</button>
     </div>
     <div class='loginItem1'>
-      <div><span class='loginItem1FZ'>承办单位：</span>{{infoData.Undertake}}</div>
-      <div><span class='loginItem1FZ'>联系电话：</span>{{infoData.tel}}</div>
-      <div><span class='loginItem1FZ'>会展地址：</span> {{infoData.ActivityArdree}}</div>
-      <div><span class='loginItem1FZ'>会展日期：</span>{{infoData.ActivityTime}}</div>
+      <div><span class='loginItem1FZ'>承办单位：</span>{{infoData.organizers}}</div>
+      <div><span class='loginItem1FZ'>联系电话：</span>{{infoData.linkPhone}}</div>
+      <div><span class='loginItem1FZ'>会展地址：</span> {{infoData.address}}</div>
+      <div><span class='loginItem1FZ'>会展日期：</span>{{infoData.startTime|formatTime}}-{{infoData.endTime|formatTime}}</div>
     </div>
   </div>
 </template>
 
 <script>
-  import { telCode,login} from '../../assets/js/promiseHttp';
+  import { telCode,login,InitializationData} from '../../assets/js/promiseHttp';
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
 export default {
@@ -50,7 +50,16 @@ export default {
     }
   },
   created(){
-   
+    if(this.$store.state.multiActivityId){
+      InitializationData(this.$store.state.multiActivityId).then(res=>{
+        console.log(res,"hdaskjdksa")
+        this.infoData = res.data;
+      })
+    }else{
+      Toast( '网络有误');
+      this.$router.push({path:"/home"})
+    }
+
   },
   methods:{
     loginBnt(){ //登录
@@ -60,11 +69,11 @@ export default {
         if(!that.telValue) {
           Toast( '请填写手机号');
           return
-        } 
+        }
         if(!that.psdValue) {
           Toast( '请填写验证码');
           return
-        } 
+        }
         login(that.telValue,that.psdValue).then(res=>{
            console.log(res,"dshajd")
            if(res.data.status==true){
@@ -78,7 +87,7 @@ export default {
               } else {
                 Toat(res.data.message)
               }
-            
+
            }
         })
 
@@ -98,11 +107,11 @@ export default {
      let that = this;
     setTimeout(()=>{
       if (!this.telValue) {
-  
+
         Toast('请填写手机号')
         return;
       }
-    
+
         this.isShow= false;
       //请求数据
       telCode(this.telValue).then(res=>{
@@ -117,14 +126,14 @@ export default {
                   }
 
                 }, 1000)
-        
+
         }else{
           Toast("网络错误，请重试")
         }
       });
 
     },100)
-    
+
   }
 }
 }

@@ -5,11 +5,11 @@
               <li class="requiredItem">基本信息(必填)</li>
               <li v-for="(item,index) in listData" v-if="item.allowEmpty == false" class="requiredItem1">
                 <span>{{item.displayName}}</span>
-                <div @click="choiceClick(item.displayName)" class="requiredItem1Index" v-if="item.code == 'sex'||item.code == 'mobile1CountryNo'||item.code == 'idType'||item.code == 'sex'||item.code == 'regionId'||item.code == 'corpDomains'||item.code == 'interestedDomains'||item.code == 'gainChannel'">
-                  请选择
+                <div @click="choiceClick(item.displayName,item)" class="requiredItem1Index" v-if="item.code == 'sex'||item.code == 'mobile1CountryNo'||item.code == 'idType'||item.code == 'sex'||item.code == 'regionId'||item.code == 'corpDomains'||item.code == 'interestedDomains'||item.code == 'gainChannel'||item.code == 'phone1CountryNo'">
+                  {{item.messageName}}
                   <img src="/static/images/right.png" alt="">
                 </div>
-                <input  :placeholder="'请填写'+item.displayName" v-else/>
+                <input  :placeholder="'请填写'+item.displayName" v-else v-model="item.value"/>
 
               </li>
             </ul>
@@ -17,11 +17,11 @@
               <li class="NorequiredItem">其他信息(可选填)</li>
               <li v-for="(item,index) in listData" v-if="item.allowEmpty == true" class="NorequiredItem1">
                 <span>{{item.displayName}}</span>
-                <div  @click="choiceClick(item.displayName)" class="NorequiredItem1Index" v-if="item.code == 'sex'||item.code == 'mobile1CountryNo'||item.code == 'idType'||item.code == 'sex'||item.code == 'regionId'||item.code == 'corpDomains'||item.code == 'interestedDomains'||item.code == 'gainChannel'">
-                  请选择
+                <div  @click="choiceClick(item.displayName,item)" class="NorequiredItem1Index" v-if="item.code == 'sex'||item.code == 'mobile1CountryNo'||item.code == 'idType'||item.code == 'sex'||item.code == 'regionId'||item.code == 'corpDomains'||item.code == 'interestedDomains'||item.code == 'gainChannel'||item.code == 'phone1CountryNo'">
+                  {{item.messageName}}
                   <img src="/static/images/right.png" alt="">
                 </div>
-                <input :placeholder="'请填写'+item.displayName" v-else/>
+                <input :placeholder="'请填写'+item.displayName" v-else v-model="item.value"/>
               </li>
 
             </ul>
@@ -29,6 +29,8 @@
     <div class="boxFoot" @click="nextClick">
         下一步
     </div>
+    <nameValue v-if="selectShow" @sex="sex" :componentData="componentData" :corpDomainsArr="corpDomainsArr" :interestedDomainsArr="interestedDomainsArr" @idType="idType" @mobile1CountryNo="mobile1CountryNo" @phone1CountryNo="phone1CountryNo" @gainChannel="gainChannel" @corpDomains="corpDomains" @interestedDomains="interestedDomains"></nameValue>
+    <City v-if="cityShow"  @cityObj="cityObj"></City>
   </div>
 </template>
 
@@ -36,29 +38,40 @@
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
   import {loadDicTree,findByVersionToClient} from "../../assets/js/promiseHttp"  //数据
+  import nameValue from "./nameValue.vue" //请选择
+  import City from "../../components/editingInformation/city.vue" //城市
 export default {
   name: 'registrationInformation',
   components:{
-
+    nameValue,City
   },
   data(){
     return{
+       selectShow:false,  //请选择显示
+       cityShow:false,  //城市显示
        userInfo:"", //登录信息
       loadDicTreeDta:[], //字典数据
       listData:JSON.parse(sessionStorage.getItem("findByVersionToClient")), //数据
       activityId:{}, //活动id
       userId:{}, //用户id
+      componentData:{}, //传给组件的东西
+      corpDomainsArr:[],//公司的领域
+      interestedDomainsArr:[],//感兴趣的领域
     }
   },
   watch:{
   },
   created(){
     console.log(this.listData,"数据")
+
     this.listData.forEach((item,index)=>{
+      item.messageName = "请选择";
       if(item.code == "activityId"){
         this.activityId = item;
         this.listData.splice(index,1)
       }
+
+
     })
     this.listData.forEach((item,index)=>{
       if(item.code == "userId"){
@@ -67,29 +80,133 @@ export default {
       }
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
-    if(!!this.userInfo ){
-      loadDicTree().then(res=>{
-        console.log(res,"字典")
-          if(res.data.status == true){
-             this.loadDicTreeDta = res.data;
-          }else{
-            Toast("网络出错，请重试")
-          }
-      })
-
-
-    }else{
+    if(!this.userInfo ){
       Toast("登录异常，请重新登录")
     }
 
   },
   methods:{
     nextClick(){ //下一步
+      this.listData= [...this.listData,this.activityId,this.userId];
+      for (let index=0;index<this.listData.length;index++){ //必填拦截
+        if(this.listData[index].allowEmpty == false){
+          if(!this.listData[index].value||this.listData[index].value == ""){
+            Toast(this.listData[index].displayName+"为必填项");
+            return;
+          }
+        }
+      }
+      sessionStorage.setItem("RegistrationData",JSON.stringify(this.listData));
+      this.$router.push({path:"/IntelligentMatching"})
 
     },
-    choiceClick(v){ //点击的请选择
+    choiceClick(v,v1){ //点击的请选择
+        console.log(v,v1)
+        console.log(v1.code,"dahkdfkask")
+      if(v1.code =='regionId'){ //城市
+          this.cityShow = true;
+      }else {
+        this.componentData = v1;
+        this.selectShow = true;
+      }
 
-    }
+
+    },
+    corpDomains(v,i){ //公司的领域
+      this.selectShow = false;
+      this.listData.forEach((item,index)=> {
+        if (item.code == "corpDomains") {
+          if(v.length>0){
+            item.messageName = "已选择";
+            item.value = v;
+            this.corpDomainsArr=v;//公司的领域
+          }else {
+            item.messageName = "请选择";
+            item.value = "";
+          }
+
+        }
+      })
+
+
+    },
+    interestedDomains(v,i){ //感兴趣的领域
+      this.selectShow = false;
+      this.listData.forEach((item,index)=> {
+        if (item.code == "interestedDomains") {
+          if(v.length>0){
+            item.messageName = "已选择";
+            item.value = v;
+            this.interestedDomainsArr=v;//感兴趣的领域
+          }else {
+            item.messageName = "请选择";
+            item.value = "";
+          }
+        }
+      })
+    },
+    gainChannel(v,i){//获取的渠道
+      this.selectShow = false;
+      this.listData.forEach((item,index)=> {
+        if (item.code == "gainChannel") {
+          item.messageName = v;
+          item.value = i;
+        }
+      })
+    },
+    phone1CountryNo(v,i){ //。电话国家号
+      this.selectShow = false;
+      this.listData.forEach((item,index)=> {
+        if (item.code == "phone1CountryNo") {
+          item.messageName = v;
+          item.value = v;
+        }
+      })
+    },
+
+    mobile1CountryNo(v,i){ //手机国家号
+      this.selectShow = false;
+      this.listData.forEach((item,index)=> {
+        if (item.code == "mobile1CountryNo") {
+          item.messageName = v;
+          item.value = v;
+        }
+      })
+    },
+    idType(v,i){ //省份证
+      this.selectShow = false;
+      this.listData.forEach((item,index)=>{
+        if(item.code =="idType"){
+          console.log(v)
+          console.log(i)
+          item.messageName = v;
+          item.value = i;
+        }
+      })
+    },
+    sex(v,i){ //性别选择
+      this.selectShow = false;
+      this.listData.forEach((item,index)=>{
+        if(item.code =="sex"){
+           item.messageName = v;
+           if(item.messageName=="男"){
+                item.value = "0"
+           }else{
+             item.value = "1"
+           }
+        }
+      })
+
+    },
+    cityObj(v){ //城市选择
+      this.cityShow = false;
+      this.listData.forEach((item,index)=> {
+        if (item.code == "regionId") {
+          item.messageName = v.cityName;
+          item.value = v.regionId;
+        }
+      })
+    },
   }
 }
 

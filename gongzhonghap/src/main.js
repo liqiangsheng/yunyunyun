@@ -16,6 +16,7 @@ import vueFilter from './assets/js/filter' //过滤器
 for (let key in vueFilter){
   Vue.filter(key,vueFilter[key])
 }
+
 import axios from "axios";
 import {UrlSearch} from  "./assets/js/Fun"  //导航栏url截取
 let Request = new UrlSearch(); //方法实力化

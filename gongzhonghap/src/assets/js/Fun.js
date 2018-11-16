@@ -48,4 +48,18 @@
     second = second < 10 ? ('0' + second) : second;
     return y + '/' + m + '/' + d + h + ':' + minute + ':' + second;
   }
+  export function Rgba(n){
+    let a =16;
+    let b =173;
+    let c =255;
+    let d =252;
+    let e =12;
+    let f =129;
+    let aa,bb,cc
+    aa = ((d - a)*n.toFixed(1))+a;
+    bb = ((e - b)*n.toFixed(1))+b;
+    cc = ((f- c)*n.toFixed(1))+c;
+    let arr = [aa,bb,cc]
+    return arr;
+  }
 
