@@ -21,9 +21,10 @@
     </view>
     <view class='IntelligenceBox'>
        <view class='IntelligenceBoxItem'>一　参展商对接信息　一</view>
-       <view class='IntelligenceBoxItem1'>
-         <view class='IntelligenceBoxItem1Index'>Indare设计机构</view>
-         <view class='IntelligenceBoxItem1Index1'>11/05 10:30-11:00<text>　|　</text>威尔大厦一楼洽谈区<text></text>　<text class='IntelligenceBoxItem1Index2'>面谈</text></view>
+       <view class='IntelligenceBoxItem1'wx:for="{{dataObj.conList}}" wx:key=''>
+         <view class='IntelligenceBoxItem1Index'>{{item.companyName}}</view>
+         <view class='IntelligenceBoxItem1Index1'>{{item.dateTime}}<text>　|　</text>{{item.conLocation}}<text></text>　<text class='IntelligenceBoxItem1Index2'>{{item.conMode}}</text></view>
+         <view class='IntelligenceBoxItem1Index3' wx:if='{{item.conScheduler}}'>{{item.conScheduler}}</view>
        </view>
        <view class='IntelligenceBoxItem2'>
        组委会咨询热线 400-800-99327

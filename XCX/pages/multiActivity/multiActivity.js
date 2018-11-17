@@ -24,6 +24,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options)
     let that = this;
     let data = wx.getStorageSync("userInfo");
    
@@ -86,13 +87,13 @@ Page({
 
                var date = new Date();
                var nowTime = date.getTime();
-               that.data.arr.activityGoodsVoList[index].danId = that.data.arr.activityGoodsVoList[index].id + "duo";
+               that.data.arr.activityGoodsGroupVoList[index].danId = that.data.arr.activityGoodsGroupVoList[index].id + "duo";
                that.data.arr.activityGoodsGroupVoList[index].bgItem = false; // 背景框选中
                that.data.arr.activityGoodsGroupVoList[index].bntBj = false;// 按钮色
                that.data.arr.activityGoodsGroupVoList[index].stateBool = true;// 状态
-               that.data.arr.activityGoodsVoList[index].num = 0;// 数量
+               that.data.arr.activityGoodsGroupVoList[index].num = 0;// 数量
                that.data.arr.activityGoodsGroupVoList[index].startTimes = formatTime.formatTime(that.data.arr.activityGoodsGroupVoList[index].startTime)
-               that.data.arr.activityGoodsGroupVoList[index].youhuijia = that.data.arr.activityGoodsGroupVoList[index].originalPrice - that.data.arr.activityGoodsVoList[index].payPrice;
+               that.data.arr.activityGoodsGroupVoList[index].youhuijia = that.data.arr.activityGoodsGroupVoList[index].originalPrice - that.data.arr.activityGoodsGroupVoList[index].payPrice;
                if (that.data.arr.activityGoodsGroupVoList[index].remaining < 0) {
                  that.data.arr.activityGoodsGroupVoList[index].remainingState = "已售完";
                  that.data.arr.activityGoodsGroupVoList[index].bntBj = false;
@@ -186,7 +187,7 @@ Page({
      }else{
        wx.setStorageSync("buyData", that.data.selectArr)
        wx.navigateTo({
-         url: '../../pages/registrationInformation/registrationInformation?'
+         url: '../../pages/registrationInformation/registrationInformation'
        })
      }
   },
@@ -242,11 +243,11 @@ Page({
       that.data.arr.activityGoodsGroupVoList[bgIndex].bgItem = !that.data.arr.activityGoodsGroupVoList[bgIndex].bgItem;
       if (that.data.arr.activityGoodsGroupVoList[bgIndex].bgItem == true) {
         that.data.arr.activityGoodsGroupVoList[bgIndex].num = 1;
-        that.data.arr.activityGoodsVoList[bgIndex].index = bgIndex;
+        that.data.arr.activityGoodsGroupVoList[bgIndex].index = bgIndex;
         that.data.selectArr.push(that.data.arr.activityGoodsGroupVoList[bgIndex])
       } else {
         that.data.arr.activityGoodsGroupVoList[bgIndex].num = 0;
-        that.data.arr.activityGoodsVoList[bgIndex].index = bgIndex;
+        that.data.arr.activityGoodsGroupVoList[bgIndex].index = bgIndex;
         that.data.selectArr.map((item, index) => {
           if (item.danId == that.data.arr.activityGoodsGroupVoList[bgIndex].danId) {
             that.data.selectArr.splice(index, 1)

@@ -1,7 +1,7 @@
 <!--pages/login1/login1.wxml-->
 
 <scroll-view scroll-y id='login1Box'>
-  <view class='loginTitle1'><image src='{{infoData.img}}'></image></view>
+  <view class='loginTitle1'><image src='{{infoData.bannerUrl}}'></image></view>
   <view class="telPhone1">
     <view class='telPhoneImae1'> <image src='../../images/tel.png'></image><text class='add861'>+86</text> </view>
     <view class='telPhoneImae11'><input type='number' bindblur='telPhone' placeholder="请输入手机号码" value='{{telValue}}'/></view>
@@ -20,9 +20,9 @@
        <button>登录</button>
     </view>
     <view class='loginItem1'>
-        <view><text class='loginItem1FZ'>承办单位：</text>{{infoData.Undertake}}</view>
-        <view><text class='loginItem1FZ'>联系电话：</text>{{infoData.tel}}</view>
-        <view><text class='loginItem1FZ'>会展地址：</text> {{infoData.ActivityArdree}}</view>
-        <view><text class='loginItem1FZ'>会展日期：</text>{{infoData.ActivityTime}}</view>
+        <view><text class='loginItem1FZ'>承办单位：</text>{{infoData.organizers}}</view>
+        <view><text class='loginItem1FZ'>联系电话：</text>{{infoData.linkPhone}}</view>
+        <view><text class='loginItem1FZ'>会展地址：</text> {{infoData.address}}</view>
+        <view><text class='loginItem1FZ'>会展日期：</text>{{infoData.time}}</view>
     </view>
 </scroll-view>

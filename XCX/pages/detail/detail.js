@@ -28,6 +28,7 @@ Page({
     scrollTop:0,
     page:1, //页数
     rows:20, //每页20
+    DetailId:"",
   },
   scrollTopW(event){
     if (event.detail.scrollTop>100){
@@ -55,7 +56,8 @@ Page({
   onLoad: function (options) {
     var that = this;
     that.setData({
-      state: options.state
+      state: options.state,
+      DetailId: options.id
     })
     // 数据初始化
     wx.request({

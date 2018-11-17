@@ -152,8 +152,9 @@ font-size:14px;
 .IntelligenceBoxItem1{
   width: 90%;
   margin: 0 auto;
-  height: 60px;
+  /* height: 60px; */
   margin-bottom:10px;
+  padding-bottom: 15px;
   background:rgba(5,5,9,0.05);
 }
 .IntelligenceBoxItem2{
@@ -191,4 +192,16 @@ font-size:14px;
   font-family:PingFangSC-Regular;
   font-weight:400;
   color:#050509;
+}
+.IntelligenceBoxItem1Index3{
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 10px;
+  font-size:12px;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  padding: 15px;
+  box-sizing: border-box;
+  color:rgba(153,153,153,1);
+  background:#fff;
 }

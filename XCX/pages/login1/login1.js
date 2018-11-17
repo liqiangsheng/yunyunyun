@@ -4,6 +4,7 @@ var apiDomian = require("../../js/api.js");
 let BASE = Base64.Base64();
 let API = apiDomian.apidmain();
 var app = getApp();
+var formatTime = require("../../js/formatTime.js"); // 时间戳转时间
 Page({
 
   /**
@@ -23,19 +24,45 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
+    console.log(options.id,"shakdaskk")
     wx.request({
-      url: 'https://dcloud.butongtech.com' + "/loginImgJson",
+      url: API.apiDomain + '/apis/activity/activityInfo/findOne?id=' + options.id,
       method: "GET",
       success(res) {
-        that.setData({
-          infoData: res.data.info
-        })
+        if (res.data.status == true) {
+          let datas = res.data.data;
+    
+           datas.time = formatTime.formatTime(datas.startTime) + "-" + formatTime.formatTime(datas.endTime)
+        
+          that.setData({
+            infoData: datas,
+          })
+        }else{
+          if (res.statusCode == 500) {
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常，请重试",
+
+            })
+          } else if (res.statusCode == 401) {
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常",
+
+            })
+          } else {
+            wx.showModal({
+              showCancel: false,
+              title: res.data.message,
+              icon: 'success',
+              duration: 2000,
+
+            })
+          }
+        }
+       
       }
     })
-
-    let data = wx.getStorage({ key: 'userInfo' })
-   
-
 
   },
 

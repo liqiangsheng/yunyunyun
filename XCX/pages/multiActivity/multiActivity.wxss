@@ -13,7 +13,7 @@
   background: #fff;
   height: 80px;
   display: flex;
-  margin-top: 1px solid #eeeeee;
+  margin-top: 1px;
 }
 .multiActivityBoxHeader image{
   width: 80px;
@@ -110,7 +110,6 @@
     width: 90%;
     top: 45px;
     margin:0 5%;
-   width: 100%;
     height: 20px;
     font-size:12px;
     font-family:PingFangSC-Regular;
@@ -126,7 +125,7 @@
 
 }
 .multiActivitycenter .multiActivityItem .item4{
-  width: 100%;
+
   height: 35px;
   background:rgba(255,248,248,1);
   position: absolute;

@@ -1,6 +1,7 @@
 let wxqrCode = require("../../js/wxqrcode.js")//生成二维码的插件
 var apiDomian = require("../../js/api.js");
 var QR = require("../../js/qrcode.js"); //二维码生成
+var formatTime = require("../../js/formatTime.js"); // 时间戳转时间
 let API = apiDomian.apidmain();
 // pages/admission/admission.js
 Page({
@@ -49,11 +50,19 @@ Page({
             // var imgData = wxqrCode.createQrCodeImg(res.data.data.signCode, { size: 300 });//生成二维码
             var size = that.setCanvasSize(); //动态设置画布大小 
             that.createQrCode(res.data.data.signCode, "mycanvas", size.w, size.h);
+            
+            if(!!res.data.data.conList){
+              res.data.data.conList.map((item, index) => {
+                item.dateTime = item.conTime ? formatTime.formatTime5(item.conTime) : "待定";
+                item.conLocation = item.conLocation ? item.conLocation : "待定";
+                item.conMode = item.conMode ? item.conMode : "待定";
+              })
+            }
+           
             that.setData({
            
               dataObj: res.data.data
             })
-
           }else{
             if (res.statusCode == 500) {
               wx.showModal({

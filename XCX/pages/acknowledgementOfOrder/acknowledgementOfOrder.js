@@ -23,6 +23,7 @@ Page({
     single: [], //单票
     backstageData:{} , //后台数据
     userID:"", //用户id
+    matchingArrStr:"", //智能匹配
   },
 
   paymentClick() { //支付
@@ -63,6 +64,7 @@ Page({
     obj.activityOrder.goodsList = goodsList;
     obj.activityOrder.groupList = groupList;
     obj.userId = that.data.userID;
+    obj.companyIds = that.data.matchingArrStr
     that.setData({
       backstageData: obj
     })
@@ -141,11 +143,20 @@ Page({
       let ActivityInfos = wx.getStorageSync("activityInfo");
       let buyDatas = wx.getStorageSync("buyData");
       let registrationDatas = wx.getStorageSync("RegistrationData");
+      let matchingArrStrs = wx.getStorageSync("matchingArrStr");
       if (ActivityInfos){
         ActivityInfos.startTime = formatTime.formatTime3(ActivityInfos.startTime)
         that.setData({
           ActivityInfo: ActivityInfos,
         
+        })
+
+      }else{
+        that.loginError();
+      }
+      if (matchingArrStrs){
+        that.setData({
+          matchingArrStr: matchingArrStrs,
         })
 
       }else{
