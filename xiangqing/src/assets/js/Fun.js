@@ -26,3 +26,18 @@
     let arr = [aa,bb,cc]
     return arr;
   }
+
+  export function  getData (mode,url,token) { //ajax原生请求
+    let ajax = new XMLHttpRequest();
+    ajax.open('get','http://172.16.0.54:10020/apis/system/sysAttachment/upPublicToken');
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Accept","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        //步骤五 如果能够进到这个判断 说明 数据 完美的回来了,并且请求的页面是存在的
+        console.log(JSON.parse(ajax.responseText));//输入相应的内容
+      }
+    }
+  }

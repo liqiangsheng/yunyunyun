@@ -19,6 +19,9 @@ export default {
     }
   },
   created() {
+    this.$nextTick(function () {
+      document.title = "等待中";
+    })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
     if(this.userInfo){
          setTimeout(()=>{

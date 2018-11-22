@@ -53,6 +53,9 @@ export default {
     }
   },
   created() {
+    this.$nextTick(function () {
+      document.title = "我的活动";
+    })
     this.installData("",1);
     setTimeout(()=>{
       console.log(this.pageNum)
@@ -104,10 +107,13 @@ export default {
       }
     },
     lookClick(v){ //查看门票
-
+       console.log(v,"haskjdkas ")
+      localStorage.setItem("objListId",JSON.stringify(v))
+      this.$router.push({path:"/admission"})
     },
     pendingClick(v){//待支付
-
+        this.$store.dispatch("payId",v); //vuex保存支付Id
+        this.$router.push({path:"/payH5"}) //去支付页面
     },
     installData(v,p){
 

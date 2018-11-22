@@ -1,5 +1,6 @@
 
 export let state = {
   mapData:{},
-  multiActivityId:"",
+  multiActivityId:"", //活动id
+  payId:"", //支付id
 }

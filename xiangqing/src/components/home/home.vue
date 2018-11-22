@@ -107,7 +107,6 @@
                  <div class='centent'>
                    <div class='cententQiut' :class="{cententActive:item.centerIsshow==true}">
                      {{item.introduce}}
-
                    </div>
 
                  </div>

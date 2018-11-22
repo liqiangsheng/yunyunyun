@@ -8,10 +8,11 @@ import IntelligentMatching from '@/components/intelligentMatching/IntelligentMat
 import IntelligentMatchingA from '@/components/intelligentMatching/IntelligentMatchingA' //智能匹配
 import IntelligentMatchingB from '@/components/intelligentMatching/IntelligentMatchingB' //智能匹配
 import IntelligentMatchingC from '@/components/intelligentMatching/IntelligentMatchingC' //智能匹配
-import IntelligentMatchingD from '@/components/intelligentMatching/IntelligentMatchingD' //智能匹配
+import HomeDetail from '@/components/homePage/IntelligentMatchingD' //个人主页的详情
 import Qiniu from '@/components/qiniu/qiniu' //七牛上传
 import Login from '@/components/login' //登录
 import PayH5 from '@/components/payH5'  //支付
+import Contact from '@/components/homePage/contact' //联系不同
 Vue.use(Router)
 
 export default new Router({
@@ -24,6 +25,11 @@ export default new Router({
       path: '/IntelligentMatching',
       name: 'IntelligentMatching',
       component: IntelligentMatching,
+    },
+    {
+      path: '/contact',
+      name: 'contact',
+      component: Contact,
     },
     {
       path: '/qiniu',
@@ -43,9 +49,9 @@ export default new Router({
       name: 'IntelligentMatchingC',
       component: IntelligentMatchingC,
     },{
-      path: '/IntelligentMatchingD',
-      name: 'IntelligentMatchingD',
-      component: IntelligentMatchingD,
+      path: '/homeDetail',
+      name: 'HomeDetail',
+      component: HomeDetail,
     },
     {
       path: '/homePage',

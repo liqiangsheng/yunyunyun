@@ -24,6 +24,9 @@ export default {
     }
   },
   created(){
+    this.$nextTick(function () {
+      document.title = "地图";
+    })
     if(!!this.$store.state.mapData){
       this.center = this.$store.state.mapData[0]
       this.markers = this.$store.state.mapData[1]

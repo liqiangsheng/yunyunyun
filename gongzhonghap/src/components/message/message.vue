@@ -233,6 +233,9 @@ export default {
     }
   },
   created(){
+    this.$nextTick(function () {
+      document.title = "不同科技";
+    })
      this.obj = JSON.parse(localStorage.getItem("messageShow1")); //拿到值，看是哪个页面传来的状态显示不同的内容
   },
   methods:{
@@ -275,7 +278,8 @@ export default {
     height: 0.3rem;
     border-radius: 0.05rem;
     border: 0.01rem solid #eee;
-    font-size: 0.14rem;line-height: 0.03rem;
+    font-size: 0.14rem;
+    line-height: 0.3rem;
     text-align: center;
     margin: 0 auto;
     margin-top: 0.2rem;

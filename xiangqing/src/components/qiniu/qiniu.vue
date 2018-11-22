@@ -20,21 +20,29 @@ export default {
     }
   },
   created(){
-    console.log(this.$Request)
-    Toast(this.$Request.token)
-    this.token = this.$Request.token;
-    let url=window.common.apiDomain+"/apis/system/sysAttachment/upPublicToken";
-    console.log(url,"dsaldas")
-    this.$Aiox.get(url,{header: { 'Content-Type': 'application/json', 'Accept': 'application/json', "Authorization": "bearer "+this.$Request.token}}).then(res=>{
-      console.log(res,"dada")
-            Toast("sfsdfsd")
-//      Toast("sfsdfsd")
-    })
-
+    this.getData(this.$Request.token);
   },
   methods:{
     PreviewImage(){
 
+    },
+    getData (token) {
+     let ajax = new XMLHttpRequest();
+      ajax.open('get',this.$http+'/apis/system/sysAttachment/upPublicToken');
+     ajax.setRequestHeader("Content-Type","application/json");
+     ajax.setRequestHeader("Accept","application/json");
+     ajax.setRequestHeader("Authorization","bearer "+token);
+     ajax.send();
+      ajax.onreadystatechange = function () {
+        if (ajax.readyState==4 &&ajax.status==200) {
+          let res= JSON.parse(ajax.responseText)
+          if(res.status == true){
+            console.log(res.data);//输入相应的内容
+          }else{
+            Toast("网络出错啦！请重试")
+          }
+        }
+      }
     }
   }
 }

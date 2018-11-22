@@ -14,9 +14,9 @@
                 </div>
 
                 <h5>{{item.title}}</h5>
-                <p>
-                  <span>{{item.summary}}</span>
-                </p>
+                <div class="overHideP">
+                  <p>{{item.summary}}</p>
+                </div>
               </div>
             </div>
           </div>
@@ -183,7 +183,9 @@ export default {
     next()
   },
   created(){
-
+    this.$nextTick(function () {
+      document.title = "活动详情";
+    })
     this.quiry();
   },
   methods:{
@@ -206,9 +208,11 @@ export default {
            }
            console.log(this.acivityArr)
            sessionStorage.setItem("activityInfo", JSON.stringify(this.objData)) //保存活动信息
+           console.log(this.objData.id,"asdkasdk")
            this.$store.dispatch("multiActivityId",this.objData.id) //保存选中的Id 在vueX
            this.$router.push({path:"/multiActivity",})  //去选票
          }else{
+           this.$store.dispatch("multiActivityId",this.objData.id) //保存选中的Id 在vueX
            this.$router.push({path:"/login1"})
          }
     },
@@ -401,7 +405,7 @@ export default {
       line-height:0.22rem;
       transform: translateY(-0.15rem);
     }
-    p{
+    .overHideP{
       position: absolute;
       bottom: 0;
       left: 0;
@@ -410,8 +414,7 @@ export default {
       background:rgba(247,247,247,1);
       border-radius:0.02rem;
       box-sizing: border-box;
-        span{
-          display: block;
+        p{
           width: 2.22rem;
           margin: 0 auto;
           line-height: 0.19rem;
@@ -420,11 +423,11 @@ export default {
           font-family:PingFangSC-Light;
           font-weight:300;
           color:rgba(102,102,102,1);
+          overflow: hidden;
+          text-overflow: ellipsis;
           display: -webkit-box;
           -webkit-line-clamp: 5;
-          overflow: hidden;
           -webkit-box-orient: vertical;
-          text-overflow: ellipsis;
         }
     }
     .imgIs{

@@ -38,7 +38,7 @@ export default {
   top:0;
   right:0;
   bottom:0;
-  background: #FFFFFF;
+  background: #000000;
   padding: 0.2rem;
   box-sizing: border-box;
   z-index: 2;
@@ -46,11 +46,29 @@ export default {
     width: 50%;
     float: left;
     text-align: center;
+    input{
+      width: 0.16rem;
+      height: 0.16rem;
+      transform: translateY(0.02rem);
+     color: red;
+    }
+    label{
+      color: #FFFFFF;
+      font-size: 0.16rem;
+    }
   }
   #two{
     width: 50%;
     float: left;
     text-align: center;
+    input{
+      width: 0.16rem;
+      height: 0.16rem;
+      transform: translateY(0.02rem);
+    }
+    label{
+      color: #FFFFFF;
+    }
   }
   button{
     outline: none;
@@ -58,10 +76,12 @@ export default {
     border: 0.01rem solid #DFDFDF;
     border-radius: 0.08rem;
     outline: none;
+    border: 0;
     margin-top: 0.15rem;
     height: 0.49rem;
     line-height: 0.49rem;
     text-align: center;
+    background: #72D992;
   }
 
 }

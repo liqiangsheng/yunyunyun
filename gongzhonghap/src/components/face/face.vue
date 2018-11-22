@@ -26,6 +26,9 @@ export default {
     }
   },
   created() {
+    this.$nextTick(function () {
+      document.title = "是否人脸识别";
+    })
   },
   methods:{
     experienceClick(){ //体验人脸识别快速入场

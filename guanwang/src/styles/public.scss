@@ -1,0 +1,155 @@
+/**
+* 这里是SideTopBar和LeftBar和主容器样式
+**/
+
+
+/* 改变element默认圆角 */
+.el-menu{border-radius: 0;background:#ffffff;}
+.el-col { border-radius: 4px;  }
+.bg-purple-dark { background: #99a9bf;  }
+.bg-purple {  background: #d3dce6;  }
+.bg-purple-light {  background: #e5e9f2;  }
+
+/* header样式 */
+.header{ min-width: 1200px;}
+.header .el-menu{background:#455f76;height: 50px; }
+#header .el-menu--horizontal .el-menu-item{ color:#ffffff; line-height: 50px;height: 50px;}
+.el-submenu .el-menu-item{background: #ffffff;}
+.header .el-menu--horizontal .el-menu--dark .el-menu-item:hover{background:#0e73bc;}
+.header .el-menu--horizontal .el-submenu .el-menu{background:#151c23;}
+.el-submenu .el-menu .el-menu-item:hover{background: rgba(29,134,210,0.30);}
+.header .app-wrapper{  position: absolute;  top: 0;  bottom: 0;  width: 100%;  }
+.header .app-wrapper .menu-expanded .el-menu{  height: 100%;  border-radius: 0;  }
+.header .el-menu:after, .el-menu:before {  display: table;  content: "";  }
+.app-wrapper .logo{  width:200px;  height:50px;  line-height:50px;  text-align:center;  font-family:PingFangSC-Medium;  font-size:18px;  color:#ffffff;  position: relative;background:#3a536a;  }
+.header .logo-img {
+  position: absolute;
+  line-height: 50px;
+  display: inline-block;
+  margin-top: 24px;
+  left: 15px;
+  width: 150px;
+}
+.header .logo .name{font-family:PingFangSC-Semibold; font-size:24px;  color:#ffffff;margin-left: 40px;}
+.header .el-autocomplete .el-input__inner{background:rgba(255,255,255,0.4); width:160px;  height:26px;opacity:0.8;  font-family:MicrosoftYaHei;  font-size:12px;  color:#ffffff;  letter-spacing:-0.29px;  text-align:left;border:none; border-radius:100px;}
+.header .header-msg-icon{height: 80px;line-height: 95px;  margin: 0 24px;}
+.header .el-dropdown img{  margin:16px 25px 29px 0;  float: right;}
+.header .el-menu--horizontal>.el-menu-item:hover, .el-menu--horizontal>.el-submenu.is-active .el-submenu__title, .el-menu--horizontal>.el-submenu:hover .el-submenu__title{background:#39b2b6;background:rgba(255, 255, 255, 0.2)}
+#header .el-menu-item.is-active{background:rgba(255, 255, 255, 0.2);border-bottom: 5px solid #39b2b6}
+.header .header-msg{float:right;}
+/* input placeholder */
+.header input::-webkit-input-placeholder{  color: #ffffff !important; }
+.header input:-moz-placeholder{  color: #ffffff !important; }
+.header input::-moz-placeholder{  color: #ffffff !important;  }
+.header input:-ms-input-placeholder{  color: #ffffff !important;  }
+
+
+
+/* 主容器 */
+.main{  display: -ms-flexbox;  display: flex;  position: absolute;  top: 50px;  bottom: 0;  overflow: hidden;  }
+.content-container{  -ms-flex: 1;  flex: 1;  overflow-y: scroll; background:#f4f6f7;z-index: 1;}
+.header .header-right{float: right;  text-align: right; height: 50px;line-height: 50px;cursor:pointer;}
+.my-autocomplete li {  line-height: normal;  padding: 7px;  }
+.my-autocomplete li .name{ text-overflow: ellipsis;  overflow: hidden;}
+.my-autocomplete li .addr{font-size: 12px;  color: #b4b4b4;}
+.my-autocomplete li .highlighted .addr{color: #ddd;}
+.el-autocomplete, .el-dropdown{display: inline-block;  position: relative;}
+.el-dropdown-menu__item{font-size: 14px;}
+.menu-expanded .el-submenu .el-menu .el-menu-item{font-size: 12px;}
+.el-col{border-radius:0;}
+.app-wrapper .menu-expanded{  -ms-flex: 0 0 200px;  flex: 0 0 200px;  width: 200px; }
+.menu-expanded .el-menu--dark{background:#ffffff; }
+/* 左侧菜单 */
+
+.menu-expanded{
+  .left-bar-menu .el-menu--dark .el-menu-item{font-family:"微软雅黑";  font-size:14px;  color:#5c5c5c; }
+  .left-bar-menu .el-menu--dark .el-menu-item,.left-bar-menu .el-menu--dark .el-submenu__title{font-family:"微软雅黑";  font-size:14px;  color:#5c5c5c;}
+  .el-menu--dark .el-menu-item, .el-menu--dark .el-submenu__title{color:#5c5c5c;}
+  .left-bar-menu .el-menu--horizontal.el-menu--dark .el-submenu .el-menu-item.is-active,.left-bar-menu .el-menu-item.is-active{background:#f4f6f7;border-left: 4px solid
+  #39b2b6;}
+  .el-menu--dark .el-menu-item:hover, .el-menu--dark .el-submenu__title:hover{background:#f4f6f7;}
+  .el-menu--dark .el-submenu .el-menu{background:#ffffff;}
+  .el-menu--dark .el-submenu .el-menu .el-menu-item:hover{background:#f4f6f7;}
+}
+
+/*table-pane*/
+.table-pane-box {
+  .el-popover, .el-tabs--border-card{box-shadow:none;border: none;}
+  .el-tabs__header{background:#f4f6f7;border: none;}
+  .el-tabs--border-card>.el-tabs__header .el-tabs__item{transition:none;min-width: 110px;height:40px;line-height:40px;text-align: center;border-radius:4px 4px 0px 0px;background:#ffffff;margin-right: 10px;border:1px solid rgba(221,221,221,0.50);}
+  .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active{background:#39b2b6;color:#ffffff;}
+}
+
+.title {
+  background: #fafafa;
+  padding: 10px;
+  font-size: 14px;
+  color: #000000;
+  border: 1px solid rgba(221, 221, 221, 0.50);
+}
+
+/* 表单字体超过6个字自动换行 */
+.twoLines{
+  .el-form-item__label{
+    padding: 4px 12px 4px 0;
+    line-height: 16px;
+  }
+}
+.el-form-item__label{
+  //min-width: 97px;
+}
+
+.el-table__body-wrapper, .el-table__footer-wrapper, .el-table__header-wrapper{width: 100.1% !important;}
+//.el-table__body-wrapper{overflow: hidden}
+.el-dialog__headerbtn{top:0 !important;}
+.el-dialog__headerbtn:hover{color: #ffffff !important; cursor: pointer;}
+
+/* 上传图片*/
+.el-upload-list--picture-card .el-upload-list__item-actions:hover{opacity:1;}
+.upload-file{display: inline-block}
+//.el-icon-caret-right:before{content: "" !important;}
+.el-upload-list__item-preview {
+  left: 50px;
+  top: 52px;
+  position: absolute;
+  cursor:pointer;
+}
+.el-upload-list__item-delete {
+  position: absolute;
+  right: 48px;
+  top: 59px;
+  font-size: 19px;
+  color: #ffffff;
+   display: flex;
+  cursor:pointer;
+}
+
+/* 跑马灯 */
+.el-carousel{
+  text-align: center;
+}
+
+.nowrap {
+  white-space: nowrap
+}
+.fromBox{
+  white-space: nowrap
+}
+
+/* 时间控件 */
+
+.timeControl{
+  .el-range-editor.el-input__inner{padding:0 3px;}
+  .el-date-editor .el-range-separator{line-height: 29px;}
+  .el-date-editor .el-range__close-icon{width: 13px;}
+  .el-date-editor .el-range__icon{line-height: 29px;}
+}
+
+/* 分页 */
+.box-page .el-pagination{display: inline-block;}
+/* input 候选值 */
+//.el-autocomplete-suggestion.el-popper.my-autocomplete{
+//  z-index: 2040 !important;
+//}
+
+.el-dialog__wrapper{min-width: 1300px;}

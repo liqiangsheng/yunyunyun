@@ -52,7 +52,9 @@ export default {
     }
   },
   created(){
-
+    this.$nextTick(function () {
+      document.title = "智能匹配";
+    })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     console.log(this.userInfo,"ashkdhaskdfk")
     if (this.userInfo){

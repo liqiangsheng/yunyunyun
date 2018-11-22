@@ -46,6 +46,9 @@ export default {
     }
   },
   created(){
+    this.$nextTick(function () {
+      document.title = "智能匹配";
+    })
      let objData = JSON.parse(sessionStorage.getItem("IntelligentMatchingBData"))?JSON.parse(sessionStorage.getItem("IntelligentMatchingBData")):{};
       let postData = (function(value){  //把参数拼接好
         let oStr;
@@ -106,8 +109,11 @@ export default {
     bannerUrlClick(v) { //点击的头像
       console.log(v)
       this.$router.push({path: "/homePage", query: {state: 1,id:v.id,source:"XCX"}}) //去企业主页 1是企业 2是个人
-      this.$router.push({path: "/homePage?state=1&source=XCX&id="+v.id})
-      window.location.reload();
+//      this.$router.push({path: "/homePage?state=1&source=XCX&id="+v.id})
+        setTimeout(()=>{
+          window.location.reload();
+      },100)
+
     }
 
   }

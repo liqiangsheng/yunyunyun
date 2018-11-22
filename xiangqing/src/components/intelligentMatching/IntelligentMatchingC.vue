@@ -17,7 +17,12 @@ export default {
   },
   created(){
      //请求数据 传参回到小程序
-     wx.miniProgram.navigateTo( { url:`/pages/admission/admission?id=1`});
+    let matchingArrStr = JSON.parse(sessionStorage.getItem("matchingArrStr"))
+    console.log(matchingArrStr)
+    setTimeout(()=>{
+      wx.miniProgram.navigateTo({ url:`/pages/face/face?matchingArrStr=${matchingArrStr}`});
+    },1000)
+
   },
   methods:{
 

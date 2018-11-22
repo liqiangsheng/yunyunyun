@@ -50,10 +50,12 @@ export default {
     }
   },
   created(){
+    this.$nextTick(function () {
+      document.title = "登录";
+    })
     if(this.$store.state.multiActivityId){
       InitializationData(this.$store.state.multiActivityId).then(res=>{
-        console.log(res,"hdaskjdksa")
-        this.infoData = res.data;
+        this.infoData = res.data.data;
       })
     }else{
       Toast( '网络有误');
@@ -63,21 +65,25 @@ export default {
   },
   methods:{
     loginBnt(){ //登录
-    console.log(111111)
       setTimeout(()=>{
         var that = this;
         if(!that.telValue) {
           Toast( '请填写手机号');
           return
+        }else {
+          if (!(/^1\d{10}$/.test(this.telValue))) {
+            Toast( '手机号码有误！') ;
+            return
+          }
         }
         if(!that.psdValue) {
           Toast( '请填写验证码');
           return
         }
         login(that.telValue,that.psdValue).then(res=>{
-           console.log(res,"dshajd")
+
            if(res.data.status==true){
-             window.sessionStorage.setItem("userInfo",JSON.stringify(item))
+             window.localStorage.setItem("userInfo",JSON.stringify(res.data))
              this.$router.go(-1);//返回上一层
            }else{
              if (res.statusCode == 500) {
@@ -95,10 +101,6 @@ export default {
 
     },
     telPhone(){ //手机失去焦点
-            if (!(/^1\d{10}$/.test(this.telValue))) {
-              Toast( '手机号码有误！') ;
-              return
-            }
     },
     codePsd(){ //密码失去焦点
 
@@ -116,16 +118,33 @@ export default {
       //请求数据
       telCode(this.telValue).then(res=>{
         if(res.data.status==true){
-          var clearTime = setInterval(function () {
-                  that.codeNum--;
-                  if (that.codeNum <= 0) {
-                    clearInterval(clearTime)
-                      that.code= '重新发送';
-                      that.codeNum= 60;
-                      that.isShow= true;
-                  }
+          if(window.common.apiDomain20020 != "https://dcloud.butongtech.com:20020") {
+            console.log(res.data)
+            this.psdValue = res.data.data;
+            var clearTime = setInterval(function () {
+              that.codeNum--;
+              if (that.codeNum <= 0) {
+                this.psdValue = "";
+                clearInterval(clearTime);
+                that.code= '重新发送';
+                that.codeNum= 60;
+                that.isShow= true;
+              }
 
-                }, 1000)
+            }, 1000)
+          }else{
+            var clearTime = setInterval(function () {
+              that.codeNum--;
+              if (that.codeNum <= 0) {
+                clearInterval(clearTime)
+                that.code= '重新发送';
+                that.codeNum= 60;
+                that.isShow= true;
+              }
+
+            }, 1000)
+          }
+
 
         }else{
           Toast("网络错误，请重试")

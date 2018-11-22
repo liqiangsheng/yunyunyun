@@ -38,13 +38,14 @@
       <div class='IntelligenceBox'>
         <div class='IntelligenceBoxItem'>一　参展商对接信息　一</div>
         <div class='IntelligenceBoxItem1' v-for="(item,inde ) in dataObj.conList">
-          <div class='IntelligenceBoxItem1Index'>{{item.companyName}}</div>
+          <div class='IntelligenceBoxItem1Index'>{{item.companyName}} <img :src="item.topImg" alt="" @click="topShowClicik(item)" v-if='item.conScheduler'></div>
           <div class='IntelligenceBoxItem1Index1'>{{item.dateTime}}
             <span>　|　</span>
             <span> {{item.conLocation}}</span>　
             <span class='IntelligenceBoxItem1Index2'>{{item.conMode}}</span>
           </div>
-          <div class='IntelligenceBoxItem1Index3' v-if='item.conScheduler'>{{item.conScheduler}}</div>
+          <div class='IntelligenceBoxItem1Index3' v-show="item.topShow">{{item.conScheduler}}</div>
+          <!--<div class='IntelligenceBoxItem1Index3' v-show="item.topShow">sdfnkdasnfkasd你是卡的饭卡上的立法是登录房价快速的经费公开乐山大佛昆仑山打开了放开手打开了发生的快乐沪南公路</div>-->
         </div>
         <div class='IntelligenceBoxItem2'>
           组委会咨询热线 400-800-99327
@@ -71,7 +72,9 @@ export default {
     }
   },
   created(){
-
+    this.$nextTick(function () {
+      document.title = "我的门票";
+    })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
     let objListId = JSON.parse(localStorage.getItem("objListId"))
     if(this.userInfo){
@@ -84,10 +87,15 @@ export default {
                item.conMode = item.conMode ? item.conMode : "待定";
              })
            }
-            this.dataObj = res.data;
+           res.data.conList.forEach((item,index)=>{
+             item.topImg = "./static/images/xia.png"
+             item.topShow = false;
+           })
            this.$nextTick (function () {
              this.qrcode(res.data.signCode);
            })
+            this.dataObj = res.data;
+
 
          }else{
            Toast("网络异常，请重试")
@@ -99,6 +107,15 @@ export default {
     }
   },
   methods:{
+    topShowClicik(v){ //点击旋转
+
+      v.topShow = !v.topShow ;
+      if( v.topShow == true){
+        v.topImg = "./static/images/shang.png";
+      }else{
+        v.topImg = "./static/images/xia.png";
+      }
+    },
     goHome(){ //回到首页
       this.$router.push({path:"/index"})
     },
@@ -132,16 +149,16 @@ export default {
   overflow-x: hidden;
   .admissionBox{
     width: 100%;
-    min-height: 732px;
+    min-height: 7.32rem;
     background: #fff;
     /*overflow-y: auto;*/
-    border-top: 1px solid #DFDFDF;
+    border-top: 0.01rem solid #DFDFDF;
   }
   .admissionBoxItem1,.admissionBoxItem2{
     width: 100%;
-    padding: 15px 15px 10px 15px;
+    padding: 0.15rem  0.15rem  0.1rem 0.15rem;
     box-sizing: border-box;
-    border-bottom: 1px solid #DFDFDF;
+    border-bottom: 0.01rem solid #DFDFDF;
   }
   .admissionBoxItem1 img{
     width: 100%;
@@ -151,23 +168,23 @@ export default {
   }
   .admissionBoxItem2 .view{
     width: 100%;
-    height: 45px;
+    height: 0.45rem;
     border-bottom: 1px solid #DFDFDF;
-    line-height: 45px;
+    line-height: 0.45rem;
     display: flex;
   }
   .admissionBoxItem2 .view:last-child{
     border-bottom: none;
   }
   .admissionBoxItem2 .view span:first-child{
-    width: 79px;
-    font-size:14px;
+    width: 0.79rem;
+    font-size:0.14rem;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(102,102,102,1);
   }
   .admissionBoxItem2 .view span:nth-child(2){
-    font-size:14px;
+    font-size:0.14rem;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(102,102,102,1);
@@ -175,8 +192,8 @@ export default {
   }
   .voice{
     width: 100%;
-    height: 45px;
-    line-height: 45px;
+    height: 0.45rem;
+    line-height:0.45rem;
     position: relative;
   }
   .voice span{
@@ -187,23 +204,23 @@ export default {
   }
   .voice .imgae{
     display: block;
-    width: 7px;
-    height: 13px;
+    width: 0.07rem;
+    height: 0.13rem;
     position: absolute;
-    right: 5px;
+    right:0.05rem;
     top:35%;
   }
   .voice .imgae1{
     display: block;
-    width: 25px;
-    height: 24px;
+    width: 0.25rem;
+    height: 0.24rem;
     position: absolute;
-    right: 20px;
-    top:12.5px;
+    right: 0.2rem;
+    top:0.125rem;
   }
   .admissionBoxItem3{
     width: 100%;
-    padding: 20px 15px;
+    padding: 0.2rem 0.15rem;
     box-sizing: border-box;
 
   }
@@ -211,49 +228,49 @@ export default {
     display: inline-block;
   }
   .admissionBoxItem3 img:first-child{
-    width: 115px;
-    height: 154px;
+    width: 1.15rem;
+    height: 1.54rem;
   }
   .admissionBoxItem3 #qrcode{
-    width: 100px;
-    height: 100px;
-    margin-left: 15px;
-    transform: translateY(-27px);
+    width: 1rem;
+    height: 1rem;
+    margin-left: 0.15rem;
+    transform: translateY(-0.27rem);
   }
   .admissionBoxItem4{
     width: 100%;
-    padding: 0 15px;
+    padding: 0 0.15rem;
     box-sizing: border-box;
-    font-size:13px;
+    font-size:0.13rem;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(5,5,9,1);
-    line-height:20px;
+    line-height:0.2rem;
 
   }
   .admissionBoxItem5{
     width: 100%;
-    padding: 20px 15px;
+    padding: 0.2rem 0.15rem;
     box-sizing: border-box;
 
   }
   .admissionBoxItem5  #qrcode{
     display: block;
-    width: 115px;
-    height: 115px;
+    width: 1.15rem;
+    height: 1.15rem;
     margin: 0 auto;
   }
 
   .scrollTop{
-    width: 34px;
-    height: 34px;
+    width: 0.34rem;
+    height: 0.34rem;
     position: fixed;
     right: 5%;
-    bottom: 30px;
+    bottom: 0.3rem;
     border-radius: 50%;
     border: 1px solid black;
-    font-size: 12px;
-    line-height: 34px;
+    font-size: 0.12rem;
+    line-height: .34rem;
     text-align: center;
     background: #000;
     color: #fff;
@@ -267,52 +284,61 @@ export default {
   }
   .IntelligenceBoxItem{
     width: 100%;
-    font-size:15px;
+    font-size:.15rem;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(5,5,9,1);
-    margin: 15px;
-    line-height:35px;
+    margin: .15rem;
+    line-height:.35rem;
     text-align: center;
   }
   .IntelligenceBoxItem1{
     width: 90%;
     margin: 0 auto;
     /* height: 60px; */
-    margin-bottom:10px;
-    padding-bottom: 15px;
+    margin-bottom:.1rem;
+    padding-bottom: 0.15rem;
     background:rgba(5,5,9,0.05);
   }
   .IntelligenceBoxItem2{
     width: 100%;
-    height:23px;
-    font-size:12px;
+    height: .23rem;
+    font-size:0.12rem;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(153,153,153,1);
-    line-height:23px;
+    line-height:0.23rem;
     text-align: center;
-    padding-bottom: 10px;
+    padding-bottom: .1rem;
   }
   .IntelligenceBoxItem1Index{
     width: 95%;
     margin: 0 auto;
-    height:28px;
-    font-size:15px;
+    height:.28rem;
+    font-size:.15rem;
     font-family:PingFangSC-Semibold;
     font-weight:600;
     color:rgba(5,5,9,1);
-    line-height:28px;
+    line-height:.28rem;
+     position: relative;
+    img{
+      display: block;
+      position: absolute;
+      top: 0.24rem;
+      right: 0.1rem;
+      width: 0.1rem;
+      height: 0.06rem;
+    }
   }
   .IntelligenceBoxItem1Index1{
     width: 95%;
     margin: 0 auto;
-    height:23px;
-    font-size:10px;
+    /*height:0.23rem;*/
+    font-size:0.1rem;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(102,102,102,1);
-    line-height:23px;
+    line-height:0.23rem;
   }
   .IntelligenceBoxItem1Index2{
     font-family:PingFangSC-Regular;
@@ -322,11 +348,11 @@ export default {
   .IntelligenceBoxItem1Index3{
     width: 90%;
     margin: 0 auto;
-    margin-top: 10px;
-    font-size:12px;
+    margin-top: 0.1rem;
+    font-size:0.12rem;
     font-family:PingFangSC-Regular;
     font-weight:400;
-    padding: 15px;
+    padding: 0.15rem;
     box-sizing: border-box;
     color:rgba(153,153,153,1);
     background:#fff;

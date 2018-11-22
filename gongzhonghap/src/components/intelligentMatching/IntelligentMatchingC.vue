@@ -16,6 +16,9 @@ export default {
     }
   },
   created(){
+    this.$nextTick(function () {
+      document.title = "智能匹配";
+    })
      //请求数据 传参回到小程序
     let matchingArrStr = JSON.parse(sessionStorage.getItem("matchingArrStr"))
     console.log(matchingArrStr)

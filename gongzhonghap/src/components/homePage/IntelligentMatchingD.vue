@@ -1,55 +1,62 @@
 <template>
   <div id="IntelligentMatchingD">
         <div class="IntelligentMatchingDHeader" >
-             <h3>U I设计界的黑暗料理， 一些复杂且能把用户搞蒙圈的操作，引诱型强制付费陷阱，能把用户搞蒙圈的操作</h3>
-            <div class="IntelligentMatchingDHeaderIndex">UI设计 | 构图 | 隐喻</div>
+             <h3>{{messageArr.title}}</h3>
+            <div class="IntelligentMatchingDHeaderIndex">
+              <span v-for="(item,index) in messageArr.contentTagVoList">{{item.tagName}} / </span>
+            </div>
              <div class="IntelligentMatchingDHeaderIndex1">
-               <img src="/static/images/banner1.png" alt="">
+               <img :src="messageArr.bannerDetailUrl" alt="">
              </div>
-             <div class="IntelligentMatchingDHeaderIndex2">
-               <img src="/static/images/4.png" alt="">
+             <div class="IntelligentMatchingDHeaderIndex2" v-if="!!messageArr.userDp">
+               <img :src="messageArr.userDp" alt="" @click="authorClcik(messageArr.orgId,messageArr.createdUser)">
                <button @click="giveClick">+ 关注</button>
              </div>
-             <div class="IntelligentMatchingDHeaderIndex3">
+             <div class="IntelligentMatchingDHeaderIndex3" v-if="messageArr.summary">
                <img src="/static/images/shuangying1.png" alt="" style="margin: 0 0.1rem">
-               黑暗设计是指UI设计师设计一些复杂的，能把用户搞蒙圈的操作。或者说服用户在首页做一些事情，比如当你打开软件时，弹出来一个投票的窗口。
+               {{messageArr.summary}}
                <img src="/static/images/shuangying.png" alt="">
              </div>
         </div>
-        <div class="IntelligentMatchingDItem" v-for="(item,index) in messageArr">
-          <h5><span></span>{{item.title}}</h5>
-          <div class="IntelligentMatchingDItemIndex">{{item.message}}</div>
-          <div v-if="!!item.logoUrl" class="IntelligentMatchingDItemIndex1"><img :src="item.logoUrl" alt=""></div>
+        <div class="IntelligentMatchingDItem" v-for="(item,index) in messageArr.informationChildrenTitleVoList">
+          <h5 v-if="!!item.titleName"><span></span>{{item.titleName}}</h5>
+          <div class="IntelligentMatchingDItemIndex" v-for="(item1,index1) in item.titleInformationList">
+            <span v-if="!!item1.titleInformation">{{item1.titleInformation}}</span>
+            <img v-if="!!item1.titleImg" :src="item1.titleImg" alt="">
+          </div>
+          <!--<div v-if="!!item.logoUrl" class="IntelligentMatchingDItemIndex1"><img :src="item.logoUrl" alt=""></div>-->
         </div>
         <div class="IntelligentMatchingDItem1">
-          <img src="/static/images/zan1.png" alt="" @click="giveClick">1,970 赞
+          <img src="/static/images/zan1.png" alt="" @click="giveClick">{{messageArr.laudedCount}} 赞
         </div>
       <div class="IntelligentMatchingDItem2">
          <img src="/static/images/banqun.png" alt="">版 权
       </div>
     <div class="IntelligentMatchingDItem3">
-         本文版权归不同科技所有 / 未经许可不得转载或翻译
+         <span v-if="messageArr.isOriginal==1">本文版权归不同科技所有 / 未经许可不得转载或翻译</span>
+         <span v-if="messageArr.isOriginal==0"><span v-if="!!messageArr.fromReprint">转载自：{{messageArr.fromReprint}} </span><span v-if="!!messageArr.source">/ 文章来源：{{messageArr.source}} </span><span v-if="!!messageArr.author">/ 作者：{{messageArr.author}}</span></span>
       </div>
 
     <div class="IntelligentMatchingDItem4">
      <!--  //有用的-->
     </div>
-    <ul class="IntelligentMatchingDItem5">
+    <ul class="IntelligentMatchingDItem5" @click="giveClick">
       <li v-for="(item,index) in commenArr">
         <div class="IntelligentMatchingDItemL">
-          <img :src="item.banner" alt="">
+          <img :src="item.sysUserContentVo.userDp?item.sysUserContentVo.userDp:'/static/images/defultphoto.png'" alt="">
         </div>
         <div class="IntelligentMatchingDItemR">
-            <h5>{{item.title}}</h5>
-            <div class="time">{{item.time}}分钟前</div>
+            <h5>{{item.sysUserContentVo.name}}</h5>
+            <div class="time">{{item.createdAt|formatTime1}}</div>
             <div class="commen">
-              {{item.commen}}
-               <div class="zan1" @click="giveClick"><img src="/static/images/zan1.png" alt="">{{item.zan}}</div>
+              {{item.commentContent}}
+               <div class="zan1"><img src="/static/images/zan1.png" alt="">{{item.laudedCount}}</div>
             </div>
-            <ul class="ReplyUl">
-               <li v-for="(item1,index1) in item.Reply"  class="ReplyLi">
-                 <span>{{item1.title}}:</span>{{item1.commen}} <div @click="giveClick"><img src="/static/images/zan1.png" alt=""> {{item1.zan}}</div>
+            <ul class="ReplyUl" v-if="item.replyVoList.length>0">
+               <li v-for="(item1,index1) in item.replyVoList"  class="ReplyLi">
+                 <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div @click="giveClick"><img src="/static/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
                </li>
+                <span style="width: 100%;display: inline-block;text-align: center" v-if="item.replyListTotal>2">共有{{item.replyListTotal}}条评论</span>
             </ul>
         </div>
       </li>
@@ -77,36 +84,50 @@
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
+  import { informationId,findCommentsByInfoId } from '../../assets/js/promiseHttp'; //数据
 export default {
   name: 'IntelligentMatchingD',
   data(){
     return{
-      messageArr:[
-        {title:"引诱型强制付费",message:"Equifax 这款软件主要提供信用卡方面的资讯，新用户会免费获得一个月的服务。这项服务在国外的市场需求还是很好的，所以会很诱人。",logoUrl:"./static/images/banner1.png"},
-        {title:"引诱型强制付费",message:"Equifax 这款软件主要提供信用卡方面的资讯，新用户会免费获得一个月的服务。这项服务在国外的市场需求还是很好的，所以会很诱人。",logoUrl:"./static/images/banner2.png"},
-        {title:"引诱型强制付费",message:"在我看来，黑暗模式在UI设计中并不是绝对的坏。如果我们仔细观察，黑暗模式可以帮助企业或赞助做广告，从而获得更高的订阅量，提高业绩公平地说，当UI设计师利用他们的创造力创造出这种模式时，并不意味着UI设计师不知道数字世界中道德界限的定义。UI设计人员可能必须在业务模型的一部分设计出这种模式，比如航空公司或旅游公司。",logoUrl:""}
-      ],
-        htmlContent:"<div>11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的1 + 1111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的11111111111111111我是最帅的</div>",
-        commenArr:[
-          {banner:"./static/images/1.png",time:"3",title:"fanner Walker",commen:"你用的是什么软件啊你用的是什么软件啊你用的是什么软件啊你用的是什么软件啊你用的是什么软件啊你用的是什么软件啊？",zan:"9.48万",Reply:[
-            {title:"美丽的娜娜小姐",commen:"点赞后很快就知道啦",zan:"948"},{title:"美丽的娜娜小姐",commen:"对呀，他写的文章太棒了！我的第六感告诉我，作者是一个很感性的人",zan:"948"},
-          ]
-          },  {banner:"./static/images/2.png",time:"3",title:"fanner Walker",commen:"你用的是什么软件啊？",zan:"9.48万",Reply:[
-            {title:"美丽的娜娜小姐",commen:"点赞后很快就知道啦",zan:"948"},{title:"美丽的娜娜小姐",commen:"对呀，他写的文章太棒了！我的第六感告诉我，作者是一个很感性的人",zan:"948"},
-          ]
-          },  {banner:"./static/images/3.png",time:"3",title:"fanner Walker",commen:"你用的是什么软件啊？",zan:"9.48万",Reply:[
-            {title:"美丽的娜娜小姐",commen:"点赞后很快就知道啦",zan:"948"},{title:"美丽的娜娜小姐",commen:"对呀，他写的文章太棒了！我的第六感告诉我，作者是一个很感性的人",zan:"948"},
-          ]
-          },
-        ]
+      messageArr:{},//文章
+       commenArr:[], //评论的数据
+      p:1, //分页
+      s:20,//分页
     }
   },
   created(){
+    this.$nextTick(function () {
+      document.title = "主页详情";
+    })
+    console.log(this.$router.history.current.query.id)
+    if(this.$router.history.current.query.id){
+          informationId(this.$router.history.current.query.id).then(res=>{
+            if(res.status == true){
+                res.data.userDp = res.data.sysUserContentVo.userDp?res.data.sysUserContentVo.userDp:"./static/images/defultphoto.png";
+                this.messageArr = res.data
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+      findCommentsByInfoId(this.$router.history.current.query.id,this.p,this.s).then(res=>{ //7
+
+         if(res.status==true){
+           this.commenArr = res.data;
+         }else{
+
+         }
+      })
+    }else {
+      this.$router.go(-1)
+    }
 
   },
   methods:{
     giveClick(){ //点击点赞  //下载IOS 或则安卓
-
+          console.log("去下载")
+    },
+    authorClcik(v,i){//点击头像
+      this.$router.push({path: "/homePage", query: {state: v,id:i,source:"XCX"}}) //去企业主页 1是企业 2是个人
     }
   }
 }
@@ -218,6 +239,11 @@ export default {
        color:rgba(5,5,9,1);
        line-height: 0.28rem;
        margin-bottom: 0.1rem;
+       img{
+         display: block;
+         width: 100%;
+         margin-top: 0.1rem;
+       }
      }
      .IntelligentMatchingDItemIndex1{
        width: 100%;

@@ -119,6 +119,9 @@ export default {
     }
   },
   created(){
+    this.$nextTick(function () {
+      document.title = "票务选择";
+    })
       console.log(this.$store.state.multiActivityId)
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
       if( this.userInfo){

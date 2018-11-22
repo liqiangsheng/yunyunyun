@@ -29,6 +29,9 @@ export default {
     }
   },
   created(){
+    this.$nextTick(function () {
+      document.title = "智能匹配";
+    })
      this.listData = JSON.stringify(this.componentData);
   },
   methods:{

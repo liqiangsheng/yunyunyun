@@ -1,11 +1,14 @@
 <template>
   <div id="homePageB">
+    <div>
+
+    </div>
     <!------个人----->
-    <div class="swiper-container" v-if="displayState==2">
+    <div class="swiper-container" v-if="displayState==2&&objData.designerUser.userImagesList.length>0">
       <div class="swiper-wrapper">
-        <div class="swiper-slide" v-for="(item,index) in dataList"  ref="dasdas">
+        <div class="swiper-slide" v-for="(item,index) in objData.designerUser.userImagesList"  ref="dasdas">
           <div class="imgIs">
-            <img :src="item.bannerUrl" />
+            <img :src="item.imageUrl" />
           </div>
         </div>
       </div>
@@ -13,93 +16,93 @@
     </div>
     <!------个人----->
      <div class="homePageBItem" v-if="displayState==2">
-       <h5>{{objData.title}}</h5>
-       <p>
-         <span>{{objData.summary}}</span>
+       <h5 v-if="!!objData.designerUser.motto">{{objData.designerUser.motto}}</h5>
+       <p v-if="!!objData.designerUser.summary">
+         <span>{{objData.designerUser.summary}}</span>
        </p>
      </div>
     <!--奖项--> <!------个人----->
-    <div class="homePageBItem2" v-if="displayState==2">
+    <div class="homePageBItem2" v-if="displayState==2&&objData.designerUser.honordItems.length>0">
         <h5><img src="/static/images/ww.png" alt="">奖项</h5>
         <ul>
-          <li v-for="(item,index) in prizeArr">{{item}}</li>
+          <li v-for="(item,index) in objData.designerUser.honordItems">{{item}}</li>
         </ul>
     </div>
     <!--主要作品--> <!------个人----->
-    <div class="homePageBItem3" v-if="displayState==2">
+    <div class="homePageBItem3" v-if="displayState==2&&objData.designerUser.designerHonorList.length>0">
       <h5><img src="/static/images/qq.png" alt="">主要作品</h5>
       <ul>
-        <li v-for="(item,index) in mainProduct">
-          <img class="homePageBItem3Img" :src="item.bannerUrl" alt="" v-if="item.state==1">
-          <img class="homePageBItem3Img1"  :src="item.bannerUrl" alt="" v-if="item.state==2">
-          <p class="homePageBItem3P" v-if="item.state==1">
-            {{item.value}}
+        <li v-for="(item,index) in objData.designerUser.designerHonorList">
+          <img class="homePageBItem3Img" :src="item.imageUrl" alt="" v-if="item.isHorizontal==true">
+          <img class="homePageBItem3Img1"  :src="item.imageUrl" alt="" v-if="item.isHorizontal==false">
+          <p class="homePageBItem3P" v-if="item.isHorizontal==true">
+            {{item.name}}
           </p>
-          <p class="homePageBItem3P1" v-if="item.state==2">
-            {{item.value}}
+          <p class="homePageBItem3P1" v-if="item.isHorizontal==false">
+            {{item.name}}
           </p>
         </li>
       </ul>
     </div>
     <!------企业 主攻领域----->
-    <div class="homePageBItem4" v-if="displayState==1">
+    <div class="homePageBItem4" v-if="displayState==1&&!!objData.majorScope">
         <h5>主攻领域</h5>
         <p>
-          {{mainAttack}}
+          {{objData.majorScope}}
         </p>
     </div>
     <!--奖项--> <!------企业----->
-    <div class="homePageBItem2" v-if="displayState==1">
+    <div class="homePageBItem2" v-if="displayState==1&&objData.honordItems.length>0">
       <h5><img src="/static/images/ww.png" alt="">奖项</h5>
       <ul>
-        <li v-for="(item,index) in prizeArr">{{item}}</li>
+        <li v-for="(item,index) in objData.honordItems">{{item}}</li>
       </ul>
     </div>
     <!--知识专利--> <!------企业----->
-    <div class="homePageBItem5" v-if="displayState==1">
+    <div class="homePageBItem5" v-if="displayState==1&&objData.companyExtendType1.length>0">
       <h5><img src="/static/images/yyy.png" alt="">知识专利 <span>（发明、实用新型、外观）</span></h5>
       <ul>
         <!--<li v-for="(item,index) in knowledgeArr">-->
-        <li v-if="!!knowledgeArr">
-          <img :src="knowledgeArr[0].bannerUrl" alt="">
+        <li v-if="!!objData.companyExtendType1">
+          <img :src="objData.companyExtendType1[0].imageUrl" alt="">
           <p>
-            {{knowledgeArr[0].value}}
+            {{objData.companyExtendType1[0].name}}
           </p>
         </li>
-        <div class="lookMore" v-if="!!knowledgeArr&&knowledgeArr.length>1" @click="lookmoreClick(knowledgeArr)">
+        <div class="lookMore" v-if="!!objData.companyExtendType1&&objData.companyExtendType1.length>1" @click="lookmoreClick(objData.companyExtendType1)">
           查看更多
           <img src="/static/images/jiantou.png" alt="">
         </div>
       </ul>
     </div>
     <!--经典项目/作品--> <!------企业----->
-    <div class="homePageBItem6" v-if="displayState==1">
+    <div class="homePageBItem6" v-if="displayState==1&&objData.companyExtendType2.length>0">
       <h5><img src="/static/images/qq.png" alt="">经典项目/作品</h5>
       <ul>
         <!--<li v-for="(item,index) in knowledgeArr">-->
-        <li v-if="!!classicArr">
-          <img :src="classicArr[0].bannerUrl" alt="">
+        <li v-if="!!objData.companyExtendType2">
+          <img :src="objData.companyExtendType2[0].imageUrl" alt="">
           <p>
-            {{classicArr[0].value}}
+            {{objData.companyExtendType2[0].name}}
           </p>
         </li>
-        <div class="lookMore" v-if="!!classicArr&&classicArr.length>1" @click="lookmoreClick(classicArr)">
+        <div class="lookMore" v-if="!!objData.companyExtendType2&&objData.companyExtendType2.length>1" @click="lookmoreClick(objData.companyExtendType2)">
           查看更多
           <img src="/static/images/jiantou.png" alt="">
         </div>
       </ul>
     </div>
     <!--合作品牌--> <!------企业----->
-    <div class="homePageBItem7" v-if="displayState==1">
+    <div class="homePageBItem7" v-if="displayState==1&&objData.companyCooperationBrandsList.leng>0">
       <h5><img src="/static/images/hh.png" alt="">合作品牌</h5>
       <ul>
-        <li v-for="(item,index) in cooperationArr">
-          <img :src="item" alt="">
+        <li v-for="(item,index) in objData.companyCooperationBrandsList">
+          <img :src="item.imageUrl" alt="">
         </li>
 
       </ul>
     </div>
-    <div class="homePageBItem1">
+    <div class="homePageBItem1"  v-if="requestA =='XCX'" @click="contactClick">
       联系不同，与我们共享设计生态
       <img src="/static/images/goBack.png" alt="">
     </div>
@@ -107,47 +110,22 @@
 </template>
 
 <script>
+
 export default {
   name: 'homePageB',
-  props:["displayState","requestA"],
+  props:["displayState","requestA","objData"],
   data(){
     return{
-      cooperationArr:[ //合作品牌
-        "./static/images/zhifubao.jpg", "./static/images/zhifubao.jpg", "./static/images/zhifubao.jpg", "./static/images/zhifubao.jpg", "./static/images/zhifubao.jpg", "./static/images/zhifubao.jpg", "./static/images/zhifubao.jpg", "./static/images/zhifubao.jpg",
-      ],
-      classicArr:[ //经典作品
-        {bannerUrl:"./static/images/banner1.png",value:"2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理"},
-        {bannerUrl:"./static/images/11111.jpg",value:"2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理"},
-        {bannerUrl:"./static/images/banner3.png",value:"2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果"},
-        {bannerUrl:"./static/images/banner4.png",value:"2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理"},
-      ],
-      knowledgeArr:[ //知识产权
-        {bannerUrl:"./static/images/banner1.png",value:"2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理"},
-        {bannerUrl:"./static/images/banner4.png",value:"2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理"},
-      ],
-      mainAttack:"产品设计策略／品牌体验设计／多媒体与商业摄影／空间体验设计", //助攻领域
-      mainProduct:[ //主要作品
-        {bannerUrl:"./static/images/banner1.png",state:1,value:"2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理"},
-        {bannerUrl:"./static/images/11111.jpg",state:2,value:"2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理"},
-        {bannerUrl:"./static/images/banner3.png",state:1,value:"2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果"},
-        {bannerUrl:"./static/images/banner4.png",state:1,value:"2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理"},
-        ],
-      prizeArr:["2006 红点奖最杰出设计师奖","2005 美国芝加哥科技协会最佳设计奖","纽约超时尚大奖读者评选的最佳餐厅设计奖","美国芝加哥科技协会最佳设计奖","2001 美国芝加哥科技协会最佳设计奖"], //奖项
-      dataList:[  //轮播
-        {bannerUrl:"./static/images/banner1.png"},
-        {bannerUrl:"./static/images/banner2.png"},
-        {bannerUrl:"./static/images/banner3.png"},
-        {bannerUrl:"./static/images/banner4.png"},
-      ],
-      objData:{
-        title:"2018苹果最新规范及适配整理,又来了一大波设又来了一大波设又来了一大波设又来了一大波设又来了一大波设",summary:"2018苹果最新规范及适配整理,又来了一大2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理2018苹果最新规范及适配整理波设又来了一大波设又来了一大波设又来了一大波设又来了一大波设2018苹果最新规范及适配整理,又来了一大波设又来了一大波设又来了一大波设又来了一大波设又来了一大波设"
-      }
+
     }
   },
   created(){
-
+     console.log(this.objData,"ashkfsdkl")
   },
   methods:{
+    contactClick(){ //联系不同
+      this.$router.push({path:"/contact"})
+    },
     lookmoreClick(v){ //查看更多
       window.localStorage.setItem("lookmoreDetail",JSON.stringify(v)) // 把数据保存在本地另开页面展示
       this.$router.push({path:"/lookMore"})

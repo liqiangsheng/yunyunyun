@@ -55,14 +55,16 @@ export default {
       activityId:{}, //活动id
       userId:{}, //用户id
       componentData:{}, //传给组件的东西
-      corpDomainsArr:[],//公司的领域
+    corpDomainsArr:[],//公司的领域
       interestedDomainsArr:[],//感兴趣的领域
-    }
+  }
   },
   watch:{
   },
   created(){
-    console.log(this.listData,"数据")
+    this.$nextTick(function () {
+      document.title = "报名活动资料填写";
+    })
 
     this.listData.forEach((item,index)=>{
       item.messageName = "请选择";
@@ -87,7 +89,7 @@ export default {
   },
   methods:{
     nextClick(){ //下一步
-      this.listData= [...this.listData,this.activityId,this.userId];
+
       for (let index=0;index<this.listData.length;index++){ //必填拦截
         if(this.listData[index].allowEmpty == false){
           if(!this.listData[index].value||this.listData[index].value == ""){
@@ -96,6 +98,7 @@ export default {
           }
         }
       }
+      this.listData= [...this.listData,this.activityId,this.userId];
       sessionStorage.setItem("RegistrationData",JSON.stringify(this.listData));
       this.$router.push({path:"/IntelligentMatching"})
 

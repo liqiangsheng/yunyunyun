@@ -62,7 +62,7 @@
 }
 .headerSkill span{
   height: 0.19rem;
-  max-width: 100%;
+  max-width:2.4rem;
   display: inline-block;
   line-height: 0.19rem;
   padding: 0 0.08rem;
@@ -73,6 +73,8 @@
   background: #969696;
   opacity: 0.6;
   overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap
 }
 .headerUl{
   width: 100%;

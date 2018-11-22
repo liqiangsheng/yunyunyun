@@ -35,13 +35,13 @@
     <div class='acknowledgementOfOrderFoot'>
     <div class='acknowledgementOfOrderFootLeft'>
     <div>
-    <span>实付：</span>
+    <span>实付:</span>
     <span style='color:#FE5F5F'>¥ {{Total}}</span>
     </div>
     <div>
-    <span>原价：</span>
+    <span>原价:</span>
     <span style='color:#FE5F5F'>¥ {{orginTotal}}</span>
-    <span>立减：</span>
+    <span>立减:</span>
     <span style='color:#FE5F5F'>¥ {{erectSubtraction}}</span>
     </div>
     </div>
@@ -80,6 +80,9 @@ export default {
     }
   },
   created() {
+    this.$nextTick(function () {
+      document.title = "购票确认";
+    })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
     if(this.userInfo){
        this.userID = this.userInfo.data.user_id;
@@ -87,6 +90,18 @@ export default {
       this.buyData = JSON.parse(sessionStorage.getItem("buyData"));
       this. registrationData = JSON.parse(sessionStorage.getItem("RegistrationData"));
       this.matchingArrStr = JSON.parse(sessionStorage.getItem("matchingArrStr"));
+      let a=0,b=0,c=0;//价格计算赋值
+      this.buyData.map((item,index)=>{
+        a += item.payPrice; //合计
+        b += item.originalPrice;//总额
+
+      })
+      console.log(b-a)
+       c = b-a;//立减
+      console.log(c)
+        this.Total=a;
+        this.orginTotal=b;
+        this.erectSubtraction=c;
     }else{
       Toast("登录出错啦！请重新登录")
     }
@@ -148,12 +163,12 @@ export default {
             this.$router.push({path:"/admission"})
           } else {//去支付页面
 
-            Toast("请选择免费活动")
-            //  wx.navigateTo({
-            //    url: '../../pages/payment/payment?id=' + res.data.data.id,
-            //  })
+//            Toast("请选择免费活动")
+            this.$store.dispatch("payId",res.data.id); //vuex保存支付Id
+            this.$router.push({path:"/payH5"}) //去支付页面
           }
         }else{
+
           Toast("网络异常，请重试")
         }
       })
@@ -370,22 +385,23 @@ export default {
   }
   .acknowledgementOfOrderFootLeft div:first-child{
     width: 100%;
-    font-size:0.17rem;
     font-family:PingFangSC-Medium;
     font-weight:500;
     color:rgba(5,5,9,1);
-
+    font-size: 0.1rem;
   }
   .acknowledgementOfOrderFootLeft div:last-child{
     width: 100%;
     font-size:0.01rem;
+    font-size: 0.1rem;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(102,102,102,1);
 
   }
   .acknowledgementOfOrderFootLeft  div:last-child span:nth-child(3){
-    margin-left: 0.2rem;
+    font-size: 0.1rem;
+    margin-left: 0.05rem;
   }
   .acknowledgementOfOrderFootRight{
     flex: 1;

@@ -117,15 +117,28 @@ export default {
 
   },
   created(){
-
-    activityListData(this.p,this.s).then(res=>{ //出初始数据
-
-     if(res.data.status == true){
-        this.objList =res.data.data;
-     }else{
-       Tost("网络异常，请重试")
-     }
+    this.$nextTick(function () {
+      document.title = "不同科技";
     })
+
+    console.log(JSON.parse(localStorage.getItem("indexList")))
+    setTimeout(()=>{
+      if(!!JSON.parse(localStorage.getItem("indexList"))){
+
+        this.objList=JSON.parse(localStorage.getItem("indexList"))
+      }else {
+        activityListData(this.p,this.s).then(res=>{ //出初始数据
+
+          if(res.data.status == true){
+            this.objList =res.data.data;
+          }else{
+            Tost("网络异常，请重试")
+          }
+        })
+      }
+    },100)
+
+
   },
   methods:{
     goDetail(item){//去活动详情
@@ -135,7 +148,7 @@ export default {
 
     },
       bannerCLICK(i){
-        console.log(i)
+
 
       },
     tabarClick(i){  //tabar点击事件

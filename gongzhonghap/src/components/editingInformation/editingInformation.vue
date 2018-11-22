@@ -89,6 +89,9 @@ export default {
     }
   },
   created(){
+    this.$nextTick(function () {
+      document.title = "个人资料编辑";
+    })
     let data = JSON.parse(localStorage.getItem("userInfo"));
     if(!!data){
       this.token = data.data.access_token;
@@ -239,7 +242,7 @@ export default {
             outline: none;
             height: 100%;
             text-align: right;
-            max-width: 80%;
+           width: 1.6rem;
           }
           #upload_file{
             position: absolute;

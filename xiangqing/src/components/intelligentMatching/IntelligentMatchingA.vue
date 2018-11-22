@@ -6,11 +6,11 @@
       </div>
       <ul class="IntelligentMatchingAItem1">
         <li v-for="(item,index) in listData">
-           <h5>{{item.title}} <span>（限选{{item.xuanNum}}个，{{item.bixuan}}）</span></h5>
+           <h5>{{item.name}} <span>（限选{{item.limited}}个，<span v-if="item.allowEmpty==true">必选</span><span  v-if="item.allowEmpty==false">非必选</span>）</span></h5>
            <div class="IntelligentMatchingAItemIndex" ref="companyStyle">
-             <span v-for="(item1,index1) in item.listArr" :class="{active:item1.check==true}" @click="selectClick(item,index,item1,index1)">{{item1.name}}</span>
+             <span v-for="(item1,index1) in item.tagList" :class="{active:item1.check==true}" @click="selectClick(item,index,item1,index1)">{{item1.name}}</span>
            </div>
-           <div class="IntelligentMatchingAItemIndex1" v-if="item.height>92" v-show="listShow">
+           <div class="IntelligentMatchingAItemIndex1">
              <span @click="moreClick(item,index)">更多领域</span> <img src="/static/images/shuangjiantou.png" alt="">
            </div>
         </li>
@@ -26,6 +26,7 @@
 <script>
   import { Toast } from 'mint-ui';  //弹框
   import IntelligentMatchingAComponent from "./IntelligentMatchingAComponent.vue" //更多的组件
+  import {getData} from "../../assets/js/promiseHttp"  //数据请求
 export default {
     components:{
       IntelligentMatchingAComponent
@@ -37,56 +38,85 @@ export default {
       componentIndex:0, //传数据的下标
       componentData:"", //传数据给组件
       listShow:false, //初始化显示
-      listData:[ //列表数据
-         {listArr:[{name:"I1T电子",check:false,id:1},{name:"I2T电子",check:false,id:2},{name:"I3T电子",check:false,id:3},{name:"IT电子",check:false,id:4},{name:"IT电子",check:false,id:5},{name:"IT电子",check:false,id:6},{name:"IT电子",check:false,id:7},{name:"IT电子",check:false,id:8},{name:"IT电子",check:false,id:9},{name:"IT电子",check:false,id:10},{name:"IT电子",check:false,id:11},{name:"IT电子",check:false,id:12},],title:"产业领域",xuanNum:2,bixuan:"必选",xuanArr:[],height:94},
-         {listArr:[{name:"蓝牙音响",check:false,id:1},{name:"蓝牙音响",check:false,id:2},{name:"蓝牙音响",check:false,id:3},{name:"蓝牙音响",check:false,id:4},{name:"蓝牙音响",check:false,id:5},{name:"蓝牙音响",check:false,id:6},{name:"蓝牙音响",check:false,id:7},{name:"蓝牙音响",check:false,id:8},{name:"蓝牙音响",check:false,id:10},{name:"蓝牙音响",check:false,id:11},],title:"具体产品",xuanNum:2,bixuan:"非必选",xuanArr:[],height:94},
-         {listArr:[{name:"生产型企业",check:false,id:1},{name:"生产型企业",check:false,id:2},{name:"生产型企业",check:false,id:3},{name:"生产型企业",check:false,id:4},],title:"公司属性",xuanNum:2,bixuan:"必选",xuanArr:[],height:94},
-         {listArr:[{name:"北京",check:false,id:1},{name:"北京",check:false,id:2},{name:"北京",check:false,id:3},{name:"北京",check:false,id:4},{name:"北京",check:false,id:5},],title:"地区",xuanNum:2,bixuan:"非必选",xuanArr:[],height:94},
-        ]
+      listData:[], //列表数据
     }
   },
   watch:{
     "listData": {
       handler:function (new1,old1) {
-//         console.log(old1,"djsaldlasldla")
-//         console.log(new1,"djsaldlasldla")
+
         this.listData = new1;
       },
       deep:true,
     }
   },
   created(){
+//    console.log(this.$Request.token)
+    let token = JSON.parse(localStorage.getItem("token"));
+    console.log(token,"sadasda")
+    getData(token,'/apis/operation/tagGroup/all').then(res=>{
 
-    setTimeout(()=>{
-      let that = this;
-      this.$nextTick(function(){
-        that.$refs.companyStyle.map((item,index)=>{
-          that.listData.forEach((item1,index1)=>{
-            if(index ==index1){
-              item1.height = item.offsetHeight;
-            }
-          })
-        })
-      })
-      that.listShow = true;
-    },0.000001)
+     if(res.status == true){
+       res.data.forEach((item,index)=>{
+         item.xuanArr = [];
+         item.tagList.forEach((item1,index1)=>{
+             item1.check = false;
+         })
+       })
+       this.listData = res.data;
+       console.log(this.listData ,"dsadasdas")
+     }else{
+       Toast("网络出错啦！请重试")
+     }
+   });
+
+
   },
   methods:{
+
     okClick(){ //确定匹配
-      if(this.listData[0].xuanArr.length<=0){
-        Toast("产业领域为必选项，请选择");
+      let obj={};
+      if(this.listData[1].xuanArr.length<=0){
+        Toast(this.listData[1].name+"为必选项，请选择");
         return
       }
-      if(this.listData[2].xuanArr.length<=0){
-        Toast("公司属性为必选项，请选择");
+      if(this.listData[3].xuanArr.length<=0){
+        Toast(this.listData[3].name+"为必选项，请选择");
         return
       }
-      console.log(111111)
+
+      this.listData.forEach((item,index)=> {
+        item.newArr = [];
+
+        if (index == 0) {
+          this.listData[0].xuanArr.forEach((item1, index1) => {
+            this.listData[0].newArr.push(item1.code)
+          })
+        }
+        if (index == 1) {
+          this.listData[1].xuanArr.forEach((item1, index1) => {
+            this.listData[1].newArr.push(item1.code)
+          })
+        }
+        if (index == 2) {
+          this.listData[2].xuanArr.forEach((item1, index1) => {
+            this.listData[2].newArr.push(item1.code)
+          })
+        }
+        if (index == 3) {
+          this.listData[3].xuanArr.forEach((item1, index1) => {
+            this.listData[3].newArr.push(item1.code)
+          })
+        }
+        obj[item.id+""]=item.newArr.join(",");
+
+      })
+         sessionStorage.setItem("IntelligentMatchingBData",JSON.stringify(obj))
         this.$router.push({path:"/IntelligentMatchingB"})
     },
     componenList(v){ //后台数据
        this.listData.forEach((item,index)=>{
-         if(this.componentIndex == index){
+         if(v.code == item.code){
            this.listData[index] = v;
          }
        })
@@ -99,11 +129,11 @@ export default {
 
       if( v.check == true){
 
-        if( item.xuanArr.length>1&&item.title!="具体产品"){
+        if( item.xuanArr.length>1&&item.code!="02"){
           Toast("最多选择两个")
           v.check = !v.check;
           return;
-        }else  if( item.xuanArr.length>4&&item.title=="具体产品"){
+        }else  if( item.xuanArr.length>4&&item.code=="02"){
           Toast("最多选择五个")
           v.check = !v.check;
           return;
@@ -118,11 +148,9 @@ export default {
         })
 
       }
-   console.log(item.xuanArr,"最多选择两个")
 
     },
     moreClick(v,i){ //更多的数据
-      console.log(v,"更多的数据")
       this.componentIndex = i;
       this.componentDataShow = true;
       this.componentData = v;

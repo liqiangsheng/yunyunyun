@@ -6,4 +6,7 @@ export let mutations = {
   multiActivityId(state,data){
     state.multiActivityId=data;
   },
+  payId(state,data){
+    state.payId=data;
+  },
 }

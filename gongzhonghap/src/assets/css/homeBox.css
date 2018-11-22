@@ -57,12 +57,13 @@
   font-weight:300;
   color:rgba(255,255,255,1);
   line-height:0.2rem;
+  height: 0.8rem;
   opacity:0.6;
   text-align: left;
   padding-left: 0.1rem;
+  overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 4;
-  overflow: hidden;
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
 
