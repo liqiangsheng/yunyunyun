@@ -2,38 +2,52 @@
   <div id="nameValue">
     <!--性别-->
     <div id="one" v-if="componentData.code=='sex'">
-    <input class="input" type="radio" value="男" v-model="nameValue">
-    <label class="label" for="one">男</label>
+      <label class="label">
+        <input class="input" type="radio" value="男" v-model="nameValue">
+        男
+      </label>
     </div>
     <div id="two" v-if="componentData.code=='sex'">
-    <input class="input"  type="radio" value="女" v-model="nameValue">
-    <label class="label"  for="two">女</label>
+      <label class="label">
+        <input class="input"  type="radio" value="女" v-model="nameValue">
+        女
+      </label>
     </div>
     <!--身份证-->
     <div v-if="componentData.code=='idType'" v-for="(item,index) in values" class="idType">
-      <input class="input"  type="radio" :value="item.name" v-model="idType" @click="selectClick(item.code)">
-      <label class="label"  for="two">{{item.name}}</label>
+      <label class="label">
+          <input class="input"  type="radio" :value="item.name" v-model="idType" @click="selectClick(item.code)">
+          {{item.name}}
+      </label>
     </div>
 
   <!--手机电话国家号-->
   <div v-if="componentData.code=='mobile1CountryNo'||componentData.code=='phone1CountryNo'" v-for="(item,index) in values" class="idType">
-    <input class="input"  type="radio" :value="item" v-model="telNum">
-    <label class="label"  for="two">{{item}}</label>
+      <label class="label">
+        <input class="input"  type="radio" :value="item" v-model="telNum">
+       {{item}}
+      </label>
   </div>
     <!--获取渠道-->
     <div v-if="componentData.code=='gainChannel'" v-for="(item,index) in values" class="idType">
-      <input class="input"  type="radio" :value="item.name" v-model="gainChannel" @click="selectClick(item.code)">
-      <label class="label"  for="two">{{item.name}}</label>
+      <label class="label">
+        <input class="input"  type="radio" :value="item.name" v-model="gainChannel" @click="selectClick(item.code)">
+       {{item.name}}
+      </label>
     </div>
     <!--公司的领域-->
     <div v-if="componentData.code=='corpDomains'" v-for="(item,index) in corpDomainsA" class="idType">
-      <input class="input"  type="checkbox" :value="item.code" v-model="corpDomains" @click="selectClick(item.code)">
-      <label class="label"  for="two">{{item.name}}</label>
+      <label class="label" >
+        <input class="input"  type="checkbox" :value="item.code" v-model="corpDomains" @click="selectClick(item.code)">
+        {{item.name}}
+      </label>
     </div>
     <!--感兴趣的领域-->
     <div v-if="componentData.code=='interestedDomains'" v-for="(item,index) in interestedDomainsA" class="idType">
-      <input class="input"  type="checkbox" :value="item.code" v-model="interestedDomains" @click="selectClick(item.code)">
-      <label class="label"  for="two">{{item.name}}</label>
+        <label class="label" >
+          <input class="input"  type="checkbox" :value="item.code" v-model="interestedDomains" @click="selectClick(item.code)">
+          {{item.name}}
+        </label>
     </div>
   <button @click="okClick">确定</button>
   </div>

@@ -7,9 +7,11 @@ import workbench from '@/router/workbench' // 工作台模块
 import system from '@/router/system' // 系统模块
 // import marketing from '@/router/marketing' // 营销模块
 import activitymrg from '@/router/activityManagement/activityManagement.js' // 活动模块
+import consultativeManagement from '@/router/consultativeManagement/consultativeManagement.js' // 咨讯管理
+import worksmanagement from '@/router/worksmanagement/worksmanagement.js' // 作品管理
 
 Vue.use(Router);
-export const avoid = ['/workbench', '/operation', '/licensing', '/education', '/traffic', '/finance', '/system', '/activitymrg']; // 不做处理的路由
+export const avoid = ['/workbench', '/operation', '/licensing', '/education', '/traffic', '/finance', '/system', '/activitymrg', '/consultativeManagement','/worksmanagement']; // 不做处理的路由
 
 export const constantRouterMap = [
   { path: '/login', component: _import('login/indexNew'), hidden: true },
@@ -51,6 +53,20 @@ export const asyncRouterMap = [
     //     name: '营销管理',
     //     children: marketing
     // },
+    {
+        path: '/worksmanagement',
+        id: 'worksmanagement',
+        component: Layout,
+        name: '作品管理',
+        children: worksmanagement
+    },
+    {
+        path: '/consultativeManagement',
+        id: 'consultativeManagement',
+        component: Layout,
+        name: '咨讯管理',
+        children: consultativeManagement
+    },
   {
     path: '/activitymrg',
     id: 'activitymrg',

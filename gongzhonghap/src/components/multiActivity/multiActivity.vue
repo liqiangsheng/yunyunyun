@@ -476,15 +476,16 @@ export default {
     display: flex;
     box-sizing: border-box;
       .footItem1{
-      width: 40%;
-      background: #050509;
-      height:0.5rem;
-      font-size:0.13rem;
-      font-family:PingFangSC-Regular;
-      font-weight:400;
-      color:rgba(255,255,255,1);
-      text-align: center;
-    }
+        width: 40%;
+        background: #21CB61;
+        padding-top: 0.05rem;
+        height:0.5rem;
+        font-size:0.13rem;
+        font-family:PingFangSC-Regular;
+        font-weight:400;
+        color:rgba(255,255,255,1);
+        text-align: center;
+      }
     .footItem{
       flex: 1;
       padding-left: 3%;

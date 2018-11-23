@@ -24,8 +24,8 @@
 // * ***/
 window.common = {
   apiDomain120020: "http://dcloud.butongtech.com:20019",  //登录数据请求url
-  // apiDomain20020: "http://172.16.0.12:10020", //ajax数据请求url
-    apiDomain20020: "http://172.16.0.59:10020", //ajax数据请求url
+  apiDomain20020: "http://172.16.0.12:10020", //ajax数据请求url
+  //   apiDomain20020: "http://172.16.0.59:10020", //ajax数据请求url
     // apiDomain20020: "http://172.16.0.54:10020", //ajax数据请求url
   webvie:"https://dcloud.butongtech.com/vod/voicesheet/2688376266951021633?from=groupmessage&isappinstalled=0"
 }

@@ -102,6 +102,11 @@ export default {
         this.Total=a;
         this.orginTotal=b;
         this.erectSubtraction=c;
+        if(this.Total>0){
+          this.nextValue = "付款";
+        }else{
+          this.nextValue = "下一步";
+        }
     }else{
       Toast("登录出错啦！请重新登录")
     }
@@ -411,7 +416,7 @@ export default {
     color:rgba(255,255,255,1);
     text-align: center;
     line-height: 0.5rem;
-    background:rgba(5,5,9,1);
+    background:#21CB61;
   }
   }
 </style>

@@ -102,7 +102,7 @@
 
       </ul>
     </div>
-    <div class="homePageBItem1"  v-if="requestA =='XCX'" @click="contactClick">
+    <div class="homePageBItem1"  @click="contactClick">
       联系不同，与我们共享设计生态
       <img src="/static/images/goBack.png" alt="">
     </div>

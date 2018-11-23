@@ -266,8 +266,10 @@ export default {
           }
           .requiredItem1Index{
             display: inline-block;
+            min-width:2.4rem ;
             float: right;
             height: 100%;
+            text-align: right;
             img{
               display: inline-block;
               width: 0.13rem;
@@ -315,6 +317,8 @@ export default {
             }
             .NorequiredItem1Index{
               display: inline-block;
+              min-width: 2rem;
+              text-align: right;
               float: right;
               height: 100%;
               img{
@@ -334,7 +338,7 @@ export default {
       position: absolute;
       left: 0;
       bottom: 0;
-      background:rgba(5,5,9,1);
+      background:#21CB61;
       font-size:0.13rem;
       font-family:PingFangSC-Regular;
       font-weight:400;

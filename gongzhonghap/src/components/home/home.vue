@@ -1,5 +1,5 @@
 <template>
-   <div class="homeBox" v-show="boxShow==true">
+   <div class="homeBox" v-show="boxShow==true" style="padding-bottom: 0.4rem">
         <div class="homeBoxHeader" v-if="!!acivityArr.multiActivity&&!!isShow">
             <div class="boxCententHeader">
               <h5><span></span> {{acivityArr.title}} <span class="span"></span></h5>
@@ -374,7 +374,7 @@ export default {
     position: fixed;
     bottom: 0;
     left: 0;
-    background:#050509;
+    background:#21CB61;
     width: 100%;
     height: 0.49rem;
     font-size:.13rem;
@@ -458,5 +458,6 @@ export default {
     z-index: 1;
   }
 }
+
 
 </style>
