@@ -14,19 +14,19 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' });
       NProgress.done()
     } else {
-      if (store.getters.roles.length === 0 ) {
+      if (store.getters.roles.length === 0) {
         store.dispatch('GetInfo').then(res => {
-            store.dispatch('GenerateRoutes', res.data.data.userInfo).then(() => {
-                router.addRoutes(store.getters.addRouters);
-                next({ ...to, replace: true })
-            })
+          store.dispatch('GenerateRoutes', res.data.data.userInfo).then(() => {
+            router.addRoutes(store.getters.addRouters);
+            next({ ...to, replace: true })
+          })
         }).catch(() => {
           store.dispatch('FedLogOut').then(() => {
             next({ path: '/login' })
           })
         })
       } else {
-          next();
+        next();
       }
     }
   } else {

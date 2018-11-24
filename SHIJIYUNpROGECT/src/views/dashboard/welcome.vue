@@ -3,7 +3,7 @@
         <div id="welcomeImage">
             <img src="../../assets/images/wl.png" class="logo-img">
             <br/>
-            <span class="name">欢迎使用云驾培V2.0</span>
+            <span class="name">欢迎使用云服务</span>
         </div>
     </div>
 </template>

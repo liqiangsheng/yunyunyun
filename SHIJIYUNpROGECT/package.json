@@ -16,14 +16,15 @@
     "animate.css": "^3.6.1",
     "axios": "^0.16.2",
     "element-ui": "^2.4.7",
+    "moment": "^2.22.2",
     "nprogress": "^0.2.0",
-    "moment": "^2.18.1",
     "scss": "^0.2.4",
     "style-loader": "^0.21.0",
     "v-charts": "^1.16.22",
     "vue": "^2.5.16",
     "vue-router": "^2.8.1",
-    "vuex": "^2.5.0"
+    "vuex": "^2.5.0",
+    "wangeditor": "^3.1.1"
   },
   "devDependencies": {
     "autoprefixer": "6.7.2",

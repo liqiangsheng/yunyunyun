@@ -12,22 +12,23 @@ import * as filters from './filters' // 全局filter
 import publicFunction from './utils/publicFun'
 import Validate from './utils/validation'
 import { getToken } from '@/utils/auth' // 验权
-import refreshIcon from  '@/components/refreshIcon/index.vue'
+import refreshIcon from '@/components/refreshIcon/index.vue'
 import clzPopover from '@/components/Popover';
 import './permission'
 import vuePlugins from '@/utils/vuePlugins'
 import '@/utils/plugins'
-import  '@/directive/index.js'
+import '@/directive/index.js'
+//carter
+import './filter'
 import moment from 'moment'
-
 Vue.prototype.$moment = moment;
-Vue.prototype.localStorage =  require('storejs');
+Vue.prototype.localStorage = require('storejs');
 
-Vue.component('refresh-icon',refreshIcon);
-Vue.component('clz-popover',clzPopover);
+Vue.component('refresh-icon', refreshIcon);
+Vue.component('clz-popover', clzPopover);
 Vue.use(Validate);
 
-Vue.use(publicFunction);    //公共方法
+Vue.use(publicFunction);    // 公共方法
 
 Vue.use(vuePlugins);
 
@@ -38,29 +39,29 @@ Vue.component('icon-svg', IconSvg);
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {
-    Vue.filter(key, filters[key])
+  Vue.filter(key, filters[key])
 });
 
-/*地图*/
+/* 地图*/
 Vue.use(VueAMap);
 VueAMap.initAMapApiLoader({
-    key: '8c318365cfef01656d814eb6a2ffc06d',
-    plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor']
+  key: '8c318365cfef01656d814eb6a2ffc06d',
+  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor']
 });
-/*地图 end*/
+/* 地图 end*/
 
 
-let vm = new Vue({
+const vm = new Vue({
   el: '#app',
   router,
   store,
   template: '<App/>',
   components: { App },
-  data:{
-      hubBus:new Vue(),
+  data: {
+    hubBus: new Vue()
   }
 });
-global.vm = vm; //Define you app variable globally
+global.vm = vm; // Define you app variable globally
 
 
 

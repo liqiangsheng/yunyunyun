@@ -112,6 +112,7 @@
         },
 
         methods: {
+
             addSinleClcik(e){ // 新增子活动
                 this.activityArr =  e++;
             },
