@@ -57,7 +57,7 @@
      <!--互文本内容-->
      <div class="homeBoxItemTen" v-if="!!objData.content">
        <div class='activityArrangementItem' style="margin-bottom: 20px;"><span></span>活动介绍<span></span></div>
-       <div class="homeBoxItemTenContent" v-html="objData.content">
+       <div class="homeBoxItemTenContent" id="htmlV" v-html="objData.content">
        </div>
      </div>
 
@@ -365,7 +365,12 @@ export default {
 </script>
 
 <style scoped lang="less">
+#htmlV{
 
+  p{
+
+  }
+}
   @import "../../assets/css/homeBox.css";
 </style>
 <style lang="less">

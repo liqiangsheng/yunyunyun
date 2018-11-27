@@ -20,9 +20,9 @@ export default {
     let matchingArrStr = JSON.parse(sessionStorage.getItem("matchingArrStr"))
     console.log(matchingArrStr)
     setTimeout(()=>{
-      wx.miniProgram.navigateTo({ url:`/pages/acknowledgementOfOrder/acknowledgementOfOrder?matchingArrStr=${matchingArrStr}`});
+      wx.miniProgram.navigateTo({ url:`/pages/face/face?matchingArrStr=${matchingArrStr}`});
     },1000)
-   
+
   },
   methods:{
 

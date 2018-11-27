@@ -368,3 +368,14 @@ export function findCommentsByInfoId(id,p,s) { //请求数据
     }
   })
 }
+//  关于不同
+export function proposalContactTrack(obj) { //请求数据
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/proposalContactTrack`;
+    axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
+      resolve(res)
+    })
+  })
+}

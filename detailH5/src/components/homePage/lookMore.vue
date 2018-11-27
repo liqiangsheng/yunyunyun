@@ -2,9 +2,9 @@
   <div id="lookMore">
       <ul>
         <li v-for="(item,index) in listData">
-          <img :src="item.bannerUrl" alt="">
+          <img :src="item.imageUrl" alt="">
           <p>
-            {{item.value}}
+            {{item.name}}
           </p>
         </li>
       </ul>

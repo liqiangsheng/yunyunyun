@@ -133,12 +133,10 @@ export default {
   },
   methods:{
     IOS(){
-      console.log("sadfas")
       location.href="https://itunes.apple.com/cn/app/id1439775835"
     },
     Android(){
-      console.log("Android")
-      location.href="http://account.butongtech.com"
+        location.href="hhttps://www.pgyer.com/designcloud"
     },
     giveClick(){ //点击点赞  //下载IOS 或则安卓
           console.log("去下载")

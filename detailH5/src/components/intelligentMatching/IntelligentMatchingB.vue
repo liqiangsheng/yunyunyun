@@ -82,16 +82,16 @@ export default {
       for (let i = 0;i<arrdata.length;i++){
         if(arrdata[i].cheack == true){
           matchingArr.push(arrdata[i].id);
-        }else{
-          Toast("请至少选择一个匹配项")
         }
-
       }
-      setTimeout(()=>{
-        let matchingArrStr = matchingArr.join(',')
-        sessionStorage.setItem("matchingArrStr",JSON.stringify(matchingArrStr))
-        this.$router.push({path:"IntelligentMatchingC"});
-      },500)
+      if (matchingArr.length<=0){
+        Toast("请选择至少一个匹配项")
+      }else{
+          let matchingArrStr = matchingArr.join(',')
+          sessionStorage.setItem("matchingArrStr",JSON.stringify(matchingArrStr))
+          this.$router.push({path:"IntelligentMatchingC"});
+      }
+
 
 
     },
@@ -101,9 +101,11 @@ export default {
     },
     bannerUrlClick(v) { //点击的头像
       console.log(v)
-//      this.$router.push({path: "/homePage", query: {state: 1,id:v.id,source:"XCX"}}) //去企业主页 1是企业 2是个人
+      this.$router.push({path: "/homePage", query: {state: 1,id:v.id,source:"XCX"}}) //去企业主页 1是企业 2是个人
 //      this.$router.push({path: "/homePage?state=1&source=XCX&id="+v.id})
-//      window.location.reload();
+      setTimeout(()=>{
+        window.location.reload();
+      },100)
     }
 
   }

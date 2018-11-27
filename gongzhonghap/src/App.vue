@@ -13,7 +13,7 @@ export default {
   data(){
     return{
       p:1, //第几页
-      s:20,// 、、一夜多少
+      s:20,// 、、一页多少
     }
   },
   created() {

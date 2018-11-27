@@ -25,6 +25,10 @@ VueAMap.initAMapApiLoader({
   // 高德 sdk 版本，默认为 1.4.4
   v: '1.4.4'
 });
+import vueFilter from './assets/js/filter' //过滤器
+for (let key in vueFilter){
+  Vue.filter(key,vueFilter[key])
+}
 Vue.prototype.$Request = Request;
 Vue.prototype.$Aiox = axios;
 Vue.prototype.$http = common.apiDomain;

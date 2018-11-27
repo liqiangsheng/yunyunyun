@@ -7,7 +7,7 @@
          <li>3）　获取优质的设计需求</li>
          <li><span>姓　　名</span><input type="text" v-model="name"></li>
          <li><span>电话号码</span><input type="number" v-model="tel"></li>
-         <li><span>电子邮箱</span><input type="text"></li>
+         <li><span>电子邮箱</span><input type="text" v-model="emil"></li>
          <li>不同客服会在两个工作日内与您取得联系，请您耐心等待</li>
 
        </ul>
@@ -18,12 +18,14 @@
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
+  import { proposalContactTrack } from '../../assets/js/promiseHttp'; //数据
 export default {
   name: 'contact',
   data(){
     return{
       name:"",
       tel:"",
+      emil:'',
     }
   },
   created() {
@@ -39,11 +41,30 @@ export default {
         Toast("请填写电话号码")
         return
       }
+      if(!this.emil){
+        Toast("请填写正确电子邮件")
+        return
+      }
+      let obj={
+        "email": this.emil,
+        "contactName": this.name,
+        "phone": this.tel,
+      }
       //数据提交成功之后回到上一页
-      this.$router.go(-1);
+
+      proposalContactTrack(obj).then(res=>{
+        if(res.data.status == true){
+          Toast(res.data.message)
+          setTimeout(()=>{
+            this.$router.go(-1);
+          },1000)
+        }else{
+          Toast(res.data.message)
+        }
+      })
+//      this.$router.go(-1);
     } ,
     NoClcik(){//取消
-      //数据提交成功之后回到上一页
       this.$router.go(-1);
     }
   }
