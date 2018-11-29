@@ -76,6 +76,7 @@ Page({
         
         if (res.data.status == true){
           if (that.data.state == "true") {
+            
             let datas = res.data.data;
             that.setData({
               dataObj: datas,
@@ -334,6 +335,12 @@ Page({
             for (var i = 0; i < res.data.data.length; i++) {
               res.data.data[i].startTime = formatTime.formatTime4(res.data.data[i].startTime)
               res.data.data[i].endTime = formatTime.formatTime4(res.data.data[i].endTime)
+              if (res.data.data[i].childList.length > 0) {
+                for (var j = 0; j < res.data.data[i].childList.length; j++) {
+                  res.data.data[i].childList[j].startTime = formatTime.formatTime4(res.data.data[i].childList[j].startTime)
+                  res.data.data[i].childList[j].endTime = formatTime.formatTime4(res.data.data[i].childList[j].endTime)
+                }
+              }
 
             }
           
@@ -373,6 +380,12 @@ Page({
             for (var i = 0; i < res.data.data.length; i++) {
               res.data.data[i].startTime = formatTime.formatTime4(res.data.data[i].startTime)
               res.data.data[i].endTime = formatTime.formatTime4(res.data.data[i].endTime)
+              if (res.data.data[i].childList.length > 0) {
+                for (var j = 0; j < res.data.data[i].childList.length; j++) {
+                  res.data.data[i].childList[j].startTime = formatTime.formatTime4(res.data.data[i].childList[j].startTime)
+                  res.data.data[i].childList[j].endTime = formatTime.formatTime4(res.data.data[i].childList[j].endTime)
+                }
+              }
 
             }
 
@@ -506,6 +519,12 @@ Page({
           for (var i = 0; i < res.data.data.length;i++){
             res.data.data[i].startTime = formatTime.formatTime4(res.data.data[i].startTime)
             res.data.data[i].endTime = formatTime.formatTime4(res.data.data[i].endTime)
+            if (res.data.data[i].childList.length>0){
+              for (var j = 0; j < res.data.data[i].childList.length; j++) {
+                res.data.data[i].childList[j].startTime = formatTime.formatTime4(res.data.data[i].childList[j].startTime)
+                res.data.data[i].childList[j].endTime = formatTime.formatTime4(res.data.data[i].childList[j].endTime)
+              }
+            }
             
            }
           let numa = Math.ceil(res.data.total /that.data.s);

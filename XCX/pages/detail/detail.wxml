@@ -90,16 +90,30 @@
     <scroll-view class='activityArrangementItem1'>
             <view wx:for='{{peopleArr}}' wx:key='index' class='activityArrangementItemBox'>
                <view class='activityArrangementItem1Left'>
-                 {{item.startTime}}-{{item.endTime}}
+                 <view>{{item.startTime}}</view>
+                 <view class='activityArrangementItem1Leftcenter'>|</view>
+                 <view>{{item.endTime}}</view>
                  <image src='../../images/timePosition.png'></image>
                </view>
                <view class='activityArrangementItem1Right'>
+               <view class='activityArrangementItem1RightA'>
                  <view class='value'>{{item.subject}}</view>
-                 <view wx:for='{{item.honoredGuestVoList}}' wx:key='index'>
+                 <view wx:for='{{item.honoredGuestVoList}}' wx:key='index' wx:if="{{items.honoredGuestVoList.length>0}}">
                      <view class='name'>{{item.name}}</view>
                      <view class='founder'>{{item.honor}}</view>
                  </view>
                  <view class='position'><image src='../../images/position.png'></image> {{item.location}}</view>
+               </view>
+                 <view class='activityArrangementItem1RightB' wx:if="{{item.childList.length>0}}" wx:for='{{item.childList}}' wx:for-item="items" wx:for-key="indexs" wx:key='indexs'>
+                 <view class='value'>{{items.startTime}}-{{items.startTime}}</view>
+                 <view class='value'>{{items.subject}}</view>
+                 <view wx:for='{{items.honoredGuestVoList}}' wx:key='index' wx:if="{{items.honoredGuestVoList.length>0}}">
+                     <view class='name'>{{item.name}}</view>
+                     <view class='founder'>{{item.honor}}</view>
+                 </view>
+                 <view class='position'wx:if='{{items.location}}'><image src='../../images/position.png'></image> {{items.location}}</view>
+               </view>
+               
                </view>
                
             </view>

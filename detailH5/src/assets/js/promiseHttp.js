@@ -11,6 +11,24 @@ export function InitializationData(id){
   })
 
 }
+// 活动安排
+export function activitySchedulelist(data){
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain}/apis/activity/activitySchedule/list`;
+    axios.post(url,data).then(res=>{
+      resolve(res)
+    })
+  })
+}
+// 嘉宾列表
+export function honoredGuestlist(data){
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain}/apis/activity/honoredGuest/list`;
+    axios.post(url,data).then(res=>{
+      resolve(res)
+    })
+  })
+}
 //数据请求 没参数的 GET
 export function getData (token,api) { //请求数据
   return new Promise(function (resolve,reject) {
