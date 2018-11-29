@@ -23,6 +23,8 @@ import './filter'
 import moment from 'moment'
 Vue.prototype.$moment = moment;
 Vue.prototype.localStorage = require('storejs');
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
 
 Vue.component('refresh-icon', refreshIcon);
 Vue.component('clz-popover', clzPopover);

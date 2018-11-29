@@ -101,7 +101,9 @@
                  </view>
                  <view class='position'><image src='../../images/position.png'></image> {{item.location}}</view>
                </view>
+               
             </view>
+            <view class='moreItem'  bindtap='moreItemClickA'>{{moreMessage}}</view>
             <!-- <view class='moreItem'  data-rows='{{rows+20}}' bindtap='moreItemClick'>点击加载更多</view> -->
     </scroll-view>
       <!-- ---------- -->
@@ -118,7 +120,7 @@
                     <view class='headerLeft'><image src='{{item.headerUrl}}'></image> </view>
                     <view class='headerRight'>
                        <view class='headerRightTop'><text>{{item.name}}</text><text wx:if='item.engName&item.engName!=""'>/{{item.engName}}</text></view>
-                       <view class='headerRightBot'>{{item.honor}}</view>
+                       <view class='headerRightBot' wx:if='{{item.honor}}'>{{item.honor}}</view>
 
                     </view>
                  </view>
@@ -133,6 +135,7 @@
                     </view>
                     
                </view>
+                <view class='moreItem'  bindtap='moreItemClickAB'>{{moreMessage1}}</view>
           </scroll-view>
       </view>
       <!-- ----其他---- -->

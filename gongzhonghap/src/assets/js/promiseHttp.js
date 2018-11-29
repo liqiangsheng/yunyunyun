@@ -22,6 +22,24 @@ export function InitializationData(id){
     })
   })
 }
+// 活动安排
+export function activitySchedulelist(data){
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/activity/activitySchedule/list`;
+    axios.post(url,data).then(res=>{
+      resolve(res)
+    })
+  })
+}
+// 嘉宾列表
+export function honoredGuestlist(data){
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/activity/honoredGuest/list`;
+    axios.post(url,data).then(res=>{
+      resolve(res)
+    })
+  })
+}
 //活动列表数据
 export function activityListData(p,s){
   Indicator.open("加载中...")
@@ -33,6 +51,7 @@ export function activityListData(p,s){
     })
   })
 }
+
 // 我的 头像初始数据
 
 export function IntallData(item){

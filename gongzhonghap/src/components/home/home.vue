@@ -79,6 +79,9 @@
                  <div class='position'><img src='/static/images/position.png'/>{{item.location}}</div>
                </div>
              </div>
+              <div class="loadMore" @click="moreClickA">
+                   {{moreMessage}}
+              </div>
            </div>
            <!---->
            <div class='mattersNeedingAttention'>
@@ -109,7 +112,11 @@
                  </div>
 
                </div>
+               <div class="loadMore" @click="moreClickAB">
+                 {{moreMessage1}}
+               </div>
              </div>
+
            </div>
            <!------------------>
            <!-- ----其他---- -->
@@ -140,13 +147,15 @@
   import { Indicator } from 'mint-ui';
   import {Base64,formatTime3,formatTime4,quiryData} from "../../assets/js/common"  //base转换
   let base = new Base64;
-  import {InitializationData} from "../../assets/js/promiseHttp"  //导航栏url截取
+  import {InitializationData,activitySchedulelist,honoredGuestlist} from "../../assets/js/promiseHttp"  //导航栏url截取
 
 export default {
 
   name: 'Home',
   data(){
     return{
+
+      moreID:"",
       isShow:false, //获取数据在显示dom
       center: [114.06003, 22.53086],
       markers: [
@@ -155,7 +164,7 @@ export default {
           visible: true,
         }
       ],
-      mapShow:false,
+      mapShow:false, //活动介绍
       boxShow:false, //没数据前空白
       swiperIndex:0, //滑动选中的图片
       topScroll:false,  //回到顶部的按钮出现
@@ -166,6 +175,14 @@ export default {
       objData:{}, // 子活动的数据
       guests:[], //宾客
       schedules:[], //时间表
+      p:1, //活动安排每页
+      s:5, //活动安排每页数据
+      num:0,//活动安排
+      moreMessage:"", //活动安排
+      p1:1, //嘉宾列表每页
+      s1:5, //嘉宾列表每页数据
+      num1:0,//嘉宾列表
+      moreMessage1:"", //嘉宾列表
     }
   },
   watch:{
@@ -247,6 +264,7 @@ export default {
              that.center = [that.objData.longitude,that.objData.latitude];
              that.markers= [ {position: [that.objData.longitude, 22.53086],visible: true, }],
                that.UserLocation =that.objData.address;
+             this.moreID = that.objData.id;
              that.arrange(that.objData.id)
            }
            this.boxShow = true;
@@ -273,32 +291,149 @@ export default {
       that.center = [that.objData.longitude,that.objData.latitude];
       that.markers= [ {position: [that.objData.longitude, that.objData.latitude],visible: true, }],
         that.UserLocation =that.objData.address;
+      this.moreID = that.objData.id;
       that.arrange(that.objData.id)
+    },
+    moreClickA(){//加载更多
+       this.p++;
+       if(this.p>this.num){
+         this.moreMessage="这是我的底线...";
+         Toast("没有更多安排了");
+         return;
+       }else if(this.p==this.num){
+         this.moreMessage="这是我的底线...";
+         let prams={};
+         prams.p = this.p;
+         prams.s= this.s;
+         prams.activityId =this.moreID;
+         prams.orderField = "start_time";
+         prams.orderString ="asc" ;
+         activitySchedulelist(prams).then(res=>{
+           if(res.data.status == true){
+             for (var i = 0; i < res.data.data.length;i++){
+               res.data.data[i].startTime =formatTime4(res.data.data[i].startTime)
+               res.data.data[i].endTime =formatTime4(res.data.data[i].endTime)
+             }
+             this.schedules =   this.schedules.concat(res.data.data);
+           }else{
+             Toast("网络异常，请重试");
+           }
+         })
+
+       }else{
+         this.moreMessage="点击加载更多...";
+         let prams={};
+         prams.p = this.p;
+         prams.s= this.s;
+         prams.activityId = this.moreID;
+         prams.orderField = "start_time";
+         prams.orderString ="asc" ;
+         activitySchedulelist(prams).then(res=>{
+           if(res.data.status == true){
+             for (var i = 0; i < res.data.data.length;i++){
+               res.data.data[i].startTime =formatTime4(res.data.data[i].startTime)
+               res.data.data[i].endTime =formatTime4(res.data.data[i].endTime)
+             }
+             this.schedules =  this.schedules.concat(res.data.data);
+           }else{
+             Toast("网络异常，请重试");
+           }
+         })
+       }
+    },
+    moreClickAB(){ //嘉宾列表加载更多
+      this.p1++;
+      if(this.p1>this.num1){
+        this.moreMessage1="这是我的底线...";
+        Toast("没有更多安排了");
+        return;
+      }else if(this.p1==this.num1){
+        this.moreMessage1="这是我的底线...";
+        let prams={};
+        prams.p = this.p1;
+        prams.s= this.s1;
+        prams.activityId =this.moreID;
+        prams.orderField = "start_time";
+        prams.orderString ="asc" ;
+        honoredGuestlist(prams).then(res=>{
+          if(res.data.status == true){
+            for (var i = 0; i < res.data.data.length; i++) {
+              res.data.data[i].centerIsshow =  true;
+            }
+            this.guests = this.guests.concat(res.data.data);
+          }else{
+            Toast("网络异常，请重试");
+          }
+        })
+
+      }else{
+        this.moreMessage1="点击加载更多...";
+        let prams={};
+        prams.p = this.p1;
+        prams.s= this.s1;
+        prams.activityId = this.moreID;
+        prams.orderField = "start_time";
+        prams.orderString ="asc" ;
+        honoredGuestlist(prams).then(res=>{
+          if(res.data.status == true){
+            for (var i = 0; i < res.data.data.length; i++) {
+              res.data.data[i].centerIsshow =  true;
+            }
+            this.guests =   this.guests.concat(res.data.data);
+          }else{
+            Toast("网络异常，请重试");
+          }
+        })
+      }
     },
     arrange(i){// 活动安排的时间
 
-        let url = window.common.apiDomain20020 + '/apis/activity/activitySchedule/list',prams={};
+        let prams={};
+         prams.p = this.p;
+         prams.s= this.s;
          prams.activityId = i;
          prams.orderField = "start_time";
          prams.orderString ="asc" ;
-          this.$Aiox.post(url,prams).then(res=>{
-            if (res.data.status == true) { //
-              for (var i = 0; i < res.data.data.schedules.length;i++){
-                res.data.data.schedules[i].startTime =formatTime4(res.data.data.schedules[i].startTime)
-                res.data.data.schedules[i].endTime =formatTime4(res.data.data.schedules[i].endTime)
-
-              }
-              for (var i = 0; i < res.data.data.guests.length; i++) {
-                res.data.data.guests[i].centerIsshow =  true;
-
-              }
-              this.guests = res.data.data.guests;
-              this.schedules = res.data.data.schedules;
-
-            }else{
-              Toast(res.data.message);
-            }
+      activitySchedulelist(prams).then(res=>{
+        console.log(res,"活动按拍")
+        if(res.data.status == true){
+          for (var i = 0; i < res.data.data.length;i++){
+                res.data.data[i].startTime =formatTime4(res.data.data[i].startTime)
+                res.data.data[i].endTime =formatTime4(res.data.data[i].endTime)
+          }
+          this.num = Math.ceil(res.data.total/this.s);
+          if(this.num>1){
+            this.moreMessage="点击加载更多...";
+          }else {
+            this.moreMessage="这是我的底线...";
+          }
+          this.schedules =  res.data.data;
+        }else{
+          Toast("网络异常，请重试");
+        }
       })
+      let prams1={};
+      prams1.p = this.p1;
+      prams1.s= this.s1;
+      prams1.activityId = i;
+      prams1.orderField = "start_time";
+      prams1.orderString ="asc" ;
+      honoredGuestlist(prams1).then(res=>{
+            console.log(res,"11111")
+        if(res.data.status==true){
+          for (var i = 0; i < res.data.data.length; i++) {
+            res.data.data[i].centerIsshow =  true;
+          }
+          this.num1 = Math.ceil(res.data.total/this.s1);
+          if(this.num1>1){
+            this.moreMessage1="点击加载更多...";
+          }else {
+            this.moreMessage1="这是我的底线...";
+          }
+          this.guests = res.data.data;
+        }
+      })
+
     },
     getAddressHregs(){ // 点地图页面
 //      this.mapShow = !this.mapShow;
@@ -365,12 +500,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-#htmlV{
-
-  p{
-
-  }
-}
   @import "../../assets/css/homeBox.css";
 </style>
 <style lang="less">
@@ -463,6 +592,14 @@ export default {
     z-index: 1;
   }
 }
-
+.loadMore{
+  width: 100%;
+  height: 30px;
+  line-height: 30px;
+  color: #999999;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 5px;
+}
 
 </style>

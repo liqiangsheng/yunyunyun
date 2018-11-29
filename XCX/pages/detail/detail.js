@@ -29,6 +29,15 @@ Page({
     page:1, //页数
     rows:20, //每页20
     DetailId:"",
+    moreID: "",
+    p: 1, //活动安排每页
+    s: 5, //活动安排每页数据
+    num: 0,//活动安排
+    moreMessage: "", //活动安排
+    p1: 1, //嘉宾列表每页
+    s1: 5, //嘉宾列表每页数据
+    num1: 0,//嘉宾列表
+    moreMessage1: "", //嘉宾列表
   },
   scrollTopW(event){
     if (event.detail.scrollTop>100){
@@ -85,6 +94,7 @@ Page({
               latitude: banners.latitude, // 后台传
               longitude: banners.longitude,// 后台传
               addressname: banners.address,
+              moreID: banners.id
             })
             WxParse.wxParse('article1', 'html', that.data.banner.content, that, 5);
             WxParse.wxParse('article', 'html', that.data.banner.customContent, that, 5);
@@ -106,6 +116,7 @@ Page({
                     latitude: datas.latitude, // 后台传
                     longitude: datas.longitude,// 后台传
                     addressname: datas.address,
+                    moreID: datas.id
                   })
               }
           WxParse.wxParse('article1', 'html', that.data.banner.content, that, 5);
@@ -287,6 +298,196 @@ Page({
       })
     }
   },
+  moreItemClickA() {//活动安排加载更多
+    let that = this;
+    let a = that.data.p+1;
+    that.setData({
+      p: a,
+    }) 
+    if (that.data.p > that.data.num) {
+      that.setData({
+        moreMessage: "这是我的底线...",
+      }) 
+      wx.showModal({
+        showCancel: false,
+        title: "没有更多安排了",
+        icon: 'success',
+      })
+      return;
+    } else if (that.data.p == that.data.num) {
+      that.setData({
+        moreMessage: "这是我的底线...",
+      }) 
+      wx.request({
+        url: API.apiDomain + '/apis/activity/activitySchedule/list',
+        method: "POST",
+        data: {
+          "activityId": that.data.moreID,
+          "orderField": "start_time",
+          "orderString": "asc",
+          "p": that.data.p,
+          "s": that.data.s,
+
+        },
+        success: (res => {
+          if (res.data.status == true) { //
+            for (var i = 0; i < res.data.data.length; i++) {
+              res.data.data[i].startTime = formatTime.formatTime4(res.data.data[i].startTime)
+              res.data.data[i].endTime = formatTime.formatTime4(res.data.data[i].endTime)
+
+            }
+          
+            that.data.peopleArr = that.data.peopleArr.concat(res.data.data);
+            that.setData({
+              peopleArr: that.data.peopleArr,
+            
+            })
+
+          } else {
+            wx.showModal({
+              showCancel: false,
+              title: res.data.message,
+              icon: 'success',
+            })
+          }
+        })
+      }) 
+
+    } else {
+      that.setData({
+        moreMessage: "点击加载更多...",
+      })
+      wx.request({
+        url: API.apiDomain + '/apis/activity/activitySchedule/list',
+        method: "POST",
+        data: {
+          "activityId": that.data.moreID,
+          "orderField": "start_time",
+          "orderString": "asc",
+          "p": that.data.p,
+          "s": that.data.s,
+
+        },
+        success: (res => {
+          if (res.data.status == true) { //
+            for (var i = 0; i < res.data.data.length; i++) {
+              res.data.data[i].startTime = formatTime.formatTime4(res.data.data[i].startTime)
+              res.data.data[i].endTime = formatTime.formatTime4(res.data.data[i].endTime)
+
+            }
+
+            that.data.peopleArr = that.data.peopleArr.concat(res.data.data);
+            that.setData({
+              peopleArr: that.data.peopleArr,
+
+            })
+
+          } else {
+            wx.showModal({
+              showCancel: false,
+              title: res.data.message,
+              icon: 'success',
+            })
+          }
+        })
+      }) 
+    }
+
+  },
+  moreItemClickAB() { //嘉宾介绍加载更多
+    let that = this;
+    let a = that.data.p1 + 1;
+    that.setData({
+      p1: a,
+    })
+    if (that.data.p1 > that.data.num1) {
+      that.setData({
+        moreMessage1: "这是我的底线...",
+      })
+      wx.showModal({
+        showCancel: false,
+        title: "没有更多安排了",
+        icon: 'success',
+      })
+      return;
+    } else if (that.data.p1 == that.data.num1) {
+      that.setData({
+        moreMessage1: "这是我的底线...",
+      })
+      wx.request({
+        url: API.apiDomain + '/apis/activity/honoredGuest/list',
+        method: "POST",
+        data: {
+          "activityId": that.data.moreID,
+          "orderField": "start_time",
+          "orderString": "asc",
+          "p": that.data.p1,
+          "s": that.data.s1,
+
+        },
+        success: (res => {
+          if (res.data.status == true) { //
+            for (var i = 0; i < res.data.data.length; i++) {
+              res.data.data[i].centerIsshow = true;
+
+            }
+
+            that.data.guests = that.data.guests.concat(res.data.data);
+            that.setData({
+              guests: that.data.guests,
+
+            })
+
+          } else {
+            wx.showModal({
+              showCancel: false,
+              title: res.data.message,
+              icon: 'success',
+            })
+          }
+        })
+      })
+
+    } else {
+      that.setData({
+        moreMessage1: "点击加载更多...",
+      })
+      wx.request({
+        url: API.apiDomain + '/apis/activity/honoredGuest/list',
+        method: "POST",
+        data: {
+          "activityId": that.data.moreID,
+          "orderField": "start_time",
+          "orderString": "asc",
+          "p": that.data.p1,
+          "s": that.data.s1,
+
+        },
+        success: (res => {
+          if (res.data.status == true) { //
+            for (var i = 0; i < res.data.data.length; i++) {
+              res.data.data[i].centerIsshow = true;
+
+            }
+
+            that.data.guests = that.data.guests.concat(res.data.data);
+            that.setData({
+              guests: that.data.guests,
+
+            })
+
+          } else {
+            wx.showModal({
+              showCancel: false,
+              title: res.data.message,
+              icon: 'success',
+            })
+          }
+        })
+      })
+    }
+
+  },
   arrange(i){// 活动安排的时间
      let that = this;
     wx.request({
@@ -296,22 +497,33 @@ Page({
         "activityId": i,
         "orderField": "start_time",
         "orderString": "asc",
+        "p": that.data.p,
+        "s": that.data.s,
+
       },
       success:(res=>{
         if (res.data.status == true) { //
-          for (var i = 0; i < res.data.data.schedules.length;i++){
-            res.data.data.schedules[i].startTime = formatTime.formatTime4(res.data.data.schedules[i].startTime)
-            res.data.data.schedules[i].endTime = formatTime.formatTime4(res.data.data.schedules[i].endTime)
+          for (var i = 0; i < res.data.data.length;i++){
+            res.data.data[i].startTime = formatTime.formatTime4(res.data.data[i].startTime)
+            res.data.data[i].endTime = formatTime.formatTime4(res.data.data[i].endTime)
             
            }
-          for (var i = 0; i < res.data.data.guests.length; i++) {
-            res.data.data.guests[i].centerIsshow =  true;
+          let numa = Math.ceil(res.data.total /that.data.s);
+          if (numa > 1) {
 
-          }
-          console.log(res.data.data.schedules,"dshakjdajk")
             that.setData({
-              peopleArr: res.data.data.schedules,
-              guests: res.data.data.guests
+              moreMessage: "点击加载更多...",
+            })  
+          } else {
+      
+            that.setData({
+              moreMessage: "这是我的底线...",
+            })  
+          }
+      
+            that.setData({
+              peopleArr: res.data.data,
+              num: numa
             })  
         
          }else{
@@ -321,6 +533,50 @@ Page({
              icon: 'success',
            })
          }
+      })
+    }) 
+    wx.request({
+      url: API.apiDomain + '/apis/activity/honoredGuest/list',
+      method: "POST",
+      data: {
+        "activityId": i,
+        "orderField": "start_time",
+        "orderString": "asc",
+        "p": that.data.p1,
+        "s": that.data.s1,
+      },
+      success: (res => {
+        if (res.data.status == true) { //
+        
+          for (var i = 0; i < res.data.data.length; i++) {
+            res.data.data[i].centerIsshow = true;
+
+          }
+          let numa1 = Math.ceil(res.data.total / that.data.s1);
+          if (numa1 > 1) {
+
+            that.setData({
+              moreMessage1: "点击加载更多...",
+            })
+          } else {
+
+            that.setData({
+              moreMessage1: "这是我的底线...",
+            })
+          }
+
+          that.setData({
+            guests: res.data.data,
+            num1: numa1
+          })
+
+        } else {
+          wx.showModal({
+            showCancel: false,
+            title: res.data.message,
+            icon: 'success',
+          })
+        }
       })
     }) 
 

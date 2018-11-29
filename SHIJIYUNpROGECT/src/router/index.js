@@ -9,9 +9,12 @@ import system from '@/router/system' // 系统模块
 import activitymrg from '@/router/activityManagement/activityManagement.js' // 活动模块
 import consultativeManagement from '@/router/consultativeManagement/consultativeManagement.js' // 咨讯管理
 import worksmanagement from '@/router/worksmanagement/worksmanagement.js' // 作品管理
+import userManagement from '@/router/userManagement/userManagement.js' // 用户管理
+import communityManagement from '@/router/communityManagement/index.js' // 社区管理
+import report_form from '@/router/report_form/index.js' // 报表管理
 
 Vue.use(Router);
-export const avoid = ['/workbench', '/operation', '/licensing', '/education', '/traffic', '/finance', '/system', '/activitymrg', '/consultativeManagement','/worksmanagement']; // 不做处理的路由
+export const avoid = ['/workbench', '/operation', '/licensing', '/education', '/traffic', '/finance', '/system', '/activitymrg', '/consultativeManagement','/worksmanagement','/userManagement',"/communityManagement","/report_form"]; // 不做处理的路由
 
 export const constantRouterMap = [
   { path: '/login', component: _import('login/indexNew'), hidden: true },
@@ -53,6 +56,27 @@ export const asyncRouterMap = [
     //     name: '营销管理',
     //     children: marketing
     // },
+    {
+        path: '/userManagement',
+        id: 'userManagement',
+        component: Layout,
+        name: '用户管理',
+        children: userManagement
+    },
+    {
+        path: '/report_form',
+        id: 'report_form',
+        component: Layout,
+        name: '报表管理',
+        children: report_form
+    },
+    {
+        path: '/communityManagement',
+        id: 'communityManagement',
+        component: Layout,
+        name: '社区管理',
+        children: communityManagement
+    },
     {
         path: '/worksmanagement',
         id: 'worksmanagement',

@@ -42,7 +42,7 @@
             <el-button type="primary" @click="batch_deletion">批量删除</el-button>
         </div>
         <div class="drafts_table">
-            <el-table :data="tableData"  max-height="900" border style="width: 100%"">
+            <el-table :data="tableData"  max-height="900" border style="width: 100%">
                 <el-table-column width="50">
                     <template slot-scope="scope">
                         <el-checkbox v-model="scope.row.checked"></el-checkbox>

@@ -26,8 +26,8 @@
       </div>
       <!--<div v-if="!!item.logoUrl" class="IntelligentMatchingDItemIndex1"><img :src="item.logoUrl" alt=""></div>-->
     </div>
-    <div class="IntelligentMatchingDItem1">
-      <img src="/static/images/zan1.png" alt="" @click="giveClick">{{messageArr.laudedCount}} 赞
+    <div class="IntelligentMatchingDItem1"@click="giveClick">
+      <img src="/static/images/zan1.png" alt="" >{{messageArr.laudedCount}} 赞
     </div>
     <div class="IntelligentMatchingDItem2">
       <img src="/static/images/banqun.png" alt="">版 权
@@ -84,11 +84,16 @@
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
+  import { Actionsheet } from 'mint-ui';
+  import Vue from 'vue';
+  Vue.component(Actionsheet.name, Actionsheet);
   import { informationId,findCommentsByInfoId } from '../../assets/js/promiseHttp'; //数据
   export default {
     name: 'IntelligentMatchingD',
     data(){
       return{
+        actions:[{ name:"请下载App" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
+        sheetVisible:false, //是否显示弹框
         messageArr:{},//文章
         commenArr:[], //评论的数据
         p:1, //分页
@@ -123,8 +128,15 @@
 
     },
     methods:{
+      IOS(){
+        location.href="https://itunes.apple.com/cn/app/id1439775835"
+      },
+      Android(){
+        location.href="hhttps://www.pgyer.com/designcloud"
+      },
       giveClick(){ //点击点赞  //下载IOS 或则安卓
         console.log("去下载")
+        this.sheetVisible =true;
       },
       authorClcik(v,i){//点击头像
         this.$router.push({path: "/homePage", query: {state: v,id:i,source:"XCX"}}) //去企业主页 1是企业 2是个人

@@ -1,53 +1,74 @@
 <template>
   <div id="contact">
-       <ul>
-         <li>留下你的电话，你将可能：</li>
-         <li>1）　获取优质的设计资源</li>
-         <li>2）　分享、推广您的资源和品牌</li>
-         <li>3）　获取优质的设计需求</li>
-         <li><span>姓　　名</span><input type="text" v-model="name"></li>
-         <li><span>电话号码</span><input type="number" v-model="tel"></li>
-         <li><span>电子邮箱</span><input type="text"></li>
-         <li>不同客服会在两个工作日内与您取得联系，请您耐心等待</li>
+    <ul>
+      <li>留下你的电话，你将可能：</li>
+      <li>1）　获取优质的设计资源</li>
+      <li>2）　分享、推广您的资源和品牌</li>
+      <li>3）　获取优质的设计需求</li>
+      <li><span>姓　　名</span><input type="text" v-model="name"></li>
+      <li><span>电话号码</span><input type="number" v-model="tel"></li>
+      <li><span>电子邮箱</span><input type="text" v-model="emil"></li>
+      <li>不同客服会在两个工作日内与您取得联系，请您耐心等待</li>
 
-       </ul>
-      <div @click="okClcik">确定</div>
-      <div @click="NoClcik">取消</div>
+    </ul>
+    <div @click="okClcik">确定</div>
+    <div @click="NoClcik">取消</div>
   </div>
 </template>
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
-export default {
-  name: 'contact',
-  data(){
-    return{
-       name:"",
-       tel:"",
-    }
-  },
-  created() {
-    document.title="填写联系方式"
-  },
-  methods:{
-    okClcik(){//确定
-      if(!this.name){
-        Toast("请填写姓名")
-        return
+  import { proposalContactTrack } from '../../assets/js/promiseHttp'; //数据
+  export default {
+    name: 'contact',
+    data(){
+      return{
+        name:"",
+        tel:"",
+        emil:'',
       }
-      if(!this.tel){
-        Toast("请填写电话号码")
-        return
+    },
+    created() {
+      document.title="填写联系方式"
+    },
+    methods:{
+      okClcik(){//确定
+        if(!this.name){
+          Toast("请填写姓名")
+          return
+        }
+        if(!this.tel){
+          Toast("请填写电话号码")
+          return
+        }
+        if(!this.emil){
+          Toast("请填写正确电子邮件")
+          return
+        }
+        let obj={
+          "email": this.emil,
+          "contactName": this.name,
+          "phone": this.tel,
+        }
+        //数据提交成功之后回到上一页
+
+        proposalContactTrack(obj).then(res=>{
+          if(res.data.status == true){
+            Toast(res.data.message)
+            setTimeout(()=>{
+              this.$router.go(-1);
+            },1000)
+          }else{
+            Toast(res.data.message)
+          }
+        })
+//      this.$router.go(-1);
+      } ,
+      NoClcik(){//取消
+        this.$router.go(-1);
       }
-      //数据提交成功之后回到上一页
-      this.$router.go(-1);
-    } ,
-    NoClcik(){//取消
-      //数据提交成功之后回到上一页
-      this.$router.go(-1);
     }
   }
-}
 
 </script>
 
@@ -96,3 +117,4 @@ export default {
   }
 
 </style>
+
