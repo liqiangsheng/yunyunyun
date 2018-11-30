@@ -84,6 +84,7 @@
                        <div class='name'>{{item1.name}}</div>
                        <div class='founder'>{{item1.honor}}</div>
                      </div>
+                     <div v-if='item.brief'  class='brief'>{{item.brief}}</div>
                      <div class='position' v-if="item.location"><img src='/static/images/position.png'/>{{item.location}}</div>
                  </div>
                  <div class='activityArrangementItem1RightB' v-if="item.childList.length>0" v-for="(items,indexs) in item.childList">
@@ -588,6 +589,12 @@ export default {
     font-size: 14px;
     text-align: center;
     margin-top: 5px;
+  }
+  .brief{
+    width: 100%;
+    line-height: 24px;
+    font-size: 12px;
+    color: #999999;
   }
 
 </style>

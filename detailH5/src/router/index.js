@@ -13,6 +13,7 @@ import Qiniu from '@/components/qiniu/qiniu' //七牛上传
 import Login from '@/components/login' //登录
 import PayH5 from '@/components/payH5'  //支付
 import Contact from '@/components/homePage/contact' //联系不同
+import PictureLiveBroadcast from '@/components/pictureLiveBroadcast/pictureLiveBroadcast' //图片直播
 Vue.use(Router)
 
 export default new Router({
@@ -25,6 +26,11 @@ export default new Router({
       path: '/IntelligentMatching',
       name: 'IntelligentMatching',
       component: IntelligentMatching,
+    },
+    {
+      path: '/PictureLiveBroadcast',
+      name: 'PictureLiveBroadcast',
+      component: PictureLiveBroadcast,
     },
     {
       path: '/contact',
