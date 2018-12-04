@@ -1,0 +1,9 @@
+/* pages/payment/payment.wxss */
+.paymentBox{
+  position: absolute;
+  left: 0;
+  top: 1px;
+  bottom: 0;
+  right: 0;
+  background: #fff;
+}

@@ -1,0 +1,2 @@
+<!--pages/fireMapList/fireMapList.wxml-->
+<web-view src='{{src}}'></web-view>

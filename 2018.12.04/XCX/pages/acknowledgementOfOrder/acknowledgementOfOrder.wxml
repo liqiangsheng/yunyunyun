@@ -1,0 +1,48 @@
+<!--pages/acknowledgementOfOrder/acknowledgementOfOrder.wxml-->
+<scroll-view scroll-y class='acknowledgementOfOrderBox'>
+   <view class='acknowledgementOfOrderBoxItem1'>
+      <view class='acknowledgementOfOrderBoxItem1Left'><image src='{{ActivityInfo.bannerUrl}}'></image></view>
+      <view class='acknowledgementOfOrderBoxItem1Right'>
+          <view>{{ActivityInfo.title}}</view>
+          <!-- <view></view> -->
+          <view> <image src='../../images/time.png'></image> {{ActivityInfo.startTime}}</view>
+          <view  class='ellipsis'> <image src='../../images/position.png'></image> {{ActivityInfo.address}} </view>
+      </view>
+   </view>
+   <view class='acknowledgementOfOrderBoxItem2' wx:for="{{buyData}}" wx:key="{{index}}">
+      <view>{{item.name}}</view>
+      <view><text>¥{{item.payPrice}}</text>X<text>1</text></view>
+   </view>
+  
+    <view class='acknowledgementOfOrderBoxItem3'>
+       <view><text>报名信息</text><text>{{tel}}</text></view>
+   </view>
+    <view class='acknowledgementOfOrderBoxItem4'>
+       <view class='acknowledgementOfOrderBoxItem4Top' data-payment='payment' bindtap='explain'><text>付款说明</text><image src='../../images/right.png' ></image></view>
+        <view wx:if='{{isShow}}' class='acknowledgementOfOrderBoxItem4Bot'>
+           <view>{{ActivityInfo.payRemark}}</view>
+          
+       </view>
+   </view>
+    <view class='acknowledgementOfOrderBoxItem5'>
+       <view class='acknowledgementOfOrderBoxItem5Top' data-payment='refund' bindtap='explain'><text>退款说明</text><image src='../../images/right.png'></image></view>
+       <view wx:if='{{isShow1}}' class='acknowledgementOfOrderBoxItem4Bot'>
+         <view>{{ActivityInfo.refundRemark}}</view>
+       </view>
+   </view>
+</scroll-view>
+<view class='acknowledgementOfOrderFoot'> 
+   <view class='acknowledgementOfOrderFootLeft'>
+         <view>
+            <text>实付：</text>
+            <text style='color:#FE5F5F'>¥ {{Total}}</text>
+         </view>
+         <view>
+            <text>原价：</text>
+            <text style='color:#FE5F5F'>¥ {{orginTotal}}</text>
+            <text>立减：</text>
+            <text style='color:#FE5F5F'>¥ {{erectSubtraction}}</text>
+        </view>
+    </view>
+   <view class='acknowledgementOfOrderFootRight' bindtap='paymentClick'>{{nextValue}}</view>
+</view>

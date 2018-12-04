@@ -1,0 +1,99 @@
+#Me{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    background: #eeeeee;
+   box-sizing: border-box;
+  overflow-y:auto;
+  overflow-x: hidden;
+}
+
+ .userinfo{
+  width: 100%;
+  height: 1.68rem;
+  position: relative;
+}
+.bgImge{
+  display: inline-block;
+  height: 100%;
+  width: 100%;
+  filter: blur(15px);
+  opacity:0.3;
+}
+.userinfoImage{
+  width: 0.65rem;
+  height:  0.65rem;
+  border-radius: 100%;
+  position: absolute;
+  left: 40%;
+  top: .35rem;
+
+}
+.userinfo-nickname{
+  position: absolute;
+  left: 0;
+  top: 1.1rem;
+  display: block;
+  width: 100%;
+  text-align: center;
+  height:.16rem;
+  font-size:.17rem;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(5,5,9,1);
+}
+.meList{
+  width: 100%;
+}
+.meList div{
+  width: 100%;
+  height: .49rem;
+  background: #fff;
+  padding: 0 .1rem;
+  line-height: .5rem;
+  position: relative;
+  color:rgba(102,102,102,1);
+  font-size:.14rem;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+}
+.meList div:after{
+    content: '';
+    height: .01rem;
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-box-sizing:border-box;
+    background-color: #DFDFDF;
+    position:absolute;
+    bottom: 0;
+    left: 0;
+    transform: scale(1,0.5);
+    transform-origin: left bottom;
+}
+.meList div:last-child{
+   border-bottom:none;
+}
+.meList div img{
+  width: .14rem;
+  height: .24rem;
+  position: absolute;
+  right: .35rem;
+  top: 25%;
+  cursor: pointer;
+}
+
+.outBnt{
+  width: 100%;
+  height: .5rem;
+  padding: 0 .1rem;
+  line-height: .5rem;
+  margin-top: .1rem;
+  color: #FE5F5F;
+  font-size:.14rem;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+
+   background: #fff;
+}

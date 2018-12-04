@@ -1,0 +1,4 @@
+<!--pages/voice/voice.wxml-->
+<web-view src='{{src}}'>
+
+</web-view>

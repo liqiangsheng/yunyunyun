@@ -1,0 +1,83 @@
+<!--pages/release/release.wxml-->
+<scroll-view scroll-y id='registrationInformationBox' wx:if='{{!!registrationInformationBoxShow}}'>
+      <view class='required'>
+          <view class='requiredItem'>基本信息(必填)</view>
+          <view class='requiredItem1' wx:for="{{allowEmptyData}}" wx:key="{{index}}">
+              <text>{{item.displayName}}</text> 
+              <view class='input' wx:if="{{item.code=='sex'||item.code=='idType'||item.code=='mobile1CountryNo'}}">
+                <!-- 国家号，性别 -->
+                <picker  wx:if="{{item.code=='sex'||item.code=='mobile1CountryNo'}}" bindchange="bindPickerChange" data-index='{{index}}'  data-item='{{item}}' value="{{arrayIndex1}}" range="{{item.valuesArr}}">
+                    <view class="picker">
+                    {{item.valuesArr[arrayIndex1]}}
+                    </view>
+                  </picker>
+                   <!-- -身份证-- -->
+                  <picker  wx:if="{{item.code=='idType'}}" bindchange="bindPickerChange" data-index='{{index}}'  data-item='{{item}}' value="{{arrayIndex}}" range="{{item.valuesArr}}">
+                    <view class="picker">
+                    {{item.valuesArr[arrayIndex]}}
+                    </view>
+                   
+                  </picker>
+              </view>
+              <!-- 城市选择 -->
+              <view wx:elif="{{item.code=='regionId'}}" class='input' bindtap="citySelection">{{areaArr}}</view>
+              <!-- 输入框 -->
+               <input class='input' placeholder='请填写' wx:else data-index='{{index}}' bindblur='information'></input>
+          </view>
+          <!-- ----- -->
+          <view class='requiredItem'>其他信息(可选填)</view>
+           <view class='requiredItem1' wx:for="{{allowEmptyData1}}" wx:key="{{index}}">
+              <text>{{item.displayName}}</text> 
+              <view class='input' wx:if="{{item.code=='gainChannel'||item.code=='mobile1CountryNo'||item.code=='sex'||item.code=='idType'}}">
+             
+                  <!-- 国家号，性别 -->
+                   <picker  wx:if="{{item.code=='sex'||item.code=='mobile1CountryNo'}}" bindchange="bindPickerChange" data-index='{{index}}'  data-item='{{item}}' value="{{arrayIndex1}}" range="{{item.valuesArr}}">
+                    <view class="picker">
+                    {{item.valuesArr[arrayIndex1]}}
+                    </view>
+                  </picker>
+
+               <!-- -身份证-- -->
+                  <picker  wx:if="{{item.code=='idType'}}" bindchange="bindPickerChange" data-index='{{index}}'  data-item='{{item}}' value="{{arrayIndex}}" range="{{item.valuesArr}}">
+                    <view class="picker">
+                    {{item.valuesArr[arrayIndex]}}
+                    </view>
+                  </picker>
+                <!-- 获取渠道 -->
+                  <picker bindchange="bindPickerChange1"  data-item='{{item}}' data-index='{{index}}' value="{{arrayIndex3}}" range="{{item.valuesArr}}" wx:if="{{item.code=='gainChannel'}}">
+                    <view class="picker">
+                    {{item.valuesArr[arrayIndex3]}}
+                    </view>
+                   
+                  </picker>
+              </view>
+              <!-- 感兴趣领域 --> <!-- 公司领域 -->
+               <view class='input' wx:elif="{{item.code=='corpDomains'||item.code=='interestedDomains'}}" data-item='{{item}}'  data-index='{{index}}' bindtap='modalinput'> {{item.selerctorValue}}</view>
+               <!-- 城市 -->
+               <view wx:elif="{{item.code=='regionId'}}" class='input' bindtap="citySelection">{{areaArr}}</view>
+               <!-- 输入框 -->
+               <input class='input' placeholder='请填写' wx:else data-index='{{index}}'  bindblur='information1'></input>
+          </view>
+       
+      </view>
+      <!-- 公司领域 --> 
+      <modal id="modal" hidden="{{hiddenmodalput}}" title="公司所属领域" confirm-text="确定" cancel-text="取消" bindcancel="cancel" bindconfirm="confirm">
+      <checkbox-group bindchange="checkboxChange">
+        <label class="checkbox" wx:for="{{domains}}" wx:key="{{index}}">
+          <checkbox value="{{index}}" checked="{{item.checked}}"/>{{item.name}}
+        </label>
+      </checkbox-group>
+   </modal>
+   <!--  感兴趣领域-->
+   <modal id="modal" hidden="{{hiddenmodalput1}}" title="感兴趣的领域" confirm-text="确定" cancel-text="取消" bindcancel="cancel" bindconfirm="confirm">
+      <checkbox-group bindchange="checkboxChange1">
+        <label class="checkbox" wx:for="{{domains}}" wx:key="{{index}}">
+          <checkbox value="{{index}}" checked="{{item.checked}}"/>{{item.name}}
+        </label>
+      </checkbox-group>
+</modal>
+
+</scroll-view>
+<view id='registrationInformationFoot' bindtap='nextgo' wx:if='{{!!registrationInformationBoxShow}}'>
+        下一步
+</view>

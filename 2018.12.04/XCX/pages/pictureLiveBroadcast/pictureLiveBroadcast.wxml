@@ -1,0 +1,2 @@
+<!--pages/pictureLiveBroadcast/pictureLiveBroadcast.wxml-->
+<web-view src="{{src}}"></web-view>

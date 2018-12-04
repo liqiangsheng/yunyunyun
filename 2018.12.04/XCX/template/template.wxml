@@ -1,0 +1,14 @@
+<!--template/template.wxml-->
+<import src="../wxParse/wxParse.wxml"/>
+<template name="templateData">
+   <!-- <template is="wxParse" data="{{wxParseData:article.nodes}}"/> -->
+      <block wx:for="{{wxParseData}}" wx:key="{{index}}">
+        <template is="wxParse0" data="{{item}}" />
+       </block>
+</template>
+<template name="templateData1">
+   <!-- <template is="wxParse" data="{{wxParseData:article.nodes}}"/> -->
+      <block wx:for="{{wxParseData}}" wx:key="{{index}}">
+        <template is="wxParse0" data="{{item}}" />
+       </block>
+</template>

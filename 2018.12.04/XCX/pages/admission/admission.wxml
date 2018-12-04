@@ -1,0 +1,39 @@
+<!--pages/admission/admission.wxml-->
+<scroll-view class='admissionBox'>
+   <view class='admissionBoxItem1'><image src='../../images/okOrder.png'></image></view>
+    <view class='admissionBoxItem2'>
+         <view class='view'><text>姓　　名</text><text>{{dataObj.name}}</text></view>
+         <view class='view'><text>注  册  码</text><text>{{dataObj.signCode}}</text></view>
+         <view class='view' wx:if='{{dataObj.faceUr != ""&&dataObj.faceUr}}'><text>人像状态</text><text style='color:#FE5F5F'>已拍照</text></view>
+         <view class='voice' bindtap='voiceClick'><text>明星产品语音导览</text><image class='imgae1'  src='../../images/video.gif'></image><image class='imgae' src='../../images/right.png'></image></view>
+    </view>
+    <view class='admissionBoxItem3' wx:if='{{dataObj.faceUrl !=""&&dataObj.faceUr}}'>
+       <image src='{{dataObj.faceUrl}}'></image>
+       <image src="{{Base64Img}}" bindtap='bingLongClick' bindtouchstart='timestart' bindtouchend='timeend'></image>
+    </view>
+    <view class='admissionBoxItem5' wx:else>
+       <image src="{{Base64Img}}" bindtap='bingLongClick' bindtouchstart='timestart' bindtouchend='timeend'></image>
+    </view>
+    <view class='admissionBoxItem4'>
+          <view>可凭该图片上面的二维码扫码入场或者刷脸入场</view>
+          <view><text style='font-size:16px;font-weight:900'>温馨提示：</text> 手机截图或者长按二维码可保存至手机。</view>
+          <view>仅限本人使用，转发无效。</view>
+    </view>
+    <view class='IntelligenceBox'>
+       <view class='IntelligenceBoxItem'>一　参展商对接信息　一</view>
+       <view class='IntelligenceBoxItem1'wx:for="{{dataObj.conList}}" wx:key=''>
+         <view class='IntelligenceBoxItem1Index'>{{item.companyName}}</view>
+         <view class='IntelligenceBoxItem1Index1'>{{item.dateTime}}<text>　|　</text>{{item.conLocation}}<text></text>　<text class='IntelligenceBoxItem1Index2'>{{item.conMode}}</text></view>
+         <view class='IntelligenceBoxItem1Index3' wx:if='{{item.conScheduler}}'>{{item.conScheduler}}</view>
+       </view>
+       <view class='IntelligenceBoxItem2'>
+       组委会咨询热线 400-800-99327
+       </view>
+    </view>
+    <view class='scrollTop' bindtap='goTop'>
+       首页
+     </view>
+</scroll-view>
+<view class="canvas-box">
+    <canvas hidden="{{canvasHidden}}" style="width: 686rpx;height: 686rpx;background:#f1f1f1;" canvas-id="mycanvas" />
+</view>

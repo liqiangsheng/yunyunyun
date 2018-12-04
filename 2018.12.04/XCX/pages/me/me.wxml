@@ -1,0 +1,28 @@
+<!--pages/me/me.wxml-->
+<view class='meBox'>
+  <view class="userinfo">
+      <image class='bgImge' src='{{bgImge}}'></image>
+      <block>
+        <image bindtap="bindViewTap" class="userinfoImage" src="{{userInfo.header}}" mode="cover" bindtap='loginBnt'></image>
+        <text class="userinfo-nickname">{{userInfo.name}}</text>
+      </block> 
+    </view>
+    <view class='meList'>
+        <view bindtap='settingBnt'>
+        设置
+        <image src='../../images/right.png'></image>
+       </view>
+       <view bindtap='meActivityBnt'>
+        我的活动
+        <image src='../../images/right.png'></image>
+       </view>
+        <view bindtap='aboutBnt'>
+        关于不同
+        <image src='../../images/right.png'></image>
+       </view>
+    </view>
+    <view bindtap='outBnt' class='outBnt'>
+            退出
+      </view>
+</view>
+

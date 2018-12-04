@@ -1,0 +1,45 @@
+/* pages/city/city.wxss */
+page{ height: 100%;position: relative;} 
+.content{box-sizing: border-box; height: 100%;}
+
+
+.sheng{
+  line-height: 30px;
+  font-size: 14px;
+  background: #eee;
+  color: #999999;
+  text-indent: 12px;
+}
+.shi{
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  height: 40px;
+  line-height: 40px;
+   font-size: 14px;
+  font-weight: 400;
+  color: black;
+}
+.rightCity{
+  font-size: 10px;
+  width: 30px;
+  position: fixed;
+  top:50px;
+  right: 0;
+  color: #666666;
+}
+.rightCityItem{
+  text-align: center;
+  height: 16px;
+  width: 100%;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size: 12px;
+  font-family: "微软雅黑";
+  line-height: 16px;
+
+}
+.cityActive{
+  background: #dadada44;
+}

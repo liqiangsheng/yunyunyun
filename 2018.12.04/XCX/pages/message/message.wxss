@@ -1,0 +1,42 @@
+/* pages/message.wxss */
+/* page{
+  position: relative
+} */
+.messageBox{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top: 1px;
+  background: #fff;
+}
+.messageBoxTitle{
+  width: 90%;
+  height: 50px;
+  font-weight: 900;
+  line-height: 50px;
+  font-size: 16px;
+  text-align: center;
+  margin: 0 auto;
+}
+.messageBoxCenter{
+  width: 88%;
+  margin: 0 auto;
+  font-size: 14px;
+  line-height: 30px;
+  text-indent: 24px;
+}
+.messageBoxOK{
+  width: 30%;
+  height: 30px;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  font-size: 14px;line-height: 30px;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 20px;
+   margin-bottom: 20px;
+}
+.messageBoxOKActive{
+  background: #eee;
+}

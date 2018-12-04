@@ -1,0 +1,122 @@
+<!--pages/news/news.wxml-->
+<scroll-view scroll-y class='multiActivityBox' wx:if='{{!!meActivityBoxIsSHOW}}'>
+    <view class='multiActivityBoxHeader'>
+      <image src='{{arr.bannerUrl}}'></image>
+      <view>
+          <view>{{arr.title}}</view>
+          <view wx:if='{{arr.expenses>0}}'>{{arr.expenses}}</view>
+           <view  style='color:#21CB61'  wx:if='{{arr.expenses<=0}}'>免费</view>
+          <view><image style='margin-right:10px;' src='../../images/time.png'></image>{{arr.startTimes}}<image style='margin:0 10px;' src='../../images/position.png'></image>{{arr.cityName}}</view>
+         
+      </view>
+    </view>
+    <view class='multiActivitycenterDan' wx:if="{{arr.activityGoodsVoList.length>0}}">
+     单票
+    </view>
+    <!-- ------------ -->
+    <view class='multiActivitycenter'>
+       <view  wx:for='{{arr.activityGoodsVoList}}' wx:key="index" class='multiActivityItem' bindtap='bgItemTap' data-bgindex='{{index}}' data-bgindex1='one'>
+         <image src='../../images/bgItem.png' class='bgItem' wx:if="{{item.bgItem}}"></image>
+          <view class='item1'> {{item.name}}</view>
+          <view class='item2'>
+            <image src='../../images/time.png' style='margin-right:10px;'>
+            </image> {{item.startTimes}}
+            <!-- <image  style='margin:0 10px;' src='../../images/position.png'>
+            </image> {{item.address}} -->
+          </view>
+          <view class='item4'>
+             <view class='multiActivityBoxPrice' wx:if="{{item.youhuijia>0}}">
+             优惠价¥ 
+             <text>{{item.originalPrice-item.youhuijia}} </text>
+             </view>
+             <view style='color:#999999' class='multiActivityBoxPrice1' wx:if="{{item.youhuijia>0}}">
+               原价¥
+                <view class='Oprice'>{{item.originalPrice}} 
+                    <text class='hr'></text>
+                </view>
+             </view> 
+             <view style='color:rgba(254,95,95,1)' wx:if="{{item.youhuijia<=0&&item.originalPrice>0}}">{{item.originalPrice}} </view>
+             <view style='color:#21CB61' wx:if='{{item.originalPrice==0}}'>免费 </view>
+              <!-- <view class='reduceAdd'>
+               <image class='reduce' src='../../images/reduce.png' data-index='{{index}}' bindtap='reduceClick'></image>
+               <text>{{item.num}}</text>
+                <image class='add' src='../../images/add.png' data-index='{{index}}' bindtap='addClick'></image>
+             </view> -->
+               <view class='multiActivityBoxState1' wx:if='{{item.remainingState=="已售完"}}'>
+               {{item.remainingState}}
+               </view>
+              <view class='multiActivityBoxState1' wx:elif='{{item.remainingState=="已购买"}}'>
+              {{item.staremainingStatete}}
+              </view>
+              <view class='multiActivityBoxState'  wx:elif='{{item.remainingState=="抢票中"}}'>
+              {{item.remainingState}}
+              </view>
+          </view>
+          <view class='item5' wx:if="{{item.youhuijia>0}}">
+          注：已优惠 
+          <text style='color:#FE5F5F'>{{item.youhuijia}}</text>  元。
+          </view>
+       </view>
+
+    </view>
+     <!-- -------组合票-------- -->
+       <view class='multiActivitycenterDan' wx:if="{{arr.activityGoodsGroupVoList.length>0}}">
+        组合票
+       </view>
+       <view class='multiActivitycenter'>
+       <view  wx:for='{{arr.activityGoodsGroupVoList}}' wx:key="index" class='multiActivityItem' bindtap='bgItemTap' data-bgindex='{{index}}'data-bgindex1='two'>
+         <image src='../../images/bgItem.png' class='bgItem' wx:if="{{item.bgItem}}"></image>
+          <view class='item1'> {{item.name}}</view>
+          <view class='item2'>
+            <image src='../../images/time.png' style='margin-right:10px;'>
+            </image> {{item.startTimes}}
+    
+          </view>
+          <view class='item4'>
+             <view class='multiActivityBoxPrice' wx:if="{{item.youhuijia>0}}">
+             优惠价¥ 
+             <text>{{item.originalPrice-item.youhuijia}} </text>
+             </view>
+             <view style='color:#999999' class='multiActivityBoxPrice1' wx:if="{{item.youhuijia>0}}">
+               原价¥
+                <view class='Oprice'>{{item.originalPrice}} 
+                    <text class='hr'></text>
+                </view>
+             </view> 
+             <view style='color:rgba(254,95,95,1)' wx:if="{{item.youhuijia<=0}}">{{item.originalPrice}} </view>
+             <view style='color:#21CB61' wx:if='{{item.originalPrice==0}}'>免费 </view>
+             
+               <view class='multiActivityBoxState1' wx:if='{{item.remainingState=="已售完"}}'>
+               {{item.remainingState}}
+               </view>
+              <view class='multiActivityBoxState1' wx:elif='{{item.remainingState=="已购买"}}'>
+              {{item.remainingState}}
+              </view>
+              <view class='multiActivityBoxState'  wx:elif='{{item.remainingState=="抢票中"}}'>
+              {{item.remainingState}}
+              </view>
+          </view>
+          <view class='item5' wx:if="{{item.youhuijia>0}}">
+          注：已优惠 
+          <text style='color:#FE5F5F'>{{item.youhuijia}}</text>  元。
+          </view>
+       </view>
+     </view>
+</scroll-view>
+<view id='multiActivityFoot' wx:if='{{!!meActivityBoxIsSHOW}}'>
+    <view class='footItem'>
+      <view class='total'>实付：<text style='color:#FE5F5F'>{{price}}</text></view>
+      <view class='totalDiscount'>
+        <text>原价：¥{{numPrice}} </text>
+        <text>立减：¥{{reduceGo}}</text>
+      </view>
+    </view>
+    <view class='footItem1' bindtap='nextClick'>
+      <text >下一步 </text> 
+       <text style='display:block'>(已选 {{selectArr.length}} 个活动)</text>
+    </view>
+</view>
+
+<!-- <view>
+   <web-view src='http://172.16.0.55:8080/#/multiActivity'></web-view>
+</view> -->

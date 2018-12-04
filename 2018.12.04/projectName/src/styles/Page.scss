@@ -1,0 +1,186 @@
+/**
+* 这里是页面内容的样式
+**/
+
+.input-box{width:100%;border:1px solid #e9e9e9;}
+.input-box .input-box-title{ background:#f7f7f7;
+  border:1px solid #e9e9e9;
+  border-radius:2px 2px 0px 0px;height:34px;font-size:14px;
+  color:#666666;line-height: 34px;}
+.input-box .input-box-center{padding:21px 15px ;text-align:center;background:#ffffff;border: 1px solid #e9e9e9;  border-top: none;}
+.el-pagination{margin-top:15px;}
+.nav-box{width:100%;height:30px;background:#ffffff;}
+.nav-item{width: 100%;display: block;height: 100%;}
+.nav-item-list{display:block;height: 100%;line-height: 30px;width: 136px;font-size: 12px;color:#333333;border-right:1px solid #e9e9e9;float: left;cursor:pointer;}
+.nav-list-name{width: 105px;display:block;float: left;text-align:center;color:#333333;}
+.nav-list-close{width: 30px;  display: block;  height: 30px;  line-height: 30px;  float: right;  font-size: 22px;  color: #a5a5a5;}
+.list-active{background: #f0f0f0;}
+//.main-box{padding:20px 15px 0;margin-top: 30px;}
+.box-title-icon{margin:10px;}
+.input-box .box-title-up{display: inline-block;  height: 34px;  float: right;  margin-right: 10px;  font-size: 14px;  color: #666666;  cursor: pointer;}
+.input-box-center .el-input__inner{border:1px solid #cccccc;   height:30px;}
+.el-form-item{margin-bottom:5px;}
+.box-btn .el-form-item{margin-bottom:0;}
+.btn-box{height: 48px;  background: #ffffff;  line-height: 45px; padding: 0 10px;border: 1px solid #e9e9e9;  border-top: none;  border-bottom: none;}
+.box-page{background:#ffffff;text-align:center;padding:15px 0;}
+.box-page .el-pagination{margin-top:0; transform: translateY(-5px);}
+
+/*窗口*/
+.dialog .el-dialog--tiny{width: 35%;}
+.dialog .el-dialog__header{height: 40px;line-height: 40px;box-sizing:border-box;font-size: 14px;padding:0 20px;background:#41bdc7;}
+.dialog .el-dialog__header .el-dialog__title{font-size: 14px;color: #ffffff;font-weight:100;}
+.dialog .el-dialog__header .el-dialog__close{font-size: 15px;color: #ffffff;}
+.dialog .fromBox{text-align: center;}
+.dialog .el-form{width: 100%;display: inline-block}
+// .dialog .el-checkbox{margin-left: 15px;width: 21%;margin-bottom:10px;}
+.dialog .el-checkbox .el-checkbox__label{font-size: 12px;}
+.dialog .el-dialog__footer{text-align: center;}
+.dialog .el-dialog__footer{padding: 0;margin-bottom: 25px;}
+.dialog .el-select{width: 100%;}
+.dialog .el-date-editor.el-input{width: 100%;}
+.dialog .el-form-item{margin-bottom: 18px;}
+.el-dialog__body{padding:5px 15px 20px 15px;}
+.fromBox .dialog-footer{margin-top: 15px;}
+
+
+/* 公共 */
+/* 按钮重构 */
+#clz{
+  margin:0;
+  .el-button--primary:focus, .el-button--primary:hover{  background: rgb(97, 193, 197);  border-color: rgb(97, 193, 197);  color: #fff;  }
+  .el-button--small{padding: 7px 12px; border-radius: 32px;background: #fff;  border: 1px solid #41bdc7;  color:#41bdc7;}
+  .btn-active{background:#41bdc7;color:#ffffff;}
+  .black-button{background: #fff;  border:1px solid #d8d8d8;  color:#5c5c5c;}
+  .el-button--primary:focus{background:#3bb1bb;color: #ffffff;}
+  /*红色按钮*/
+  .btn-warning{border:1px solid #fe6377;color:#fe6377; }
+  .btn-warning:hover{background:#fe6377;border:1px solid #fe6377;}
+  .btn-warning.el-button--primary:focus{background:#fe6377;color: #ffffff;border:1px solid #fe6377;}
+  /*表格样式重构*/
+  .el-table__header-wrapper thead div {color:#333333;}
+  .el-table--enable-row-hover .el-table__body tr:hover>td{     background-color: rgba(65, 189, 199, 0.1);}
+  .table-box{width: 100%;background:#ffffff;border:1px solid rgba(221,221,221,0.50);  border-radius:4px;   padding: 20px 20px;box-sizing: border-box;}
+  .btn-content{margin-bottom: 10px;}
+  .form-box .btn .el-form-item__content .el-button+.el-button {  margin-left: 20px;}
+  .table-box .btn-left{ float:left;}
+  .table-box .btn-right{ float: right;display: -webkit-box;}
+  .table-box .btn-right #fieldSetting {  margin-left: 5px;}
+  .el-button.is-disabled, .el-button.is-disabled:focus, .el-button.is-disabled:hover {  color: rgb(191, 214, 217);  cursor: not-allowed;  background-image: none;  background-color: rgb(238, 244, 246);  border-color: rgb(209, 227, 229);  }
+}
+
+/*表单样式重构*/
+/* form-box */
+.el-form-item{margin-bottom: 0;}
+.form-box{width: 100%;background:#ffffff;  border:1px solid rgba(221,221,221,0.50);   padding: 15px 10px 15px 10px;box-sizing: border-box;margin-bottom: 15px;}
+.form-box .el-form--inline .el-form-item{width: 100%;min-width: 227px;margin: 7px 0;}
+.form-box .el-form--inline .el-form-item__content{width: 62%;min-width: 50%;}
+.searchForm .el-form--inline .el-form-item__content{width: 70%;}
+//.searchForm .el-form--inline .double .el-form-item__content{min-width: 275px;}
+.form-box .input-box-center .double .nowrap .el-form-item__content{min-width: 270px;}
+
+.form-box .input-box-center .el-input__inner{width: 100%;}
+.form-box .el-select{width: 100%;}
+.form-box .el-col-6{min-width: 388px;}
+.form-box .double .el-date-editor.el-input{width: 49%;}
+.form-box .btn{text-align: center;float: right;}
+.form-box .btn .el-form-item__content{min-width: 220px;}
+.form-box .el-cascader{width:100%;}
+.form-box .el-date-editor.el-input{width: 100%;}
+/* 表单 placeholder */
+.form-box input::-webkit-input-placeholder{  color: #999999 !important; }
+.form-box input:-moz-placeholder{  color: #999999 !important; }
+.form-box input::-moz-placeholder{  color: #999999 !important;  }
+.form-box input:-ms-input-placeholder{  color: #999999 !important;  }
+
+/*字段设置*/
+.el-popover{padding: 0;}
+.popoverTitle{  padding: 10px 20px;  font-size:12px;  color:#333333;border-bottom:1px solid rgba(215,215,215,0.50);  }
+.popoverTitle #popoverClose{font-size: 20px;  display: inline-block;  float: right; margin-top: -3px;color: #c2c2c2;cursor:pointer;}
+.popoverBox{padding: 25px 25px 5px 25px;}
+.popoverBox .el-checkbox-group .el-checkbox{ width: 33%; margin: 5px 0;}
+.popoverBox .el-checkbox+.el-checkbox{margin-left: 0;}
+/*.popoverBox .el-checkbox-group label:nth-child(3n+2){margin: 0 72px;}
+.popoverBox .el-checkbox-group{margin: 10px 0;}*/
+/* table-box */
+.table-box{width: 100%;background:#ffffff;border:1px solid rgba(221,221,221,0.50);  border-radius:4px;   padding: 10px 20px;box-sizing: border-box;}
+.btn-content{margin-bottom: 10px;}
+.el-form-item{margin-bottom: 0;}
+.form-box .btn .el-form-item__content .el-button+.el-button {  margin-left: 20px;}
+.popoverBtn{text-align: right;margin:15px 25px 15px 25px;}
+
+//.el-popover{min-width: 350px;max-width: 400px;}
+
+
+/*table 单元格点击*/
+.link-type,
+.link-type:focus {  color: #337ab7;  cursor: pointer;}
+.link-type:hover {
+  color: rgb(32, 160, 255);
+}
+
+/* 原生HTML TABLE */
+.customizeTable{margin-bottom: 25px;}
+.customizeTableBox .customizeTable table{  text-align: center;  border:none;  font-size: 14px;  color: rgb(31, 57, 61);  }
+.customizeTableBox .customizeTable table td, th{  height: 40px;  }
+.customizeTableBox .input-box{border: none;background:#ffffff;}
+.customizeTableBox.customizeTable{background:#ffffff;}
+.customizeTableBox .customizeTable .titleTable{  background:#f6f6f6;  }
+.customizeTableBox .input-box{border:none;}
+.customizeTableBox .title{margin-left: 20px;}
+.customizeTableBox .input-box-title{margin-bottom: 20px;}
+
+/* 表格合并 */
+.mergeTable {
+  border: none;
+  font-size: 14px;
+  color: #5a5e66;
+  td, th {
+    height: 0;
+    padding: 12px 0;
+    text-align: center;
+    vertical-align: middle;
+    border-color: inherit;
+  }
+  tr:hover > td {
+    background-color: #eaf8f9;
+  }
+  .table-title {
+    font-weight: bold;
+    color: #333333;
+    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  }
+}
+
+
+/* 表格合并 */
+.mergeTableLog{
+  border: none;
+  font-size: 14px;
+  color: #5a5e66;
+  td,th{
+    height: 0;
+    padding: 5px 0;
+    text-align: center;
+    vertical-align: middle;
+    border-color: inherit;
+  }
+  tr:hover>td{
+    background-color:#eaf8f9;
+  }
+  .table-title{
+    font-weight: bold;
+    color: #333333;
+    font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  }
+}
+
+/* 公共margin */
+.mTop-20{margin-top: 20px;}
+.clz-float-left{
+  float: left;
+}
+
+//form
+.recruit{
+  margin-bottom: 10px;
+}

@@ -1,0 +1,27 @@
+<!--pages/login/login.wxml-->
+<view id='loginBox'>
+  <image class='image' src='../../images/loginBj.png'></image>
+  <view class='loginTitle'>{{titleText}}</view>
+  <view class="telPhone">
+    <view class='telPhoneImae'> <image src='../../images/tel.png'></image><text class='add86'>+86</text> </view>
+    <view class='telPhoneImae1'><input type='number' bindblur='telPhone' placeholder="请输入手机号码" value='{{telValue}}'/></view>
+  </view>
+  
+    <view class="verificatioCode">
+       <view class='verificatioCodeImage'><image src='../../images/code.png'></image></view>
+       <view class='verificatioCodeImage1'><input  bindblur='codePsd' placeholder="请输入验证码" value='{{psdValue}}'/></view>
+       <button style='font-size:12px;line-height:50px;'  bindtap="ObtainCode" wx:if='{{isShow}}'>{{code}}</button>
+       <button style='font-size:12px;line-height:50px;' disabled wx:else='{{!isShow}}'>{{codeNum}}秒后重新发送</button>
+    </view>
+     <!-- <view class='gocegister' bindtap='gocegister'>
+      >去注册
+    </view> -->
+    <view class='loginDetail'>
+      点击查看 <text bindtap='loginDetail1'>“用户协议” </text> 和  <text bindtap='loginDetail'>“隐私政策” </text>
+    </view>
+   
+    <view class='loginBnt' bindtap='loginBnt'>
+       <button>登录</button>
+    </view>
+ 
+</view>

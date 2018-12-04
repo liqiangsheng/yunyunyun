@@ -1,0 +1,28 @@
+<!--pages/login1/login1.wxml-->
+
+<scroll-view scroll-y id='login1Box'>
+  <view class='loginTitle1'><image src='{{infoData.bannerUrl}}'></image></view>
+  <view class="telPhone1">
+    <view class='telPhoneImae1'> <image src='../../images/tel.png'></image><text class='add861'>+86</text> </view>
+    <view class='telPhoneImae11'><input type='number' bindblur='telPhone' placeholder="请输入手机号码" value='{{telValue}}'/></view>
+  </view>
+  
+    <view class="verificatioCode1">
+       <view class='verificatioCodeImage1'><image src='../../images/code.png'></image></view>
+       <view class='verificatioCodeImage11'><input  bindblur='codePsd' placeholder="请输入验证码" value='{{psdValue}}'/>
+            <button style='font-size:12px;line-height:50px;' bindtap="ObtainCode" wx:if='{{isShow}}'>{{code}}</button>
+            <button style='font-size:12px;line-height:50px;' disabled wx:else='{{!isShow}}'>{{codeNum}}秒后重新发送</button>
+       </view>
+       
+    </view>
+
+    <view class='loginBnt1' bindtap='loginBnt'>
+       <button>登录</button>
+    </view>
+    <view class='loginItem1'>
+        <view><text class='loginItem1FZ'>承办单位：</text>{{infoData.organizers}}</view>
+        <view><text class='loginItem1FZ'>联系电话：</text>{{infoData.linkPhone}}</view>
+        <view><text class='loginItem1FZ'>会展地址：</text> {{infoData.address}}</view>
+        <view><text class='loginItem1FZ'>会展日期：</text>{{infoData.time}}</view>
+    </view>
+</scroll-view>

@@ -1,0 +1,58 @@
+<!--pages/meActivity/meActivity.wxml-->
+<scroll-view scroll-y class='meActivityBox'>
+
+   <view class='meActivityBoxItem'>
+      <view class='meActivityBoxItemView1' data-index='0' bindtap='meActivityBoxItemView'><text class="{{meActivityBoxItemViewIndex == 0 ? 'meActivityBoxItemViewActive' : ''}}">全部</text></view>
+      <view class='meActivityBoxItemView2' data-index='1' bindtap='meActivityBoxItemView'><text class="{{meActivityBoxItemViewIndex == 1 ? 'meActivityBoxItemViewActive' : ''}}">待参加</text></view>
+      <view class='meActivityBoxItemView3' data-index='2' bindtap='meActivityBoxItemView'><text class="{{meActivityBoxItemViewIndex == 2 ? 'meActivityBoxItemViewActive' : ''}}">待支付</text></view>
+      <view class='meActivityBoxItemView4' data-index='3' bindtap='meActivityBoxItemView'><text class="{{meActivityBoxItemViewIndex == 3 ? 'meActivityBoxItemViewActive' : ''}}">已完成</text></view>
+   </view>
+
+   <view class='meActivityBoxItem1' wx:for="{{arr}}" wx:key="{{index}}">
+       <view class='meActivityBoxItem1View1'>
+            <image src="{{item.bannerUrl}}"></image>
+            <view class='meActivityBoxItem1ViewRight'>
+               <view class='meActivityBoxItem1ViewRightHeader'>{{item.title}}</view>
+               <view class='meActivityBoxItem1ViewRightPrice' wx:if='{{item.goodsAmount>0&&item.goodsAmount}}'>{{item.goodsAmount}}</view>
+               <view class='meActivityBoxItem1ViewRightPrice1' wx:else>免费</view>
+            </view>
+       </view>
+       <view class='meActivityBoxItem1View2'>
+        <view class='meActivityBoxItem1Viewitem1'><image src='../../images/position.png'></image><text>{{item.regionName}}</text></view>
+         <view class='meActivityBoxItem1Viewitem2'> <image src='../../images/time.png'></image><text>{{item.startTime1}}-{{item.endTime1}}</text></view>
+         
+         <view class='meActivityBoxItem1Viewitem3'>
+            <view class='meActivityBoxItem1Viewitem3Item' wx:if="{{item.state=='待参加'}}" data-orderId='{{item.id}}' bindtap='lookClick'>查看门票 <image src='../../images/right.png'></image></view>
+            <view class='meActivityBoxItem1Viewitem3Item1' wx:if="{{item.state=='待支付'}}" data-id='{{item.id}}' bindtap='pendingClick'>待支付</view>
+            <view class='meActivityBoxItem1Viewitem3Item4' wx:if="{{item.state=='已完成'}}">已完成</view>
+             <view class='meActivityBoxItem1Viewitem3Item4' wx:if="{{item.state=='已失效'}}">支付已失效</view>
+            <!-- <view class='meActivityBoxItem1Viewitem3Item2' wx:if="{{item.state=='已失效'}}" data-multiactivity="{{item}}" bindtap='againClick'>重新报名</view>
+            <view class='meActivityBoxItem1Viewitem3Item3' wx:if="{{item.state=='已失效'}}">已失效</view> -->
+            
+         </view>
+       </view>
+   </view>
+   
+<!-- 
+    <view class='meActivityBoxItem2'> <text></text> 活动推荐 <text></text></view>
+
+    <view class='meActivityBoxItem3' wx:for="{{arr1}}" wx:key="{{index}}">
+       <view class='meActivityBoxItem3View1'>
+            <image src="{{item.image}}"></image>
+            <view class='meActivityBoxItem3ViewRight'>
+               <view class='meActivityBoxItem3ViewRightHeader'>{{item.name}}</view>
+               <view class='meActivityBoxItem3ViewRightPrice'>{{item.price}}</view>
+            </view>
+       </view>
+       <view class='meActivityBoxItem3View2'>
+        <view class='meActivityBoxItem3Viewitem1'><image src='../../images/position.png'></image><text>{{item.address}}</text></view>
+         <view class='meActivityBoxItem3Viewitem2'> <image src='../../images/time.png'></image><text>{{item.time}}</text></view>
+         
+         <view class='meActivityBoxItem3Viewitem3'>
+            <view class='meActivityBoxItem3Viewitem3Item2' data-multiactivity="{{item}}" bindtap='rightOffClick'>立即报名</view>
+            
+         </view>
+       </view>
+   </view> -->
+
+</scroll-view>

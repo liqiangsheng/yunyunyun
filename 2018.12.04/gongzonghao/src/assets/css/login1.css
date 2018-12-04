@@ -1,0 +1,162 @@
+#login1Box{
+  width: 100%;
+  padding: 0.15rem 0;
+  background: #fff;
+  margin-top: 1px;
+  position: absolute;
+  left: 0;
+  top:0;
+  bottom: 0;
+  right: 0;
+}
+.loginTitle1{
+  width: 90%;
+  margin: 0 auto;
+  max-height: 1.5rem;
+}
+.loginTitle1 img{
+  display: block;
+  width: 100%;
+  max-height: 1.5rem;
+}
+.telPhone1{
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 0.36rem;
+  background:rgba(255,255,255,1);
+  border-radius:0.02rem;
+  height: 0.5rem;
+  display: flex;
+  border: 0.01rem solid #D7D7D7;
+}
+ .telPhoneImae1{
+  width: 20%;
+  display: inline-block;
+  height: 0.26rem;
+  margin:0.14rem 0 0.14rem 5%;
+}
+.add861{
+  display: inline-block;
+  font-size:0.14rem;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(5,5,9,1);
+  margin-left: 0.06rem;
+  transform: translateY(-0.05rem);
+}
+ .telPhoneImae1 img{
+  display: inline-block;
+  width: 0.18rem;
+  height: 0.22rem;
+}
+.telPhoneImae11{
+  flex:1;
+  display: inline-block;
+}
+ .telPhoneImae11 input{
+   width: 100%;
+   height: 0.3rem;
+   margin-top: 0.1rem;
+  box-sizing: border-box;
+  line-height: 0.3rem;
+  border-left: 0.01rem solid #DCDCDC;
+  font-size:0.16rem;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#050509;
+  padding-left: 0.1rem;
+  outline: none;
+   border-radius: 0;
+}
+.verificatioCode1{
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 0.16rem;
+  background:rgba(255,255,255,1);
+  border-radius:0.02rem;
+  height: 0.5rem;
+  border: 1px solid #D7D7D7;
+  display: flex;
+}
+
+ .verificatioCodeImage1{
+  width: 10%;
+  display: inline-block;
+  height: 0.26rem;
+  font-size:0.15rem;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:rgba(5,5,9,1);
+  margin:0.14rem 0 0.14rem 5%;
+}
+ .verificatioCodeImage1 img{
+  display: inline-block;
+  width: 0.18rem;
+  height: 0.22rem;
+}
+.verificatioCodeImage11{
+   flex:1;
+   display: block;
+   position: relative;
+}
+.verificatioCodeImage11 button{
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 0.5rem;
+   border: 0;
+   padding: 0 0.05rem;
+}
+.verificatioCodeImage11 input{
+   width: 60%;
+   height: 0.3rem;
+   margin-top: 0.1rem;
+  line-height: 0.3rem;
+  border-left: 1px solid #DCDCDC;
+  font-size:0.16rem;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#050509;
+    outline: none;
+  border-radius: 0;
+  padding-left: 0.1rem;
+}
+
+.loginBnt1{
+  width: 90%;
+  height: 0.5rem;
+  margin: 0 auto;
+  margin-top: 0.2rem;
+}
+.loginBnt1 button{
+  background-color: #050509;
+  color: #fff;
+   height: 0.5rem;
+   width: 100%;
+   border: 0;
+   border-radius:0.04rem;
+}
+.loginItem1{
+   width: 90%;
+   margin: 0 auto;
+   margin-top: 0.25rem;
+   font-size:0.13rem;
+  font-family:PingFangSC-Regular;
+  font-weight:400;
+  color:#050509;
+  line-height:0.21rem;
+}
+.loginItem1FZ{
+  color:rgba(102,102,102,1);
+}
+.gocegister{
+    width: 90%;
+    margin: 0 auto;
+    height:0.14rem;
+    font-size:0.13rem;
+    font-family:PingFangSC-Regular;
+    font-weight:400;
+    color:rgba(153,153,153,1);
+    line-height:0.18rem;
+    margin-top: 0.05rem;
+}

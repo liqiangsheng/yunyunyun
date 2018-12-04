@@ -1,0 +1,15 @@
+<!--pages/city/city.wxml-->
+<scroll-view class="content" scroll-into-view="{{toView}}" scroll-y="true" scroll-with-animation="true" wx:if="{{cityShow}}"> 
+  <view wx:for="{{cityAll}}" wx:key="{{index}}"  class='sheng' id="{{item.key}}">
+            {{item.key}}
+           <view wx:for="{{item.children}}" wx:key="{{index2}}" wx:for-item="items1" wx:for-index="index2" class='shi {{cityName==items1.name?"cityActive":""}}' bindtap='shiClick' data-index="{{index2}}" data-item="{{items1}}">
+             {{items1.name}}
+           </view>
+  </view>
+</scroll-view> 
+<view class='rightCity' wx:if="{{cityShow}}">
+   <view class='rightCityItem' data-item="{{item}}"  wx:for="{{Letter}}" wx:key="{{index}}" bindtap='setScrollTop'>
+    {{item}}
+   </view>
+ 
+</view>
