@@ -50,7 +50,7 @@ Page({
             // var imgData = wxqrCode.createQrCodeImg(res.data.data.signCode, { size: 300 });//生成二维码
             var size = that.setCanvasSize(); //动态设置画布大小 
             that.createQrCode(res.data.data.signCode, "mycanvas", size.w, size.h);
-            
+             
             if(!!res.data.data.conList){
               res.data.data.conList.map((item, index) => {
                 item.dateTime = item.conTime ? formatTime.formatTime5(item.conTime) : "待定";
@@ -58,9 +58,22 @@ Page({
                 item.conMode = item.conMode ? item.conMode : "待定";
               })
             }
-           
+            wx.request({
+              url: 'https://dcloud.butongtech.com/codeBanner',
+              method: 'GET',
+              success(res1){
+                console.log(res1,"skadkaskdksj")
+                res1.data.forEach((item,index)=>{
+                  if (item.id == res.data.data.activityId){
+                    that.data.dataObj.bannerUrl = item.bannerUrl;
+                    that.setData({
+                      dataObj: that.data.dataObj
+                    })
+                  }
+                })
+              }
+            })
             that.setData({
-           
               dataObj: res.data.data
             })
           }else{
@@ -97,7 +110,7 @@ Page({
        return;
 
       // let data = wx.getStorageSync("objList");
-     
+
       // if (Logindata) { //登录
         // var imgData = wxqrCode.createQrCodeImg(data.signCode, { size: 300 });//生成二维码
       // var size = that.setCanvasSize(); //动态设置画布大小 

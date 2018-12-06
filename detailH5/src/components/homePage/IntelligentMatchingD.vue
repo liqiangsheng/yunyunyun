@@ -8,8 +8,8 @@
       <div class="IntelligentMatchingDHeaderIndex1">
         <img :src="messageArr.bannerDetailUrl" alt="">
       </div>
-      <div class="IntelligentMatchingDHeaderIndex2" v-if="!!messageArr.userDp">
-        <img :src="messageArr.userDp" alt="" @click="authorClcik(messageArr.orgId,messageArr.createdUser)">
+      <div class="IntelligentMatchingDHeaderIndex2">
+        <img :src="userDp" alt="" @click="authorClcik(messageArr.orgId,messageArr.createdUser)">
         <button @click="giveClick">+ 关注</button>
       </div>
       <div class="IntelligentMatchingDHeaderIndex3" v-if="messageArr.summary">
@@ -41,12 +41,12 @@
       <!--  //有用的-->
     </div>
     <ul class="IntelligentMatchingDItem5" @click="giveClick">
-      <li v-for="(item,index) in commenArr">
+      <li v-for="(item,index) in commenArr" v-if="!!item.sysUserContentVo">
         <div class="IntelligentMatchingDItemL">
-          <img :src="item.sysUserContentVo.userDp?item.sysUserContentVo.userDp:'/static/images/defultphoto.png'" alt="">
+          <img :src="item.userDp" alt="">
         </div>
         <div class="IntelligentMatchingDItemR">
-          <h5>{{item.sysUserContentVo.name}}</h5>
+          <h5>{{item.name}}</h5>
           <div class="time">{{item.createdAt|formatTime1}}</div>
           <div class="commen">
             {{item.commentContent}}
@@ -98,25 +98,45 @@
         commenArr:[], //评论的数据
         p:1, //分页
         s:20,//分页
+        userDp:"./static/images/defultphoto.png",
       }
     },
     created(){
       this.$nextTick(function () {
         document.title = "主页详情";
       })
-      console.log(this.$router.history.current.query.id)
+
       if(this.$router.history.current.query.id){
         informationId(this.$router.history.current.query.id).then(res=>{
           if(res.status == true){
-            res.data.userDp = res.data.sysUserContentVo.userDp?res.data.sysUserContentVo.userDp:"./static/images/defultphoto.png";
+            if(res.data.sysUserContentVo.userDp){
+              this.userDp = res.data.sysUserContentVo.userDp;
+            }
             this.messageArr = res.data
           }else{
             Toast("网络出错了，请重试")
           }
         })
         findCommentsByInfoId(this.$router.history.current.query.id,this.p,this.s).then(res=>{ //7
-          console.log(res,"评论")
+
           if(res.status==true){
+            res.data.forEach((item,index)=>{
+              if(item.sysUserContentVo){
+                if(item.sysUserContentVo.userDp){
+                  item.userDp = item.sysUserContentVo.userDp;
+                }else {
+                  item.userDp = "./static/images/defultphoto.png";
+                }
+                if(item.sysUserContentVo.name){
+                  item.name = item.sysUserContentVo.name;
+                }else {
+                  item.name = "游客";
+                }
+              }else{
+                item.userDp = "./static/images/defultphoto.png";
+                item.name = "游客";
+              }
+            })
             this.commenArr = res.data;
           }else{
 
@@ -132,7 +152,7 @@
         location.href="https://itunes.apple.com/cn/app/id1439775835"
       },
       Android(){
-        location.href="hhttps://www.pgyer.com/designcloud"
+        location.href="https://www.pgyer.com/designcloud"
       },
       giveClick(){ //点击点赞  //下载IOS 或则安卓
         console.log("去下载")

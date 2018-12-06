@@ -35,6 +35,7 @@ Page({
       success(res){
        
         if (res.statusCode == 200){
+          console.log(res)
           that.setData({
             banner1: res.data.img
           })

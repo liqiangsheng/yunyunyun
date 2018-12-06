@@ -22,8 +22,7 @@ export default {
     }
   },
   created(){
-    console.log(this.$Request,"DASDKL")
-    localStorage.setItem("token",JSON.stringify(this.$Request.token));
+    localStorage.setItem("token",JSON.stringify(this.$router.history.current.query.token));
   },
   methods:{
     IntelligentMatchingClick(v,i){ //点击选中的下标

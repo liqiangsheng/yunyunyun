@@ -224,9 +224,10 @@ export default {
 
     quiry(){ //初始化数据
       this.imagesShow =this.$Request.imgIsShow;// 图片是否加载
-      this.id = this.$Request.id?this.$Request.id:"7"; //截取导航栏url获取参数
+//      this.id = this.$Request.id?this.$Request.id:"7"; //截取导航栏url获取参数
+      this.id = this.$router.history.current.query.id?this.$router.history.current.query.id:"8"; //
       Indicator.open('加载中...')
-       InitializationData( this.id ).then(res=>{  //数据加载
+       InitializationData(this.id).then(res=>{  //数据加载
          if(!!res.data.status){
 
            if(res.data.data.multiActivity == true){

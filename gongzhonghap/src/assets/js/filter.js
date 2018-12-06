@@ -17,10 +17,7 @@ const vFilter={
         return y + '/' + m + '/' + d
     },
     formatTime1:function (value) {
-
-    console.log(value,"yiqian")
       var nowDate = Date.parse(new Date());
-      console.log(nowDate,"现在")
       var date = new Date(value);
       var y1 = date.getFullYear();
       var y = date.getFullYear();
@@ -45,7 +42,7 @@ const vFilter={
       }else if(nowDate>(value+86400000)&&nowDate<(value+172800000)){
         return "昨天"+h+":"+minute
       }else if(nowDate>(value+172800000)&&nowDate<(value+354600000)){
-        return "两天"+m+":"+d
+        return "两天前的"+m+":"+d
       }else{
         return y + '/' + m + '/' + d
       }

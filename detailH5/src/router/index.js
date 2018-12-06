@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/home/home' //详情
 import HomeMap from '@/components/home/homeMap' //详情的地图
-import HomePage from '@/components/homePage/homePage' //首页
+import HomePage from '@/components/homePage/homePage' //=智慧活动
 import LookMore from '@/components/homePage/lookMore' //查看更多
 import IntelligentMatching from '@/components/intelligentMatching/IntelligentMatching' //智能匹配
 import IntelligentMatchingA from '@/components/intelligentMatching/IntelligentMatchingA' //智能匹配
@@ -16,7 +16,7 @@ import Contact from '@/components/homePage/contact' //联系不同
 import PictureLiveBroadcast from '@/components/pictureLiveBroadcast/pictureLiveBroadcast' //图片直播
 const Message = resolve => require(['@/components/message/message'], resolve); //协议，之类
 const FireMap = resolve => require(['@/components/pictureLiveBroadcast/fireMap'], resolve); //火图
-
+const HomeIndex = resolve => require(['@/components/homeIndex/homeIndex'], resolve); //首页
 
 Vue.use(Router)
 
@@ -30,6 +30,11 @@ export default new Router({
       path: '/message',
       name: 'Message',
       component: Message,
+    },
+    {
+      path: '/homeIndex',
+      name: 'homeIndex',
+      component: HomeIndex,
     },
     {
       path: '/fireMap',

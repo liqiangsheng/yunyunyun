@@ -203,15 +203,6 @@ export default {
   },
   components:{
   },
-  //跳轉路由前更新数据
-  beforeRouteEnter(to,from,next){
-    next(Vue=>{
-      Vue.quiry();
-    })
-  },
-  beforeRouterLeave(to,from,next){
-    next()
-  },
   created(){
     this.$nextTick(function () {
       document.title = "活动详情";
@@ -236,9 +227,7 @@ export default {
              Toast("活动尚未开始报名，请选择其他活动！");
              return;
            }
-           console.log(this.acivityArr)
            sessionStorage.setItem("activityInfo", JSON.stringify(this.objData)) //保存活动信息
-           console.log(this.objData.id,"asdkasdk")
            this.$store.dispatch("multiActivityId",this.objData.id) //保存选中的Id 在vueX
            this.$router.push({path:"/multiActivity",})  //去选票
          }else{
@@ -247,10 +236,11 @@ export default {
          }
     },
     quiry(){ //初始化数据
-      this.id = JSON.parse(window.sessionStorage.getItem("detailId")).id; //
-
+//      this.id = JSON.parse(window.sessionStorage.getItem("detailId")).id; //
+      this.id = this.$router.history.current.query.id?this.$router.history.current.query.id:"8"; //
+//          console.log(this.$router.history.current.query.id,";oqo")
       Indicator.open('加载中...')
-       InitializationData(this.id ).then(res=>{  //数据加载
+       InitializationData(this.id).then(res=>{  //数据加载
          if(!!res.data.status){
 
            if(res.data.data.multiActivity == true){

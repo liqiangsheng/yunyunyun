@@ -110,12 +110,8 @@ export default {
        console.log(this.listData,"askdkasdka")
     },
     bannerUrlClick(v) { //点击的头像
-      console.log(v)
+
       this.$router.push({path: "/homePage", query: {state: 1,id:v.id,source:"XCX"}}) //去企业主页 1是企业 2是个人
-//      this.$router.push({path: "/homePage?state=1&source=XCX&id="+v.id})
-      setTimeout(()=>{
-        window.location.reload();
-      },100)
     }
 
   }

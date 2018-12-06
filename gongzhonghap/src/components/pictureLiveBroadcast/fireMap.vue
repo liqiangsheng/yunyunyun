@@ -25,17 +25,18 @@ export default {
     return{
       objData:[], //活动火图列表
       tabbarArr:[  //、、tab
-        {name:"智慧活动",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/index"},
+        {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex"},
+        {name:"智慧活动",icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
         {name:"火图直播",icon:"./static/images/火图2.png",icon1:"./static/images/火图1.png",path:"/fireMap"},
         {name:"我的",icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
       ],
-      pageNum:0, //共多少页
+      pageNum:2, //共多少页
       message:"",//点击加载
       page:{
         p:1, //第几页
        s:20,// 、、一页多少
       },
-      tabbarAarrIndex:1, //点击tab的下标
+      tabbarAarrIndex:2, //点击tab的下标
       stateXCX:"", //是不是小程序
     }
   },

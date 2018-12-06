@@ -1,7 +1,7 @@
 <template>
   <div id="admission">
     <div class='admissionBox'>
-      <div class='admissionBoxItem1'><img src='/static/images/okOrder.png'/></div>
+      <div class='admissionBoxItem1'><img :src='dataObj.bannerUrl'/></div>
       <div class='admissionBoxItem2'>
         <div class='view'>
           <span>姓　　名</span>
@@ -15,11 +15,11 @@
           <span>人像状态</span>
           <sapn style='color:#FE5F5F'>已拍照</sapn>
         </div>
-        <div class='voice' @click='voiceClick'>
-          <span>明星产品语音导览</span>
-          <img class='imgae1' src='/static/images/video.gif'/>
-          <img class='imgae' src='/static/images/right.png'/>
-        </div>
+        <!--<div class='voice' @click='voiceClick'>-->
+          <!--<span>明星产品语音导览</span>-->
+          <!--<img class='imgae1' src='/static/images/video.gif'/>-->
+          <!--<img class='imgae' src='/static/images/right.png'/>-->
+        <!--</div>-->
       </div>
       <div class='admissionBoxItem3' v-if='!!dataObj.faceUr'>
         <img :src='dataObj.faceUrl'/>
@@ -60,7 +60,7 @@
 
 <script>
   import QRCode from 'qrcodejs2'
-  import { findSimpleOneToClient,} from '../../assets/js/promiseHttp'; //数据
+  import { findSimpleOneToClient,packagejson} from '../../assets/js/promiseHttp'; //数据
   import { Toast } from 'mint-ui';  //弹框
 export default {
   components:{QRCode},
@@ -77,24 +77,43 @@ export default {
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
     let objListId = JSON.parse(localStorage.getItem("objListId"))
+    console.log(objListId)
     if(this.userInfo){
       findSimpleOneToClient(this.userInfo.data.access_token,objListId).then(res=>{
          if(res.status == true){
-           if(!!res.data.conList){
-             res.data.conList.map((item, index) => {
-               item.dateTime = item.conTime ? item.conTime|formatTime : "待定";
-               item.conLocation = item.conLocation ? item.conLocation : "待定";
-               item.conMode = item.conMode ? item.conMode : "待定";
+           packagejson().then(res1=>{
+              console.log(res1)
+             if(res1.status == 200){
+                res1.data.forEach((item,index)=>{
+                  if(item.id ==res.data.activityId){
+                    res.data.bannerUrl = item.bannerUrl;
+                  }
+                })
+             }else{
+               Toast("网络异常，请重试")
+             }
+           })
+           setTimeout(()=>{
+             if(!!res.data.conList){
+               res.data.conList.map((item, index) => {
+                 item.dateTime = item.conTime ? item.conTime|formatTime : "待定";
+                 item.conLocation = item.conLocation ? item.conLocation : "待定";
+                 item.conMode = item.conMode ? item.conMode : "待定";
+               })
+             }
+             if(!!res.data.conList){
+               res.data.conList.forEach((item,index)=>{
+                 item.topImg = "./static/images/xia.png"
+                 item.topShow = false;
+               })
+             }
+
+             this.$nextTick (function () {
+               this.qrcode(res.data.signCode);
              })
-           }
-           res.data.conList.forEach((item,index)=>{
-             item.topImg = "./static/images/xia.png"
-             item.topShow = false;
-           })
-           this.$nextTick (function () {
-             this.qrcode(res.data.signCode);
-           })
-            this.dataObj = res.data;
+             this.dataObj = res.data;
+             console.log( this.dataObj,"fdskfdjks1111111111111111111111")
+           },300)
 
 
          }else{

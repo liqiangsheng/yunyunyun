@@ -26,7 +26,7 @@
              <div class="swiper-wrapper">
                <div class="swiper-slide" v-for="(item1,index1) in item.children" >
                  <div class="imgIs">
-                   <img :src="item1.bannerUrl" />
+                   <img :src="item1.bannerUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" />
                    <div class='homeBottomstate2 end1' @click.stop="goToPicture(item)">
                      火图直播
                    </div>
@@ -49,7 +49,7 @@
         <div class='homeBottom' v-if="item.multiActivity==false">
 
           <div class='homeBottomContent'>
-             <img :src="item.bannerUrl"/>
+             <img :src="item.bannerUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'"/>
               <div class='homeBottomTitle'>
                 <span>{{item.name}}</span>
               </div>
@@ -100,7 +100,7 @@
 <script>
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
-  import { activityListData } from '../../assets/js/promiseHttp';
+  import { activityListData,tsconfigjson } from '../../assets/js/promiseHttp';
   import {formatTime3} from "../../assets/js/Fun"
    const date = new Date().getTime();
 export default {
@@ -108,14 +108,14 @@ export default {
   data(){
     return{
       boxSHow:false, //  初始数据
-      //轮播
-      banner: ["https://pub.qinius.butongtech.com/a_banner1.jpg","https://pub.qinius.butongtech.com/a_banner2.jpg","https://pub.qinius.butongtech.com/a_banner2.jpg","https://pub.qinius.butongtech.com/a_banner4.jpg"],
+      banner:[],//轮播
       tabbarAarr:[  //、、tab
-        {name:"智慧活动",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/index"},
+        {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex"},
+        {name:"智慧活动",icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
         {name:"火图直播",icon:"./static/images/火图2.png",icon1:"./static/images/火图1.png",path:"/fireMap"},
         {name:"我的",icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
       ],
-      tabbarAarrIndex:0,  //点击tab的下标
+      tabbarAarrIndex:1,  //点击tab的下标
       p:1, //第几页
       s:20,// 、、一夜多少
       objList:[],//列表数据
@@ -126,6 +126,20 @@ export default {
   created(){
     this.$nextTick(function () {
       document.title = "不同科技";
+    })
+    tsconfigjson().then(res=>{
+      if(res.status == 200){
+        this.banner = res.data.img;
+        this.$nextTick(()=>{
+          //     滑动
+          var mySwiper = new Swiper ('.swiper-container', {
+            autoplay:true,
+            loop:true
+          })
+        })
+      }else{
+        Tost("网络异常，请重试")
+      }
     })
     activityListData(this.p,this.s).then(res=>{
       if(res.data.status == true){
@@ -162,9 +176,8 @@ export default {
   },
   methods:{
     goDetail(item){//去活动详情
-
       window.sessionStorage.setItem("detailId",JSON.stringify(item))
-      this.$router.push({path:"/home"}); //去详情
+      this.$router.push({path:"/home",query:{id:item.id}}); //去详情
 
     },
     goToPicture(item){//去火图直播页面
@@ -199,14 +212,7 @@ export default {
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll) //监听回到顶部按钮出现
-    let that = this;
-    this.$nextTick(()=>{
-        //     滑动
-        var mySwiper = new Swiper ('.swiper-container', {
-          autoplay:true,
-          loop:true
-        })
-    })
+
   },
 }
 

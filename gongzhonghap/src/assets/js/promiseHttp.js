@@ -12,7 +12,24 @@ export function loadDicTree(id){
   })
 }
 
-
+// 轮播
+export function tsconfigjson(){
+  return  new Promise((resolve,reject)=>{
+    let url = `./static/js/tsconfig.json`;
+    axios.get(url).then(res=>{
+      resolve(res)
+    })
+  })
+}
+// 订单门票图片
+export function packagejson(){
+  return  new Promise((resolve,reject)=>{
+    let url = `./static/js/package.json`;
+    axios.get(url).then(res=>{
+      resolve(res)
+    })
+  })
+}
 // 详情数据
 export function InitializationData(id){
   return  new Promise((resolve,reject)=>{
@@ -404,6 +421,8 @@ export function activityImagesBookFindOne(id){
     let url = `${window.common.apiDomain20020}/apis/activity/activityImagesBook/findOne?id=${id}`;
     axios.get(url).then(res=>{
       resolve(res)
+    }).catch(function (error) {
+      Toast(error)
     })
   })
 }
@@ -413,6 +432,8 @@ export function activityImageslistHot(id,s){
     let url = `${window.common.apiDomain20020}/apis/activity/activityImages/listHot?bookId=${id}&size=${s}`;
     axios.get(url).then(res=>{
       resolve(res)
+    }).catch(function (error) {
+      Toast(error)
     })
   })
 }
@@ -422,6 +443,8 @@ export function activityImagesFindOne(id){
     let url = `${window.common.apiDomain20020}/apis/activity/activityImages/findOne?id=${id}`;
     axios.get(url).then(res=>{
       resolve(res)
+    }).catch(function (error) {
+      Toast(error)
     })
   })
 }
@@ -431,6 +454,8 @@ export function activityImagesList(data){
     let url = `${window.common.apiDomain20020}/apis/activity/activityImages/list`;
     axios.post(url,data).then(res=>{
       resolve(res)
+    }).catch(function (error) {
+      Toast(error)
     })
   })
 }
@@ -441,6 +466,53 @@ export function activityImagesBookList(data){
     console.log(url)
     axios.post(url,data).then(res=>{
       resolve(res)
+    }).catch(function (error) {
+      Toast(error)
+    })
+  })
+}
+// 智慧团
+export function operationTeamInfos(p,s){
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/teamInfos?p=${p}&s=${s}`;
+    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+      resolve(res)
+    }).catch(function (error) {
+      Toast(error)
+    })
+  })
+}
+// 资源池
+export function companyList(p,s){
+  let obj = {companyCat:"2",p:p,s:s};
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/companyInfo/list`;
+    axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+      resolve(res)
+    })
+  })
+}
+// 设计咖
+export function commonUserList(){
+  let obj = {"userCat":"2"}
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/commonUser/list`;
+    axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+        resolve(res)
+    }).catch(function (error) {
+      Toast(error)
+    })
+  })
+}
+// 大咖说4 风向标3 新视界5
+export function specialSubjectFindSubjectInfoByCategory(state,p,s){
+  let obj = {"subjectCategory":state,p:p,s:s}
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/content/specialSubject/findSubjectInfoByCategory`;
+    axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+      resolve(res)
+    }).catch(function (error) {
+      Toast(error)
     })
   })
 }

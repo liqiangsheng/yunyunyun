@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 const Home = resolve => require(['@/components/home/home'], resolve); //详情
 const HomeMap = resolve => require(['@/components/homeMap/homeMap'], resolve); //详情地图
-const Index = resolve => require(['@/components/index/index'], resolve); //首页
+const Index = resolve => require(['@/components/index/index'], resolve); //智慧活动
 const Me = resolve => require(['@/components/me/me'], resolve); //我的
 const Login1 = resolve => require(['@/components/login1/login1'], resolve); //登录1
 const Login = resolve => require(['@/components/login/login'], resolve); //登录
@@ -27,6 +27,7 @@ const PayH5 = resolve => require(['@/components/PayH5/payH5'], resolve); //选�
 const Contact = resolve => require(['@/components/homePage/contact'], resolve); //联系不同
 const PictureLiveBroadcast = resolve => require(['@/components/pictureLiveBroadcast/pictureLiveBroadcast'], resolve); //图片直播
 const FireMap = resolve => require(['@/components/pictureLiveBroadcast/fireMap'], resolve); //火图
+const homeIndex = resolve => require(['@/components/homeIndex/homeIndex'], resolve); //首页
 // import Home from '@/components/home/home'
 // import HomeMap from '@/components/homeMap/homeMap' //详情地图
 // import Index from '@/components/index/index' //首页
@@ -53,6 +54,7 @@ const FireMap = resolve => require(['@/components/pictureLiveBroadcast/fireMap']
 // import PayH5 from '@/components/PayH5/payH5' //选择支付
 // import Contact from '@/components/homePage/contact' //联系不同
 // import PictureLiveBroadcast from '@/components/pictureLiveBroadcast/pictureLiveBroadcast' //图片直播
+// import homeIndex from '@/components/homeIndex/homeIndex' //首页
 
 
 Vue.use(Router)
@@ -61,9 +63,13 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/index',
+      redirect: '/homeIndex',
     },
     {
+      path: '/homeIndex',
+      name: 'homeIndex',
+      component: homeIndex,
+    },{
       path: '/index',
       name: 'index',
       component: Index,

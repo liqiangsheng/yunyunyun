@@ -5,6 +5,7 @@
          <li>1）　获取优质的设计资源</li>
          <li>2）　分享、推广您的资源和品牌</li>
          <li>3）　获取优质的设计需求</li>
+         <li v-if="teamName&&teamName!=''"><span style="color: #050509">对接主题</span>/　{{teamName}}</li>
          <li><span>姓　　名</span><input type="text" v-model="name"></li>
          <li><span>电话号码</span><input type="number" v-model="tel"></li>
          <li><span>电子邮箱</span><input type="text" v-model="emil"></li>
@@ -26,10 +27,17 @@ export default {
       name:"",
       tel:"",
       emil:'',
+      teamName:"",
     }
   },
   created() {
     document.title="填写联系方式"
+    console.log(this.$router.history.current.query.teamName)
+    if(this.$router.history.current.query.teamName){
+      this.teamName = this.$router.history.current.query.teamName;
+    }else{
+      this.teamName = "";
+    }
   },
   methods:{
     okClcik(){//确定
@@ -49,6 +57,7 @@ export default {
         "email": this.emil,
         "contactName": this.name,
         "phone": this.tel,
+        "contactName":this.teamName,
       }
       //数据提交成功之后回到上一页
 

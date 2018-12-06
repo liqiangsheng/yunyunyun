@@ -25,6 +25,7 @@
     <div @click='outBnt' class='outBnt'>
             退出
       </div>
+
     <ul class="Indextab">
       <li v-for="(item,index) in tabbarArr" class="indexTabLi" @click="tabarClick(index)">
         <img :src="tabbarAarrIndex==index?item.icon:item.icon1" alt="" class="indexTabImg">
@@ -49,11 +50,12 @@ export default {
         name: "登录",
         },
         tabbarArr:[  //、、tab
-          {name:"智慧活动",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/index"},
+          {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex"},
+          {name:"智慧活动",icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
           {name:"火图直播",icon:"./static/images/火图2.png",icon1:"./static/images/火图1.png",path:"/fireMap"},
           {name:"我的",icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
         ],
-        tabbarAarrIndex:2,  //点击tab的下标
+        tabbarAarrIndex:3,  //点击tab的下标
       }
   },
   created(){

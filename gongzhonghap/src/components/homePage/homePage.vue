@@ -1,15 +1,15 @@
 <template>
   <div id="homePage">
       <div class="homePageHeader">
-        <img :src="objData.logoUrl?objData.logoUrl:'/static/images/defultphoto.png'" alt="" class="backgroundImg" v-if="this.$Request.state==1">
-        <img :src="objData.ownerUrl?objData.logoUrl:'/static/images/defultphoto.png'" alt="" class="backgroundImg" v-if="this.$Request.state==2">
+        <img :src="objData.logoUrl?objData.logoUrl:objData.logoUrl1" alt="" class="backgroundImg" v-if="Request.state==1">
+        <img :src="objData.ownerUrl?objData.ownerUrl:objData.ownerUrl1" alt="" class="backgroundImg" v-if="Request.state==2">
           <div class="homePageHeaderItem">
               <div class="homePageHeaderItemImg">
-                <img :src="objData.logoUrl?objData.logoUrl:'/static/images/defultphoto.png'" alt="" v-if="this.$Request.state==1">
-                <img :src="objData.ownerUrl?objData.logoUrl:'/static/images/defultphoto.png'" alt=""  v-if="this.$Request.state==2">
+                <img :src="objData.logoUrl?objData.logoUrl:objData.logoUrl1" alt="" v-if="Request.state==1">
+                <img :src="objData.ownerUrl?objData.ownerUrl:objData.ownerUrl1" alt=""  v-if="Request.state==2">
           </div>
               <div class="homePageHeaderItemBox">
-                  <h5 class="headerName">{{objData.name}}<img src="/static/images/bigV.png" alt="" v-if="this.$Request.state==2"><img src="/static/images/bigV2.png" alt=""  v-else></h5>
+                  <h5 class="headerName">{{objData.name}}<img src="/static/images/bigV.png" alt="" v-if="Request.state==2"><img src="/static/images/bigV2.png" alt=""  v-else></h5>
                   <div class="headerSkill">
                     <span> {{objData.engName}}</span>
                   </div>
@@ -22,7 +22,7 @@
           </div>
       </div>
     <!---->
-    <div class="positionImg" v-if="this.$Request.state==2">
+    <div class="positionImg" v-if="Request.state==2">
         <div class="positionImgItem">影响力指数：</div>
         <div class="positionGradient">
            <div class="rgbaGradient" :style="rgbaStyle">
@@ -37,8 +37,8 @@
       <li v-for="(item,index) in homePageArray" @click="listClick(index)"><span :class="{active:homePageIndex==index}">{{item}}</span></li>
     </ul>
     <div class="homePageComponents">
-      <HomePageA v-if="homePageIndex == 0" :displayState="this.$Request.state" :requestA="this.$Request.source" :objData="objData"></HomePageA>
-      <HomePageB v-if="homePageIndex == 1" :displayState="this.$Request.state" :requestA="this.$Request.source" :objData="objData"></HomePageB>
+      <HomePageA v-if="homePageIndex == 0" :displayState="Request.state" :requestA="Request.source" :objData="objData"></HomePageA>
+      <HomePageB v-if="homePageIndex == 1" :displayState="Request.state" :requestA="Request.source" :objData="objData"></HomePageB>
     </div>
   </div>
 </template>
@@ -67,7 +67,7 @@ export default {
         numBStyle:{color:"red"} ,// 进度条
        objData:{},
       page:1,  //页码
-
+      Request:{},
     }
   },
   methods:{
@@ -79,8 +79,8 @@ export default {
     this.$nextTick(function () {
       document.title = "主页";
     })
-    console.log(this.$router.history.current.query)
     if(this.$router.history.current.query){
+      this.Request = this.$router.history.current.query;
       sessionStorage.setItem("homePageObj",JSON.stringify(this.$router.history.current.query))
       if(this.$router.history.current.query.state == "1"){
         companyInfoFindOne(this.$router.history.current.query.id).then(res=>{
@@ -97,6 +97,7 @@ export default {
                 res.data.companyExtendType2.push(item)
               }
             })
+            res.data.logoUrl1 = "./static/images/defultphoto.png";
             this.objData = res.data;
           }else{
             Toast("网络出错了，请重试")
@@ -118,6 +119,7 @@ export default {
             res.data.careCount = res.data.careCount?res.data.careCount:0;
             res.data.caredCount = res.data.caredCount?res.data.caredCount:0;
             res.data.laudedCount = res.data.laudedCount?res.data.laudedCount:0;
+            res.data.ownerUrl1 = "./static/images/defultphoto.png";
             this.objData = res.data;
           }else{
             Toast("网络出错了，请重试")

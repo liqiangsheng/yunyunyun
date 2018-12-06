@@ -42,7 +42,7 @@ const vFilter={
       }else if(nowDate>(value+86400000)&&nowDate<(value+172800000)){
         return "昨天"+h+":"+minute
       }else if(nowDate>(value+172800000)&&nowDate<(value+354600000)){
-        return "两天"+m+":"+d
+        return "两天前的"+m+":"+d
       }else{
         return y + '/' + m + '/' + d
       }

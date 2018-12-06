@@ -10,7 +10,6 @@
                    <li><img src="/static/images/look.png" alt="">{{item.viewCount}}</li>
                    <li><img src="/static/images/like.png" alt="">{{item.laudedCount}}</li>
                    <li><img src="/static/images/comment.png" alt="">{{item.commentCount}}</li>
-                   <li><div><img src="/static/images/share.png" alt="" @click="shareClick">分享</div></li>
                  </ul>
            </div>
       </div>
@@ -24,7 +23,6 @@
           <li><img src="/static/images/look.png" alt="">{{item.viewCount}}</li>
           <li><img src="/static/images/like.png" alt="">{{item.laudedCount}}</li>
           <li><img src="/static/images/comment.png" alt="">{{item.commentCount}}</li>
-          <li v-if="requestA !='XCX'"><div><img src="/static/images/share.png" alt="" @click="shareClick">分享</div></li>
         </ul>
       </div>
     </div>
