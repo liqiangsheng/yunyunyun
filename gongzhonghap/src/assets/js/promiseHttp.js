@@ -2,10 +2,14 @@
 import axios from "axios"
 import { Toast } from 'mint-ui';  //弹框
 import { Indicator } from 'mint-ui';
+const activityEdition = "v1.0";
+const systemEdition= "v1.0";
+const operationEdition= "v1.0";
+const contentEdition= "v1.0";
 // 字典缓存本地
 export function loadDicTree(id){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/system/init/loadDicTree`;
+    let url = `${window.common.apiDomain20020}/apis/system/${systemEdition}/init/loadDicTree`;
     axios.get(url).then(res=>{
       resolve(res)
     })
@@ -33,7 +37,7 @@ export function packagejson(){
 // 详情数据
 export function InitializationData(id){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/activity/activityInfo/findOne?id=${id}`;
+    let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityInfo/findOne?id=${id}`;
     axios.get(url).then(res=>{
       resolve(res)
     })
@@ -42,7 +46,7 @@ export function InitializationData(id){
 // 活动安排
 export function activitySchedulelist(data){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/activity/activitySchedule/list`;
+    let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activitySchedule/list`;
     axios.post(url,data).then(res=>{
       resolve(res)
     })
@@ -51,7 +55,7 @@ export function activitySchedulelist(data){
 // 嘉宾列表
 export function honoredGuestlist(data){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/activity/honoredGuest/list`;
+    let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/honoredGuest/list`;
     axios.post(url,data).then(res=>{
       resolve(res)
     })
@@ -61,7 +65,7 @@ export function honoredGuestlist(data){
 export function activityListData(p,s){
   Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/activity/activityInfo/list`;
+    let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityInfo/list`;
     let data = {p:p,s:s}
     axios.post(url,data,{header:{'Content-Type': 'application/json','Accept': '*/*'}}).then(res=>{
       resolve(res)
@@ -73,7 +77,7 @@ export function activityListData(p,s){
 
 export function IntallData(item){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/operation/commonUser/findCommonUserById?userId=${item.data.id}`;
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/findCommonUserById?userId=${item.data.id}`;
     axios.get(url,{header:{'Content-Type': 'application/json','Accept': '*/*','Authorization':'Bearer '+item.data.access_token}}).then(res=>{
       resolve(res)
     })
@@ -83,7 +87,7 @@ export function IntallData(item){
 //获取手机认证码
 export function telCode(tel){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/operation/sysUserOperation/generateMobileVerifyCode?mobileType=XCX&mobile=${tel}`;
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/sysUserOperation/generateMobileVerifyCode?mobileType=XCX&mobile=${tel}`;
 
     axios.get(url).then(res=>{
 
@@ -94,7 +98,7 @@ export function telCode(tel){
 // //获取手机认证码登录
 export function login(tel,psd){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/operation/sysUserOperation/bindMobile`;
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/sysUserOperation/bindMobile`;
     let data = {mobile:tel,mobileType:"XCX",verifyCode:psd}
     axios.post(url,data,{ header: {'Content-Type': 'application/json','Accept': 'application/json'}}).then(res=>{
 
@@ -105,7 +109,7 @@ export function login(tel,psd){
 //国 省 市
 export function  regionTree(){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/system/sysRegion/tree`;
+    let url = `${window.common.apiDomain20020}/apis/system/${systemEdition}/sysRegion/tree`;
     axios.get(url).then(res=>{
 
       resolve(res)
@@ -115,7 +119,7 @@ export function  regionTree(){
 //  城市
 export function  levelCity(){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/system/sysRegion/singlelevel?level=city`;
+    let url = `${window.common.apiDomain20020}/apis/system/${systemEdition}/sysRegion/singlelevel?level=city`;
     axios.get(url).then(res=>{
       resolve(res)
     })
@@ -125,7 +129,7 @@ export function  levelCity(){
 //  编辑页面初始化数据
 export function  EditingInformationIntall(userId,token){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/operation/commonUser/findCommonUserById?userId=${userId}`;
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/findCommonUserById?userId=${userId}`;
     axios.get(url, {header: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -140,7 +144,7 @@ export function  EditingInformationIntall(userId,token){
 export function OkEditingInformation (data,token) { //请求数据
   return new Promise(function (resolve,reject) {
     let ajax = new XMLHttpRequest();
-    ajax.open('post',window.common.apiDomain20020+"/apis/operation/sysUserOperation/updateUserInfo",true);
+    ajax.open('post',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/sysUserOperation/updateUserInfo",true);
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
@@ -157,7 +161,7 @@ export function OkEditingInformation (data,token) { //请求数据
 export function qiniuToken(token) { //请求数据
   return new Promise(function (resolve,reject) {
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/system/sysAttachment/upPublicToken");
+    ajax.open('get',window.common.apiDomain20020+"/apis/system/"+systemEdition+"/sysAttachment/upPublicToken");
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -195,7 +199,7 @@ export function upImgQiniu(event,qiniuToken){
 export function meActivityData (data,token) { //请求数据
   return new Promise(function (resolve,reject) {
     let ajax = new XMLHttpRequest();
-    ajax.open('post',window.common.apiDomain20020+"/apis/activity/customerActivitySignupNote/list",true);
+    ajax.open('post',window.common.apiDomain20020+"/apis/activity/"+activityEdition+"/customerActivitySignupNote/list",true);
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
@@ -211,7 +215,7 @@ export function meActivityData (data,token) { //请求数据
 export function findOneWithGoods(token,id) { //请求数据
   return new Promise(function (resolve,reject) {
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/activity/activityInfo/findOneWithGoods?id="+id);
+    ajax.open('get',window.common.apiDomain20020+"/apis/activity/"+activityEdition+"/activityInfo/findOneWithGoods?id="+id);
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -227,7 +231,7 @@ export function findOneWithGoods(token,id) { //请求数据
 export function findByVersionToClient(token,id) { //请求数据
   return new Promise(function (resolve,reject) {
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/activity/activitySignupNoteSetting/findByVersionToClient");
+    ajax.open('get',window.common.apiDomain20020+"/apis/activity/"+activityEdition+"/activitySignupNoteSetting/findByVersionToClient");
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -246,7 +250,7 @@ export function findByVersionToClient(token,id) { //请求数据
 export function tagGroupAll (token) { //请求数据
   return new Promise(function (resolve,reject) {
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/operation/tagGroup/all");
+    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/tagGroup/all");
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -263,7 +267,7 @@ export function tagLibMatch (token,data) { //请求数据
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
-    ajax.open('post',window.common.apiDomain20020+"/apis/operation/tagLib/match",true);
+    ajax.open('post',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"tagLib/match",true);
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(data);
@@ -280,7 +284,7 @@ export function insertSignupNoteAndOrder (token,data) { //请求数据
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
-    ajax.open('post',window.common.apiDomain20020+"/apis/activity/customerActivitySignupNote/insertSignupNoteAndOrder",true);
+    ajax.open('post',window.common.apiDomain20020+"/apis/activity/"+activityEdition+"/customerActivitySignupNote/insertSignupNoteAndOrder",true);
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
@@ -297,7 +301,7 @@ export function findSimpleOneToClient (token,id) { //请求数据
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/activity/customerActivitySignupNote/findSimpleOneToClient?id="+id);
+    ajax.open('get',window.common.apiDomain20020+"/apis/activity/"+activityEdition+"/customerActivitySignupNote/findSimpleOneToClient?id="+id);
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -315,7 +319,7 @@ export function informationId(id) { //请求数据
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/content/information/findInformationDetailById?informationId="+id);
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/information/findInformationDetailById?informationId="+id);
     ajax.setRequestHeader("Content-Type","application/json");
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -334,7 +338,7 @@ export function companyInfoFindOne(id) { //请求数据
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/operation/companyInfo/findOne?id="+id);
+    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/companyInfo/findOne?id="+id);
     ajax.setRequestHeader("Content-Type","application/json");
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -353,7 +357,7 @@ export function commonUserFindOne(id) { //请求数据
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/operation/commonUser/findOne?id="+id);
+    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/commonUser/findOne?id="+id);
     ajax.setRequestHeader("Content-Type","application/json");
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -372,7 +376,7 @@ export function findInformationListByUserIdUserId(id,p,s) { //请求数据
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/content/information/findInformationListByUserId?userId="+id+"&p="+p+"&s="+s);
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/information/findInformationListByUserId?userId="+id+"&p="+p+"&s="+s);
     ajax.setRequestHeader("Content-Type","application/json");
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -391,7 +395,7 @@ export function findCommentsByInfoId(id,p,s) { //请求数据
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/content/comment/findCommentsByInfoId?informationId="+id+"&p="+p+"&s="+s);
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/comment/findCommentsByInfoId?informationId="+id+"&p="+p+"&s="+s);
     ajax.setRequestHeader("Content-Type","application/json");
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -408,7 +412,7 @@ export function findCommentsByInfoId(id,p,s) { //请求数据
 export function proposalContactTrack(obj) { //请求数据
   Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/operation/proposalContactTrack`;
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/proposalContactTrack`;
     axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
       Indicator.close();
       resolve(res)
@@ -418,7 +422,7 @@ export function proposalContactTrack(obj) { //请求数据
 // 根据活动图册主键id获取信息
 export function activityImagesBookFindOne(id){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/activity/activityImagesBook/findOne?id=${id}`;
+    let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityImagesBook/findOne?id=${id}`;
     axios.get(url).then(res=>{
       resolve(res)
     }).catch(function (error) {
@@ -429,7 +433,7 @@ export function activityImagesBookFindOne(id){
 // 根据活动图册主键id获取信息
 export function activityImageslistHot(id,s){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/activity/activityImages/listHot?bookId=${id}&size=${s}`;
+    let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityImages/listHot?bookId=${id}&size=${s}`;
     axios.get(url).then(res=>{
       resolve(res)
     }).catch(function (error) {
@@ -440,7 +444,7 @@ export function activityImageslistHot(id,s){
 // 图片直播封面
 export function activityImagesFindOne(id){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/activity/activityImages/findOne?id=${id}`;
+    let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityImages/findOne?id=${id}`;
     axios.get(url).then(res=>{
       resolve(res)
     }).catch(function (error) {
@@ -451,7 +455,7 @@ export function activityImagesFindOne(id){
 // 图片直播
 export function activityImagesList(data){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/activity/activityImages/list`;
+    let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityImages/list`;
     axios.post(url,data).then(res=>{
       resolve(res)
     }).catch(function (error) {
@@ -462,7 +466,7 @@ export function activityImagesList(data){
 // 火图直播
 export function activityImagesBookList(data){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/activity/activityImagesBook/list`;
+    let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityImagesBook/list`;
     console.log(url)
     axios.post(url,data).then(res=>{
       resolve(res)
@@ -474,7 +478,7 @@ export function activityImagesBookList(data){
 // 智慧团
 export function operationTeamInfos(p,s){
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/operation/teamInfos?p=${p}&s=${s}`;
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/teamInfos?p=${p}&s=${s}`;
     axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
       resolve(res)
     }).catch(function (error) {
@@ -486,7 +490,7 @@ export function operationTeamInfos(p,s){
 export function companyList(p,s){
   let obj = {companyCat:"2",p:p,s:s};
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/operation/companyInfo/list`;
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/list`;
     axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
       resolve(res)
     })
@@ -496,7 +500,7 @@ export function companyList(p,s){
 export function commonUserList(){
   let obj = {"userCat":"2"}
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/operation/commonUser/list`;
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/list`;
     axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
         resolve(res)
     }).catch(function (error) {
@@ -508,7 +512,7 @@ export function commonUserList(){
 export function specialSubjectFindSubjectInfoByCategory(state,p,s){
   let obj = {"subjectCategory":state,p:p,s:s}
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/content/specialSubject/findSubjectInfoByCategory`;
+    let url = `${window.common.apiDomain20020}/apis/content/${contentEdition}/specialSubject/findSubjectInfoByCategory`;
     axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
       resolve(res)
     }).catch(function (error) {

@@ -10,7 +10,7 @@
             <div class="swiper-wrapper">
               <div class="swiper-slide" v-for="(item,index) in acivityArr.children" >
                 <div class="imgIs">
-                 <img :src="item.bannerUrl" >
+                 <img :src="item.bannerUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" >
                   <!--<img :src="item.bannerUrl"  v-if="imagesShow=='true'">-->
                   <!--<img style="width: 0.8rem;height: 0.8rem;margin: 0 auto;margin-top: 0.3rem" src="/static/images/loding.gif" v-else>-->
                 </div>

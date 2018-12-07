@@ -28,8 +28,7 @@
 </template>
 
 <script>
-//  import { telCode,login} from '../../assets/js/promiseHttp';
-  import { telCode} from '../../assets/js/promiseHttp';
+  import { telCode,login} from '../../assets/js/promiseHttp';
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
 export default {
@@ -81,7 +80,7 @@ export default {
           Toast( '请填写验证码');
           return
         }
-        that.login(that.telValue,that.psdValue).then(res=>{
+        login(that.telValue,that.psdValue).then(res=>{
                console.log(res.data)
            if(res.data.status==true){
              window.localStorage.setItem("userInfo",JSON.stringify(res.data))
@@ -101,15 +100,15 @@ export default {
       },100)
 
     },
-    login(tel,psd){  //登录的接口
-      return  new Promise((resolve,reject)=>{
-        let url = `${window.common.apiDomain20020}/apis/operation/sysUserOperation/bindMobile`;
-        let data = {mobile:tel,mobileType:"XCX",verifyCode:psd}
-        this.$Aiox.post(url,data,{ header: {'Content-Type': 'application/json','Accept': 'application/json'}}).then(res=>{
-          resolve(res)
-        })
-      })
-    },
+//    login(tel,psd){  //登录的接口
+//      return  new Promise((resolve,reject)=>{
+//        let url = `${window.common.apiDomain20020}/apis/operation/sysUserOperation/bindMobile`;
+//        let data = {mobile:tel,mobileType:"XCX",verifyCode:psd}
+//        this.$Aiox.post(url,data,{ header: {'Content-Type': 'application/json','Accept': 'application/json'}}).then(res=>{
+//          resolve(res)
+//        })
+//      })
+//    },
     telPhone(){ //手机失去焦点
 
     },

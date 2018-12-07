@@ -20,7 +20,7 @@
                     </ul>
                 </div>
                 <div class="headerItem1">
-                    <img src="../../assets/images/大球3.png" alt="">
+                    <img src="../../assets/images/大球3.png?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim" alt="">
                     <div class="fontSize"></div>
                 </div>
               <div class="headerItem2">
@@ -31,7 +31,7 @@
                   </div>
 
               </div>
-              <div class="headerItem3">
+              <div class="headerItem3" @click="telButong">
                   <img src="../../assets/images/联系我们.png" alt="">
               </div>
           </div>
@@ -69,23 +69,25 @@
                 </ul>
            </div>
       </div>
+      <el-dialog :append-to-body="true" title="联系不同" class="dialog" :visible.sync="telShow"  width="550px" top="15%">
+          <TelButong @GotelShow="GotelShow"></TelButong>
+      </el-dialog>
   </div>
 </template>
 
 <script>
-
+import TelButong from './alter/telButong.vue'
 export default {
   name: "home",
     components: {
-
-
+        TelButong
     },
     data(){
       return{
-
+          telShow:false,
           objList:["智能设计社区","智能活动平台"],
           objListIndex:0,
-          objArr:[{name:"小程序",isShow:false,img:require("../../assets/images/erweima.png")},{name:"IOS",isShow:false,img:require("../../assets/images/erweima.png")},{name:"Andriod",isShow:false,img:require("../../assets/images/erweima.png")}],
+          objArr:[{name:"小程序",isShow:false,img:require("../../assets/images/erweima.png")},{name:"IOS",isShow:false,img:require("../../assets/images/ios.png")},{name:"Andriod",isShow:false,img:require("../../assets/images/android.png")}],
           objArrIndex:0,
           networkShow:false,
       }
@@ -95,6 +97,13 @@ export default {
 
     },
     methods:{
+        GotelShow(v){
+            this.telShow = v;
+        },
+
+        telButong(){ //联系不同
+           this.telShow = true;
+        },
         enterP(){//移入
             this.networkShow = true;
         },
@@ -125,7 +134,7 @@ export default {
          .header{
              /*width: 100%;*/
              max-width: 1920px;
-             background: url(../../assets/images/bg.png);
+             background: url(../../assets/images/bg.png?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim);
              background-size: cover;
              max-height: 880px;
              margin: 0 auto;
@@ -276,6 +285,7 @@ export default {
                      width: 140px;
                      height: 38px;
                      margin: 0 auto;
+                     cursor: pointer;
                  }
              }
          }
@@ -380,7 +390,7 @@ export default {
                              width: 94px;
                              height: 100px;
                              position: absolute;
-                             top:-97px;
+                             top:-95px;
                              left: -10px;
                          }
                      }

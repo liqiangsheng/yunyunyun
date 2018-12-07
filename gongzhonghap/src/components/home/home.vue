@@ -10,7 +10,7 @@
             <div class="swiper-wrapper">
               <div class="swiper-slide" v-for="(item,index) in acivityArr.children" >
                 <div class="imgIs">
-                  <img :src="item.bannerUrl" />
+                  <img :src="item.bannerUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" />
                 </div>
 
                 <h5>{{item.title}}</h5>
@@ -148,7 +148,7 @@
 
      </div>
  <!---->
-     <div class="nextBox" @click="ingClick">立即报名</div>
+     <div class="nextBox" @click="ingClick" v-if="state=='XCX'">立即报名</div>
      <img src="/static/images/scrollTop.png" alt="回到顶部" id="scrollTop" @click="goScrillTop" v-if="topScroll">
    </div>
 
@@ -168,6 +168,7 @@ export default {
   name: 'Home',
   data(){
     return{
+      state:"XCX",
       moreID:"",
       isShow:false, //获取数据在显示dom
       center: [114.06003, 22.53086],
@@ -204,6 +205,8 @@ export default {
   components:{
   },
   created(){
+    this.state = this.$router.history.current.query.state?this.$router.history.current.query.state:"XCX"; //
+    console.log(this.$router.history.current.query.state,";oqo")
     this.$nextTick(function () {
       document.title = "活动详情";
     })
@@ -238,7 +241,7 @@ export default {
     quiry(){ //初始化数据
 //      this.id = JSON.parse(window.sessionStorage.getItem("detailId")).id; //
       this.id = this.$router.history.current.query.id?this.$router.history.current.query.id:"8"; //
-//          console.log(this.$router.history.current.query.id,";oqo")
+
       Indicator.open('加载中...')
        InitializationData(this.id).then(res=>{  //数据加载
          if(!!res.data.status){

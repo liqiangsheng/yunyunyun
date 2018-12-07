@@ -1,6 +1,7 @@
 <template>
   <!--创新力-->
   <div id="creativity">
+   <!--<ul :class="{active:headerIndex==0}">-->
    <ul>
      <li v-for="(item,index) in headerArr" @click="headerClick(index)">
        <span :class="{active:headerIndex==index}">{{item}}</span>
@@ -70,10 +71,17 @@ export default {
         }
       }
     }
+    ul.active{
+      background: url(../../../../static/images/tab-bg.png);
+      background-size: cover;
+    }
     .creativityComponents{
-     width: 100%;
-      padding: 0.15rem;
-      box-sizing: border-box;
+       position: absolute;
+          left: 0;
+          right: 0;
+          bottom:0;
+          top: 0.5rem;
+          overflow: hidden;
     }
   }
 

@@ -29,7 +29,7 @@
 
   export function  getData (mode,url,token) { //ajax原生请求
     let ajax = new XMLHttpRequest();
-    ajax.open('get','http://172.16.0.54:10020/apis/system/sysAttachment/upPublicToken');
+    ajax.open('get','http://172.16.0.54:10020/apis/system/'+systemEdition+'/sysAttachment/upPublicToken');
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Accept","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);

@@ -303,6 +303,7 @@
         font-family:PingFangSC-Regular;
         font-weight:400;
         color:rgba(5,5,9,1);
+        margin-bottom: 0.1rem;
         img{
           display: inline-block;
           width: 0.16rem;

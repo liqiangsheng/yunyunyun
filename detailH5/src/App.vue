@@ -7,7 +7,9 @@
 <script>
 export default {
   name: 'App',
-  created(){}
+  created(){
+    //            ?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim         7牛的缩略图
+  }
 }
 
 </script>

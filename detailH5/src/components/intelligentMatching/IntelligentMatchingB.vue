@@ -63,7 +63,7 @@ export default {
         return oStr;
       }(objData))
      let token = JSON.parse(localStorage.getItem("token")); //获取token
-    getDataPost(token,"/apis/operation/tagLib/match",JSON.stringify(objData)).then(res=>{ //请求数据
+    getDataPost(token,JSON.stringify(objData)).then(res=>{ //请求数据
        if(res.status == true){
            if(res.data.exact.length>0){
              res.data.exact.forEach((item,index)=>{

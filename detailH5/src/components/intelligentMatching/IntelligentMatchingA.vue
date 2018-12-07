@@ -54,7 +54,7 @@ export default {
 //    console.log(this.$Request.token)
     let token = JSON.parse(localStorage.getItem("token"));
     console.log(token,"sadasda")
-    getData(token,'/apis/operation/tagGroup/all').then(res=>{
+    getData(token).then(res=>{
 
      if(res.status == true){
        res.data.forEach((item,index)=>{
