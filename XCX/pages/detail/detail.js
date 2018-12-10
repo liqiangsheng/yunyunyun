@@ -70,7 +70,7 @@ Page({
     })
     // 数据初始化
     wx.request({
-      url: API.apiDomain + '/apis/activity/activityInfo/findOne?id=' + options.id,
+      url: API.apiDomain + '/apis/activity/' + API.activityEdition +'/activityInfo/findOne?id=' + options.id,
       method:"GET",
       success:(res=>{
         
@@ -320,7 +320,7 @@ Page({
         moreMessage: "这是我的底线...",
       }) 
       wx.request({
-        url: API.apiDomain + '/apis/activity/activitySchedule/list',
+        url: API.apiDomain + '/apis/activity/' + API.activityEdition +'/activitySchedule/list',
         method: "POST",
         data: {
           "activityId": that.data.moreID,
@@ -365,7 +365,7 @@ Page({
         moreMessage: "点击加载更多...",
       })
       wx.request({
-        url: API.apiDomain + '/apis/activity/activitySchedule/list',
+        url: API.apiDomain + '/apis/activity/' + API.activityEdition +'/activitySchedule/list',
         method: "POST",
         data: {
           "activityId": that.data.moreID,
@@ -428,7 +428,7 @@ Page({
         moreMessage1: "这是我的底线...",
       })
       wx.request({
-        url: API.apiDomain + '/apis/activity/honoredGuest/list',
+        url: API.apiDomain + '/apis/activity/' + API.activityEdition +'/honoredGuest/list',
         method: "POST",
         data: {
           "activityId": that.data.moreID,
@@ -466,7 +466,7 @@ Page({
         moreMessage1: "点击加载更多...",
       })
       wx.request({
-        url: API.apiDomain + '/apis/activity/honoredGuest/list',
+        url: API.apiDomain + '/apis/activity/' + API.activityEdition +'/honoredGuest/list',
         method: "POST",
         data: {
           "activityId": that.data.moreID,
@@ -504,7 +504,7 @@ Page({
   arrange(i){// 活动安排的时间
      let that = this;
     wx.request({
-      url: API.apiDomain +'/apis/activity/activitySchedule/list',
+      url: API.apiDomain + '/apis/activity/' + API.activityEdition +'/activitySchedule/list',
       method:"POST",
       data:{
         "activityId": i,
@@ -555,7 +555,7 @@ Page({
       })
     }) 
     wx.request({
-      url: API.apiDomain + '/apis/activity/honoredGuest/list',
+      url: API.apiDomain + '/apis/activity/' + API.activityEdition +'/honoredGuest/list',
       method: "POST",
       data: {
         "activityId": i,

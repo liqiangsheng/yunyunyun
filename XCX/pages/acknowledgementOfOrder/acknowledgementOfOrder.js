@@ -69,7 +69,7 @@ Page({
       backstageData: obj
     })
    wx.request({
-     url: API.apiDomain + '/apis/activity/customerActivitySignupNote/insertSignupNoteAndOrder',
+     url: API.apiDomain + '/apis/activity/' + API.activityEdition +'/customerActivitySignupNote/insertSignupNoteAndOrder',
      method: "POST",
      header: {
        Authorization: "Bearer " + data.access_token

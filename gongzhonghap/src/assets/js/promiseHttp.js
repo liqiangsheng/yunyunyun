@@ -267,7 +267,7 @@ export function tagLibMatch (token,data) { //请求数据
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
-    ajax.open('post',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"tagLib/match",true);
+    ajax.open('post',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/tagLib/match",true);
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(data);
@@ -443,79 +443,99 @@ export function activityImageslistHot(id,s){
 }
 // 图片直播封面
 export function activityImagesFindOne(id){
+  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityImages/findOne?id=${id}`;
     axios.get(url).then(res=>{
+      Indicator.close();
       resolve(res)
     }).catch(function (error) {
+      Indicator.close();
       Toast(error)
     })
   })
 }
 // 图片直播
 export function activityImagesList(data){
+  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityImages/list`;
     axios.post(url,data).then(res=>{
+      Indicator.close();
       resolve(res)
     }).catch(function (error) {
+      Indicator.close();
       Toast(error)
     })
   })
 }
 // 火图直播
 export function activityImagesBookList(data){
+  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityImagesBook/list`;
     console.log(url)
     axios.post(url,data).then(res=>{
+      Indicator.close();
       resolve(res)
     }).catch(function (error) {
+      Indicator.close();
       Toast(error)
     })
   })
 }
 // 智慧团
 export function operationTeamInfos(p,s){
+  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/teamInfos?p=${p}&s=${s}`;
     axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
       resolve(res)
     }).catch(function (error) {
+      Indicator.close();
       Toast(error)
     })
   })
 }
 // 资源池
 export function companyList(p,s){
+  Indicator.open("加载中...")
   let obj = {companyCat:"2",p:p,s:s};
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/list`;
     axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
       resolve(res)
     })
   })
 }
 // 设计咖
 export function commonUserList(){
+  Indicator.open("加载中...")
   let obj = {"userCat":"2"}
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/list`;
     axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
         resolve(res)
     }).catch(function (error) {
+      Indicator.close();
       Toast(error)
     })
   })
 }
 // 大咖说4 风向标3 新视界5
 export function specialSubjectFindSubjectInfoByCategory(state,p,s){
+  Indicator.open("加载中...")
   let obj = {"subjectCategory":state,p:p,s:s}
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/content/${contentEdition}/specialSubject/findSubjectInfoByCategory`;
     axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
       resolve(res)
     }).catch(function (error) {
+      Indicator.close();
       Toast(error)
     })
   })

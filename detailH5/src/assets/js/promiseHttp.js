@@ -35,51 +35,62 @@ export function tsconfigjson(){
 }
 // 订单门票图片
 export function packagejson(){
+  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `./static/js/package.json`;
     axios.get(url).then(res=>{
+      Indicator.close();
       resolve(res)
     })
   })
 }
 // 活动安排
 export function activitySchedulelist(data){
+  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain}/apis/activity/${activityEdition}/activitySchedule/list`;
     axios.post(url,data).then(res=>{
+      Indicator.close();
       resolve(res)
     })
   })
 }
 // 根据活动图册主键id获取信息
 export function activityImagesBookFindOne(id){
+  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain}/apis/activity/${activityEdition}/activityImagesBook/findOne?id=${id}`;
     axios.get(url).then(res=>{
+      Indicator.close();
       resolve(res)
     })
   })
 }
 // 根据活动图册主键id获取信息
 export function activityImageslistHot(id,s){
+  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain}/apis/activity/${activityEdition}/activityImages/listHot?bookId=${id}&size=${s}`;
     axios.get(url).then(res=>{
+      Indicator.close();
       resolve(res)
     })
   })
 }
 // 图片直播封面
 export function activityImagesFindOne(id){
+  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain}/apis/activity/${activityEdition}/activityImages/findOne?id=${id}`;
     axios.get(url).then(res=>{
+      Indicator.close();
       resolve(res)
     })
   })
 }
 // 图片直播
 export function activityImagesList(data){
+  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain}/apis/activity/${activityEdition}/activityImages/list`;
     axios.post(url,data).then(res=>{
@@ -89,10 +100,12 @@ export function activityImagesList(data){
 }
 // 火图直播
 export function activityImagesBookList(data){
+  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain}/apis/activity/${activityEdition}/activityImagesBook/list`;
     console.log(url)
     axios.post(url,data).then(res=>{
+      Indicator.close();
       resolve(res)
     })
   })
@@ -247,56 +260,68 @@ export function proposalContactTrack(obj) { //请求数据
 }
 //获取手机认证码
 export function telCode(tel){
+  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain}/apis/operation/${operationEdition}/sysUserOperation/generateMobileVerifyCode?mobileType=XCX&mobile=${tel}`;
 
     axios.get(url).then(res=>{
-
+      Indicator.close();
       resolve(res)
     })
   })
 }
 // 智慧团
 export function operationTeamInfos(p,s){
+  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain}/apis/operation/${operationEdition}/teamInfos?p=${p}&s=${s}`;
     axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
       resolve(res)
     }).catch(function (error) {
+      Indicator.close();
       Toast(error)
     })
   })
 }
 // 资源池
 export function companyList(p,s){
+  Indicator.open("加载中...")
   let obj = {companyCat:"2",p:p,s:s};
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain}/apis/operation/${operationEdition}/companyInfo/list`;
     axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
       resolve(res)
     })
   })
 }
 // 设计咖
 export function commonUserList(p,s){
+  Indicator.open("加载中...")
   let obj = {"userCat":"2",p:p,s:s}
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain}/apis/operation/${operationEdition}/commonUser/list`;
     axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
       resolve(res)
     }).catch(function (error) {
+      Indicator.close();
       Toast(error)
     })
   })
 }
 // 大咖说4 风向标3 新视界5
 export function specialSubjectFindSubjectInfoByCategory(state,p,s){
+  Indicator.open("加载中...")
   let obj = {"subjectCategory":state,p:p,s:s}
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain}/apis/content/${contentEdition}/specialSubject/findSubjectInfoByCategory`;
     axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
       resolve(res)
     }).catch(function (error) {
+      Indicator.close();
       Toast(error)
     })
   })

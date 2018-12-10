@@ -138,7 +138,7 @@ Page({
     } else {
       //请求数据
       wx.request({
-        url: API.apiDomain + '/apis/operation/sysUserOperation/bindMobile', //第三方登录绑定&注册用户
+        url: API.apiDomain + '/apis/operation/' + API.operationEdition +'/sysUserOperation/bindMobile', //第三方登录绑定&注册用户
         method:"POST",
         data:{
           name: that.data.telValue, mobile: that.data.telValue, verifyCode: that.data.psdValue, mobileType: 'XCX'
@@ -202,7 +202,7 @@ Page({
   CODE_FUC(TEL) {
     let that =this;
     wx.request({
-      url: API.apiDomain + "/apis/operation/sysUserOperation/generateMobileVerifyCode",
+      url: API.apiDomain + '/apis/operation/' + API.operationEdition +'/sysUserOperation/generateMobileVerifyCode',
       method: "GET",
       data: {
         mobile: TEL,

@@ -22,7 +22,7 @@ Page({
     if (options.id){
       let data = wx.getStorageSync("userInfo");
       wx.request({
-        url: API.apiDomain + '/apis/system/sysAttachment/upPublicToken',
+        url: API.apiDomain + '/apis/system/' + API.systemEdition +'/sysAttachment/upPublicToken',
         header: {
           "Authorization": "bearer " + data.access_token
         },
@@ -127,7 +127,7 @@ Page({
         let data = JSON.parse(res.data)
         // to do ...
         // wx.request({  //获取7牛的保存地址
-        //   url: API.apiDomain + '/apis/system/init/loadGlobalVariable',
+        //   url: API.apiDomain + '/apis/system/' + API.systemEdition +'/init/loadGlobalVariable',
         //   method: "GET",
         //   success(res1) {
         //     if(res1.data.status == true){

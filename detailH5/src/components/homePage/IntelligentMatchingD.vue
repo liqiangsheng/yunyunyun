@@ -10,7 +10,7 @@
       </div>
       <div class="IntelligentMatchingDHeaderIndex2">
         <img :src="userDp" alt="" @click="authorClcik(messageArr.orgId,messageArr.createdUser)">
-        <button @click="giveClick">+ 关注</button>
+        <button @click="giveClick">作者</button>
       </div>
       <div class="IntelligentMatchingDHeaderIndex3" v-if="messageArr.summary">
         <img src="/static/images/shuangying1.png" alt="" style="margin: 0 0.1rem">
@@ -56,29 +56,29 @@
             <li v-for="(item1,index1) in item.replyVoList"  class="ReplyLi">
               <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div @click="giveClick"><img src="/static/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
             </li>
-            <span style="width: 100%;display: inline-block;text-align: center" v-if="item.replyListTotal>2">共有{{item.replyListTotal}}条评论</span>
+            <!--<span style="width: 100%;display: inline-block;text-align: center" v-if="item.replyListTotal>2">共有{{item.replyListTotal}}条评论</span>-->
           </ul>
         </div>
       </li>
     </ul>
-    <div class="IntelligentMatchingDItem6" @click="giveClick">
-      <div class="footer">
-        <ul>
-          <li class="footerLi1">
-            <img src="/static/images/xialian.png" alt="">
-          </li>
-          <li class="footerLi2">
-            <img src="/static/images/xingxing.png" alt="">
-          </li>
-          <li class="footerLi2">
-            <img src="/static/images/bianji.png" alt="">
-          </li>
-          <li class="footerLi2">
-            <img src="/static/images/bianxie.png" alt="">
-          </li>
-        </ul>
-      </div>
-    </div>
+    <!--<div class="IntelligentMatchingDItem6" @click="giveClick">-->
+      <!--<div class="footer">-->
+        <!--<ul>-->
+          <!--<li class="footerLi1">-->
+            <!--<img src="/static/images/xialian.png" alt="">-->
+          <!--</li>-->
+          <!--<li class="footerLi2">-->
+            <!--<img src="/static/images/xingxing.png" alt="">-->
+          <!--</li>-->
+          <!--<li class="footerLi2">-->
+            <!--<img src="/static/images/bianji.png" alt="">-->
+          <!--</li>-->
+          <!--<li class="footerLi2">-->
+            <!--<img src="/static/images/bianxie.png" alt="">-->
+          <!--</li>-->
+        <!--</ul>-->
+      <!--</div>-->
+    <!--</div>-->
   </div>
 </template>
 

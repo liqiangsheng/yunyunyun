@@ -10,7 +10,7 @@ Page({
   data: {
     bgImge:"../../images/bg.png",
     userInfo: {
-      header: "http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png",
+      header: "../../images/defultphoto.png",
       name: "登录",
     },
     hasUserInfo: false,
@@ -118,7 +118,7 @@ Page({
      if (data){
        wx.request({ //设置的默认东西
 
-         url: API.apiDomain + '/apis/operation/commonUser/findCommonUserById',
+         url: API.apiDomain + '/apis/operation/' + API.operationEdition +'/commonUser/findCommonUserById',
          method: "GET",
          data: {
            userId: data.id
@@ -133,9 +133,9 @@ Page({
            if (res.data.status == true) {
              console.log(res.data.data,"dbasdkas")
              that.setData({
-               bgImge: res.data.data.owner_url ,
+               bgImge: res.data.data.owner_url ? res.data.data.owner_url : "../../images/defultphoto.png" ,
                userInfo: {
-                 header: res.data.data.owner_url ,
+                 header: res.data.data.owner_url ? res.data.data.owner_url : "../../images/defultphoto.png" ,
                  name: res.data.data.name,
                }
              })

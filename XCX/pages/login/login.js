@@ -141,7 +141,7 @@ Page({
       } else {
 
         wx.request({// 请求登录数据
-          url: API.apiDomain + '/apis/operation/sysUserOperation/bindMobile',
+          url: API.apiDomain + '/apis/operation/' + API.operationEdition +'/sysUserOperation/bindMobile',
           data: { "mobile": that.data.telValue, "verifyCode": that.data.psdValue, "mobileType": "XCX" },
           method: "POST",
           header: {
@@ -151,7 +151,7 @@ Page({
           success(res) {
             if (res.data.status == true) {
               wx.request({ //登录成功去请求个人数据保存
-                url: API.apiDomain + '/apis/operation/commonUser/findCommonUserById',
+                url: API.apiDomain + '/apis/operation/' + API.operationEdition +'/commonUser/findCommonUserById',
                 method: "GET",
                 data: {
                   userId: res.data.data.id
@@ -286,7 +286,7 @@ Page({
   } ,
   CODE_FUC(TEL){
     wx.request({
-      url: API.apiDomain + "/apis/operation/sysUserOperation/generateMobileVerifyCode",
+      url: API.apiDomain + "/apis/operation/" + API.operationEdition +"/sysUserOperation/generateMobileVerifyCode",
       method: "GET",
       data: {
         mobile: TEL,

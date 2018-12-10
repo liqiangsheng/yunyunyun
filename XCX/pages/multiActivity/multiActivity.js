@@ -31,7 +31,7 @@ Page({
     if (data){
      
       wx.request({
-        url: API.apiDomain + "/apis/activity/activityInfo/findOneWithGoods",
+        url: API.apiDomain + "/apis/activity/" + API.activityEdition +"/activityInfo/findOneWithGoods",
         method: "GET",
         header: {
           Authorization: "Bearer " + data.access_token

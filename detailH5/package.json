@@ -19,10 +19,11 @@
     "mint-ui": "^2.2.6",
     "moment": "^2.18.1",
     "vue": "^2.4.2",
+    "vue-amap": "^0.5.8",
     "vue-cookie": "^1.1.4",
     "vue-jsonp": "^0.1.8",
     "vue-router": "^2.7.0",
-    "vue-amap": "^0.5.8",
+    "vue-touch": "^2.0.0-beta.4",
     "vuex": "^2.4.0"
   },
   "devDependencies": {

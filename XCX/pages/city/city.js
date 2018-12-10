@@ -51,7 +51,7 @@ Page({
     let that = this;
 
     wx.request({// 城市
-      url: API.apiDomain + '/apis/system/sysRegion/singlelevel?level=city',
+      url: API.apiDomain + '/apis/system/' + API.systemEdition +'/sysRegion/singlelevel?level=city',
       success(res) {
         if (res.data.status == true) {
         

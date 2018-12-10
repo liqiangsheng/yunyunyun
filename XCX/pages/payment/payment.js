@@ -28,7 +28,7 @@ Page({
         let code = res.code;
         if (!!code) {  //获取到code的值
           wx.request({
-            url: API.apiDomain + '/apis/activity/payWithWeixin/xcx', // 后台接口
+            url: API.apiDomain + '/apis/activity/' + API.activityEdition +'/payWithWeixin/xcx', // 后台接口
             data: {
               "appid": "wxec488e381b105038",
               "id": that.data.payId,

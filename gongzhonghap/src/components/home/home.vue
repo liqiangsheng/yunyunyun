@@ -192,11 +192,11 @@ export default {
       p:1, //活动安排每页
       s:5, //活动安排每页数据
       num:0,//活动安排
-      moreMessage:"", //活动安排
+      moreMessage:"不同正在努力加载中...", //活动安排
       p1:1, //嘉宾列表每页
       s1:5, //嘉宾列表每页数据
       num1:0,//嘉宾列表
-      moreMessage1:"", //嘉宾列表
+      moreMessage1:"不同正在努力加载中...", //嘉宾列表
     }
   },
   watch:{
@@ -226,7 +226,7 @@ export default {
              Toast("活动报名已结束");
              return;
            }
-           if (nowTime < this.acivityArr.signStartTime) {
+           if (nowTime < this.acivityArr.signStartTime) {cnpm
              Toast("活动尚未开始报名，请选择其他活动！");
              return;
            }

@@ -111,7 +111,7 @@ Page({
     
     if(data){
       wx.request({ //请求七牛的token
-        url: API.apiDomain + '/apis/system/sysAttachment/upPublicToken',
+        url: API.apiDomain + '/apis/system/' + API.systemEdition +'/sysAttachment/upPublicToken',
         header: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
@@ -152,7 +152,7 @@ Page({
 
         wx.request({ //设置的默认东西
 
-         url: API.apiDomain + '/apis/operation/commonUser/findCommonUserById',
+          url: API.apiDomain + '/apis/operation/' + API.operationEdition+'/commonUser/findCommonUserById',
          method: "GET",
          data: {
            userId: data.id
@@ -163,17 +163,17 @@ Page({
            "Authorization": "Bearer " + data.access_token
          },
          success: function (res) {
-
+             console.log(res,"fdksfk")
            if (res.data.status == true) {
              wx.hideLoading();
              that.setData({
                areaArr: res.data.data.region_name ? res.data.data.region_name : "深圳市",
-               yearmonthday: res.data.data.birthday,
-               sexIndex: res.data.data.sex,
+               yearmonthday: res.data.data.birthday ? res.data.data.birthday:"19700101",
+               sexIndex: res.data.data.sex ? res.data.data.sex:"0",
                regionId: res.data.data.region_id ? res.data.data.region_id : "2018042317050430c6a250e4044f94bb4cc074302b789a",
-               personal: res.data.data.introduce,
-               userName: res.data.data.name ? res.data.data.name : data.name,
-               imgSrc: res.data.data.owner_url ? res.data.data.owner_url : data.header,
+               personal: res.data.data.introduce ? res.data.data.introduce:"",
+               userName: res.data.data.name ? res.data.data.name : that.data.name,
+               imgSrc: res.data.data.owner_url ? res.data.data.owner_url : "https://pub.qinius.butongtech.com/defult_photo@3x.png",
              })
 
 
@@ -319,7 +319,7 @@ Page({
         title: '加载中...',
       })
       wx.request({
-        url: API.apiDomain + '/apis/operation/sysUserOperation/updateUserInfo',
+        url: API.apiDomain + '/apis/operation/' + API.operationEdition +'/sysUserOperation/updateUserInfo',
         method:"POST",
         header: {
           "Authorization": "bearer " + data.access_token
@@ -438,52 +438,7 @@ Page({
         that.setData({
           imgSrc: that.data.imgSrc  
         })
-        // wx.request({  //获取7牛的保存地址
-        //   url: API.apiDomain + '/apis/system/init/loadGlobalVariable',
-        //   method: "GET",
-        //   success(res1) {
-        //     if (res1.data.status == true) {
-        //       let dataUrl = res1.data.data;
-        //       console.log(dataUrl,"dhsakdhkasdkaskdk")
-        //       // dataUrl.map((item, index) => { //赋值七牛的url
-        //         // if (item.code == "qiniu_pub_https_url") {
-
-        //           that.data.imgSrc = item.name + "/" + data.key
-        //           that.setData({
-        //             imgSrc: that.data.imgSrc
-        //           })
-        //         // }
-        //       // })
-
-        //     } else {
-              
-        //       if (res.statusCode == 500) {
-        //         wx.showModal({
-        //           showCancel: false,
-        //           title: "网络异常，请重试",
-
-        //         })
-        //       } else if (res.statusCode == 401) {
-        //         wx.showModal({
-        //           showCancel: false,
-        //           title: "网络异常",
-
-        //         })
-        //       } else {
-        //         wx.showModal({
-        //           showCancel: false,
-        //           title: res.data.message,
-        //           icon: 'success',
-        //           duration: 2000,
-
-        //         })
-        //       }
-        //     }
-            
-        //   }
-         
-        // })
-        
+      
         
       },
       fail: function (res) {

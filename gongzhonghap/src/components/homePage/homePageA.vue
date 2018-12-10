@@ -26,7 +26,7 @@
         </ul>
       </div>
     </div>
-    <div class="more" @click="moreClick">{{message}}</div>
+    <div class="more123" @click="moreClick">{{message}}</div>
   </div>
 </template>
 
@@ -40,7 +40,7 @@
       return{
          dataList:[],
          page:1, //页码
-        message:"这是我的底线...",
+        message:"不同正在努力加载中...",
         pageNum:0,
         s:20,
       }
@@ -158,12 +158,13 @@
      }
 
    }
-  .more{
+  .more123{
     width: 100%;
     height: 0.49rem;
     line-height: 0.49rem;
     text-align: center;
     font-size: 0.14rem;
+    background: #EEEEEE;
   }
 </style>
 

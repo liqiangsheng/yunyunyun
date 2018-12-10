@@ -32,25 +32,25 @@
       <vue-waterfall-easy :imgsArr="imgsArr"  srcKey="imageUrl1" @scrollReachBottom="getData" @click="clickFn"> </vue-waterfall-easy>
     </div>
     <ul class="pictureLiveBroadcast_ul" v-show="tabState == 1">
-         <li v-for="(item,index) in imgsArr1" v-if="index<3" class="li1" @click="goToImg(item)">
+         <li v-for="(item,index) in imgsArr1" v-if="index<3" class="li1" @click="goToImg(item,imgsArr1,index)">
            <img :src="item.imageUrl1" alt="">
            <div :class="[{active1:index==1},{active2:index==2}]">{{index+1}}</div>
          </li>
       </ul>
     <ul class="pictureLiveBroadcast_ul1" v-show="tabState == 1">
-         <li v-for="(item,index) in imgsArr1" v-if="index>=3&&index<9" class="li2" @click="goToImg(item)">
+         <li v-for="(item,index) in imgsArr1" v-if="index>=3&&index<9" class="li2" @click="goToImg(item,imgsArr1,index)">
            <img :src="item.imageUrl1" alt="">
            <div>{{index+1}}</div>
          </li>
 
       </ul>
     <ul class="pictureLiveBroadcast_ul2" v-show="tabState == 1">
-         <li v-for="(item,index) in imgsArr1" v-if="index>=9&&index<=29"  class="li3" @click="goToImg(item)">
+         <li v-for="(item,index) in imgsArr1" v-if="index>=9&&index<=29"  class="li3" @click="goToImg(item,imgsArr1,index)">
            <img :src="item.imageUrl1" alt="">
          </li>
     </ul>
     <transition name="fade">
-      <imgenlarge :imgenlargedata="imgenlargedata" v-if="imgenlargeShow" @ishowItem="ishowItem"></imgenlarge>
+      <imgenlarge :imgenlargedata="imgenlargedata" :imgenlargedata1="imgenlargedata1" :imgenlargedata1Index="imgenlargedata1Index" :imgsArr="imgsArr"  v-if="imgenlargeShow" @ishowItem="ishowItem"></imgenlarge>
     </transition>
 
   </div>
@@ -71,6 +71,8 @@ export default {
       titleData:{},//头部数据
       pageShow:false,
       imgenlargedata:"",//传给图片的数据
+      imgenlargedata1:[],//传给图片的数据
+      imgenlargedata1Index:0,//传给图片的数据
       imgenlargeShow:false,
       tabAtt:["图片直播","热门照片"],
       tabState:0,
@@ -257,9 +259,11 @@ export default {
         }
       })
     },
-    goToImg(v){ //进入图片
+    goToImg(v,v1,i){ //进入图片
       this.imgenlargeShow = true;
-      this.imgenlargedata = v;//传给图片的数据
+      this.imgenlargedata = 0;//传给图片的数据
+      this.imgenlargedata1 = v1;//传给图片的数据
+      this.imgenlargedata1Index = i;
     },
     goBackTop(){//回到头部
       window.pageYOffset= 0;
@@ -278,7 +282,8 @@ export default {
       // 只有当点击到图片时才进行操作
       if (event.target.tagName.toLowerCase() == 'img') { //判断是不是img
         this.imgenlargeShow = true;
-        this.imgenlargedata = value;//传给图片的数据
+        this.imgenlargedata = 1;//传给图片的数据
+        this.imgenlargedata1Index = index;
       }
     },
     getData(data) {

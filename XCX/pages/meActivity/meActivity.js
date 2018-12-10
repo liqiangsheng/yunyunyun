@@ -161,7 +161,7 @@ Page({
     let data = wx.getStorageSync("userInfo"), that = this;
     wx.request({
       method: 'POST',
-      url: API.apiDomain + '/apis/activity/customerActivitySignupNote/list',
+      url: API.apiDomain + '/apis/activity/' + API.activityEdition +'/customerActivitySignupNote/list',
       header: {
         'Content-Type': 'application/json',
         "Authorization": "bearer " + data.access_token

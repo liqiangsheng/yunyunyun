@@ -9,9 +9,9 @@
           </div>
           <div class="new_horizons_centent_look">
             <h5>{{item.title}}</h5>
-            <span><img src="/static/images/查看.png" alt="">{{item.viewCount}}</span><br>
-            <span><img src="/static/images/收藏.png" alt="">{{item.laudedCount}}</span>
-            <span><img src="/static/images/评论.png" alt="">{{item.commentCount}}</span>
+            <span><img src="/static/images/查看.png" alt="">{{item.viewCount?item.viewCount:"0"}}</span><br>
+            <span><img src="/static/images/收藏.png" alt="">{{item.laudedCount?item.laudedCount:"0"}}</span>
+            <span><img src="/static/images/评论.png" alt="">{{item.commentCount?item.commentCount:"0"}}</span>
           </div>
         </li>
       </ul>

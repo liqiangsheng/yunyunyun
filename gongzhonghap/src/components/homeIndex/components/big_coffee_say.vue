@@ -31,9 +31,9 @@
         </div>
         <h5>{{item.title}}</h5>
         <div class="big_coffee_says_centent_look">
-          <span><img src="/static/images/查看.png" alt="">{{item.viewCount}}</span>
-          <span><img src="/static/images/收藏.png" alt="">{{item.laudedCount}}</span>
-          <span><img src="/static/images/评论.png" alt="">{{item.commentCount}}</span>
+          <span><img src="/static/images/查看.png" alt="">{{item.viewCount?item.viewCount:"0"}}</span>
+          <span><img src="/static/images/收藏.png" alt="">{{item.laudedCount?item.laudedCount:"0"}}</span>
+          <span><img src="/static/images/评论.png" alt="">{{item.commentCount?item.commentCount:"0"}}</span>
         </div>
       </li>
     </ul>

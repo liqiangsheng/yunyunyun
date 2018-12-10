@@ -6,6 +6,7 @@
     "pages/voice/voice",
     "pages/payment/payment",
     "pages/city/city",
+    "pages/home/home",
     "pages/login/login",
     "pages/register/register",
     "pages/editingInformation/editingInformation",
@@ -44,6 +45,12 @@
         "iconPath": "./images/homesmall1.png",
         "selectedIconPath": "./images/homesmall.png",
         "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "iconPath": "./images/zhihui1.png",
+        "selectedIconPath": "./images/zhihui2.png",
+        "pagePath": "pages/home/home",
         "text": "智慧活动"
       },
       {

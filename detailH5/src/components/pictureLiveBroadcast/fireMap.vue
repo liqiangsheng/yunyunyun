@@ -19,7 +19,7 @@ export default {
     return{
       objData:[], //活动火图列表
       pageNum:0, //共多少页
-      message:"",//点击加载
+      message:"不同正在努力加载中...",//点击加载
       page:{
         p:1, //第几页
        s:20,// 、、一页多少
@@ -34,6 +34,11 @@ export default {
     activityImagesBookList(this.page).then(res=>{
 
       if(res.data.status == true){
+        res.data.data.forEach((item,index)=>{
+          if(!item.advertiseImage){
+            res.data.data.splice(index,1);
+          }
+        })
          this.pageNum = Math.ceil(res.data.total/this.page.s);
          if(this.pageNum>1){
            this.message = "点击加载更多..."

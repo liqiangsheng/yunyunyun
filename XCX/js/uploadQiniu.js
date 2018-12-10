@@ -24,7 +24,7 @@ function uploadQiniu(a, b) {
       // to do ...
       console.log(data, "成功111")
       wx.request({  //获取7牛的保存地址
-        url: API.apiDomain + '/apis/system/init/loadGlobalVariable',
+        url: API.apiDomain + '/apis/system/' + API.systemEdition +'/init/loadGlobalVariable',
         method: "GET",
         success(res1) {
           if (res1.data.status == true) {

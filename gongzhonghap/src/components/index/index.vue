@@ -83,8 +83,9 @@
          </div>
 
       </div>
-      <div class='baseline'>
-        <span></span>这是我的底线 <span></span>
+      <div class='baseline' @click="updataMore">
+        <!--<span></span>这是我的底线 <span></span>-->
+        {{message}}
       </div>
     </div>
     <ul class="Indextab">
@@ -117,9 +118,12 @@ export default {
       ],
       tabbarAarrIndex:1,  //点击tab的下标
       p:1, //第几页
-      s:20,// 、、一夜多少
-      objList:[],//列表数据
-      nowTime: date //现在的时间
+      s:3,// 、、一夜多少
+      num1:0,//嘉宾列表
+      message:"不同正在努力加载中...", //触底提示
+      pageNum:"",//每页数据
+      nowTime: date, //现在的时间
+      objList:[],//数据
       }
 
   },
@@ -142,7 +146,14 @@ export default {
       }
     })
     activityListData(this.p,this.s).then(res=>{
+      console.log(res)
       if(res.data.status == true){
+        this.pageNum = Math.ceil(res.data.total/this.s);
+        if(this.pageNum >1){
+          this.message = "点击加载更多..."
+        }else{
+          this.message = "这是我的底线..."
+        }
         this.objList =res.data.data;
         this.$nextTick(()=>{
           for (let i=0;i<1000;i++){
@@ -175,6 +186,36 @@ export default {
 
   },
   methods:{
+    updataMore(){ //加载更多 分页
+      this.p++;
+      if(this.p>this.pageNum){
+        this.message = "这是我的底线..."
+        Toast("这是最后一页啦！")
+      }else if(this.p==this.pageNum){
+        this.message = "这是我的底线..."
+        activityListData(this.p,this.s).then(res=>{
+          if(res.data.status == true){
+
+            this.objList = this.objList.concat(res.data.data);
+            Indicator.close();
+          }else{
+            Indicator.close();
+            Toast("网络出错啦，请重试")
+          }
+        })
+      }else if(this.p<this.pageNum){
+        this.message = "点击加载更多..."
+        activityListData(this.p,this.s).then(res=>{
+          if(res.data.status == true){
+            this.objList =  this.objList.concat(res.data.data);
+            Indicator.close();
+          }else{
+            Indicator.close();
+            Toast("网络出错啦，请重试")
+          }
+        })
+      }
+    },
     goDetail(item){//去活动详情
       window.sessionStorage.setItem("detailId",JSON.stringify(item))
       this.$router.push({path:"/home",query:{id:item.id}}); //去详情

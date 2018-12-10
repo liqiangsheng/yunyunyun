@@ -241,7 +241,7 @@ Page({
     wx.showLoading({
       title: '加载中...',
     })
-    let url = "/apis/activity/activitySignupNoteSetting/findByVersionToClient";
+    let url = '/apis/activity/' + API.activityEdition +'/activitySignupNoteSetting/findByVersionToClient';
     wx.request({
       url: API.apiDomain + url,
       method:"GET",

@@ -4,6 +4,9 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Vuex from "vuex"
+import VueTouch from 'vue-touch';
+Vue.use(VueTouch, {name: 'v-touch'})
+import "./assets/js/teach"
 import './assets/rem'
 import "mint-ui/lib/style.min.css"
 import mintui from 'mint-ui'

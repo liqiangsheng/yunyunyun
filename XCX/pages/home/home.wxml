@@ -1,0 +1,95 @@
+<!--index.wxml-->
+<!-- 轮播 -->
+<view>
+      <swiper indicator-dots="true" autoplay="true" interval="3000" duration="500" circular="true">
+        <block wx:for="{{banner1}}" wx:key='{{index}}'>
+          <swiper-item>
+            <image src="{{item}}" class='imgItem'/>
+          </swiper-item>
+        </block>
+     </swiper>
+</view>
+
+<!-- 列表 -->
+<view wx:for="{{banner}}" wx:key='index'>
+
+ <!-- 滑动 -->
+    <view class='homeBox' bindtap='goDetail' data-multiActivity='{{item}}' wx:if='{{item.multiActivity == true}}'>
+        <image src='../../images/bg1.png' class='homeBj' />
+        <view class='homeCentent'>
+        
+          <view class='homeBoxHeader' >
+            <text></text>
+            <text>{{item.title}}</text>
+            <text></text>
+            <text>{{item.summary}}</text>
+          </view>
+    <swiper class='swiperClass' duration="1000" previous-margin="50px" next-margin="50px" circular='true' bindchange="scrollFun">
+          <block wx:for="{{item.children}}" wx:key="{{citykey}}" wx:for-item="cityItem" wx:for-key="citykey"> 
+          <swiper-item>
+            <view  class="slide-image {{swiperIndex == index ? 'active' : 'quiet'}}" mode='aspectFill'>
+             <div class='homeBottomstate2 end' catchtap="goToPicture" data-item='{{item}}'>
+                火图直播
+             </div>
+              <image src="{{cityItem.bannerUrl}}"> </image>
+                <view class='slide-imageitem'>{{cityItem.title}}</view>
+                <view class='slide-imageitem1'>
+                  <view>{{cityItem.summary}}</view>
+                </view>
+            </view>
+          </swiper-item> 
+          </block> 
+        </swiper>
+
+          <view class='homeBoxFoot'>
+                <text>{{swiperIndex+1}}</text>/<text>{{item.children.length}}</text>
+          </view>
+        
+        </view>
+        
+    </view>
+
+    <!-- 活动列表 -->
+    <view class='homeBottom' bindtap='goDetail' data-multiActivity="{{item}}" wx:else>
+      
+        <view class='homeBottomContent'>
+          <image src="{{item.bannerUrl}}"></image>
+          <view class='homeBottomTitle'>
+              <text>{{item.name}}</text>  
+          </view>
+            <view class='homeBottomPrice'>
+              <text wx:if="{{item.expenses !=0&&item.expenses >0}}">¥{{item.expenses}}</text>  
+              <text wx:else style='color:#21CB61'>免费</text>  
+          </view>
+          <view class='homeBottomdata'>
+              <view class='homeBottomdataItem1'><image src='../../images/time.png'></image><text>{{item.startTime}}</text> </view>
+               <view class='homeBottomdataItem1'><image src='../../images/position.png'></image><text>{{item.regionName}}</text> </view>
+          </view>
+           <div class='homeBottomstate1 end' catchtap="goToPicture" data-item='{{item}}'>
+                火图直播
+             </div>
+          <view class='homeBottomstate start' wx:if="{{item.stateName=='立即报名'}}">
+            立即报名
+          </view>
+          <view class='homeBottomstate start' wx:if="{{item.stateName=='报名即将开始'}}">
+            报名即将开始
+          </view>
+            <view class='homeBottomstate HaveInHand' wx:if="{{item.stateName=='正在进行'}}">
+            正在进行
+          </view>
+            <view class='homeBottomstate end' wx:if="{{item.stateName=='已结束'}}">
+              活动结束
+          </view>
+           <view class='homeBottomstate end' wx:if="{{item.stateName=='报名结束'}}">
+              报名结束
+           </view>
+        </view>
+    </view>
+
+</view>
+<view class='baseline'>
+<text></text>这是我的底线 <text></text>
+</view>
+<view class='scrollTop' wx:if="{{scrollTopShow}}" bindtap='goTop'>
+ <image src="../../images/scrollTop.png"></image>
+</view>

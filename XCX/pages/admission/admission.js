@@ -19,7 +19,7 @@ Page({
   },
   goTop(){ //回到首页
     wx.switchTab({
-      url: '../../pages/index/index'
+      url: '../../pages/home/home'
     })
   },
   voiceClick(){ //跳到语音介绍webview
@@ -37,7 +37,7 @@ Page({
     if (options.orderid && options.orderid!=""){  //是不是我的活动来的
       wx.request({
         method: 'GET',
-        url: API.apiDomain + '/apis/activity/customerActivitySignupNote/findSimpleOneToClient',
+        url: API.apiDomain + '/apis/activity/' + API.activityEdition +'/customerActivitySignupNote/findSimpleOneToClient',
         header: {
           'Content-Type': 'application/json',
           "Authorization": "bearer " + Logindata.access_token
