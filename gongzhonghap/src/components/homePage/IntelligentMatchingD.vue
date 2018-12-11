@@ -10,7 +10,7 @@
              </div>
              <div class="IntelligentMatchingDHeaderIndex2">
                <img :src="userDp" alt="" @click="authorClcik(messageArr.orgId,messageArr.createdUser)">
-               <button @click="giveClick">+ 关注</button>
+               <button @click="giveClick">{{followMessage}}</button>
              </div>
              <div class="IntelligentMatchingDHeaderIndex3" v-if="messageArr.summary">
                <img src="/static/images/shuangying1.png" alt="" style="margin: 0 0.1rem">
@@ -26,8 +26,8 @@
           </div>
           <!--<div v-if="!!item.logoUrl" class="IntelligentMatchingDItemIndex1"><img :src="item.logoUrl" alt=""></div>-->
         </div>
-        <div class="IntelligentMatchingDItem1" @click="giveClick">
-          <img src="/static/images/zan1.png" alt="">{{messageArr.laudedCount}} 赞
+        <div class="IntelligentMatchingDItem1" @click="fabulousClick">
+          <img src="/static/images/zan1.png" alt="">{{fabulousNum}} {{fabulousMessage}}
         </div>
       <div class="IntelligentMatchingDItem2">
          <img src="/static/images/banqun.png" alt="">版 权
@@ -91,11 +91,12 @@
   import { Actionsheet } from 'mint-ui';
   import Vue from 'vue';
   Vue.component(Actionsheet.name, Actionsheet);
-  import { informationId,findCommentsByInfoId } from '../../assets/js/promiseHttp'; //数据
+  import { informationId,findCommentsByInfoId,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany,informationLaudInformation,informationCancelLaudInformation } from '../../assets/js/promiseHttp'; //数据
 export default {
   name: 'IntelligentMatchingD',
   data(){
     return{
+      followMessage:"", //关注
       actions:[{ name:"请下载不同Tech App" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
       sheetVisible:false, //是否显示弹框
       messageArr:{},//文章
@@ -103,6 +104,15 @@ export default {
         p:1, //分页
         s:20,//分页
       userDp:"./static/images/defultphoto.png",
+      isNative:false, //是不是原生或则小程序
+      orgId:"2",  //2是个人 /1是企业
+      userId:"1", // 用户id
+      operationUser:"200", //操作的用户id
+      detailId:"", //详情id
+      cared:false,//关注状态
+      fabulousNum:"",// 赞的数量
+      lauded:false,// 赞的状态
+      fabulousMessage:"赞",// 赞
     }
   },
   created(){
@@ -110,22 +120,14 @@ export default {
       document.title = "主页详情";
     })
     console.log(this.$router.history.current.query.id)
+    this.operationUser = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")).data:"";
+    this.NativeState = this.$router.history.current.query.state?this.$router.history.current.query.state:"XCX"
     if(this.$router.history.current.query.id){
-          informationId(this.$router.history.current.query.id).then(res=>{
-            if(res.status == true){
-                this.messageArr = res.data
-              if(res.data.sysUserContentVo.userDp){
-                this.userDp = res.data.sysUserContentVo.userDp;
-              }
-
-            }else{
-              Toast("网络出错了，请重试")
-            }
-          })
+      this.detailId = this.$router.history.current.query.id;
+       this.query(this.$router.history.current.query.id);
       findCommentsByInfoId(this.$router.history.current.query.id,this.p,this.s).then(res=>{ //7
 
          if(res.status==true){
-           console.log(res,"949499449")
              res.data.forEach((item,index)=>{
                if(item.sysUserContentVo){
                  if(item.sysUserContentVo.userDp){
@@ -156,17 +158,146 @@ export default {
 
   },
   methods:{
+
     IOS(){
       location.href="https://itunes.apple.com/cn/app/id1439775835"
     },
     Android(){
         location.href="https://www.pgyer.com/designcloud"
     },
-    giveClick(){ //点击点赞  //下载IOS 或则安卓
-      this.sheetVisible =true;
+    fabulousClick(){//点击的赞
+      if(this.NativeState == 'XCX'){
+          if(this.operationUser==''){
+              Toast("您还未登录，请登录！");
+              setTimeout(()=>{
+                this.$router.push({path:"/login"})
+              },1000)
+          }else{
+             if(this.lauded ==false){ //没点赞的
+               informationLaudInformation(this.detailId,this.operationUser.access_token).then(res=>{
+
+                 if(res.status == true){
+                     this.fabulousNum = res.data.laudedCount;
+                     this.fabulousMessage = "已赞"
+                       this.lauded = true;
+                 }else{
+                   Toast("网络出错了，请重试")
+                 }
+               })
+             }else {//点赞的了
+               informationCancelLaudInformation(this.detailId,this.operationUser.access_token).then(res=>{
+                 if(res.status == true){
+                   this.fabulousNum = res.data.laudedCount;
+                   this.fabulousMessage = "赞"
+                   this.lauded = false;
+                 }else{
+                   Toast("网络出错了，请重试")
+                 }
+               })
+             }
+          }
+
+      }else{
+        this.sheetVisible =true;
+      }
+    },
+    giveClick(){ //点击关注  //下载IOS 或则安卓
+      if(this.NativeState == 'XCX'){
+        this.sheetVisible =false;
+        if(this.operationUser==''){
+          Toast("您还未登录，请登录！");
+          setTimeout(()=>{
+            this.$router.push({path:"/login"})
+          },1000)
+
+        }else {
+          if(this.orgId == "2"){ //个人
+            if(this.cared == false){ //没有关注
+
+              commonUserCareUser(this.userId,this.operationUser.id,this.orgId).then(res=>{
+                console.log(res,"skdkkfsdk")
+                if(res.data.status == true){
+                  this.cared = true;
+                  this.followMessage = "已关注";
+                }else{
+                  Toast("网络出错了，请重试")
+                }
+              })
+            }else{ //已经关注 就取消关注
+              commonUserCancelCareUser(this.userId,this.operationUser.id,this.orgId).then(res=>{
+
+                if(res.data.status == true){
+                  this.cared = false;
+                  this.followMessage = "+ 关注";
+                }else{
+                  Toast("网络出错了，请重试")
+                }
+              })
+            }
+          }else if(this.orgId == "1"){  //企业
+              if(this.cared == false){ //没有关注  //固定传2
+
+                companyInfoCareCompany(this.userId,this.operationUser.id,'2').then(res=>{
+                  console.log(res,"skdkkfsdk")
+                  if(res.data.status == true){
+                    this.cared = true;
+                    this.followMessage = "已关注";
+                  }else{
+                    Toast("网络出错了，请重试")
+                  }
+                })
+              }else{ //已经关注 就取消关注  //固定传2
+                companyInfoCancelCareCompany(this.userId,this.operationUser.id,'2').then(res=>{
+
+                  if(res.data.status == true){
+                    this.cared = false;
+                    this.followMessage = "+ 关注";
+                  }else{
+                    Toast("网络出错了，请重试")
+                  }
+                })
+              }
+          }else{
+            Toast("网络出错了，请重试")
+          }
+
+        }
+
+      }else{
+        this.sheetVisible =true;
+      }
+
     },
     authorClcik(v,i){//点击头像
       this.$router.push({path: "/homePage", query: {state: v,id:i,source:"XCX"}}) //去企业主页 1是企业 2是个人
+    },
+    query(v){
+      informationId(v).then(res=>{
+        if(res.status == true){
+          this.orgId = res.data.orgId;
+          this.userId = res.data.createdUser;
+          this.messageArr = res.data;
+          this.cared =res.data.cared;
+          this.lauded =res.data.lauded;
+          this.fabulousNum = res.data.laudedCount;
+          if(this.lauded == true){
+            this.fabulousMessage = "已赞"
+          }else{
+            this.fabulousMessage = "赞"
+          }
+          if(this.cared == false){
+            this.followMessage = "+ 关注";
+          }else{
+            this.followMessage = "已关注";
+          }
+          if(res.data.sysUserContentVo.userDp){
+            this.userDp = res.data.sysUserContentVo.userDp;
+          }
+
+        }else{
+          Toast("网络出错了，请重试")
+        }
+      })
     }
   }
 }

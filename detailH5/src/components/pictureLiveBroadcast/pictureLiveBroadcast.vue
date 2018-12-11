@@ -164,7 +164,7 @@ export default {
 
           if(scrollTop>=clientHeight){ //吸顶效果
             that.$nextTick(function () {})//
-            that.fixedStyle={"position":"fixed","top":"0","left":"0","z-index":"999991!important"}
+            that.fixedStyle={"position":"fixed","top":"0","left":"0","z-index":"1!important"}
           }else {
             that.fixedStyle='';
           }
@@ -306,6 +306,7 @@ export default {
 <style scoped lang="less">
 #pictureLiveBroadcast{
   /*overflow: hidden;*/
+  position: relative;
   box-sizing: border-box;
   .pictureLiveBroadcast_box{
     >.swiper-container{
@@ -365,7 +366,7 @@ export default {
     font-size: 0.12rem;
     line-height: 0.3rem;
     border-radius: 0 0.5rem 0.5rem 0 ;
-    z-index: 999992;
+    z-index: 1;
     color: #ffffff;
   }
 }

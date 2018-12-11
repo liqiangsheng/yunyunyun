@@ -42,7 +42,7 @@
                     <li class="li1">
                         <img src="../../assets/images/桌面图标.png" alt="">
 
-                        <span>设计新生，而和不同</span>
+                        <span>设计新生，和而不同</span>
                     </li>
                     <li class="li2">
                         <p>邮箱：service@butongtech.com</p>
@@ -55,10 +55,11 @@
                         <p>关于不同</p>
                         <p>人才招募</p>
                         <p>服务规则</p>
-                        <p  @mouseenter="enterP()" @mouseleave="leaveP()">
-                            官方公众号
-                            <img src="../../assets/images/官方公众号二维码.png" alt="" v-if="networkShow">
-                        </p>
+
+                    </li>
+                    <li class="li5">
+                        <p><img src="../../assets/images/官方公众号二维码.png"></p>
+                        <p>官方公众号</p>
                     </li>
                     <li class="li4">
                         <p>友情链接</p>
@@ -69,7 +70,7 @@
                 </ul>
            </div>
       </div>
-      <el-dialog :append-to-body="true" title="联系不同" class="dialog" :visible.sync="telShow"  width="550px" top="15%">
+      <el-dialog :append-to-body="true" title="联系不同" class="dialog" :visible.sync="telShow"  width="800px" top="15%">
           <TelButong @GotelShow="GotelShow"></TelButong>
       </el-dialog>
   </div>
@@ -296,7 +297,7 @@ export default {
              /*width: 100%;*/
              max-width: 1920px;
              margin: 0 auto;
-             height: 200px;
+             height: 220px;
              margin: 0 auto;
              overflow: hidden;
              ul{
@@ -314,6 +315,7 @@ export default {
                      width: 157px;
                      text-align: center;
                      margin-right: 60px;
+                     margin-left: 80px;
                      img{
                          display: block;
                          margin: 0 auto;
@@ -329,12 +331,12 @@ export default {
                          color:#333;
                          line-height:20px;
                          letter-spacing:2px;
-                         margin-top:20px;
+                         margin-top:30px;
                      }
                  }
                  .li2{
-                     width: 500px;
-                     margin-right: 80px;
+                     width: 257px;
+                     margin-right: 70px;
                      p:first-child,p:nth-child(2){
                          height:20px;
                          font-size:14px;
@@ -350,7 +352,8 @@ export default {
                         font-weight:400;
                         color:rgba(153,153,153,1);
                         line-height:25px;
-                        margin-top: 15px;
+                        height: 50px;
+                        margin-top: 10px;
                     }
                      p:last-child{
                          height:20px;
@@ -358,12 +361,12 @@ export default {
                          font-family:"微软雅黑";
                          font-weight:400;
                          color:rgba(153,153,153,1);
-                         line-height:25px
+                         /*line-height:25px*/
                      }
                  }
                  .li3{
                      width: 94px;
-                     margin-right: 80px;
+                     margin-right: 40px;
                      p{
                          height:20px;
                          font-size:14px;
@@ -375,28 +378,13 @@ export default {
                      p:nth-of-type(2){
                          margin-top: 14px;
                      }
-                     p:last-child,p:first-child{
+                     p:first-child{
                          height:20px;
                          font-size:14px;
                          font-family:PingFangSC-Semibold;
                          font-weight:600;
                          color:rgba(51,51,51,1);
                          line-height:25px;
-                     }
-                     p:last-child{
-                         position: relative;
-                         img{
-                             display: block;
-                             width: 94px;
-                             height: 100px;
-                             position: absolute;
-                             top:-95px;
-                             left: -10px;
-                         }
-                     }
-                     p:last-child:hover{
-                         color: #0BD5D1;
-                         cursor: pointer;
                      }
                  }
                  .li4{
@@ -422,6 +410,27 @@ export default {
                          color: #0BD5D1;
                          text-decoration:underline;
                          cursor: pointer;
+                     }
+                 }
+                 .li5{
+                     width: 110px;
+                     margin-right: 50px;
+                     p{
+                         width: 100%;
+                         font-size:14px;
+                         font-family:PingFangSC-Semibold;
+                         font-weight:600;
+                         color:rgba(51,51,51,1);
+                         line-height:20px;
+                         letter-spacing:6px;
+                         text-align: center;
+                         text-indent: 5px;
+                         img{
+                             width: 94px;
+                             height: 94px;
+                             display: block;
+                             margin: 0 auto;
+                         }
                      }
                  }
              }

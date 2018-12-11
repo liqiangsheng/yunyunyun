@@ -1,7 +1,7 @@
 <template>
   <div id="imgenlarge">
 
-     <v-touch class="imgenlargebox" v-on:swipeleft="swiperleft" v-on:swiperight="swiperright" v-on:tap="swipertop">
+     <div class="imgenlargebox">
        <swiper :options="swiperOption" ref="imgOverview" style="height: 100%;">
          <swiper-slide>
            <div class="swiper-zoom-container">
@@ -9,16 +9,17 @@
            </div>
          </swiper-slide>
        </swiper>
-       <!--<div @click="itemShow" class="imgenlargeButton">-->
-          <!--后退-->
-       <!--</div>-->
-     </v-touch>
+       <div v-show="!!leftMessage" class="box111" @click="leftClick">{{leftMessage}}</div>
+       <div v-show="!!rightMessage"  class="box222" @click="rightClick">{{rightMessage}}</div>
+       <div @click="itemShow" class="imgenlargeButton">
+          后退
+       </div>
+     </div>
 
   </div>
 </template>
 
 <script>
-  import { Toast } from 'mint-ui';  //弹框
 
   import { swiper, swiperSlide } from 'vue-awesome-swiper';
 export default {
@@ -26,6 +27,8 @@ export default {
   props:["imgenlargedata","imgenlargedata1","imgenlargedata1Index","imgsArr"],
   data(){
     return{
+      leftMessage:"上一张",
+      rightMessage:"下一张",
       imgIndex:0,
       imgArr:[],
       swiperOption: {
@@ -49,30 +52,42 @@ export default {
       this.imgArr = this.imgsArr;
     }
 
+    if(this.imgIndex<=0){
+      this.leftMessage =''
+    }else{
+      this.leftMessage ='上一张'
+    }
+    if((this.imgenlargedata1.length-1)==this.imgIndex){
+      this.rightMessage =''
+    }else{
+      this.rightMessage ='下一张'
+    }
   },
   methods:{
-    swipertop(){ //单击关闭
-      this.$emit("ishowItem",false)
+    leftClick(){
+
+      this.imgIndex--;
+      this.rightMessage ='下一张'
+      if(this.imgIndex<=0){
+        this.leftMessage ='';
+        this.imgIndex= 0;
+      }else{
+        this.leftMessage ='上一张'
+      }
     },
-//      itemShow(){
-//        this.$emit("ishowItem",false)
-//      },
-    swiperleft(){//左滑
+    rightClick(){
       this.imgIndex++;
+      this.leftMessage ='上一张'
       if((this.imgArr.length-1)<=this.imgIndex){
         this.imgIndex =this.imgArr.length-1;
-        Toast("这是最后一张啦")
-        return;
+        this.rightMessage ='';
+      }else{
+        this.rightMessage ='下一张'
       }
     },
-    swiperright(){ //右滑
-      this.imgIndex--;
-      if(this.imgIndex<=0){
-        this.imgIndex= 0;
-        Toast("这是第一张啦")
-        return;
-      }
-    },
+      itemShow(){
+        this.$emit("ishowItem",false)
+      },
 
   },
   mounted(){
@@ -89,7 +104,7 @@ export default {
   top: 0;
   bottom: 0;
   right: 0;
-  z-index: 1;
+  z-index: 999992;
   background: #000000;
   display: flex;
   justify-content:center;
@@ -111,11 +126,27 @@ export default {
     font-size: 0.16rem;
     left: 40%;
     bottom: 15%;
+    z-index: 999993;
     color:#ffffff;
     background:  rgb(41, 152, 255);
     border-radius: 0.04rem;
-    z-index: 1;
+    z-index: 999993;
   }
-
+  .box111{
+    position: absolute;
+    left: 0;
+    top:50%;
+    z-index: 999993;
+    color: rgb(41, 152, 255);
+    font-size: 0.14rem;
+  }
+  .box222{
+    position: absolute;
+    right: 0;
+    top:50%;
+    z-index: 999993;
+    color: rgb(41, 152, 255);
+    font-size: 0.14rem;
+  }
 }
 </style>

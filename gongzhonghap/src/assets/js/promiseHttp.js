@@ -443,7 +443,7 @@ export function activityImageslistHot(id,s){
 }
 // 图片直播封面
 export function activityImagesFindOne(id){
-  Indicator.open("加载中...")
+  Indicator.open("加载中...");
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityImages/findOne?id=${id}`;
     axios.get(url).then(res=>{
@@ -540,3 +540,100 @@ export function specialSubjectFindSubjectInfoByCategory(state,p,s){
     })
   })
 }
+//详情里面的关注个人
+export function commonUserCareUser(userId,currentUser,userType){ //userId关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/careUser?userId=${userId}&currentUser=${currentUser}&userType=${userType}`;
+    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
+      resolve(res)
+    }).catch(function (error) {
+      Indicator.close();
+      Toast(error)
+    })
+  })
+}
+//详情里面的取消关注个人
+export function commonUserCancelCareUser(userId,currentUser,userType){ //userId取消关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/careUser?userId=${userId}&currentUser=${currentUser}&userType=${userType}`;
+    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
+      resolve(res)
+    }).catch(function (error) {
+      Indicator.close();
+      Toast(error)
+    })
+  })
+}
+//详情里面的关注企业
+export function companyInfoCareCompany(companyId,currentUser,userType){ //companyId关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/careCompany?companyId=${companyId}&currentUser=${currentUser}&userType=${userType}`;
+    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
+      resolve(res)
+    }).catch(function (error) {
+      Indicator.close();
+      Toast(error)
+    })
+  })
+}
+//详情里面的取消关注企业
+export function companyInfoCancelCareCompany(companyId,currentUser,userType){ //companyId取消关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/cancelCareCompany?companyId=${companyId}&currentUser=${currentUser}&userType=${userType}`;
+    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
+      resolve(res)
+    }).catch(function (error) {
+      Indicator.close();
+      Toast(error)
+    })
+  })
+}
+//详情里面的文章的点赞
+export function informationLaudInformation(informationId,token) { //informationId 点赞谁informationId
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/information/laudInformation?informationId="+informationId);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      Indicator.close();
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//详情里面的文章的取消点赞
+export function informationCancelLaudInformation(informationId,token) { //informationId 点赞谁informationId
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/information/cancelLaudInformation?informationId="+informationId);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      Indicator.close();
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+
+
+
+

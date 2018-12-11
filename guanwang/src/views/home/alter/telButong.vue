@@ -73,7 +73,7 @@
   width: 100%;
   ul{
     width: 100%;
-    padding-left: 20px;
+    padding-left: 50px;
     li{
       width: 100%;
       margin-bottom: 15px;
@@ -86,7 +86,10 @@
   }
   .el-button{
     width: 200px;
-    margin-left: 28%;
+    margin-left: 35%;
+    background: #3DFFFB;
+    color: #000000;
+    border: 0;
   }
 }
 

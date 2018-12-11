@@ -7,6 +7,8 @@ import Vuex from "vuex"
 import './assets/rem'
 import "mint-ui/lib/style.min.css"
 import mintui from 'mint-ui'
+import VueTouch from 'vue-touch';
+Vue.use(VueTouch, {name: 'v-touch'})
 import { mutations } from "@/vuex/mutations"
 import { state } from "@/vuex/state";
 import { actions } from "@/vuex/actions";
