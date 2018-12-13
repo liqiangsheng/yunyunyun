@@ -17,7 +17,11 @@ import PictureLiveBroadcast from '@/components/pictureLiveBroadcast/pictureLiveB
 const Message = resolve => require(['@/components/message/message'], resolve); //协议，之类
 const FireMap = resolve => require(['@/components/pictureLiveBroadcast/fireMap'], resolve); //火图
 const HomeIndex = resolve => require(['@/components/homeIndex/homeIndex'], resolve); //首页
-
+import Myfollow from '@/components/me/myfollow' //我的关注
+import Fans from '@/components/me/fans' //我的粉丝
+import MyFabulous from '@/components/me/myFabulous' //我的赞
+import MyCollection from '@/components/me/myCollection' //我的收藏
+import MyComment from '@/components/me/myComment' //我的评论
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +34,26 @@ export default new Router({
       path: '/message',
       name: 'Message',
       component: Message,
+    },
+    { path: '/myfollow',
+      component: Myfollow,
+      name: 'myfollow'
+    },
+    { path: '/myComment',
+      component: MyComment,
+      name: 'myComment'
+    },
+    { path: '/myCollection',
+      component: MyCollection,
+      name: 'myCollection'
+    },
+    { path: '/fans',
+      component: Fans,
+      name: 'fans'
+    },
+    { path: '/myFabulous',
+      component: MyFabulous,
+      name: 'myFabulous'
     },
     {
       path: '/homeIndex',

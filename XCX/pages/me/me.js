@@ -8,12 +8,52 @@ Page({
    * 页面的初始数据
    */
   data: {
+    tabList: [{ name: "关注", num: "2000" }, { name: "粉丝", num: "1.5万" }, { name: "点赞", num: "5000" }, { name: "收藏", num: "100" }, { name: "评论", num: "265" },],
+    tabListBool: false, //显示
     bgImge:"../../images/bg.png",
     userInfo: {
       header: "../../images/defultphoto.png",
       name: "登录",
     },
     hasUserInfo: false,
+  },
+  myfollowBnt(e){
+    console.log(e.currentTarget.dataset.item)
+    let v = e.currentTarget.dataset.item;
+    let data = wx.getStorageSync('userInfo')//获取本地存储信息
+    if (data) {
+      if (v.name == "关注") {
+        wx.navigateTo({ //去我的页面关注
+          url: "../../pages/myfollow/myfollow"
+        })
+      
+      } else if (v.name == "粉丝") {
+        wx.navigateTo({ //去我的页面粉丝
+          url: "../../pages/fans/fans"
+        })
+      } else if (v.name == "点赞") {
+        wx.navigateTo({ //去我的页面点赞
+          url: "../../pages/myFabulous/myFabulous"
+        })
+       
+      } else if (v.name == "收藏") {
+        wx.navigateTo({ //去我的页面收藏
+          url: "../../pages/myCollection/myCollection"
+        })
+      
+      } else if (v.name == "评论") {
+        wx.navigateTo({ //去我的页面评论
+          url: "../../pages/myComment/myComment"
+        })
+    
+      }
+
+    } else {
+      wx.showModal({
+        showCancel: false,
+        title: "您未登录，请登录",
+      })
+    }
   },
 
   /**
@@ -116,6 +156,9 @@ Page({
      let data = wx.getStorageSync('userInfo')//获取本地存储信息
      console.log(data)
      if (data){
+       that.setData({
+         tabListBool:true
+       })
        wx.request({ //设置的默认东西
 
          url: API.apiDomain + '/apis/operation/' + API.operationEdition +'/commonUser/findCommonUserById',
@@ -145,7 +188,7 @@ Page({
              that.setData({
                bgImge: "../../images/bg.png",
                userInfo: {
-                 header: "http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png",
+                 header: "../../images/defultphoto.png",
                  name: "登录",
                }
              })
@@ -177,10 +220,12 @@ Page({
        })
        
      }else{
+    
        that.setData({
+         tabListBool: false,
          bgImge:"../../images/bg.png",
          userInfo: {
-           header: "http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png",
+           header: "../../images/defultphoto.png",
            name: "登录",
          }
        })
@@ -198,9 +243,10 @@ Page({
       wx.removeStorageSync('faceUrl');
       wx.removeStorageSync('userInfoImgs');
       that.setData({
+        tabListBool:false,
         bgImge: "../../images/bg.png",
         userInfo: {
-          header: "http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png",
+          header: "../../images/defultphoto.png",
           name: "登录",
         }
       }),

@@ -1,0 +1,4 @@
+<!--pages/fans/fans.wxml-->
+<web-view src="{{url}}">
+
+</web-view>

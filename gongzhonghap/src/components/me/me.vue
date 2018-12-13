@@ -8,7 +8,16 @@
         <span class="userinfo-nickname">{{userInfo.name}}</span>
       </div>
     </div>
+    <ul class="me_ul" v-if="tabListBool">
+      <li v-for="(item,index) in tabList" @click='myfollowBnt(item)'>
+         <span>
+           {{item.num}}
+         </span><br>
+         {{item.name}}
+      </li>
+    </ul>
     <div class='meList'>
+
         <div @click='settingBnt'>
         设置
         <img src='/static/images/right.png'/>
@@ -17,6 +26,14 @@
         我的活动
          <img src='/static/images/right.png'/>
        </div>
+      <div @click='commentBnt'>
+        消息通知
+        <img src='/static/images/right.png'/>
+      </div>
+      <div @click='userBnt'>
+        用户反馈
+        <img src='/static/images/right.png'/>
+      </div>
         <div @click='aboutBnt(1," 关于不同")'>
         关于不同
           <img src='/static/images/right.png'/>
@@ -44,6 +61,8 @@ export default {
   name: 'me',
   data(){
       return{
+        tabList:[{name:"关注",num:"2000"},{name:"粉丝",num:"1.5万"},{name:"点赞",num:"5000"},{name:"收藏",num:"100"},{name:"评论",num:"265"},],
+        tabListBool:false, //显示
         bgImge:"./static/images/bg.png",
         userInfo: {
         header: "http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png",
@@ -64,13 +83,14 @@ export default {
     })
 
        if(JSON.parse(window.localStorage.getItem("userInfo"))){    //获取本地存储信息
+         this.tabListBool = true;
         let data = JSON.parse(window.localStorage.getItem("userInfo"))
            IntallData(data).then(res=>{
              console.log(res,"ashkdaksdkask")
                if(res.data.status ==true){
                 this.bgImge=res.data.data.owner_url;
-                this.userInfo. header= res.data.data.owner_url?res.data.data.owner_url:"http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png";
-                this.userInfo. name= res.data.data.name;
+                this.userInfo.header= res.data.data.owner_url?res.data.data.owner_url:"./static/images/defultphoto.png";
+                this.userInfo.name= res.data.data.name;
                 }else{
                    Toast("网络异常，请重试")
                }
@@ -78,13 +98,49 @@ export default {
 
            })
        }else{
+             this.tabListBool = false;
              this.bgImge="./static/images/bg.png";
-                this.userInfo. header= "http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png";
-                this.userInfo. name= "登录";
+                this.userInfo.header= "./static/images/defultphoto.png";
+                this.userInfo.name= "登录";
        }
   },
 
   methods:{
+    commentBnt(){ //消息通知
+      let data = JSON.parse(localStorage.getItem("userInfo"))
+      if(data){
+        this.$router.push({path:"/messageNotification"})
+      }else{
+        Toast("您未登录，请登录！")
+      }
+    },
+    userBnt(){ //用户反馈
+      let data = JSON.parse(localStorage.getItem("userInfo"))
+      if(data){
+        this.$router.push({path:"/userFeedback"})
+      }else{
+        Toast("您未登录，请登录！")
+      }
+    },
+    myfollowBnt(v){ //我的关注 粉丝 点赞 收藏 评论
+      let data = JSON.parse(localStorage.getItem("userInfo"))
+      if(data){
+          if(v.name == "关注"){
+            this.$router.push({path:"/myfollow"})
+          }else if(v.name == "粉丝"){
+            this.$router.push({path:"/fans"})
+          }else if(v.name == "点赞"){
+            this.$router.push({path:"/myFabulous"})
+          }else if(v.name == "收藏"){
+            this.$router.push({path:"/myCollection"})
+          }else if(v.name == "评论"){
+            this.$router.push({path:"/myComment"})
+          }
+
+      }else{
+        Toast("您未登录，请登录！")
+      }
+    },
     tabarClick(i){  //tabar点击事件
 //      this.tabbarAarrIndex = i;
       this.$router.push({path:this.tabbarArr[i].path});
@@ -95,10 +151,11 @@ export default {
         if(data){
           Toast("已登录，请勿重复登录")
         }else{
-           this.$router.push({path:"/login"})
+          this.$router.push({path:"/login"})
         }
       },
       outBnt(){ //退出
+        this.tabListBool = false;
         localStorage.removeItem("userInfo"); //清楚登录信息
         this.$router.push({path:"/index"}); //去首页
       },
@@ -110,10 +167,22 @@ export default {
         this.$router.push({path:"/message"}) //去关于不同介绍页面
       },
       settingBnt(){ //设置
-       this.$router.push({path:"/editingInformation"})
+        let data = JSON.parse(localStorage.getItem("userInfo"))
+        if(data){
+          this.$router.push({path:"/editingInformation"})
+        }else{
+          Toast("您未登录，请登录！")
+        }
+
       },
       meActivityBnt(){//我的活动
-        this.$router.push({path:"/meActivity"})
+        let data = JSON.parse(localStorage.getItem("userInfo"))
+        if(data){
+          this.$router.push({path:"/meActivity"})
+        }else{
+          Toast("您未登录，请登录！")
+        }
+
       },
   }
 }
@@ -143,4 +212,19 @@ export default {
   display:block;
   margin: 0 auto;
 }
+  .me_ul{
+    width: 100%;
+    background: #ffffff;
+    display: flex;
+    border-bottom: 0.01rem solid #EEEEEE;
+    li{
+      flex: 1;
+      text-align: center;
+      border-right: 0.01rem solid #EEEEEE;
+      padding: 0.1rem 0;
+    }
+    li:last-child{
+      border-right: 0;
+    }
+  }
 </style>

@@ -10,7 +10,7 @@
              </div>
              <div class="IntelligentMatchingDHeaderIndex2">
                <img :src="userDp" alt="" @click="authorClcik(messageArr.orgId,messageArr.createdUser)">
-               <button @click="giveClick">{{followMessage}}</button>
+               <button @click="isXCXClick">{{followMessage}}</button>
              </div>
              <div class="IntelligentMatchingDHeaderIndex3" v-if="messageArr.summary">
                <img src="/static/images/shuangying1.png" alt="" style="margin: 0 0.1rem">
@@ -40,27 +40,32 @@
     <div class="IntelligentMatchingDItem4">
      <!--  //有用的-->
     </div>
-    <ul class="IntelligentMatchingDItem5" @click="giveClick">
+    <ul class="IntelligentMatchingDItem5">
       <li v-for="(item,index) in commenArr" v-if="!!item.sysUserContentVo">
         <div class="IntelligentMatchingDItemL">
-          <img :src="item.userDp" alt="">
+          <img :src="item.userDp" alt="" @click="giveClick">
         </div>
         <div class="IntelligentMatchingDItemR">
             <h5>{{item.name}}</h5>
             <div class="time">{{item.createdAt|formatTime1}}</div>
             <div class="commen">
               {{item.commentContent}}
-               <div class="zan1"><img src="/static/images/zan1.png" alt="">{{item.laudedCount}}</div>
+               <div class="zan1" @click="commentariesClick(item)"><img src="/static/images/zan1.png" alt="">{{item.laudedCount}}</div>
             </div>
             <ul class="ReplyUl" v-if="item.replyVoList.length>0">
                <li v-for="(item1,index1) in item.replyVoList"  class="ReplyLi">
-                 <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div @click="giveClick"><img src="/static/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
+                 <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div @click="commentariesClickTwo(item1)"><img src="/static/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
                </li>
-                <span style="width: 100%;display: inline-block;text-align: center" v-if="item.replyListTotal>2">共有{{item.replyListTotal}}条评论</span>
+                <span style="width: 100%;display: inline-block;text-align: center" v-if="item.replyListTotal>2" @click="nextPageClick(item)">共有{{item.replyListTotal}}条评论</span>
             </ul>
         </div>
       </li>
     </ul>
+
+    <div class="messageFoot" @click="updataMore">
+      {{message}}
+    </div>
+
     <div class="IntelligentMatchingDItem6" @click="giveClick">
        <div class="footer">
           <ul>
@@ -91,7 +96,7 @@
   import { Actionsheet } from 'mint-ui';
   import Vue from 'vue';
   Vue.component(Actionsheet.name, Actionsheet);
-  import { informationId,findCommentsByInfoId,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany,informationLaudInformation,informationCancelLaudInformation } from '../../assets/js/promiseHttp'; //数据
+  import { informationId,findCommentsByInfoId,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany,informationLaudInformation,informationCancelLaudInformation,commentlaudComment,commentCancelLaudComment,replylaudReply,replyCancelLaudReply } from '../../assets/js/promiseHttp'; //数据
 export default {
   name: 'IntelligentMatchingD',
   data(){
@@ -101,8 +106,10 @@ export default {
       sheetVisible:false, //是否显示弹框
       messageArr:{},//文章
        commenArr:[], //评论的数据
-        p:1, //分页
-        s:20,//分页
+      p:1,  //页
+      s:20, //每页多少
+      message:"不同努力加载中...", //触底提示
+      pageNum:"",//每页数据
       userDp:"./static/images/defultphoto.png",
       isNative:false, //是不是原生或则小程序
       orgId:"2",  //2是个人 /1是企业
@@ -119,42 +126,26 @@ export default {
     this.$nextTick(function () {
       document.title = "主页详情";
     })
-    console.log(this.$router.history.current.query.id)
     this.operationUser = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")).data:"";
-    this.NativeState = this.$router.history.current.query.state?this.$router.history.current.query.state:"XCX"
-    if(this.$router.history.current.query.id){
-      this.detailId = this.$router.history.current.query.id;
-       this.query(this.$router.history.current.query.id);
-      findCommentsByInfoId(this.$router.history.current.query.id,this.p,this.s).then(res=>{ //7
+    this.NativeState = this.$router.history.current.query.state?this.$router.history.current.query.state:"XCX";
+    if(this.operationUser!=""&&this.operationUser){
+      if(this.$router.history.current.query.id){
+        this.detailId = this.$router.history.current.query.id;
+        this.query(this.$router.history.current.query.id,this.operationUser.id,this.operationUser.userType);
 
-         if(res.status==true){
-             res.data.forEach((item,index)=>{
-               if(item.sysUserContentVo){
-                 if(item.sysUserContentVo.userDp){
-                   item.userDp = item.sysUserContentVo.userDp;
-                 }else {
-                   item.userDp = "./static/images/defultphoto.png";
-                 }
-                 if(item.sysUserContentVo.name){
-                   item.name = item.sysUserContentVo.name;
-                 }else {
-                   item.name = "游客";
-                 }
-               }else{
-                 item.userDp = "./static/images/defultphoto.png";
-                 item.name = "游客";
-               }
+      }else {
+        this.$router.go(-1)
+      }
+    }else{
+      if(this.$router.history.current.query.id){
+        this.detailId = this.$router.history.current.query.id;
+        this.query(this.$router.history.current.query.id,"","");
 
-
-             })
-           this.commenArr = res.data;
-         }else{
-
-         }
-      })
-    }else {
-      this.$router.go(-1)
+      }else {
+        this.$router.go(-1)
+      }
     }
+
 
   },
   methods:{
@@ -165,7 +156,84 @@ export default {
     Android(){
         location.href="https://www.pgyer.com/designcloud"
     },
+    nextPageClick(v){ //去下一页数据
+         console.log(v);
+         sessionStorage.setItem("nextPageDetail",JSON.stringify(v));
+         this.$router.push({path:"/IntelligentComment",query:{id:v.id,token:this.operationUser.access_token}})
+    },
+    commentariesClickTwo(v){ //评论去的点赞 第二级级的赞
+
+      if(this.NativeState == 'XCX'){
+          if(this.operationUser==''){
+              Toast("您还未登录，请登录！");
+              setTimeout(()=>{
+                this.$router.push({path:"/login"})
+              },1000)
+          }else{
+              if(v.lauded == false){ //点赞
+                v.lauded = true;
+                replylaudReply(v.id,this.operationUser.access_token).then(res=>{
+                  if(res.status==true){
+//                    this.query(this.detailId);
+                    v.laudedCount =  v.laudedCount+1;
+                  }else{
+                    Toast("网络出错了，请重试")
+                  }
+                })
+              }else {  //取消赞
+                v.lauded = false;
+                replyCancelLaudReply(v.id,this.operationUser.access_token).then(res=>{
+                  if(res.status==true){
+//                    this.query(this.detailId);
+                    v.laudedCount =  v.laudedCount-1;
+                  }else{
+                    Toast("网络出错了，请重试")
+                  }
+                })
+
+              }
+          }
+      }else {
+        this.sheetVisible =true;
+      }
+    },
+    commentariesClick(v){ //评论去的点赞 第一级的赞
+      if(this.NativeState == 'XCX'){
+          if(this.operationUser==''){
+              Toast("您还未登录，请登录！");
+              setTimeout(()=>{
+                this.$router.push({path:"/login"})
+              },1000)
+          }else{
+              if(v.lauded == false){ //点赞
+                v.lauded = true;
+                commentlaudComment(v.id,this.operationUser.access_token).then(res=>{
+                  if(res.status==true){
+//                    this.query(this.detailId);
+                    v.laudedCount =  v.laudedCount+1;
+                  }else{
+                    Toast("网络出错了，请重试")
+                  }
+                })
+              }else {  //取消赞
+                v.lauded = false;
+                commentCancelLaudComment(v.id,this.operationUser.access_token).then(res=>{
+                  if(res.status==true){
+//                    this.query(this.detailId);
+                    v.laudedCount =  v.laudedCount-1;
+                  }else{
+                    Toast("网络出错了，请重试")
+                  }
+                })
+
+              }
+          }
+      }else {
+        this.sheetVisible =true;
+      }
+    },
     fabulousClick(){//点击的赞
+
       if(this.NativeState == 'XCX'){
           if(this.operationUser==''){
               Toast("您还未登录，请登录！");
@@ -201,7 +269,10 @@ export default {
         this.sheetVisible =true;
       }
     },
-    giveClick(){ //点击关注  //下载IOS 或则安卓
+    giveClick(){ //下载IOS 或则安卓
+      this.sheetVisible =true;
+    },
+    isXCXClick(){ //点击关注  是不是公总号 是就登录 不是就下载
       if(this.NativeState == 'XCX'){
         this.sheetVisible =false;
         if(this.operationUser==''){
@@ -271,8 +342,8 @@ export default {
     authorClcik(v,i){//点击头像
       this.$router.push({path: "/homePage", query: {state: v,id:i,source:"XCX"}}) //去企业主页 1是企业 2是个人
     },
-    query(v){
-      informationId(v).then(res=>{
+    query(v,v1,v2){
+      informationId(v,v1,v2).then(res=>{
         if(res.status == true){
           this.orgId = res.data.orgId;
           this.userId = res.data.createdUser;
@@ -298,7 +369,100 @@ export default {
           Toast("网络出错了，请重试")
         }
       })
-    }
+      findCommentsByInfoId(v,this.p,this.s).then(res=>{ //7
+             console.log(res)
+        if(res.status==true){
+
+          res.data.forEach((item,index)=>{
+            if(item.sysUserContentVo){
+              if(item.sysUserContentVo.userDp){
+                item.userDp = item.sysUserContentVo.userDp;
+              }else {
+                item.userDp = "./static/images/defultphoto.png";
+              }
+              if(item.sysUserContentVo.name){
+                item.name = item.sysUserContentVo.name;
+              }else {
+                item.name = "游客";
+              }
+            }else{
+              item.userDp = "./static/images/defultphoto.png";
+              item.name = "游客";
+            }
+
+
+          })
+          this.pageNum = Math.ceil(res.total/this.s);
+          if(this.pageNum >1){
+            this.message = "点击加载更多..."
+          }else{
+            this.message = "这是我的底线..."
+          }
+          this.commenArr = res.data;
+        }else{
+          Toast("网络出错了，请重试")
+        }
+      })
+    },
+    updataMore(){ //加载更多 分页
+      this.p++;
+      if(this.p>this.pageNum){
+        this.message = "这是我的底线..."
+        Toast("这是最后一页啦！")
+      }else if(this.p==this.pageNum){
+        this.message = "这是我的底线..."
+        findCommentsByInfoId(this.detailId,this.p,this.s).then(res=>{
+          if(res.status == true){
+              res.data.forEach((item,index)=>{
+                if(item.sysUserContentVo){
+                  if(item.sysUserContentVo.userDp){
+                    item.userDp = item.sysUserContentVo.userDp;
+                  }else {
+                    item.userDp = "./static/images/defultphoto.png";
+                  }
+                  if(item.sysUserContentVo.name){
+                    item.name = item.sysUserContentVo.name;
+                  }else {
+                    item.name = "游客";
+                  }
+                }else{
+                  item.userDp = "./static/images/defultphoto.png";
+                  item.name = "游客";
+                }
+              })
+            this.commenArr = this.commenArr.concat(res.data);
+          }else{
+            Toast("网络出错啦，请重试")
+          }
+        })
+      }else if(this.p<this.pageNum){
+        this.message = "点击加载更多..."
+        findCommentsByInfoId(this.detailId,this.p,this.s).then(res=>{
+          if(res.status == true){
+            res.data.forEach((item,index)=>{
+              if(item.sysUserContentVo){
+                if(item.sysUserContentVo.userDp){
+                  item.userDp = item.sysUserContentVo.userDp;
+                }else {
+                  item.userDp = "./static/images/defultphoto.png";
+                }
+                if(item.sysUserContentVo.name){
+                  item.name = item.sysUserContentVo.name;
+                }else {
+                  item.name = "游客";
+                }
+              }else{
+                item.userDp = "./static/images/defultphoto.png";
+                item.name = "游客";
+              }
+            })
+            this.commenArr =  this.commenArr.concat(res.data);
+          }else{
+            Toast("网络出错啦，请重试")
+          }
+        })
+      }
+    },
   }
 }
 
@@ -489,8 +653,8 @@ export default {
          height: 0.8rem;
          >img{
            display: block;
-           width: 100%;
-           height: 100%;
+           width: 0.8rem;
+           height: 0.8rem;
            border-radius: 50%;
          }
        }
@@ -624,7 +788,14 @@ export default {
 
     }
    }
-
+   .messageFoot{
+     width: 100%;
+     height: 0.3rem;
+     line-height: 0.3rem;
+     color: rgba(5,5,5,0.3);
+     text-align: center;
+     margin-top: 0.1rem;
+   }
  }
 
 

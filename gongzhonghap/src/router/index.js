@@ -4,6 +4,13 @@ const Home = resolve => require(['@/components/home/home'], resolve); //详情
 const HomeMap = resolve => require(['@/components/homeMap/homeMap'], resolve); //详情地图
 const Index = resolve => require(['@/components/index/index'], resolve); //智慧活动
 const Me = resolve => require(['@/components/me/me'], resolve); //我的
+const Myfollow = resolve => require(['@/components/me/myfollow'], resolve); //我的关注
+const Fans = resolve => require(['@/components/me/fans'], resolve); //我的粉丝
+const MyFabulous = resolve => require(['@/components/me/myFabulous'], resolve); //我的赞
+const MyCollection = resolve => require(['@/components/me/myCollection'], resolve); //我的收藏
+const MyComment = resolve => require(['@/components/me/myComment'], resolve); //我的评论
+const UserFeedback = resolve => require(['@/components/me/userFeedback'], resolve); //用户反馈
+const MessageNotification = resolve => require(['@/components/me/messageNotification'], resolve); //消息通知
 const Login1 = resolve => require(['@/components/login1/login1'], resolve); //登录1
 const Login = resolve => require(['@/components/login/login'], resolve); //登录
 const Message = resolve => require(['@/components/message/message'], resolve); //协议，之类
@@ -17,6 +24,7 @@ const IntelligentMatching = resolve => require(['@/components/intelligentMatchin
 const IntelligentMatchingA = resolve => require(['@/components/intelligentMatching/IntelligentMatchingA'], resolve); //智能匹配
 const IntelligentMatchingB = resolve => require(['@/components/intelligentMatching/IntelligentMatchingB'], resolve); //智能匹配
 const IntelligentMatchingC = resolve => require(['@/components/intelligentMatching/IntelligentMatchingC'], resolve); //智能匹配
+const IntelligentComment = resolve => require(['@/components/intelligentMatching/IntelligentComment'], resolve); //评论的详情
 const HomeDetail = resolve => require(['@/components/homePage/IntelligentMatchingD'], resolve); //个人主页的详情
 const Face = resolve => require(['@/components/face/face'], resolve); //拍照选择
 const AcknowledgementOfOrder = resolve => require(['@/components/acknowledgementOfOrder/acknowledgementOfOrder'], resolve); //订单确认
@@ -32,6 +40,13 @@ const homeIndex = resolve => require(['@/components/homeIndex/homeIndex'], resol
 // import HomeMap from '@/components/homeMap/homeMap' //详情地图
 // import Index from '@/components/index/index' //首页
 // import Me from '@/components/me/me' //我的
+// import Myfollow from '@/components/me/myfollow' //我的关注
+// import Fans from '@/components/me/fans' //我的粉丝
+// import MyFabulous from '@/components/me/myFabulous' //我的赞
+// import MyCollection from '@/components/me/myCollection' //我的收藏
+// import MyComment from '@/components/me/myComment' //我的评论
+// import UserFeedback from '@/components/me/userFeedback' //用户反馈
+// import messageNotification from '@/components/me/messageNotification' //消息通知
 // import Login1 from '@/components/login1/login1' //登录1
 // import Login from '@/components/login/login' //登录
 // import Message from '@/components/message/message' //协议，之类
@@ -45,6 +60,7 @@ const homeIndex = resolve => require(['@/components/homeIndex/homeIndex'], resol
 // import IntelligentMatchingA from '@/components/intelligentMatching/IntelligentMatchingA' //智能匹配
 // import IntelligentMatchingB from '@/components/intelligentMatching/IntelligentMatchingB' //智能匹配
 // import IntelligentMatchingC from '@/components/intelligentMatching/IntelligentMatchingC' //智能匹配
+// import IntelligentComment from '@/components/intelligentMatching/IntelligentComment' //智能匹配
 // import HomeDetail from '@/components/homePage/IntelligentMatchingD' //个人主页的详情
 // import Face from '@/components/face/face' //拍照选择
 // import AcknowledgementOfOrder from '@/components/acknowledgementOfOrder/acknowledgementOfOrder' //订单确认
@@ -69,7 +85,8 @@ export default new Router({
       path: '/homeIndex',
       name: 'homeIndex',
       component: homeIndex,
-    },{
+    },
+    {
       path: '/index',
       name: 'index',
       component: Index,
@@ -132,15 +149,23 @@ export default new Router({
       path: '/IntelligentMatchingA',
       name: 'IntelligentMatchingA',
       component: IntelligentMatchingA,
-    },{
+    },
+    {
       path: '/IntelligentMatchingB',
       name: 'IntelligentMatchingB',
       component: IntelligentMatchingB,
-    },{
+    },
+    {
       path: '/IntelligentMatchingC',
       name: 'IntelligentMatchingC',
       component: IntelligentMatchingC,
-    },{
+    },
+    {
+      path: '/IntelligentComment',
+      name: 'IntelligentComment',
+      component: IntelligentComment,
+    },
+    {
       path: '/homeDetail',
       name: 'HomeDetail',
       component: HomeDetail,
@@ -187,6 +212,34 @@ export default new Router({
       { path: '/me',
       component: Me,
       name: 'me'
+    },
+    { path: '/userFeedback',
+      component: UserFeedback,
+      name: 'userFeedback'
+    },
+    { path: '/messageNotification',
+      component: MessageNotification,
+      name: 'messageNotification'
+    },
+    { path: '/myfollow',
+      component: Myfollow,
+      name: 'myfollow'
+    },
+    { path: '/myComment',
+      component: MyComment,
+      name: 'myComment'
+    },
+    { path: '/myCollection',
+      component: MyCollection,
+      name: 'myCollection'
+    },
+    { path: '/fans',
+      component: Fans,
+      name: 'fans'
+    },
+    { path: '/myFabulous',
+      component: MyFabulous,
+      name: 'myFabulous'
     },
     { path: '/login1',
       component: Login1,

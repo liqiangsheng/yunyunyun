@@ -175,6 +175,8 @@ export default {
         //变量scrollHeight是滚动条的总高度
         var scrollHeight = document.documentElement.scrollHeight||document.body.scrollHeight;
         //滚动条到底部的条件
+//        console.log(scrollTop,"fsdakfjksdfjksdk")
+//        console.log(scrollHeight - windowHeight-200)
         if(scrollTop == (scrollHeight - windowHeight)&&that.tabState==0){ //触底自动加载
             that.bookId.p++;
             if(that.pages<that.bookId.p){
@@ -185,7 +187,6 @@ export default {
               Indicator.open("加载中")
               activityImagesList(that.bookId).then(res=>{
                 if(res.data.status == true){
-
                   res.data.data.forEach((item,index)=>{
                     item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
                   })

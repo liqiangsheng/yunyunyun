@@ -9,9 +9,9 @@
            </div>
          </swiper-slide>
        </swiper>
-       <!--<div @click="itemShow" class="imgenlargeButton">-->
-          <!--后退-->
-       <!--</div>-->
+       <div class="imgenlargeButton" v-show="imgenlargeButtonShow">
+         加载中...
+       </div>
      </v-touch>
 
   </div>
@@ -26,6 +26,7 @@ export default {
   props:["imgenlargedata","imgenlargedata1","imgenlargedata1Index","imgsArr"],
   data(){
     return{
+      imgenlargeButtonShow:false,
       imgIndex:0,
       imgArr:[],
       swiperOption: {
@@ -58,12 +59,17 @@ export default {
 //        this.$emit("ishowItem",false)
 //      },
     swiperleft(){//左滑
-      this.imgIndex++;
-      if((this.imgArr.length-1)<=this.imgIndex){
-        this.imgIndex =this.imgArr.length-1;
-        Toast("这是最后一张啦")
-        return;
-      }
+      this.imgenlargeButtonShow = true;
+      setTimeout(()=>{
+        this.imgIndex++;
+        this.imgenlargeButtonShow = false;
+        if((this.imgArr.length-1)<=this.imgIndex){
+          this.imgIndex =this.imgArr.length-1;
+          Toast("这是最后一张啦")
+          return;
+        }
+      },1000)
+
     },
     swiperright(){ //右滑
       this.imgIndex--;
@@ -103,19 +109,22 @@ export default {
     }
   }
   .imgenlargeButton{
-   width: 1rem;
-    height: 0.3rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-radius: 50%;
     text-align: center;
     line-height: 0.3rem;
     position: absolute;
-    font-size: 0.16rem;
+    font-size: 0.10rem;
+    text-align: center;
+    line-height: 0.6rem;
     left: 40%;
-    bottom: 15%;
+    bottom: 45%;
     color:#ffffff;
-    background:  rgb(41, 152, 255);
-    border-radius: 0.04rem;
+    background: rgba(153,153,153,0.2);
     z-index: 1;
   }
+
 
 }
 </style>

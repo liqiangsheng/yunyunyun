@@ -1,5 +1,11 @@
 {
   "pages": [
+    "pages/me/me",
+    "pages/myfollow/myfollow",
+    "pages/fans/fans",
+    "pages/myFabulous/myFabulous",
+    "pages/myCollection/myCollection",
+    "pages/myComment/myComment",
     "pages/index/index",
     "pages/Intelligence/Intelligence",
     "pages/admission/admission",
@@ -15,7 +21,6 @@
     "pages/face/face",
     "pages/detail/detail",
     "pages/registrationInformation/registrationInformation",
-    "pages/me/me",
     "pages/acknowledgementOfOrder/acknowledgementOfOrder",
     "pages/photograph/Photograph",
     "pages/loading/loading",

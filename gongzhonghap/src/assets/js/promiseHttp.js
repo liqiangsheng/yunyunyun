@@ -314,12 +314,12 @@ export function findSimpleOneToClient (token,id) { //请求数据
   })
 }
 //  个人企业详情
-export function informationId(id) { //请求数据
+export function informationId(id,userId,userType) { //请求数据 资讯id userId当前登录的id userType当前登录的type
   Indicator.open("加载中...")
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/information/findInformationDetailById?informationId="+id);
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/information/findInformationDetailById?informationId="+id+"&userId="+userId+"&userType="+userType);
     ajax.setRequestHeader("Content-Type","application/json");
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -457,14 +457,12 @@ export function activityImagesFindOne(id){
 }
 // 图片直播
 export function activityImagesList(data){
-  Indicator.open("加载中...")
+
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityImages/list`;
     axios.post(url,data).then(res=>{
-      Indicator.close();
       resolve(res)
     }).catch(function (error) {
-      Indicator.close();
       Toast(error)
     })
   })
@@ -634,6 +632,136 @@ export function informationCancelLaudInformation(informationId,token) { //inform
   })
 }
 
+//详情里面的评论的点赞
+export function commentlaudComment(commentId,token) { //commentId 点赞谁commentId
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/comment/laudComment?commentId="+commentId);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      Indicator.close();
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//详情里面的评论的取消点赞
+export function commentCancelLaudComment(commentId,token) { //commentId 取消点赞谁commentId
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/comment/cancelLaudComment?commentId="+commentId);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      Indicator.close();
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//详情里面的评论的点赞 第二级
+export function replylaudReply(replyId,token) { //replyId 点赞谁replyId
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/reply/laudReply?replyId="+replyId);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      Indicator.close();
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//详情里面的评论的取消点赞 第二级
+export function replyCancelLaudReply(replyId,token) { //reply 取消点赞谁replyId
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/reply/cancelLaudReply?replyId="+replyId);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      Indicator.close();
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//详情里面的评论点击展开的评论 第二级
+export function commentFindReplysByCommentId(commentId,token) { //commentId 点击获取更多评论的commentId
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/comment/findReplysByCommentId?commentId="+commentId);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      Indicator.close();
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//我的关注列表
+export function customerCareNoteListCare(id,token,p,s) { //id 用户id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let data={userId:id,p:p,s:s}
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerCareNote/listCare",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
 
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//我的粉丝列表
+export function customerCareNoteListCared(id,token,p,s) { //id 用户id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let data={userId:id,p:p,s:s}
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerCareNote/listCared",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
 
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
 

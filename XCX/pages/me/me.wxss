@@ -94,3 +94,24 @@
 
    background: #fff;
 }
+.me_ul{
+    width: 100%;
+    background: #ffffff;
+    display: flex;
+    border-bottom: 1px solid #EEEEEE;
+  }
+.me_li{
+      flex: 1;
+      text-align: center;
+      border-right: 0.01rem solid #EEEEEE;
+      padding: 10px 0;
+      font-size: 12px;
+     color: rgba(5,5,9,0.4)
+    }
+.me_span{
+
+  color: rgba(5,5,9,1)
+}
+.me_lili:last-child{
+      border-right: 0;
+  }

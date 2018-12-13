@@ -1,0 +1,4 @@
+<!--pages/myfollow/myfollow.wxml-->
+<web-view src="{{url}}">
+
+</web-view>

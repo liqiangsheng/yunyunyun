@@ -90,7 +90,6 @@ export function activityImagesFindOne(id){
 }
 // 图片直播
 export function activityImagesList(data){
-  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain}/apis/activity/${activityEdition}/activityImages/list`;
     axios.post(url,data).then(res=>{
@@ -100,12 +99,11 @@ export function activityImagesList(data){
 }
 // 火图直播
 export function activityImagesBookList(data){
-  Indicator.open("加载中...")
+
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain}/apis/activity/${activityEdition}/activityImagesBook/list`;
     console.log(url)
     axios.post(url,data).then(res=>{
-      Indicator.close();
       resolve(res)
     })
   })
@@ -324,5 +322,45 @@ export function specialSubjectFindSubjectInfoByCategory(state,p,s){
       Indicator.close();
       Toast(error)
     })
+  })
+}
+//我的关注列表
+export function customerCareNoteListCare(id,token,p,s) { //id 用户id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let data={userId:id,p:p,s:s}
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain+"/apis/operation/"+operationEdition+"/customerCareNote/listCare",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//我的粉丝列表
+export function customerCareNoteListCared(id,token,p,s) { //id 用户id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let data={userId:id,p:p,s:s}
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain+"/apis/operation/"+operationEdition+"/customerCareNote/listCared",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
   })
 }

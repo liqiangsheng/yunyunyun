@@ -1,0 +1,4 @@
+<!--pages/myFabulous/myFabulous.wxml-->
+<web-view src="{{url}}">
+
+</web-view>
