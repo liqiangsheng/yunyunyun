@@ -94,6 +94,7 @@ export default {
         pages:0, //总共多少页
         bookId:{
           p: 1, // request param//
+          s:100,
           bookId:"",
         },//相册id
        }
@@ -189,7 +190,7 @@ export default {
                   setTimeout(()=>{
                     Indicator.close();
                     that.imgsArr = that.imgsArr.concat(res.data.data);
-                  },1000)
+                  },200)
 
                 }else{
                   Indicator.close();
@@ -206,7 +207,7 @@ export default {
                     setTimeout(()=>{
                       Indicator.close();
                       that.imgsArr = that.imgsArr.concat(res.data.data);
-                    },1000)
+                    },200)
                   }else{
                     Indicator.close();
                     Toast("网络出错了，请重试")
@@ -215,7 +216,7 @@ export default {
             }
         }
       }
-    },3000)
+    },500)
 
   },
   mounted() {

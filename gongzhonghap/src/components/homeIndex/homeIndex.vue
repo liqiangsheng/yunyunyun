@@ -8,6 +8,7 @@
      <BigCoffeeSays v-if="headerIndex==1"></BigCoffeeSays>
      <Weathervane v-if="headerIndex==2"></Weathervane>
      <NewHorizons v-if="headerIndex==3"></NewHorizons>
+     <FireMap v-if="headerIndex==4"></FireMap>
    </div>
 
     <ul class="Indextab">
@@ -24,22 +25,23 @@
   import Weathervane from "./components/WEATHERVANE.vue"
   import BigCoffeeSays from "./components/big_coffee_say.vue"
   import NewHorizons from "./components/new_horizons.vue"
+  import FireMap from "../pictureLiveBroadcast/fireMap.vue" //火图直播
 export default {
   name: 'homeIndex',
   components:{
-    NewHorizons,Weathervane,Creativity,BigCoffeeSays
+    NewHorizons,Weathervane,Creativity,BigCoffeeSays,FireMap
   },
   data(){
     return{
-      headerArr:["创新力","大咖说","风向标","新视界"], //头部按钮
+      headerArr:["创新力","大咖说","风向标","新视界","火图直播"], //头部按钮
       headerIndex:0,//头部按钮下标
       tabbarAarr:[  //、、tab
-        {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex"},
+        {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
+        {name:"资讯",icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
         {name:"智慧活动",icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
-        {name:"火图直播",icon:"./static/images/火图2.png",icon1:"./static/images/火图1.png",path:"/fireMap"},
         {name:"我的",icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
       ],
-      tabbarAarrIndex:0,  //点击tab的下标
+      tabbarAarrIndex:1,  //点击tab的下标
     }
   },
   created() {
@@ -61,7 +63,7 @@ export default {
 
 <style scoped lang="less">
   #homeIndex{
-    width: 100%;
+     width: 100%;
     .homeIndex_header{
       width: 100%;
       display: flex;
@@ -107,7 +109,7 @@ export default {
       .indexTabLi{
         flex: 1;
         text-align: center;
-        padding-top:0.1rem ;
+        padding-top:0.05rem ;
         .indexTabImg{
           width: 0.16rem;
           height: 0.19rem;

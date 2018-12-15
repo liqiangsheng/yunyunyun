@@ -1,12 +1,16 @@
 {
   "pages": [
+     "pages/index/index",
+     "pages/homeIndex1_0/homeIndex1_0",
+    "pages/personalSettings/personalSettings",
     "pages/me/me",
+    "pages/messageNotification/messageNotification",
+    "pages/userFeedback/userFeedback",
     "pages/myfollow/myfollow",
     "pages/fans/fans",
     "pages/myFabulous/myFabulous",
     "pages/myCollection/myCollection",
     "pages/myComment/myComment",
-    "pages/index/index",
     "pages/Intelligence/Intelligence",
     "pages/admission/admission",
     "pages/voice/voice",
@@ -52,18 +56,21 @@
         "pagePath": "pages/index/index",
         "text": "首页"
       },
+    
       {
-        "iconPath": "./images/zhihui1.png",
-        "selectedIconPath": "./images/zhihui2.png",
-        "pagePath": "pages/home/home",
-        "text": "智慧活动"
+        "iconPath": "./images/zixun1.png",
+        "selectedIconPath": "./images/zixun2.png",
+        "pagePath": "pages/homeIndex1_0/homeIndex1_0",
+        "text": "资讯"
       },
+
       {
-        "iconPath": "./images/huotu1.png",
-        "selectedIconPath": "./images/huotu2.png",
-        "pagePath": "pages/pictureLiveBroadcast/pictureLiveBroadcast",
-        "text": "火图直播"
+          "iconPath": "./images/zhihui1.png",
+          "selectedIconPath": "./images/zhihui2.png",
+          "pagePath": "pages/home/home",
+          "text": "智慧活动"
       },
+
       {
         "iconPath": "./images/mesmall1.png",
         "selectedIconPath": "./images/mesmall.png",

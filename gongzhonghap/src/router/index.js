@@ -11,6 +11,7 @@ const MyCollection = resolve => require(['@/components/me/myCollection'], resolv
 const MyComment = resolve => require(['@/components/me/myComment'], resolve); //我的评论
 const UserFeedback = resolve => require(['@/components/me/userFeedback'], resolve); //用户反馈
 const MessageNotification = resolve => require(['@/components/me/messageNotification'], resolve); //消息通知
+const PersonalSettings = resolve => require(['@/components/me/personalSettings'], resolve); //个人设置
 const Login1 = resolve => require(['@/components/login1/login1'], resolve); //登录1
 const Login = resolve => require(['@/components/login/login'], resolve); //登录
 const Message = resolve => require(['@/components/message/message'], resolve); //协议，之类
@@ -35,7 +36,8 @@ const PayH5 = resolve => require(['@/components/PayH5/payH5'], resolve); //选�
 const Contact = resolve => require(['@/components/homePage/contact'], resolve); //联系不同
 const PictureLiveBroadcast = resolve => require(['@/components/pictureLiveBroadcast/pictureLiveBroadcast'], resolve); //图片直播
 const FireMap = resolve => require(['@/components/pictureLiveBroadcast/fireMap'], resolve); //火图
-const homeIndex = resolve => require(['@/components/homeIndex/homeIndex'], resolve); //首页
+const homeIndex = resolve => require(['@/components/homeIndex/homeIndex'], resolve); //资讯
+const HomeIndex1_0 = resolve => require(['@/components/homeIndex1_0/homeIndex1_0'], resolve); //首页
 // import Home from '@/components/home/home'
 // import HomeMap from '@/components/homeMap/homeMap' //详情地图
 // import Index from '@/components/index/index' //首页
@@ -47,6 +49,8 @@ const homeIndex = resolve => require(['@/components/homeIndex/homeIndex'], resol
 // import MyComment from '@/components/me/myComment' //我的评论
 // import UserFeedback from '@/components/me/userFeedback' //用户反馈
 // import messageNotification from '@/components/me/messageNotification' //消息通知
+// import PersonalSettings from '@/components/me/personalSettings' //个人设置
+
 // import Login1 from '@/components/login1/login1' //登录1
 // import Login from '@/components/login/login' //登录
 // import Message from '@/components/message/message' //协议，之类
@@ -71,6 +75,7 @@ const homeIndex = resolve => require(['@/components/homeIndex/homeIndex'], resol
 // import Contact from '@/components/homePage/contact' //联系不同
 // import PictureLiveBroadcast from '@/components/pictureLiveBroadcast/pictureLiveBroadcast' //图片直播
 // import homeIndex from '@/components/homeIndex/homeIndex' //首页
+// import HomeIndex1_0 from '@/components/homeIndex1_0/homeIndex1_0' //首页
 
 
 Vue.use(Router)
@@ -79,7 +84,12 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/homeIndex',
+      redirect: '/homeIndex1_0',
+    },
+    {
+      path: '/homeIndex1_0',
+      name: 'homeIndex1_0',
+      component: HomeIndex1_0,
     },
     {
       path: '/homeIndex',
@@ -212,6 +222,10 @@ export default new Router({
       { path: '/me',
       component: Me,
       name: 'me'
+    },
+    { path: '/personalSettings',
+      component: PersonalSettings,
+      name: 'personalSettings'
     },
     { path: '/userFeedback',
       component: UserFeedback,

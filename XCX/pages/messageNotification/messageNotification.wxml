@@ -1,0 +1,4 @@
+<!--pages/messageNotification/messageNotification.wxml-->
+<web-view src="{{url}}">
+
+</web-view>

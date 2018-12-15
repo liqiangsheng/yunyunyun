@@ -1,3 +1,4 @@
-<!--pages/home/home.wxml-->
-<web-view src='{{src}}'>
+<!--pages/index/index.wxml-->
+<web-view src="{{url}}">
+
 </web-view>

@@ -7,6 +7,9 @@
         <img @click="loginBnt" class="userinfoImage" :src="userInfo.header"/>
         <span class="userinfo-nickname">{{userInfo.name}}</span>
       </div>
+      <div class="userinfo_set" @click.stop="setClick">
+         个人资料 <img src="/static/images/goBack.png" alt="">
+      </div>
     </div>
     <ul class="me_ul" v-if="tabListBool">
       <li v-for="(item,index) in tabList" @click='myfollowBnt(item)'>
@@ -16,32 +19,7 @@
          {{item.name}}
       </li>
     </ul>
-    <div class='meList'>
 
-        <div @click='settingBnt'>
-        设置
-        <img src='/static/images/right.png'/>
-       </div>
-       <div @click='meActivityBnt'>
-        我的活动
-         <img src='/static/images/right.png'/>
-       </div>
-      <div @click='commentBnt'>
-        消息通知
-        <img src='/static/images/right.png'/>
-      </div>
-      <div @click='userBnt'>
-        用户反馈
-        <img src='/static/images/right.png'/>
-      </div>
-        <div @click='aboutBnt(1," 关于不同")'>
-        关于不同
-          <img src='/static/images/right.png'/>
-       </div>
-    </div>
-    <div @click='outBnt' class='outBnt'>
-            退出
-      </div>
 
     <ul class="Indextab">
       <li v-for="(item,index) in tabbarArr" class="indexTabLi" @click="tabarClick(index)">
@@ -61,6 +39,7 @@ export default {
   name: 'me',
   data(){
       return{
+
         tabList:[{name:"关注",num:"2000"},{name:"粉丝",num:"1.5万"},{name:"点赞",num:"5000"},{name:"收藏",num:"100"},{name:"评论",num:"265"},],
         tabListBool:false, //显示
         bgImge:"./static/images/bg.png",
@@ -69,9 +48,9 @@ export default {
         name: "登录",
         },
         tabbarArr:[  //、、tab
-          {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex"},
+          {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
+          {name:"资讯",icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
           {name:"智慧活动",icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
-          {name:"火图直播",icon:"./static/images/火图2.png",icon1:"./static/images/火图1.png",path:"/fireMap"},
           {name:"我的",icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
         ],
         tabbarAarrIndex:3,  //点击tab的下标
@@ -81,12 +60,11 @@ export default {
     this.$nextTick(function () {
       document.title = "我的";
     })
-
        if(JSON.parse(window.localStorage.getItem("userInfo"))){    //获取本地存储信息
          this.tabListBool = true;
         let data = JSON.parse(window.localStorage.getItem("userInfo"))
            IntallData(data).then(res=>{
-             console.log(res,"ashkdaksdkask")
+
                if(res.data.status ==true){
                 this.bgImge=res.data.data.owner_url;
                 this.userInfo.header= res.data.data.owner_url?res.data.data.owner_url:"./static/images/defultphoto.png";
@@ -94,8 +72,6 @@ export default {
                 }else{
                    Toast("网络异常，请重试")
                }
-
-
            })
        }else{
              this.tabListBool = false;
@@ -106,18 +82,10 @@ export default {
   },
 
   methods:{
-    commentBnt(){ //消息通知
+    setClick(){//个人设置
       let data = JSON.parse(localStorage.getItem("userInfo"))
       if(data){
-        this.$router.push({path:"/messageNotification"})
-      }else{
-        Toast("您未登录，请登录！")
-      }
-    },
-    userBnt(){ //用户反馈
-      let data = JSON.parse(localStorage.getItem("userInfo"))
-      if(data){
-        this.$router.push({path:"/userFeedback"})
+        this.$router.push({path:"/personalSettings"})
       }else{
         Toast("您未登录，请登录！")
       }
@@ -154,43 +122,80 @@ export default {
           this.$router.push({path:"/login"})
         }
       },
-      outBnt(){ //退出
-        this.tabListBool = false;
-        localStorage.removeItem("userInfo"); //清楚登录信息
-        this.$router.push({path:"/index"}); //去首页
-      },
-      aboutBnt(v,v1){ //关于不同
-        let obj = {}
-        obj.v = v;
-        obj.v1= v1;
-        localStorage.setItem("messageShow1",JSON.stringify(obj)); //保存状态
-        this.$router.push({path:"/message"}) //去关于不同介绍页面
-      },
-      settingBnt(){ //设置
-        let data = JSON.parse(localStorage.getItem("userInfo"))
-        if(data){
-          this.$router.push({path:"/editingInformation"})
-        }else{
-          Toast("您未登录，请登录！")
-        }
 
-      },
-      meActivityBnt(){//我的活动
-        let data = JSON.parse(localStorage.getItem("userInfo"))
-        if(data){
-          this.$router.push({path:"/meActivity"})
-        }else{
-          Toast("您未登录，请登录！")
-        }
-
-      },
   }
 }
 
 </script>
 
 <style scoped lang="less">
-@import "../../assets/css/me.css";
+  #Me{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top: 0;
+    right: 0;
+    background: #eeeeee;
+    box-sizing: border-box;
+    overflow-y:auto;
+    overflow-x: hidden;
+  }
+
+  .userinfo{
+    width: 100%;
+    height: 1.68rem;
+    position: relative;
+    .bgImge{
+      display: inline-block;
+      height: 100%;
+      width: 100%;
+      filter: blur(15px);
+      opacity:0.3;
+    }
+    .userinfoImage{
+      width: 0.65rem;
+      height:  0.65rem;
+      border-radius: 100%;
+      position: absolute;
+      left: 40%;
+      top: .35rem;
+
+    }
+    .userinfo-nickname{
+      position: absolute;
+      left: 0;
+      top: 1.1rem;
+      display: block;
+      width: 100%;
+      text-align: center;
+      height:.16rem;
+      font-size:.17rem;
+      font-family:PingFangSC-Regular;
+      font-weight:400;
+      color:rgba(5,5,9,1);
+    }
+    .userinfo_set{
+      width:1.0rem;
+      height: 0.32rem;
+      background:rgba(0,0,0,0.2);
+      border-radius:0.16rem;
+      position: absolute;
+      right: -0.15rem;
+      top: 0.48rem;
+      line-height: 0.32rem;
+      text-indent: 0.05rem;
+      font-size:0.12rem;
+      font-family:PingFangSC-Regular;
+      font-weight:400;
+      color:rgba(255,255,255,1);
+      img{
+        display: inline-block;
+        width: 0.13rem;
+        height: 0.1rem;
+      }
+    }
+  }
+
 .Indextab{
   position: fixed;
   width: 100%;
@@ -204,7 +209,7 @@ export default {
 .indexTabLi{
   flex: 1;
   text-align: center;
-  padding-top:0.1rem ;
+  padding-top:0.05rem ;
 }
 .indexTabImg{
   width: 0.16rem;
@@ -214,17 +219,22 @@ export default {
 }
   .me_ul{
     width: 100%;
-    background: #ffffff;
+    background:rgba(255,255,255,0.3);
     display: flex;
     border-bottom: 0.01rem solid #EEEEEE;
     li{
       flex: 1;
       text-align: center;
-      border-right: 0.01rem solid #EEEEEE;
       padding: 0.1rem 0;
+      font-family:PingFangSC-Regular;
+      font-weight:400;
+      color:rgba(102,102,102,1);
+      font-size:0.12rem;
+      span{
+        font-size:0.15rem;
+        color:rgba(5,5,9,1);
+      }
     }
-    li:last-child{
-      border-right: 0;
-    }
+
   }
 </style>

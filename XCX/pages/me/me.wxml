@@ -8,6 +8,10 @@
       </block> 
     </view>
 
+     <view class='userinfo_set' bindtap='setClick'>
+            个人资料 <image src="../../images/goBack.png" alt=""></image>
+     </view>
+
      <view class="me_ul" wx:if="{{tabListBool}}">
         <view class='me_li' wx:for="{{tabList}}" bindtap='myfollowBnt' key='{{index}}' data-item='{{item}}'>
           <view class='me_span'>
@@ -15,24 +19,8 @@
           </view>
           {{item.name}}
       </view>
+
    </view>
 
-    <view class='meList'>
-        <view bindtap='settingBnt'>
-        设置
-        <image src='../../images/right.png'></image>
-       </view>
-       <view bindtap='meActivityBnt'>
-        我的活动
-        <image src='../../images/right.png'></image>
-       </view>
-        <view bindtap='aboutBnt'>
-        关于不同
-        <image src='../../images/right.png'></image>
-       </view>
-    </view>
-    <view bindtap='outBnt' class='outBnt'>
-            退出
-      </view>
 </view>
 

@@ -22,6 +22,10 @@ import Fans from '@/components/me/fans' //我的粉丝
 import MyFabulous from '@/components/me/myFabulous' //我的赞
 import MyCollection from '@/components/me/myCollection' //我的收藏
 import MyComment from '@/components/me/myComment' //我的评论
+const UserFeedback = resolve => require(['@/components/me/userFeedback'], resolve); //用户反馈
+const MessageNotification = resolve => require(['@/components/me/messageNotification'], resolve); //消息通知
+const PersonalSettings = resolve => require(['@/components/me/personalSettings'], resolve); //个人设置
+import HomeIndex1_0 from '@/components/homeIndex1_0/homeIndex1_0' //首页
 Vue.use(Router)
 
 export default new Router({
@@ -34,6 +38,11 @@ export default new Router({
       path: '/message',
       name: 'Message',
       component: Message,
+    },
+    {
+      path: '/homeIndex1_0',
+      name: 'homeIndex1_0',
+      component: HomeIndex1_0,
     },
     { path: '/myfollow',
       component: Myfollow,
@@ -64,6 +73,18 @@ export default new Router({
       path: '/fireMap',
       name: 'fireMap',
       component: FireMap,
+    },
+    { path: '/personalSettings',
+      component: PersonalSettings,
+      name: 'personalSettings'
+    },
+    { path: '/userFeedback',
+      component: UserFeedback,
+      name: 'userFeedback'
+    },
+    { path: '/messageNotification',
+      component: MessageNotification,
+      name: 'messageNotification'
     },
     {
       path: '/IntelligentMatching',

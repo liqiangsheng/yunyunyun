@@ -8,6 +8,7 @@
      <BigCoffeeSays v-if="headerIndex==1"></BigCoffeeSays>
      <Weathervane v-if="headerIndex==2"></Weathervane>
      <NewHorizons v-if="headerIndex==3"></NewHorizons>
+     <FireMap v-if="headerIndex==4"></FireMap>
    </div>
 
   </div>
@@ -18,14 +19,15 @@
   import Weathervane from "./components/WEATHERVANE.vue"
   import BigCoffeeSays from "./components/big_coffee_say.vue"
   import NewHorizons from "./components/new_horizons.vue"
+  import FireMap from "../pictureLiveBroadcast/fireMap.vue" //火图直播
 export default {
   name: 'homeIndex',
   components:{
-    NewHorizons,Weathervane,Creativity,BigCoffeeSays
+    NewHorizons,Weathervane,Creativity,BigCoffeeSays,FireMap
   },
   data(){
     return{
-      headerArr:["创新力","大咖说","风向标","新视界"], //头部按钮
+      headerArr:["创新力","大咖说","风向标","新视界","火图直播"], //头部按钮
       headerIndex:0,//头部按钮下标
 
     }

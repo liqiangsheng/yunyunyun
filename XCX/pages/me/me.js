@@ -17,6 +17,19 @@ Page({
     },
     hasUserInfo: false,
   },
+  setClick(){
+    let data = wx.getStorageSync('userInfo')//获取本地存储信息
+    if (data) {
+      wx.navigateTo({ //去我的个人资料
+        url: "../../pages/personalSettings/personalSettings"
+      })
+    }else{
+      wx.showModal({
+        showCancel: false,
+        title: "您未登录，请登录",
+      })
+    }
+  },
   myfollowBnt(e){
     console.log(e.currentTarget.dataset.item)
     let v = e.currentTarget.dataset.item;
@@ -135,22 +148,7 @@ Page({
    
 
   },
-  settingBnt(){ // 去设置页面
-    var that = this
-    let data = wx.getStorageSync('userInfo')//获取本地存储信息
-    if (data){
-      wx.navigateTo({
-        url: "../../pages/editingInformation/editingInformation"
-      })
-    }else{
-      wx.showToast({
-        title: ' 请先登录！',
-        icon: 'success',
-        duration: 2000
-      })
-    }
-    
-  },
+
    userInfoFun(){ //登录本地拿
      var that = this
      let data = wx.getStorageSync('userInfo')//获取本地存储信息
@@ -233,62 +231,4 @@ Page({
    
   
    },
-  outBnt(){ //退出
-    let that = this;
-    let data = wx.getStorageSync('userInfo')//获取本地存储信息
-    if(data){
-      wx.removeStorageSync('userInfo');
-      wx.removeStorageSync('activityInfo');
-      wx.removeStorageSync('RegistrationData');
-      wx.removeStorageSync('faceUrl');
-      wx.removeStorageSync('userInfoImgs');
-      that.setData({
-        tabListBool:false,
-        bgImge: "../../images/bg.png",
-        userInfo: {
-          header: "../../images/defultphoto.png",
-          name: "登录",
-        }
-      }),
-        wx.showToast({
-          title: ' 退出成功！',
-          icon: 'success',
-          duration: 2000
-        })
-      wx.switchTab({
-        url: '../../pages/index/index'
-      })
-    }else{
-      wx.setStorageSync("userInfoImgs", that.data.userInfo)
-      wx.showToast({
-        title: ' 请先登录！',
-        icon: 'success',
-        duration: 2000
-      })
-    }   
-   
-  },
-  aboutBnt(){ // 关于不同
-    
-    wx.navigateTo({
-      url: '../../pages/message/message?messid=1',
-    })
-
-  },
-  meActivityBnt(){ //去我的活动
-    var that = this
-    let data = wx.getStorageSync('userInfo')//获取本地存储信息
-    if (data) {
-      wx.navigateTo({ 
-        url: '../../pages/meActivity/meActivity',
-      })
-     
-    } else {
-      wx.showToast({
-        title: ' 请先登录！',
-        icon: 'success',
-        duration: 2000
-      })
-    }
-  }
 })

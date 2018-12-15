@@ -6,12 +6,6 @@
     <div class="fireMapfooter">
       {{message}}
     </div>
-    <ul class="Indextab">
-      <li v-for="(item,index) in tabbarArr" class="indexTabLi" @click="tabarClick(index)">
-        <img :src="tabbarAarrIndex==index?item.icon:item.icon1" alt="" class="indexTabImg">
-        {{item.name}}
-      </li>
-    </ul>
   </div>
 </template>
 
@@ -24,19 +18,12 @@ export default {
   data(){
     return{
       objData:[], //活动火图列表
-      tabbarArr:[  //、、tab
-        {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex"},
-        {name:"智慧活动",icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
-        {name:"火图直播",icon:"./static/images/火图2.png",icon1:"./static/images/火图1.png",path:"/fireMap"},
-        {name:"我的",icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
-      ],
       pageNum:2, //共多少页
       message:"不同正在努力加载中...",//点击加载
       page:{
         p:1, //第几页
        s:20,// 、、一页多少
       },
-      tabbarAarrIndex:2, //点击tab的下标
       stateXCX:"", //是不是小程序
     }
   },
@@ -89,7 +76,6 @@ export default {
     overflow-y:auto;
     overflow-x: hidden;
     padding: .01rem;
-    padding-bottom: 0.5rem;
     .fireMapList{
       width: 100%;
       padding: 0.1rem;
@@ -105,26 +91,5 @@ export default {
     height: 0.3rem;
     line-height: 0.3rem;
     text-align: center;
-  }
-  .Indextab{
-    position: fixed;
-    width: 100%;
-    height: 0.49rem;
-    bottom: 0;
-    left: 0;
-    background: #ffffff;
-    border-top: 0.01rem solid #EEEEEE;
-    display: flex;
-    .indexTabLi{
-      flex: 1;
-      text-align: center;
-      padding-top:0.1rem ;
-    }
-    .indexTabImg{
-      width: 0.16rem;
-      height: 0.19rem;
-      display:block;
-      margin: 0 auto;
-    }
   }
 </style>

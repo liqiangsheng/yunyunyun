@@ -111,12 +111,12 @@ export default {
       boxSHow:false, //  初始数据
       banner:[],//轮播
       tabbarAarr:[  //、、tab
-        {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex"},
+        {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
+        {name:"资讯",icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
         {name:"智慧活动",icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
-        {name:"火图直播",icon:"./static/images/火图2.png",icon1:"./static/images/火图1.png",path:"/fireMap"},
         {name:"我的",icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
       ],
-      tabbarAarrIndex:1,  //点击tab的下标
+      tabbarAarrIndex:2,  //点击tab的下标
       p:1, //第几页
       s:3,// 、、一夜多少
       num1:0,//嘉宾列表

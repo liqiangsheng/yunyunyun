@@ -1,10 +1,8 @@
 <template>
   <!--我的收藏-->
   <div id="myCollection">
-    <div v-show="myfollow==false" class="myFabulousBox">
-       {{message}}
-    </div>
-     <div v-show="myfollow==true" class="myFabulous_box">
+
+     <div class="myFabulous_box">
        <ul class="myFabulous_tab">
          <li v-for="(item,index) in tablist" @click="tabClick(index)">
            <span :class="{active:tabIndex==index}">{{item}}</span>
@@ -35,35 +33,45 @@
               <div class="myFabulous_left">
                 <h5>{{item.title}}</h5>
                 <div style="color: #AAAAAA">
-                  <img src="/static/images/查看.png" alt=""> {{item.name}}
+                  <img src="/static/images/查看.png" alt=""> {{item.viewCount}}
                 </div>
-                <div><img src="/static/images/收藏.png" alt=""> {{item.address}} <img src="/static/images/评论.png"  alt="" style="margin-left: 0.3rem"> {{item.type}}</div>
+                <div><img src="/static/images/收藏.png" alt=""> {{item.laudedCount}} <img src="/static/images/评论.png"  alt="" style="margin-left: 0.3rem"> {{item.commentCount}}</div>
               </div>
               <div class="myFabulous_right">
-                <img :src="item.banner" alt="">
+                <img :src="item.bannerUrl" alt="">
               </div>
          </li>
        </ul>
      </div>
-
+    <div class="messageFoot" @click="updataMore(0)" v-if="tabIndex==0&&ListData.length>0">
+      {{message}}
+    </div>
+    <div class="messageFoot" @click="updataMore(1)" v-if="tabIndex==1&&articleData.length>0">
+      {{message1}}
+    </div>
   </div>
 </template>
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
-   import { IntallData } from '../../assets/js/promiseHttp';
+   import { customerFavoriteNoteMyLaudList } from '../../assets/js/promiseHttp';
 export default {
   name: 'myFabulous',
   data(){
       return{
-        myfollow:true, //数据请求成功显示
+
         userInfo:{}, //用户信息
         p:1,  //页
         s:20, //每页多少
+        p1:1,  //页
+        s1:20, //每页多少
         message:"不同努力加载中...", //触底提示
+        message1:"不同努力加载中...", //触底提示
         pageNum:"",//每页数据
+        pageNum1:"",//每页数据
         tablist:["作品","文章"], //tab选择
         tabIndex:0, //tab选择xiabiao
+        tabIndex1:0, //tab选择xiabiao
         ListData:[
           {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",bannaerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 包装设计师",type:"平面广告"},
           {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",bannaerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 包装设计师",type:"平面广告"},
@@ -73,29 +81,19 @@ export default {
           {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",bannaerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 包装设计师",type:"平面广告"},
           {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",bannaerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 包装设计师",type:"平面广告"},
           ], // 数据
-        articleData:[
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",name:"5万次",address:"9758",type:"1756"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",name:"5万次",address:"9758",type:"1756"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",name:"5万次",address:"9758",type:"1756"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",name:"5万次",address:"9758",type:"1756"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",name:"5万次",address:"9758",type:"1756"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",name:"5万次",address:"9758",type:"1756"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",name:"5万次",address:"9758",type:"1756"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",name:"5万次",address:"9758",type:"1756"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",name:"5万次",address:"9758",type:"1756"},
-          ]
+        articleData:[]
       }
   },
   created(){
     this.$nextTick(function () {
-      document.title = "我的赞";
+      document.title = "我的收藏";
     })
     this.userInfo = {data:{id:this.$router.history.current.query.id,access_token:this.$router.history.current.query.token}}
     if(this.userInfo){
-      this.myfollow= true;
+
+
     }else{
       this.message = "你还未登录，请登录！"
-      this.myfollow= false;
     }
 
   },
@@ -103,7 +101,82 @@ export default {
   methods: {
     tabClick(i){//tab的下标
       this.tabIndex =i;
-    }
+      if(i==1){ ////文章
+        customerFavoriteNoteMyLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//        customerFavoriteNoteMyLaudList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+          console.log(res)
+          if(res.status == true){
+            this.pageNum1 = Math.ceil(res.total/this.s1);
+            if(this.pageNum1 >1){
+              this.message1 = "点击加载更多..."
+            }else{
+              this.message1 = "这是我的底线..."
+            }
+            this.articleData = res.data;
+          }else{
+            Toast("网络出错了，请重试")
+          }
+        })
+      }else{//作品
+
+      }
+    },
+    updataMore(v){ //加载更多 分页
+      if(v==1){ //文章
+        this.p1++;
+        if(this.p1>this.pageNum1){
+          this.message1 = "这是我的底线..."
+          Toast("这是最后一页啦！")
+        }else if(this.p1==this.pageNum1){
+          this.message1 = "这是我的底线..."
+          customerFavoriteNoteMyLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+//          customerFavoriteNoteMyLaudList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+            if(res.status == true){
+              this.articleData = this.articleData.concat(res.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
+          })
+        }else if(this.p1<this.pageNum1){
+          this.message1 = "点击加载更多..."
+          customerFavoriteNoteMyLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+//          customerFavoriteNoteMyLaudList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+
+            if(res.status == true){
+              this.articleData =  this.articleData.concat(res.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
+          })
+        }
+
+      }else{//作品
+        this.p++;
+        if(this.p>this.pageNum){
+          this.message = "这是我的底线..."
+          Toast("这是最后一页啦！")
+        }else if(this.p==this.pageNum){
+          this.message = "这是我的底线..."
+          customerFavoriteNoteMyLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+            if(res.status == true){
+              this.ListData = this.ListData.concat(res.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
+          })
+        }else if(this.p<this.pageNum){
+          this.message = "点击加载更多..."
+          customerFavoriteNoteMyLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+            if(res.status == true){
+              this.ListData =  this.ListData.concat(res.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
+          })
+        }
+      }
+
+    },
   }
 }
 
@@ -268,6 +341,13 @@ export default {
       }
     }
   }
-
+  .messageFoot{
+    width: 100%;
+    height: 0.3rem;
+    line-height: 0.3rem;
+    color: rgba(5,5,5,0.3);
+    text-align: center;
+    margin-top: 0.2rem;
+  }
 }
 </style>

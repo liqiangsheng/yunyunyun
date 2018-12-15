@@ -2,7 +2,7 @@
   <div id="messageNotification">
     <div class="messageNotification_falseBox" v-show="myfollow==false">
       <img src="/static/images/缺省图.png" alt="">
-      你的评论区目前空空也～
+      你的消息区目前空空也～
     </div>
     <div class="messageNotification_box" v-show="myfollow==true">
 

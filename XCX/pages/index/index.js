@@ -1,4 +1,4 @@
-// pages/home/home.js
+// pages/index/index.js
 var apiDomian = require("../../js/api.js");  //数据请求api
 var formatTime = require("../../js/formatTime.js"); // 时间戳转时间
 let API = apiDomian.apidmain();
@@ -8,7 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-     src:""
+    url: "https://dcloud.butongtech.com/#",
   },
 
   /**
@@ -16,10 +16,11 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
-    that.data.url = API.url + "/homeIndex"
-    that.setData({
-      src: that.data.url,
-    })
+    that.data.url = API.url + "/homeIndex1_0"
+      that.setData({
+        url: that.data.url,
+      })
+    console.log(that.data.url)
 
   },
 

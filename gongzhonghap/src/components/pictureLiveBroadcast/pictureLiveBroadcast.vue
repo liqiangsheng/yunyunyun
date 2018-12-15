@@ -1,8 +1,6 @@
 <template>
   <div id="pictureLiveBroadcast">
-    <transition name="fade">
-       <welcomePage v-if="pageShow" @temp="temp"  :activityId="activityId"></welcomePage>
-    </transition>
+
     <div class="pictureLiveBroadcast_box" ref="box">
       <!--轮播-->
       <div class="swiper-container">
@@ -22,15 +20,19 @@
           <div class="pictureLiveBroadcast_titleItem"><img src="/static/images/position.png" alt="">{{objDataTitle.regionName}}</div>
       </div>
     </div>
-
+<!--图片直播-->
     <ul class="pictureLiveBroadcast_tab"  :style="fixedStyle">
       <li v-for="(item,index) in tabAtt" @click="stateClick(index)"><span class="span" :class="{active:tabState==index}">{{item}}</span><br><span class="span1"  v-if="tabState == index"></span></li>
     </ul>
     <div class="pictureLiveBroadcast_center" v-show="tabState == 0" >
-      <!--<div class="pictureLiveBroadcast_center_fixed" @click="goBackTop" v-show="gotopShow">第{{}}/{{imgsArr.length}} 张 ▲</div>-->
       <div class="pictureLiveBroadcast_center_fixed" @click="goBackTop" v-show="gotopShow">共 {{total}} 张 ▲</div>
-      <vue-waterfall-easy :imgsArr="imgsArr"  srcKey="imageUrl1" @scrollReachBottom="getData" @click="clickFn"> </vue-waterfall-easy>
+      <vue-waterfall-easy :imgsArr="imgsArr"  srcKey="imageUrl1" @click="clickFn">
+        <!--<div slot="loading" slot-scope="{isFirstLoad}">-->
+          <!--<div slot="loading" v-if="isFirstLoad">不同努力加载中...</div>-->
+        <!--</div>-->
+      </vue-waterfall-easy>
     </div>
+    <!--热门图片-->
     <ul class="pictureLiveBroadcast_ul" v-show="tabState == 1">
          <li v-for="(item,index) in imgsArr1" v-if="index<3" class="li1" @click="goToImg(item,imgsArr1,index)">
            <img :src="item.imageUrl1" alt="">
@@ -49,6 +51,11 @@
            <img :src="item.imageUrl1" alt="">
          </li>
     </ul>
+    <!--欢迎页-->
+    <transition name="fade">
+      <welcomePage v-if="pageShow" @temp="temp"  :activityId="activityId"></welcomePage>
+    </transition>
+    <!--查看图片-->
     <transition name="fade">
       <imgenlarge :imgenlargedata="imgenlargedata" :imgenlargedata1="imgenlargedata1" :imgenlargedata1Index="imgenlargedata1Index" :imgsArr="imgsArr"  v-if="imgenlargeShow" @ishowItem="ishowItem"></imgenlarge>
     </transition>
@@ -67,6 +74,7 @@ export default {
   name: 'pictureLiveBroadcast',
   data(){
     return {
+      isFirstLoad:true, //第一次加载
       objDataTitle:{}, //头部数据
       titleData:{},//头部数据
       pageShow:false,
@@ -94,6 +102,7 @@ export default {
         pages:0, //总共多少页
         bookId:{
           p: 1, // request param//
+          s: 100, // request param//
           bookId:"",
         },//相册id
        }
@@ -109,7 +118,21 @@ export default {
     if(this.$router.history.current.query.isBool=="false"||this.$router.history.current.query.isBool==false){
       this.pageShow = false;
       this.bookId.bookId = this.$router.history.current.query.bookId;
-      this.getData(this.bookId);
+
+      activityImagesList(this.bookId).then(res=>{ //初始化数据
+        if(res.data.status == true){
+//            ?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim
+          res.data.data.forEach((item,index)=>{
+            item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+          })
+          this.total =res.data.total;
+          this.pages = Math.ceil(res.data.total/this.bookId.s)
+          this.imgsArr = res.data.data;
+        }else{
+          Toast("网络出错了，请重试")
+        }
+      })
+
       activityImageslistHot(this.$router.history.current.query.bookId,this.size).then(res=>{   //热门活动接口
         if(res.data.status == true){
           res.data.data.forEach((item,index)=>{
@@ -178,49 +201,10 @@ export default {
 //        console.log(scrollTop,"fsdakfjksdfjksdk")
 //        console.log(scrollHeight - windowHeight-200)
         if(scrollTop == (scrollHeight - windowHeight)&&that.tabState==0){ //触底自动加载
-            that.bookId.p++;
-            if(that.pages<that.bookId.p){
-              that.bookId.p = that.pages;
-              Toast("没有更多图片了");
-              return;
-            }else if(that.pages==that.bookId.p){
-              Indicator.open("加载中")
-              activityImagesList(that.bookId).then(res=>{
-                if(res.data.status == true){
-                  res.data.data.forEach((item,index)=>{
-                    item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
-                  })
-                  setTimeout(()=>{
-                    Indicator.close();
-                    that.imgsArr = that.imgsArr.concat(res.data.data);
-                  },1000)
-
-                }else{
-                  Indicator.close();
-                  Toast("网络出错了，请重试")
-                }
-              })
-            }else if(that.pages>that.bookId.p){
-              Indicator.open("加载中")
-                activityImagesList(that.bookId).then(res=>{
-                  if(res.data.status == true){
-                    res.data.data.forEach((item,index)=>{
-                      item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
-                    })
-                    setTimeout(()=>{
-                      Indicator.close();
-                      that.imgsArr = that.imgsArr.concat(res.data.data);
-                    },1000)
-
-                  }else{
-                    Indicator.close();
-                    Toast("网络出错了，请重试")
-                  }
-                })
-            }
+            that.getData();
         }
       }
-    },3000)
+    },300)
 
   },
   mounted() {
@@ -233,7 +217,20 @@ export default {
       this.pageShow = v.isbool;
       this.bookId.bookId = v.bookId;
       this.titleData = v.item;
-      this.getData(this.bookId)
+      activityImagesList(this.bookId).then(res=>{ //初始化数据
+        if(res.data.status == true){
+//            ?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim
+          res.data.data.forEach((item,index)=>{
+            item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+          })
+          this.total =res.data.total;
+          this.pages = Math.ceil(res.data.total/this.bookId.s)
+          this.imgsArr = res.data.data;
+        }else{
+          Toast("网络出错了，请重试")
+        }
+      })
+
       activityImageslistHot(v.bookId,this.size).then(res=>{   //热门活动接口
         if(res.data.status == true){
           res.data.data.forEach((item,index)=>{
@@ -287,21 +284,49 @@ export default {
         this.imgenlargedata1Index = index;
       }
     },
-    getData(data) {
-      activityImagesList(data).then(res=>{
-        if(res.data.status == true){
-//            ?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim
-          res.data.data.forEach((item,index)=>{
-              item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
-          })
-          this.imgsArr = res.data.data;
-          this.total =res.data.total;
-          this.pages = Math.ceil(res.data.total/20)
+    getData() {
 
-        }else{
-          Toast("网络出错了，请重试")
-        }
-      })
+      let that = this;
+      that.bookId.p++;
+      if(that.pages<that.bookId.p){
+        that.bookId.p = that.pages;
+        Toast("没有更多图片了");
+        return;
+      }else if(that.pages==that.bookId.p){
+        Indicator.open("加载中")
+        activityImagesList(that.bookId).then(res=>{
+          if(res.data.status == true){
+            res.data.data.forEach((item,index)=>{
+              item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+            })
+            setTimeout(()=>{
+              Indicator.close();
+              that.imgsArr = that.imgsArr.concat(res.data.data);
+            },200)
+
+          }else{
+            Indicator.close();
+            Toast("网络出错了，请重试")
+          }
+        })
+      }else if(that.pages>that.bookId.p){
+        Indicator.open("加载中")
+        activityImagesList(that.bookId).then(res=>{
+          if(res.data.status == true){
+            res.data.data.forEach((item,index)=>{
+              item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+            })
+            setTimeout(()=>{
+              Indicator.close();
+              that.imgsArr = that.imgsArr.concat(res.data.data);
+            },200)
+
+          }else{
+            Indicator.close();
+            Toast("网络出错了，请重试")
+          }
+        })
+      }
     },
   },
 }
@@ -310,9 +335,10 @@ export default {
 
 <style scoped lang="less">
 #pictureLiveBroadcast{
-  /*overflow: hidden;*/
+  width: 100%;
   box-sizing: border-box;
   .pictureLiveBroadcast_box{
+    width:100%;
     >.swiper-container{
       width: 100%;
     }

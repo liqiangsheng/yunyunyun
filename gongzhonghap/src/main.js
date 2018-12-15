@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import Vuex from "vuex"
+import $ from 'jquery'
 import './assets/rem'
 import "mint-ui/lib/style.min.css"
 import mintui from 'mint-ui'

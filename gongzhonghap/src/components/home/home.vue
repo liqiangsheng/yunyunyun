@@ -514,9 +514,6 @@ export default {
   mounted() {
     window.addEventListener('scroll', this.handleScroll) //监听回到顶部按钮出现
 
-
-
-
   },
 }
 </script>

@@ -364,3 +364,23 @@ export function customerCareNoteListCared(id,token,p,s) { //id 用户id
     }
   })
 }
+// 我的收藏文章
+export function customerFavoriteNoteMyLaudList(id,token,p,s) { //id 用户id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain+"/apis/content/"+contentEdition+"/customerFavoriteNote/myLaudList?loginUserId="+id+"&p="+p+"&s="+s);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
