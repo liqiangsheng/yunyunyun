@@ -38,6 +38,9 @@ const PictureLiveBroadcast = resolve => require(['@/components/pictureLiveBroadc
 const FireMap = resolve => require(['@/components/pictureLiveBroadcast/fireMap'], resolve); //火图
 const homeIndex = resolve => require(['@/components/homeIndex/homeIndex'], resolve); //资讯
 const HomeIndex1_0 = resolve => require(['@/components/homeIndex1_0/homeIndex1_0'], resolve); //首页
+const Follow = resolve => require(['@/components/homeIndex1_0/alter/follow'], resolve); //关注
+const FindDetail = resolve => require(['@/components/homeIndex1_0/findDetail'], resolve); //发现的详情
+const PersonalMelonPages = resolve => require(['@/components/intelligentMatching/personalMelonPages'], resolve); //个人吃瓜页
 // import Home from '@/components/home/home'
 // import HomeMap from '@/components/homeMap/homeMap' //详情地图
 // import Index from '@/components/index/index' //首页
@@ -76,7 +79,9 @@ const HomeIndex1_0 = resolve => require(['@/components/homeIndex1_0/homeIndex1_0
 // import PictureLiveBroadcast from '@/components/pictureLiveBroadcast/pictureLiveBroadcast' //图片直播
 // import homeIndex from '@/components/homeIndex/homeIndex' //首页
 // import HomeIndex1_0 from '@/components/homeIndex1_0/homeIndex1_0' //首页
-
+// import Follow from '@/components/homeIndex1_0/alter/follow' //首页
+// import FindDetail from '@/components/homeIndex1_0/findDetail' //发现的详情
+// import PersonalMelonPages from '@/components/intelligentMatching/personalMelonPages' //个人吃瓜页
 
 Vue.use(Router)
 
@@ -90,6 +95,16 @@ export default new Router({
       path: '/homeIndex1_0',
       name: 'homeIndex1_0',
       component: HomeIndex1_0,
+    },
+    {
+      path: '/follow',
+      name: 'follow',
+      component: Follow,
+    },
+    {
+      path: '/findDetail',
+      name: 'findDetail',
+      component: FindDetail,
     },
     {
       path: '/homeIndex',
@@ -174,6 +189,11 @@ export default new Router({
       path: '/IntelligentComment',
       name: 'IntelligentComment',
       component: IntelligentComment,
+    },
+    {
+      path: '/personalMelonPages',
+      name: 'personalMelonPages',
+      component: PersonalMelonPages,
     },
     {
       path: '/homeDetail',

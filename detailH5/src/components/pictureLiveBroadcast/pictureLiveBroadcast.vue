@@ -4,7 +4,7 @@
     <transition name="fade">
        <welcomePage v-if="pageShow" @temp="temp"  :activityId="activityId"></welcomePage>
     </transition>
-    <div class="pictureLiveBroadcast_box" ref="box">
+    <v-touch class="pictureLiveBroadcast_box" ref="box" v-on:swipeleft="swiperleft" v-on:swiperight="swiperright">
       <!--轮播-->
       <div class="swiper-container">
         <div class="swiper-wrapper">
@@ -22,7 +22,7 @@
           <div class="pictureLiveBroadcast_titleItem"><img src="/static/images/time.png" alt="">{{objDataTitle.bookTime|formatTime}}</div>
           <div class="pictureLiveBroadcast_titleItem"><img src="/static/images/position.png" alt="">{{objDataTitle.regionName}}</div>
       </div>
-    </div>
+    </v-touch>
 
     <ul class="pictureLiveBroadcast_tab"  :style="fixedStyle">
       <li v-for="(item,index) in tabAtt" @click="stateClick(index)"><span class="span" :class="{active:tabState==index}">{{item}}</span><br><span class="span1"  v-if="tabState == index"></span></li>
@@ -224,7 +224,12 @@ export default {
     let that = this;
   },
   methods: {
-
+    swiperleft(){ //不能删除 删除小程序不能用
+//        Toast("zuo")
+    },
+    swiperright(){//不能删除 删除小程序不能用
+//        Toast("you")
+    },
     temp(v){ //欢迎页进入
       this.pageShow = v.isbool;
       this.bookId.bookId = v.bookId;

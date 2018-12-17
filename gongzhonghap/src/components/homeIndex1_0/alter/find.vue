@@ -2,19 +2,19 @@
   <!--发现-->
   <div id="find">
        <div class="find_box" ref="findBox">
-         <vue-waterfall-easy :imgsArr="imgsArr" srcKey="imageUrl1" @click="clickFn" :enablePullDownEvent="openPullDown" :maxCols="maxCols">
+         <vue-waterfall-easy :imgsArr="imgsArr" srcKey="imageUrl1" :enablePullDownEvent="openPullDown" :maxCols="maxCols" @click="clickFn">
            <div slot="loading" slot-scope="{isFirstLoad}">
              <div slot="loading" v-if="isFirstLoad">不同努力加载中...</div>
              <div slot="loading" v-else></div>
            </div>
            <div id="img-info" slot-scope="props">
-               <!--<h5>{{props.value.name}}</h5>-->
+
                <h5>黑川雅之来报道！设计界绝对干货！！！这里有一枚...</h5>
                 <ul class="img-info_ul">
-                  <li  class="img-info_li1"><img src="/static/images/defultphoto.png" alt=""></li>
-                  <li class="img-info_li2">dsfsdfds帅哥</li>
-                  <li class="img-info_li3"><img src="/static/images/点赞1.png" alt=""></li>
-                  <li class="img-info_li4">{{9999}}</li>
+                  <li  class="img-info_li1" @clcik.stop="headerClick(item,index)"><img src="/static/images/defultphoto.png" alt=""></li>
+                  <li class="img-info_li2" @clcik.stop="headerClick(item,index)">dsfsdfds帅哥</li>
+                  <li class="img-info_li3" @clcik.stop="fabulousClick(item,index)"><img src="/static/images/点赞1.png" alt=""></li>
+                  <li class="img-info_li4" @clcik.stop="fabulousClick(item,index)">{{9999}}</li>
                 </ul>
            </div>
          </vue-waterfall-easy>
@@ -45,9 +45,11 @@
         openPullDown:true,//下拉刷新
         OffsetHeight:0,//屏幕高度
         imgsArr:[], //数据
+        userInfo:"", //用户信息
       }
     },
     created() {
+      this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):"";
    this.$nextTick(function(){
      this.OffsetHeight = this.$refs.findBox.offsetHeight;
    })
@@ -66,11 +68,17 @@
 
     },
     methods:{
-      clickFn(){
-
+      headerClick(v,i){ //去吃瓜页
+        console.log(11111111)
+      },
+      fabulousClick(v,i){//登录的话去点赞 没登录去登录页
+        console.log(11111111)
+      },
+      clickFn(event,{index,value}){ //进入详情页
+        console.log(value)
+        this.$router.push({path:"/findDetail",query:{id:value.id}}) //去发现的详情页面，记得带状态跟token
       },
       handleScroll(e){  //回到顶部按钮出现
-
         if(e.target.scrollTop>=(e.target.scrollHeight-this.OffsetHeight-0.5)){
 
           this.bookId.p++

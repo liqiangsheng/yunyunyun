@@ -26,6 +26,11 @@ const UserFeedback = resolve => require(['@/components/me/userFeedback'], resolv
 const MessageNotification = resolve => require(['@/components/me/messageNotification'], resolve); //消息通知
 const PersonalSettings = resolve => require(['@/components/me/personalSettings'], resolve); //个人设置
 import HomeIndex1_0 from '@/components/homeIndex1_0/homeIndex1_0' //首页
+import Follow from '@/components/homeIndex1_0/alter/follow' //首页关注
+import FindDetail from '@/components/homeIndex1_0/findDetail' //发现的详情
+import PersonalMelonPages from '@/components/intelligentMatching/personalMelonPages' //个人吃瓜页
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -43,6 +48,16 @@ export default new Router({
       path: '/homeIndex1_0',
       name: 'homeIndex1_0',
       component: HomeIndex1_0,
+    },
+    {
+      path: '/follow',
+      name: 'follow',
+      component: Follow,
+    },
+    {
+      path: '/findDetail',
+      name: 'findDetail',
+      component: FindDetail,
     },
     { path: '/myfollow',
       component: Myfollow,
@@ -118,7 +133,13 @@ export default new Router({
       path: '/IntelligentMatchingC',
       name: 'IntelligentMatchingC',
       component: IntelligentMatchingC,
-    },{
+    },
+    {
+      path: '/personalMelonPages',
+      name: 'personalMelonPages',
+      component: PersonalMelonPages,
+    },
+    {
       path: '/homeDetail',
       name: 'HomeDetail',
       component: HomeDetail,

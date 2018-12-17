@@ -1,7 +1,7 @@
 <template>
   <!--设计咖-->
-  <div id="design_offee">
-    <div class="swiperBox">
+  <div id="design_offee" v-on:swipeleft="swiperleft" v-on:swiperight="swiperright">
+    <v-touch class="swiperBox">
       <!---->
       <div class="swiper-container">
         <div class="swiper-wrapper">
@@ -31,7 +31,7 @@
       </div>
 
       <!---->
-    </div>
+    </v-touch>
   </div>
 </template>
 
@@ -82,6 +82,12 @@ export default {
     })
   },
   methods:{
+    swiperleft(){
+//        Toast("zuo")
+    },
+    swiperright(){
+//        Toast("you")
+    },
     goToHomePage(v){ //去个人主页
       this.$router.push({path: "/homePage", query: {state: 2,id:v.id,source:"XCX"}}) //去企业主页 1是企业 2是个人
     }

@@ -9,7 +9,7 @@
     </ul>
     <div class="homeIndex1_0_components">
       <Find v-if="headerTabIndex==0"></Find>
-      <Follow v-if="headerTabIndex==1"></Follow>
+      <!--<Follow v-if="headerTabIndex==1"></Follow>-->
     </div>
 
   </div>
@@ -35,6 +35,9 @@
     methods:{
       tabClick(i){//头部切换
         this.headerTabIndex =i;
+        if(i==1){
+          this.$router.push({path:"/follow"})
+        }
       }
     }
   }
