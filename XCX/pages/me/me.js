@@ -8,6 +8,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    meTab: ["原创", "草稿"],//原创 草稿
+    meTabIndex: 0,//原创 草稿
     tabList: [{ name: "关注", num: "2000" }, { name: "粉丝", num: "1.5万" }, { name: "点赞", num: "5000" }, { name: "收藏", num: "100" }, { name: "评论", num: "265" },],
     tabListBool: false, //显示
     bgImge:"../../images/bg.png",
@@ -30,8 +32,17 @@ Page({
       })
     }
   },
+  onPageScroll(e){
+ 
+  },
+  Me_tabClick(e) { ////原创 草稿
+
+    this.setData({
+      meTabIndex: e.currentTarget.dataset.index
+    })
+  },
   myfollowBnt(e){
-    console.log(e.currentTarget.dataset.item)
+
     let v = e.currentTarget.dataset.item;
     let data = wx.getStorageSync('userInfo')//获取本地存储信息
     if (data) {

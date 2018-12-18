@@ -1,0 +1,20 @@
+<!--component/draft/Draft.wxml-->
+<view class='componentsBox_Show' wx:if='{{listData.length<=0}}'>
+   <image src="../../images/yuanchuang.png"></image>
+   <view>你还没有进行任何创作哦～</view>
+</view>
+
+ <view class="draft_ul" v-else>
+         <view wx:for="{{listData}}" wx:key='' class='draft_li'>
+           <view class="draft_img">
+             <image src="{{item.url}}" ></image>
+           </view>
+           <view class="draft_time">
+             <view class="draft_h5">{{item.title}}</view>
+             <view class="draft_span">{{item.timeI}}</view>
+           </view>
+         </view>
+          <view class="more" bindtap="updataMore">
+            {{message}}
+          </view>
+</view>

@@ -3,5 +3,9 @@
   "navigationBarBackgroundColor": "#000000",
   "navigationBarTitleText": "我的",
   "backgroundColor": "#eeeeee",
-  "navigationBarTextStyle": "#fff"
+  "navigationBarTextStyle": "#fff",
+  "usingComponents": {
+    "Original": "../../component/components/components/",
+    "Draft": "../../component/draft/Draft/"
+  }
 }

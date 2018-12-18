@@ -1,0 +1,40 @@
+<!--component/components.wxml-->
+<view class='componentsBox_Show' wx:if='{{listData.length<=0}}'>
+   <image src="../../images/yuanchuang.png"></image>
+   <view>你还没有进行任何创作哦～</view>
+</view>
+<view class='componentsBox' wx:else>
+  <view class='fall-container'>
+    <!-- 左边一列 -->
+    <view class='fall-left'>
+      <block wx:for="{{leftList}}" wx:key="{{item.id}}">
+        <!--瀑布流内容卡片-->
+        <!-- <template is='goodsCard' data="{{data:item}}" /> -->
+        <image 
+          class='card-img' 
+          mode='aspectFill' 
+          style='width:{{item.itemWidth}}px;height:{{item.itemHeight}}px;margin-top:8px;' 
+          src='{{item.imageUrl}}' 
+          lazy-load>
+        </image>
+      </block>
+    </view>
+    <!--右边一列 -->
+    <view class='fall-right'>
+      <block wx:for="{{rightList}}" wx:key="{{item.id}}">
+        <!--瀑布流内容卡片-->
+        <!-- <template is='goodsCard' data="{{data:item}}" /> -->
+        <image 
+          class='card-img' 
+          mode='aspectFill' 
+          style='width:{{item.itemWidth}}px;height:{{item.itemHeight}}px;margin-top:8px;' 
+          src='{{item.imageUrl}}' 
+          lazy-load>
+        </image>
+      </block>
+    </view>
+  </view>
+  <view bindtap='moreTap' class='more'>
+        {{message}}
+    </view>
+</view>

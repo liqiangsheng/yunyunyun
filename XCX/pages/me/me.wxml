@@ -1,5 +1,5 @@
 <!--pages/me/me.wxml-->
-<view class='meBox'>
+<scroll-view class='meBox'>
   <view class="userinfo">
       <image class='bgImge' src='{{bgImge}}'></image>
       <block>
@@ -13,14 +13,27 @@
      </view>
 
      <view class="me_ul" wx:if="{{tabListBool}}">
-        <view class='me_li' wx:for="{{tabList}}" bindtap='myfollowBnt' key='{{index}}' data-item='{{item}}'>
+        <view class='me_li' wx:for="{{tabList}}" bindtap='myfollowBnt' wx:key='' data-item='{{item}}'>
           <view class='me_span'>
             {{item.num}}
           </view>
           {{item.name}}
       </view>
-
+     
    </view>
+    <!-- 原创，草稿 -->
+     <view class='Me_tab'>
+        <view wx:for="{{meTab}}" class='Me_li' bindtap='Me_tabClick' data-index='{{index}}' wx:key=''>
+           <text class='{{"Me_span"+index}} {{meTabIndex==index?"active":""}}'>{{item}}</text>
+        </view>
+    </view>
+      <!--,//原创 草稿组件-->
+    <view  class="Me_draft">
+      <Original class='Me_Original' wx:if="{{meTabIndex==0}}"></Original>
+        <Draft wx:if="{{meTabIndex==1}}"></Draft>
+    </view>
+    
+  
 
-</view>
+</scroll-view>
 

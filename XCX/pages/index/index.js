@@ -16,11 +16,11 @@ Page({
    */
   onLoad: function (options) {
     let that = this;
+    console.log(wx.getStorageSync("userInfo"))
     that.data.url = API.url + "/homeIndex1_0"
       that.setData({
         url: that.data.url,
       })
-    console.log(that.data.url)
 
   },
 

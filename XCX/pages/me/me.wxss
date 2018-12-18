@@ -79,3 +79,34 @@
         width: 13px;
         height: 10px;
    }
+   .Me_tab{
+     width: 100%;
+     background: #ffffff;
+     display: flex;
+     height: 40px
+   }
+    .Me_li{
+     flex: 1;
+   }
+   .Me_li text{
+      display: inline-block;
+      font-size:14px;
+      font-family:PingFangSC-Regular;
+      font-weight:400;
+      color:rgba(153,153,153,1);
+      height: 38px;
+      line-height: 38px;
+   }
+     .Me_span0{
+        float: right;
+        margin-right: 20px;
+   }
+    .Me_span1{
+      margin-left: 20px;
+    
+   }
+   .Me_li text.active{
+      color:rgba(5,5,9,1);
+      border-bottom: 2px solid #000000;
+   }
+ 

@@ -19,7 +19,16 @@
          {{item.name}}
       </li>
     </ul>
-
+    <ul class="Me_tab">
+      <li v-for="(item,index) in meTab" @click="Me_tabClick(index)">
+        <span :class="[{active:meTabIndex==index},'span'+index]">{{item}}</span>
+      </li>
+    </ul>
+    <!--,//原创 草稿组件-->
+    <div class="Me_draft">
+      <Original v-if="meTabIndex==0"></Original>
+      <Draft v-if="meTabIndex==1"></Draft>
+    </div>
 
     <ul class="Indextab">
       <li v-for="(item,index) in tabbarArr" class="indexTabLi" @click="tabarClick(index)">
@@ -35,17 +44,23 @@
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
    import { IntallData } from '../../assets/js/promiseHttp';
+   import Original from "./alter/original.vue"  //原创
+   import Draft from "./alter/draft.vue"  //草稿
 export default {
+  components: {
+    Original,Draft
+  },
   name: 'me',
   data(){
       return{
-
+        meTab:["原创","草稿"],//原创 草稿
+        meTabIndex:0,//原创 草稿
         tabList:[{name:"关注",num:"2000"},{name:"粉丝",num:"1.5万"},{name:"点赞",num:"5000"},{name:"收藏",num:"100"},{name:"评论",num:"265"},],
         tabListBool:false, //显示
         bgImge:"./static/images/bg.png",
         userInfo: {
-        header: "http://pgf8indq4.bkt.clouddn.com/defult_photo@3x.png",
-        name: "登录",
+        header:"./static/images/defultphoto.png",
+        name: "请登录",
         },
         tabbarArr:[  //、、tab
           {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
@@ -77,11 +92,14 @@ export default {
              this.tabListBool = false;
              this.bgImge="./static/images/bg.png";
                 this.userInfo.header= "./static/images/defultphoto.png";
-                this.userInfo.name= "登录";
+                this.userInfo.name= "请登录";
        }
   },
 
   methods:{
+    Me_tabClick(i){//原创 草稿
+      this.meTabIndex= i;
+    },
     setClick(){//个人设置
       let data = JSON.parse(localStorage.getItem("userInfo"))
       if(data){
@@ -236,5 +254,44 @@ export default {
       }
     }
 
+  }
+  .Me_tab{
+    width: 100%;
+    background: #ffffff;
+    height: 0.4rem;
+    display: flex;
+    li{
+      flex: 1;
+
+      span{
+        display: inline-block;
+        font-size:0.14rem;
+        font-family:PingFangSC-Regular;
+        font-weight:400;
+        color:rgba(153,153,153,1);
+        height: 0.38rem;
+        line-height: 0.38rem;
+      }
+      span.active{
+        color:rgba(5,5,9,1);
+        border-bottom: 0.02rem solid #000000;
+      }
+      .span0{
+        float: right;
+        margin-right: 0.2rem;
+      }
+      .span1{
+        margin-left: 0.2rem;
+      }
+    }
+  }
+  .Me_draft{
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 2.68rem;
+    bottom: 0.5rem;
+    right: 0;
+    overflow: hidden;
   }
 </style>
