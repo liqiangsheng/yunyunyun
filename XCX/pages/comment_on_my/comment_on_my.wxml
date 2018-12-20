@@ -1,0 +1,4 @@
+<!--pages/comment_on_my/comment_on_my.wxml-->
+<web-view src="{{url}}">
+
+</web-view>

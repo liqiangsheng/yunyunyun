@@ -1,0 +1,4 @@
+<!--pages/praise_my/praise_my.wxml-->
+<web-view src="{{url}}">
+
+</web-view>

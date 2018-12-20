@@ -1,6 +1,7 @@
 <template>
   <div id="IntelligentMatchingD">
-    <div class="IntelligentMatchingDHeader" >
+    <div style="width: 100%;text-align: center;line-height: 2.5rem;"  v-if="!boxShow">请求出错啦！</div>
+    <div class="IntelligentMatchingDHeader"  v-if="boxShow">
       <h3>{{messageArr.title}}</h3>
       <div class="IntelligentMatchingDHeaderIndex">
         <span v-for="(item,index) in messageArr.contentTagVoList">{{item.tagName}} / </span>
@@ -18,7 +19,8 @@
         <img src="/static/images/shuangying.png" alt="">
       </div>
     </div>
-    <div class="IntelligentMatchingDItem" v-for="(item,index) in messageArr.informationChildrenTitleVoList">
+
+    <div class="IntelligentMatchingDItem" v-for="(item,index) in messageArr.informationChildrenTitleVoList" v-if="boxShow">
       <h5 v-if="!!item.titleName"><span></span>{{item.titleName}}</h5>
       <div class="IntelligentMatchingDItemIndex" v-for="(item1,index1) in item.titleInformationList">
         <span v-if="!!item1.titleInformation">{{item1.titleInformation}}</span>
@@ -26,21 +28,25 @@
       </div>
       <!--<div v-if="!!item.logoUrl" class="IntelligentMatchingDItemIndex1"><img :src="item.logoUrl" alt=""></div>-->
     </div>
-    <div class="IntelligentMatchingDItem1"@click="giveClick">
-      <img src="/static/images/zan1.png" alt="" >{{messageArr.laudedCount}} 赞
+
+    <div class="IntelligentMatchingDItem1" v-if="boxShow">
+      <img src="/static/images/zan1.png" alt="" >共{{messageArr.laudedCount}} 赞
     </div>
-    <div class="IntelligentMatchingDItem2">
+
+    <div class="IntelligentMatchingDItem2" v-if="boxShow">
       <img src="/static/images/banqun.png" alt="">版 权
     </div>
-    <div class="IntelligentMatchingDItem3">
+
+    <div class="IntelligentMatchingDItem3" v-if="boxShow">
       <span v-if="messageArr.isOriginal==1">本文版权归不同科技所有 / 未经许可不得转载或翻译</span>
       <span v-if="messageArr.isOriginal==0"><span v-if="!!messageArr.fromReprint">转载自：{{messageArr.fromReprint}} </span><span v-if="!!messageArr.source">/ 文章来源：{{messageArr.source}} </span><span v-if="!!messageArr.author">/ 作者：{{messageArr.author}}</span></span>
     </div>
 
-    <div class="IntelligentMatchingDItem4">
+    <div class="IntelligentMatchingDItem4" v-if="boxShow">
       <!--  //有用的-->
     </div>
-    <ul class="IntelligentMatchingDItem5" @click="giveClick">
+
+    <ul class="IntelligentMatchingDItem5" @click="giveClick" v-if="boxShow">
       <li v-for="(item,index) in commenArr" v-if="!!item.sysUserContentVo">
         <div class="IntelligentMatchingDItemL">
           <img :src="item.userDp" alt="">
@@ -92,6 +98,7 @@
     name: 'IntelligentMatchingD',
     data(){
       return{
+        boxShow:false,//初始化数据成功
         actions:[{ name:"请下载App" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
         sheetVisible:false, //是否显示弹框
         messageArr:{},//文章
@@ -112,7 +119,8 @@
             if(res.data.sysUserContentVo.userDp){
               this.userDp = res.data.sysUserContentVo.userDp;
             }
-            this.messageArr = res.data
+              this.boxShow=true;//初始化数据成功
+              this.messageArr = res.data
           }else{
             Toast("网络出错了，请重试")
           }

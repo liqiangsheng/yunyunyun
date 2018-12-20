@@ -111,6 +111,51 @@ Page({
   onShareAppMessage: function () {
 
   },
+  comment_my(){ //评论我的
+    var that = this
+    let data = wx.getStorageSync('userInfo')//获取本地存储信息
+    if (data) {
+      wx.navigateTo({
+        url: "../../pages/comment_on_my/comment_on_my"
+      })
+    } else {
+      wx.showToast({
+        title: ' 请先登录！',
+        icon: 'success',
+        duration: 2000
+      })
+    }
+  },
+  praise_my(){ //点赞我的
+    var that = this
+    let data = wx.getStorageSync('userInfo')//获取本地存储信息
+    if (data) {
+      wx.navigateTo({
+        url: "../../pages/praise_my/praise_my"
+      })
+    } else {
+      wx.showToast({
+        title: ' 请先登录！',
+        icon: 'success',
+        duration: 2000
+      })
+    }
+  },
+  collect_my() { //收藏我的
+    var that = this
+    let data = wx.getStorageSync('userInfo')//获取本地存储信息
+    if (data) {
+      wx.navigateTo({
+        url: "../../pages/collect_my/collect_my"
+      })
+    } else {
+      wx.showToast({
+        title: ' 请先登录！',
+        icon: 'success',
+        duration: 2000
+      })
+    }
+  },
   settingBnt() { // 去设置页面
     var that = this
     let data = wx.getStorageSync('userInfo')//获取本地存储信息

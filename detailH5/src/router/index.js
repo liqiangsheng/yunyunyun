@@ -25,6 +25,9 @@ import MyComment from '@/components/me/myComment' //我的评论
 const UserFeedback = resolve => require(['@/components/me/userFeedback'], resolve); //用户反馈
 const MessageNotification = resolve => require(['@/components/me/messageNotification'], resolve); //消息通知
 const PersonalSettings = resolve => require(['@/components/me/personalSettings'], resolve); //个人设置
+import PraiseMe from '@/components/me/praiseMe' //点赞我的
+import CommentOnMy from '@/components/me/comment_on_my' //评论我的
+import CollectMy from '@/components/me/collect_my' //收藏我的
 import HomeIndex1_0 from '@/components/homeIndex1_0/homeIndex1_0' //首页
 import Follow from '@/components/homeIndex1_0/alter/follow' //首页关注
 import FindDetail from '@/components/homeIndex1_0/findDetail' //发现的详情
@@ -48,6 +51,18 @@ export default new Router({
       path: '/homeIndex1_0',
       name: 'homeIndex1_0',
       component: HomeIndex1_0,
+    },
+    { path: '/praiseMe',
+      component: PraiseMe,
+      name: 'praiseMe'
+    },
+    { path: '/collect_my',
+      component: CollectMy,
+      name: 'collect_my'
+    },
+    { path: '/comment_on_my',
+      component: CommentOnMy,
+      name: 'comment_on_my'
     },
     {
       path: '/follow',

@@ -10,7 +10,18 @@
         我的活动
         <image src='../../images/right.png'></image>
        </view>
-
+      <view bindtap='comment_my'>
+        评论我的
+        <image src='../../images/right.png'></image>
+       </view>
+        <view bindtap='praise_my'>
+        点赞我的
+        <image src='../../images/right.png'></image>
+       </view>
+        <view bindtap='collect_my'>
+        收藏我的
+        <image src='../../images/right.png'></image>
+       </view>
         <view bindtap='commentBnt'>
         消息通知
         <image src='../../images/right.png'></image>

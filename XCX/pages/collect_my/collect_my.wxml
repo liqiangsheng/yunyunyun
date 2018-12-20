@@ -1,0 +1,4 @@
+<!--pages/collect_my/collect_my.wxml-->
+<web-view src="{{url}}">
+
+</web-view>

@@ -164,6 +164,8 @@
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
   import {Base64,formatTime3,formatTime4,quiryData} from "../../assets/js/common"  //base转换
+  import wxShare from "../../assets/js/wxShare.js"  //微信分享
+
   let base = new Base64;
   import {InitializationData,activitySchedulelist,honoredGuestlist} from "../../assets/js/promiseHttp"  //导航栏url截取
 
@@ -221,6 +223,7 @@ export default {
 
   },
   methods:{
+
 
     quiry(){ //初始化数据
       this.imagesShow =this.$Request.imgIsShow;// 图片是否加载
@@ -492,6 +495,9 @@ export default {
 
   mounted() {
     window.addEventListener('scroll', this.handleScroll) //监听回到顶部按钮出现
+    let data ={title:'1',desc:"详情页面",url:"http:baidu.com",urlImages:"https://raw.githubusercontent.com/zwp1994/blog-markdown-photos/master/photos/weixin_config2.png"};
+    let obj = {appid:"wx1c2c5188fd27b150",timeStamp:"1395712654",nonceStr:"e61463f8efa94090b1f366cccfbbb444",signature:"u802345jgfjsdfgsdg888"};
+    wxShare.wxShare(data,obj,this)
   },
 }
 </script>

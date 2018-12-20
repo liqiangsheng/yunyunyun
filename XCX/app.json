@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/me/me",    
-     "pages/index/index",
-     "pages/homeIndex1_0/homeIndex1_0",
+    "pages/me/me",
+    "pages/index/index",
+    "pages/homeIndex1_0/homeIndex1_0",
     "pages/personalSettings/personalSettings",
     "pages/messageNotification/messageNotification",
     "pages/userFeedback/userFeedback",
@@ -33,7 +33,10 @@
     "template/template",
     "pages/message/message",
     "pages/pictureLiveBroadcast/pictureLiveBroadcast",
-    "pages/fireMapList/fireMapList"
+    "pages/fireMapList/fireMapList",
+    "pages/comment_on_my/comment_on_my",
+    "pages/praise_my/praise_my",
+    "pages/collect_my/collect_my"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -56,21 +59,18 @@
         "pagePath": "pages/index/index",
         "text": "首页"
       },
-    
       {
         "iconPath": "./images/zixun1.png",
         "selectedIconPath": "./images/zixun2.png",
         "pagePath": "pages/homeIndex1_0/homeIndex1_0",
         "text": "资讯"
       },
-
       {
-          "iconPath": "./images/zhihui1.png",
-          "selectedIconPath": "./images/zhihui2.png",
-          "pagePath": "pages/home/home",
-          "text": "智慧活动"
+        "iconPath": "./images/zhihui1.png",
+        "selectedIconPath": "./images/zhihui2.png",
+        "pagePath": "pages/home/home",
+        "text": "智慧活动"
       },
-
       {
         "iconPath": "./images/mesmall1.png",
         "selectedIconPath": "./images/mesmall.png",

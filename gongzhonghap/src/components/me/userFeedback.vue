@@ -18,7 +18,7 @@
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
-//  import { customerCareNoteListCare } from '../../assets/js/promiseHttp';
+  import { questionAndAnswerList } from '../../assets/js/promiseHttp';
   import CommonProblem from "./alter/commonProblem.vue"
   import MyOpinion from "./alter/myOpinion.vue"
 export default {
@@ -49,6 +49,7 @@ export default {
     if(this.userInfo){
         if(this.objList.length>0){
           this.myfollow= true;
+
         }else{
           this.myfollow= false;
         }

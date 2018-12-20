@@ -1,26 +1,24 @@
 <template>
   <!--评论-->
   <div id="myComment">
-    <div v-show="myfollow==false" class="myCommentBox">
-       {{message}}
-    </div>
-     <div v-show="myfollow==true" class="myComment_box">
+
+     <div class="myComment_box">
          <ul>
            <li v-for="(item,index) in objList">
              <div class="myComment_ul">
-               <div class="myComment_me"><span>我 </span>评论了文章：<span>是的，需要我们一起努力！</span></div>
-               <div class="myComment_time">3分钟前</div>
+               <div class="myComment_me"><span>我 </span>评论了文章：<span  v-if="item.ctype!=1"> {{item.replyContent}}</span><span  v-else> {{item.commentContent}}</span></div>
+               <div class="myComment_time">{{item.createTime|formatTime1}}</div>
              </div>
               <div class="myComment__box">
-                   <div class="myComment_box">
-                     <span>@韩梅梅：</span>
-                     希望共同推动汽车的轻量化革命
+                   <div class="myComment_box" v-if="item.ctype!=1">
+                     <span>@{{item.replyName}}：</span>
+                     {{item.commentContent}}
                    </div>
-                <div class="myComment___box">
-                    <img src="/static/images/defultphoto.png" alt="">
+                <div class="myComment___box" @click="goDetail(item)">
+                    <img :src="item.bannerUrl?item.bannerUrl:'/static/images/defultphoto.png'" alt="">
                     <div>
-                      <p>未来汽车轻量化设计的建议未来汽车轻量化设计的建议</p>
-                      <p>作者：阿门大侠_try</p>
+                      <p>{{item.title}}</p>
+                      <p>作者：{{item.infoUserName}}</p>
                     </div>
                 </div>
 
@@ -29,28 +27,26 @@
            </li>
          </ul>
      </div>
-
+    <div class="messageFoot" @click="updataMore">
+      {{message}}
+    </div>
   </div>
 </template>
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
-   import { IntallData } from '../../assets/js/promiseHttp';
+   import { commentFindMyCommentList } from '../../assets/js/promiseHttp';
 export default {
   name: 'fans',
   data(){
       return{
-        myfollow:true, //数据请求成功显示
         userInfo:{}, //用户信息
         p:1,  //页
         s:20, //每页多少
         message:"不同努力加载中...", //触底提示
         pageNum:"",//每页数据
         totalAll:0, //一共多少位设计师关注
-        objList:[
-          {bannerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 工业设计师",zuoping:"501",fensi:"2838",isguanzhun:"2"},
-          {bannerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 工业设计师",zuoping:"501",fensi:"2838",isguanzhun:"3"}
-        ], // 大咖说数据
+        objList:[], // 大咖说数据
       }
   },
   created(){
@@ -59,17 +55,64 @@ export default {
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){
-      this.myfollow= true;
+                commentFindMyCommentList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//      commentFindMyCommentList("400",this.userInfo.data.access_token,this.p,this.s).then(res=>{
+        if(res.status==true){
+          this.pageNum = Math.ceil(res.total/this.s);
+          if(this.pageNum>1){
+            this.message = '点击加载更多...';
+          }else{
+            this.message = '这是我的底线...';
+          }
+           this.objList = res.data;
+        }else{
+          Toast("网络异常，请重试")
+        }
+      })
     }else{
       this.message = "你还未登录，请登录！"
-      this.myfollow= false;
     }
   },
 
   methods: {
-    followClick(v){//关注
+    goDetail(v){
+      if(v.type==1){ //去文章详情
+        this.$router.push({path:"/homeDetail",query:{id:v.infoId}})
+      }else{  //作品
+        this.$router.push({path:"/findDetail",query:{id:v.infoId}})
+      }
+    },
+    updataMore(){ //加载更多 分页
+        this.p++;
+        if(this.p>this.pageNum){
+          this.message = "这是我的底线..."
+          Toast("这是最后一页啦！")
+        }else if(this.p==this.pageNum){
+          this.message = "这是我的底线..."
+          commentFindMyCommentList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//          commentFindMyCommentList("400",this.userInfo.data.access_token,this.p,this.s).then(res=>{
 
-    }
+            if(res.status == true){
+              this.objList = this.objList.concat(res.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
+          })
+        }else if(this.p<this.pageNum){
+          this.message = "点击加载更多..."
+          commentFindMyCommentList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//          commentFindMyCommentList("400",this.userInfo.data.access_token,this.p,this.s).then(res=>{
+
+            if(res.status == true){
+              this.objList =  this.objList.concat(res.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
+          })
+        }
+
+
+    },
   }
 }
 
@@ -183,6 +226,13 @@ export default {
     }
 
   }
-
+  .messageFoot{
+    width: 100%;
+    height: 0.3rem;
+    line-height: 0.3rem;
+    color: rgba(5,5,5,0.3);
+    text-align: center;
+    margin-top: 0.2rem;
+  }
 }
 </style>

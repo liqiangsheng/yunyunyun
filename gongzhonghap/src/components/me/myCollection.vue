@@ -12,18 +12,18 @@
        <li v-for="(item,index) in ListData">
          <h5>{{item.title}}</h5>
          <div class="myFabulous_banner">
-           <img :src="item.banner" alt="">
+           <img :src="item.coverUrl" alt="">
          </div>
          <div class="myFabulous_bannaerUrl">
            <div class="myFabulous_bannaerUrl_left">
-             <img :src="item.bannaerUrl" alt="">
+             <img :src="item.bannaerUrl?item.bannaerUrl:'/static/images/defultphoto.png'" alt="">
            </div>
            <div class="myFabulous_name">
-             <b>{{item.name}}</b>
-             <p>{{item.address}}</p>
+             <b>{{item.userName}}</b>
+             <p>{{item.regionName}}</p>
            </div>
            <div class="myFabulous_type">
-             {{item.type}}
+             平面设计
            </div>
          </div>
        </li>
@@ -54,7 +54,7 @@
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
-   import { customerFavoriteNoteMyLaudList } from '../../assets/js/promiseHttp';
+   import { customerFavoriteNoteMyFavoriteList,customerFavoriteNoteListFavoredContent } from '../../assets/js/promiseHttp';
 export default {
   name: 'myFabulous',
   data(){
@@ -89,7 +89,21 @@ export default {
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){ //默认文章列表数据
-
+      customerFavoriteNoteListFavoredContent("100",this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//      customerFavoriteNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+          console.log(res,"fdskfjksdk")
+        if(res.status == true){
+          this.pageNum = Math.ceil(res.total/this.s);
+          if(this.pageNum>1){
+            this.message = '点击加载更多...';
+          }else{
+            this.message = '这是我的底线...';
+          }
+            this.ListData = res.data;
+        }else{
+          Toast("网络出错啦！请重试")
+        }
+      })
 
     }else{
       this.message = "你还未登录，请登录！"
@@ -101,8 +115,8 @@ export default {
     tabClick(i){//tab的下标
       this.tabIndex =i;
       if(i==1){
-        customerFavoriteNoteMyLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-//      customerFavoriteNoteMyLaudList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+//        customerFavoriteNoteMyFavoriteList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+        customerFavoriteNoteMyFavoriteList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
           console.log(res)
           if(res.status == true){
             this.pageNum1 = Math.ceil(res.total/this.s1);
@@ -117,7 +131,21 @@ export default {
           }
         })
       }else{
-
+        customerFavoriteNoteListFavoredContent("100",this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//      customerFavoriteNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+          console.log(res,"fdskfjksdk")
+          if(res.status == true){
+            this.pageNum = Math.ceil(res.total/this.s);
+            if(this.pageNum>1){
+              this.message = '点击加载更多...';
+            }else{
+              this.message = '这是我的底线...';
+            }
+            this.ListData = res.data;
+          }else{
+            Toast("网络出错啦！请重试")
+          }
+        })
       }
     },
     updataMore(v){ //加载更多 分页
@@ -128,8 +156,8 @@ export default {
           Toast("这是最后一页啦！")
         }else if(this.p1==this.pageNum1){
           this.message1 = "这是我的底线..."
-          customerFavoriteNoteMyLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
-//          customerFavoriteNoteMyLaudList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+          customerFavoriteNoteMyFavoriteList(this.userInfo.data.id,this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+//          customerFavoriteNoteMyFavoriteList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
 
             if(res.status == true){
               this.articleData = this.articleData.concat(res.data);
@@ -139,8 +167,8 @@ export default {
           })
         }else if(this.p1<this.pageNum1){
           this.message1 = "点击加载更多..."
-          customerFavoriteNoteMyLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
-//          customerFavoriteNoteMyLaudList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+          customerFavoriteNoteMyFavoriteList(this.userInfo.data.id,this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+//          customerFavoriteNoteMyFavoriteList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
 
             if(res.status == true){
               this.articleData =  this.articleData.concat(res.data);
@@ -150,14 +178,14 @@ export default {
           })
         }
 
-      }else{//作品
+      }else{//作品   //接口待对
         this.p++;
         if(this.p>this.pageNum){
           this.message = "这是我的底线..."
           Toast("这是最后一页啦！")
         }else if(this.p==this.pageNum){
           this.message = "这是我的底线..."
-          customerFavoriteNoteMyLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+          customerFavoriteNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
             if(res.status == true){
               this.ListData = this.ListData.concat(res.data);
             }else{
@@ -166,7 +194,7 @@ export default {
           })
         }else if(this.p<this.pageNum){
           this.message = "点击加载更多..."
-          customerFavoriteNoteMyLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+          customerFavoriteNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
             if(res.status == true){
               this.ListData =  this.ListData.concat(res.data);
             }else{

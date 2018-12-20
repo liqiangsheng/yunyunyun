@@ -82,17 +82,17 @@ export default {
           return
         }
         login(that.telValue,that.psdValue).then(res=>{
-               console.log(res.data)
+
            if(res.data.status==true){
              window.localStorage.setItem("userInfo",JSON.stringify(res.data))
              this.$router.go(-1);//返回上一层
            }else{
              if (res.statusCode == 500) {
-                Toat("网络异常，请重试")
+               Toast("网络异常，请重试")
               } else if (res.statusCode == 401) {
                Toat("网络异常")
               } else {
-                Toat(res.data.message)
+               Toast(res.data.message)
               }
 
            }

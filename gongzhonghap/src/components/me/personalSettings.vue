@@ -9,6 +9,18 @@
         我的活动
          <img src='/static/images/right.png'/>
        </li>
+      <li @click='comment_my'>
+        评论我的
+        <img src='/static/images/right.png'/>
+      </li>
+      <li @click='praise_my'>
+        点赞我的
+        <img src='/static/images/right.png'/>
+      </li>
+      <li @click='collect_my'>
+        收藏我的
+        <img src='/static/images/right.png'/>
+      </li>
       <li @click='commentBnt'>
         消息通知
         <img src='/static/images/right.png'/>
@@ -48,6 +60,31 @@ export default {
   },
 
   methods:{
+    comment_my(){ //评论我的
+      let data = JSON.parse(localStorage.getItem("userInfo"))
+      if (data) {
+        this.$router.push({path:"/comment_on_my"})
+      } else {
+        Toast("您未登录，请登录！")
+      }
+    },
+    praise_my(){ //点赞我的
+      let data = JSON.parse(localStorage.getItem("userInfo"))
+      if (data) {
+        this.$router.push({path:"/praiseMe"})
+      } else {
+        Toast("您未登录，请登录！")
+      }
+    },
+    collect_my() { //收藏我的
+      let data = JSON.parse(localStorage.getItem("userInfo"))
+      if (data) {
+        this.$router.push({path:"/collect_my"})
+
+      } else {
+        Toast("您未登录，请登录！")
+      }
+    },
     commentBnt(){ //消息通知
       let data = JSON.parse(localStorage.getItem("userInfo"))
       if(data){

@@ -1,6 +1,7 @@
 <template>
   <div id="IntelligentMatchingD">
-        <div class="IntelligentMatchingDHeader" >
+       <div style="width: 100%;text-align: center;line-height: 2.5rem;"  v-if="!boxShow">请求出错啦！</div>
+        <div class="IntelligentMatchingDHeader"  v-if="boxShow">
              <h3>{{messageArr.title}}</h3>
             <div class="IntelligentMatchingDHeaderIndex">
               <span v-for="(item,index) in messageArr.contentTagVoList">{{item.tagName}} / </span>
@@ -18,7 +19,7 @@
                <img src="/static/images/shuangying.png" alt="">
              </div>
         </div>
-        <div class="IntelligentMatchingDItem" v-for="(item,index) in messageArr.informationChildrenTitleVoList">
+        <div class="IntelligentMatchingDItem" v-for="(item,index) in messageArr.informationChildrenTitleVoList" v-if="boxShow">
           <h5 v-if="!!item.titleName"><span></span>{{item.titleName}}</h5>
           <div class="IntelligentMatchingDItemIndex" v-for="(item1,index1) in item.titleInformationList">
             <span v-if="!!item1.titleInformation">{{item1.titleInformation}}</span>
@@ -26,21 +27,21 @@
           </div>
           <!--<div v-if="!!item.logoUrl" class="IntelligentMatchingDItemIndex1"><img :src="item.logoUrl" alt=""></div>-->
         </div>
-        <div class="IntelligentMatchingDItem1" @click="fabulousClick">
+        <div class="IntelligentMatchingDItem1" @click="fabulousClick" v-if="boxShow">
           <img src="/static/images/zan1.png" alt="">{{fabulousNum}} {{fabulousMessage}}
         </div>
-      <div class="IntelligentMatchingDItem2">
+      <div class="IntelligentMatchingDItem2" v-if="boxShow">
          <img src="/static/images/banqun.png" alt="">版 权
       </div>
-    <div class="IntelligentMatchingDItem3">
+    <div class="IntelligentMatchingDItem3" v-if="boxShow">
          <span v-if="messageArr.isOriginal==1">本文版权归不同科技所有 / 未经许可不得转载或翻译</span>
          <span v-if="messageArr.isOriginal==0"><span v-if="!!messageArr.fromReprint">转载自：{{messageArr.fromReprint}} </span><span v-if="!!messageArr.source">/ 文章来源：{{messageArr.source}} </span><span v-if="!!messageArr.author">/ 作者：{{messageArr.author}}</span></span>
       </div>
 
-    <div class="IntelligentMatchingDItem4">
+    <div class="IntelligentMatchingDItem4" v-if="boxShow">
      <!--  //有用的-->
     </div>
-    <ul class="IntelligentMatchingDItem5">
+    <ul class="IntelligentMatchingDItem5" v-if="boxShow">
       <li v-for="(item,index) in commenArr" v-if="!!item.sysUserContentVo">
         <div class="IntelligentMatchingDItemL">
           <img :src="item.userDp" alt="" @click="giveClick">
@@ -62,11 +63,11 @@
       </li>
     </ul>
 
-    <div class="messageFoot" @click="updataMore">
+    <div class="messageFoot" @click="updataMore" v-if="message!=''">
       {{message}}
     </div>
 
-    <div class="IntelligentMatchingDItem6" @click="giveClick">
+    <div class="IntelligentMatchingDItem6" @click="giveClick" v-if="message!=''">
        <div class="footer">
           <ul>
             <li class="footerLi1">
@@ -101,6 +102,7 @@ export default {
   name: 'IntelligentMatchingD',
   data(){
     return{
+      boxShow:false,//初始化数据成功
       followMessage:"", //关注
       actions:[{ name:"请下载不同Tech App" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
       sheetVisible:false, //是否显示弹框
@@ -108,7 +110,7 @@ export default {
        commenArr:[], //评论的数据
       p:1,  //页
       s:20, //每页多少
-      message:"不同努力加载中...", //触底提示
+      message:"", //触底提示
       pageNum:"",//每页数据
       userDp:"./static/images/defultphoto.png",
       isNative:false, //是不是原生或则小程序
@@ -345,6 +347,7 @@ export default {
     query(v,v1,v2){
       informationId(v,v1,v2).then(res=>{
         if(res.status == true){
+          this.boxShow = true;
           this.orgId = res.data.orgId;
           this.userId = res.data.createdUser;
           this.messageArr = res.data;
@@ -367,10 +370,10 @@ export default {
 
         }else{
           Toast("网络出错了，请重试")
+          this.boxShow = false;
         }
       })
       findCommentsByInfoId(v,this.p,this.s).then(res=>{ //7
-             console.log(res)
         if(res.status==true){
 
           res.data.forEach((item,index)=>{
@@ -400,6 +403,7 @@ export default {
           }
           this.commenArr = res.data;
         }else{
+          this.message = "数据出错啦！"
           Toast("网络出错了，请重试")
         }
       })

@@ -78,7 +78,11 @@
         }
       },
       created() {
+        this.$nextTick(function () {
+          document.title = "个人吃瓜页"
+        })
         this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):"";
+        console.log(this.$router.history.current.query.id)
         activityImagesList(this.bookId).then(res=>{
           if(res.data.status==true){
             res.data.data.forEach((item,index)=>{

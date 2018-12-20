@@ -14,35 +14,42 @@
        <li v-for="(item,index) in ListData">
          <h5>{{item.title}}</h5>
          <div class="myFabulous_banner">
-           <img :src="item.banner" alt="">
+           <img :src="item.coverUrl" alt="">
          </div>
          <div class="myFabulous_bannaerUrl">
            <div class="myFabulous_bannaerUrl_left">
-             <img :src="item.bannaerUrl" alt="">
+             <img :src="item.bannaerUrl?item.bannaerUrl:'/static/images/defultphoto.png'" alt="">
            </div>
            <div class="myFabulous_name">
-             <b>{{item.name}}</b>
-             <p>{{item.address}}</p>
+             <b>{{item.userName}}</b>
+             <p>{{item.regionName}}</p>
            </div>
+           <!--后台数据没有-->
            <div class="myFabulous_type">
-             {{item.type}}
+             平面设计
            </div>
          </div>
        </li>
+         <div class="messageFoot" @click="updataMore(0)">
+           {{message}}
+         </div>
      </ul>
        <ul class="myFabulous_ul1" v-show="tabIndex==1">
          <li v-for="(item,index) in articleData">
               <div class="myFabulous_left">
                 <h5>{{item.title}}</h5>
                 <div style="color: #AAAAAA">
-                  <img src="/static/images/查看.png" alt=""> {{item.name}}
+                  <img src="/static/images/查看.png" alt=""> {{item.viewCount}}
                 </div>
-                <div><img src="/static/images/收藏.png" alt=""> {{item.address}} <img src="/static/images/评论.png"  alt="" style="margin-left: 0.3rem"> {{item.type}}</div>
+                <div><img src="/static/images/收藏.png" alt=""> {{item.laudedCount}} <img src="/static/images/评论.png"  alt="" style="margin-left: 0.3rem"> {{item.commentCount}}</div>
               </div>
               <div class="myFabulous_right">
-                <img :src="item.banner" alt="">
+                <img :src="item.bannerUrl" alt="">
               </div>
          </li>
+         <div class="messageFoot" @click="updataMore(1)">
+           {{message1}}
+         </div>
        </ul>
      </div>
 
@@ -51,23 +58,25 @@
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
-   import { IntallData } from '../../assets/js/promiseHttp';
+   import { customerLaudNoteLaudList,customerLaudNoteListFavoredContent } from '../../assets/js/promiseHttp';
 export default {
   name: 'myFabulous',
   data(){
       return{
         myfollow:true, //数据请求成功显示
         userInfo:{}, //用户信息
+        p1:1,  //页
+        s1:20, //每页多少
+        message1:"不同努力加载中...", //触底提示
+        pageNum1:0,//每页数据
         p:1,  //页
-        s:20, //每页多少
+        s:1, //每页多少
         message:"不同努力加载中...", //触底提示
-        pageNum:"",//每页数据
+        pageNum:0,//每页数据
         tablist:["作品","文章"], //tab选择
         tabIndex:0, //tab选择xiabiao
-        ListData:[{title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",bannaerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 包装设计师",type:"平面广告"}], // 数据
-        articleData:[{
-            title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",name:"5万次",address:"9758",type:"1756"
-        }]
+        ListData:[], // 数据作品
+        articleData:[],// 数据文章
       }
   },
   created(){
@@ -75,10 +84,27 @@ export default {
       document.title = "我的赞";
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+//    console.log(this.userInfo.data.access_token)
     if(this.userInfo){
       this.myfollow= true;
+
+//      customerLaudNoteListFavoredContent("100",this.userInfo.data.access_token,this.p,this.s).then(res=>{ //作品
+        customerLaudNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+        if(res.status ==true){
+          this.pageNum = Math.ceil(res.total/this.s);
+          if(this.pageNum>1){
+            this.message = '点击加载更多...';
+          }else{
+            this.message = '这是我的底线...';
+          }
+           this.ListData = res.data;
+        }else {
+          Toast("网络出错啦！请重试作品")
+        }
+
+      })
     }else{
-      this.message = "你还未登录，请登录！"
+      this.message1 = "你还未登录，请登录！"
       this.myfollow= false;
     }
 
@@ -87,7 +113,96 @@ export default {
   methods: {
     tabClick(i){//tab的下标
       this.tabIndex =i;
-    }
+      if(i==1){ //文章
+        //      customerLaudNoteLaudList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+        customerLaudNoteLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{ //文章
+          if(res.status == true){
+            this.pageNum1 = Math.ceil(res.total/this.s1);
+            if(this.pageNum1>1){
+              this.message1 = '点击加载更多...';
+            }else{
+              this.message1 = '这是我的底线...';
+            }
+            this.articleData = res.data;
+          }else{
+            Toast("网络出错啦！请重试文章")
+          }
+        })
+      }else{
+        //      customerLaudNoteListFavoredContent("100",this.userInfo.data.access_token,this.p,this.s).then(res=>{ //作品
+        customerLaudNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+          if(res.status ==true){
+            this.pageNum = Math.ceil(res.total/this.s);
+            if(this.pageNum>1){
+              this.message = '点击加载更多...';
+            }else{
+              this.message = '这是我的底线...';
+            }
+            this.ListData = res.data;
+          }else {
+            Toast("网络出错啦！请重试作品")
+          }
+
+        })
+      }
+    },
+    updataMore(v){ //加载更多 分页
+      if(v==1){ //文章
+        this.p1++;
+        if(this.p1>this.pageNum1){
+          this.message1 = "这是我的底线..."
+          Toast("这是最后一页啦！")
+        }else if(this.p1==this.pageNum1){
+          this.message1 = "这是我的底线..."
+          customerLaudNoteLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+//          customerLaudNoteLaudList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+
+            if(res.status == true){
+              this.articleData = this.articleData.concat(res.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
+          })
+        }else if(this.p1<this.pageNum1){
+          this.message1 = "点击加载更多..."
+          customerLaudNoteLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+//          customerLaudNoteLaudList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+
+            if(res.status == true){
+              this.articleData =  this.articleData.concat(res.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
+          })
+        }
+
+      }else{//作品
+        this.p++;
+        if(this.p>this.pageNum){
+          this.message = "这是我的底线..."
+          Toast("这是最后一页啦！")
+        }else if(this.p==this.pageNum){
+          this.message = "这是我的底线..."
+          customerLaudNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+            if(res.status == true){
+              this.ListData = this.ListData.concat(res.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
+          })
+        }else if(this.p<this.pageNum){
+          this.message = "点击加载更多..."
+          customerLaudNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+            if(res.status == true){
+              this.ListData =  this.ListData.concat(res.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
+          })
+        }
+      }
+
+    },
   }
 }
 
@@ -250,8 +365,16 @@ export default {
           }
         }
       }
+
     }
   }
-
+    .messageFoot{
+      width: 100%;
+      height: 0.3rem;
+      line-height: 0.3rem;
+      color: rgba(5,5,5,0.3);
+      text-align: center;
+      margin-top: 0.1rem;
+    }
 }
 </style>

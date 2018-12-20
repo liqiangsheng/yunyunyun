@@ -12,6 +12,9 @@ const MyComment = resolve => require(['@/components/me/myComment'], resolve); //
 const UserFeedback = resolve => require(['@/components/me/userFeedback'], resolve); //用户反馈
 const MessageNotification = resolve => require(['@/components/me/messageNotification'], resolve); //消息通知
 const PersonalSettings = resolve => require(['@/components/me/personalSettings'], resolve); //个人设置
+const PraiseMe = resolve => require(['@/components/me/praiseMe'], resolve); //赞我的
+const CommentOnMy = resolve => require(['@/components/me/comment_on_my'], resolve); //评论我的
+const CollectMy = resolve => require(['@/components/me/collect_my'], resolve); //收藏我的
 const Login1 = resolve => require(['@/components/login1/login1'], resolve); //登录1
 const Login = resolve => require(['@/components/login/login'], resolve); //登录
 const Message = resolve => require(['@/components/message/message'], resolve); //协议，之类
@@ -52,6 +55,9 @@ const PersonalMelonPages = resolve => require(['@/components/intelligentMatching
 // import MyComment from '@/components/me/myComment' //我的评论
 // import UserFeedback from '@/components/me/userFeedback' //用户反馈
 // import messageNotification from '@/components/me/messageNotification' //消息通知
+// import PraiseMe from '@/components/me/praiseMe' //点赞我的
+// import CommentOnMy from '@/components/me/comment_on_my' //评论我的
+// import CollectMy from '@/components/me/collect_my' //收藏我的
 // import PersonalSettings from '@/components/me/personalSettings' //个人设置
 
 // import Login1 from '@/components/login1/login1' //登录1
@@ -82,6 +88,7 @@ const PersonalMelonPages = resolve => require(['@/components/intelligentMatching
 // import Follow from '@/components/homeIndex1_0/alter/follow' //首页
 // import FindDetail from '@/components/homeIndex1_0/findDetail' //发现的详情
 // import PersonalMelonPages from '@/components/intelligentMatching/personalMelonPages' //个人吃瓜页
+
 
 Vue.use(Router)
 
@@ -246,6 +253,18 @@ export default new Router({
     { path: '/personalSettings',
       component: PersonalSettings,
       name: 'personalSettings'
+    },
+    { path: '/praiseMe',
+      component: PraiseMe,
+      name: 'praiseMe'
+    },
+    { path: '/collect_my',
+      component: CollectMy,
+      name: 'collect_my'
+    },
+    { path: '/comment_on_my',
+      component: CommentOnMy,
+      name: 'comment_on_my'
     },
     { path: '/userFeedback',
       component: UserFeedback,

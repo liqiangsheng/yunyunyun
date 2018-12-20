@@ -1,4 +1,4 @@
-// pages/userFeedback/userFeedback.js
+// pages/praise_my/praise_my.js
 var apiDomian = require("../../js/api.js");  //数据请求api
 var formatTime = require("../../js/formatTime.js"); // 时间戳转时间
 let API = apiDomian.apidmain();
@@ -8,7 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    url: "https://dcloud.butongtech.com/#/userFeedback?token=",
+    url: "https://dcloud.butongtech.com/#/praiseMe?token=",
   },
 
   /**
@@ -16,12 +16,14 @@ Page({
    */
   onLoad: function (options) {
     let data = wx.getStorageSync("userInfo"), that = this;
-    console.log(data,"9999999999999999")
+    console.log(data, "111")
     if (data) {
-      that.data.url = API.url + "/userFeedback?token=" + data.access_token + "&id=" + data.id
+      that.data.url = API.url + "/praiseMe?token=" + data.access_token + "&id=" + data.id
+  
       that.setData({
         url: that.data.url,
       })
+  
     } else {
       wx.showModal({
         showCancel: false,

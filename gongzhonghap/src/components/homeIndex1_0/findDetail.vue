@@ -103,7 +103,7 @@
   import { Actionsheet } from 'mint-ui';
   import Vue from 'vue';
   Vue.component(Actionsheet.name, Actionsheet);
-  import {findCommentsByInfoId} from '../../assets/js/promiseHttp'; //数据
+  import {commentFindCommentsByPubId} from '../../assets/js/promiseHttp'; //数据
 
   export default {
   name: 'follow',
@@ -137,6 +137,42 @@
 //    }else{//没有登录的情况
 //
 //    }
+    if(this.$router.history.current.query.id){ //这个id请求数据 截取url的
+      commentFindCommentsByPubId(this.$router.history.current.query.id,this.p,this.s).then(res=>{
+//      commentFindCommentsByPubId("1",this.p,this.s).then(res=>{
+        console.log(res)
+        if(res.data.status==true){
+            res.data.data.forEach((item,index)=>{
+            if(item.sysUserContentVo){
+              if(item.sysUserContentVo.userDp){
+                item.userDp = item.sysUserContentVo.userDp;
+              }else {
+                item.userDp = "./static/images/defultphoto.png";
+              }
+              if(item.sysUserContentVo.name){
+                item.name = item.sysUserContentVo.name;
+              }else {
+                item.name = "游客";
+              }
+            }else{
+              item.userDp = "./static/images/defultphoto.png";
+              item.name = "游客";
+            }
+
+
+          })
+          this.pageNum = Math.ceil(res.data.total/this.s);
+          if(this.pageNum >1){
+            this.message = "点击加载更多..."
+          }else{
+            this.message = "这是我的底线..."
+          }
+          this.commenArr = res.data.data;
+        }else{
+          Toast("网络出错了，请重试")
+        }
+      })
+    }
     this.$nextTick(()=>{
       //     滑动
       var mySwiper = new Swiper ('.swiper-container', {
@@ -162,40 +198,7 @@
         }
       })
 
-    findCommentsByInfoId("301",this.p,this.s).then(res=>{ //7
-      console.log(res)
-      if(res.status==true){
 
-        res.data.forEach((item,index)=>{
-          if(item.sysUserContentVo){
-            if(item.sysUserContentVo.userDp){
-              item.userDp = item.sysUserContentVo.userDp;
-            }else {
-              item.userDp = "./static/images/defultphoto.png";
-            }
-            if(item.sysUserContentVo.name){
-              item.name = item.sysUserContentVo.name;
-            }else {
-              item.name = "游客";
-            }
-          }else{
-            item.userDp = "./static/images/defultphoto.png";
-            item.name = "游客";
-          }
-
-
-        })
-        this.pageNum = Math.ceil(res.total/this.s);
-        if(this.pageNum >1){
-          this.message = "点击加载更多..."
-        }else{
-          this.message = "这是我的底线..."
-        }
-        this.commenArr = res.data;
-      }else{
-        Toast("网络出错了，请重试")
-      }
-    })
 
 
   },
