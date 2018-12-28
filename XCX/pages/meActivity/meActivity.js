@@ -13,7 +13,8 @@ Page({
     arr: [], // 活动列表数据
     page:1,
     rows:20,
-    pageNum:0
+    pageNum:0,
+    name:"全部",
   },
 
   /**
@@ -119,15 +120,27 @@ Page({
       })
     if (that.data.meActivityBoxItemViewIndex == 0) {//判断是哪个按钮传不一样的状态
       that.resetData("");
+      that.setData({
+       name:"全部"
+      })
 
     } else if (that.data.meActivityBoxItemViewIndex ==1){
       that.resetData("2");
+      that.setData({
+        name: "待参加"
+      })
 
     } else if (that.data.meActivityBoxItemViewIndex == 2) {
       that.resetData("1");
+      that.setData({
+        name: "待支付"
+      })
 
     } else if (that.data.meActivityBoxItemViewIndex == 3) {
       that.resetData("7");
+      that.setData({
+        name: "已完成"
+      })
     }
   }, 
   lookClick(e){//查看门票

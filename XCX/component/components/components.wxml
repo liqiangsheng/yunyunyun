@@ -14,23 +14,44 @@
           class='card-img' 
           mode='aspectFill' 
           style='width:{{item.itemWidth}}px;height:{{item.itemHeight}}px;margin-top:8px;' 
-          src='{{item.imageUrl}}' 
+          src='{{item.cover.url}}' 
+           bindtap='goDetail' data-id="{{item.id}}"
           lazy-load>
         </image>
+          <view class='img-infoBox' bindtap='goDetail' data-id="{{item.id}}">
+            <view class='img-infoBoxInfo'>{{item.title}}</view>
+                <view class="img-info">
+                  <view class="img-info_li1"><image src="{{item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'../../imgages/defultphoto.png'}}" alt=""></image></view>
+                  <view class="img-info_li2">{{item.authorInfo.name}}</view>
+                  <view class="img-info_li3"><image src="../../images/dianzan1.png" alt=""></image></view>
+                  <view class="img-info_li4">{{item.laudedCount}}</view>
+                </view>
+         </view>
       </block>
+    
     </view>
     <!--右边一列 -->
     <view class='fall-right'>
-      <block wx:for="{{rightList}}" wx:key="{{item.id}}">
+      <block wx:for="{{rightList}}" wx:key="{{item.id}}" bindtap='goDetail' data-id="{{item.id}}">
         <!--瀑布流内容卡片-->
         <!-- <template is='goodsCard' data="{{data:item}}" /> -->
         <image 
           class='card-img' 
           mode='aspectFill' 
+           bindtap='goDetail' data-id="{{item.id}}"
           style='width:{{item.itemWidth}}px;height:{{item.itemHeight}}px;margin-top:8px;' 
-          src='{{item.imageUrl}}' 
+          src='{{item.cover.url}}' 
           lazy-load>
         </image>
+         <view class='img-infoBox' bindtap='goDetail' data-id="{{item.id}}">
+            <view class='img-infoBoxInfo'>{{item.title}}</view>
+                <view class="img-info">
+                  <view class="img-info_li1"><image src="{{item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'../../imgages/defultphoto.png'}}" alt=""></image></view>
+                  <view class="img-info_li2">{{item.authorInfo.name}}</view>
+                  <view class="img-info_li3"><image src="../../images/dianzan1.png" alt=""></image></view>
+                  <view class="img-info_li4">{{item.laudedCount}}</view>
+                </view>
+         </view>
       </block>
     </view>
   </view>

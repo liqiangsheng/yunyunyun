@@ -7,14 +7,14 @@
  <view class="draft_ul" v-else>
          <view wx:for="{{listData}}" wx:key='' class='draft_li'>
            <view class="draft_img">
-             <image src="{{item.url}}" ></image>
+             <image src="{{item.cover.url}}" ></image>
            </view>
            <view class="draft_time">
              <view class="draft_h5">{{item.title}}</view>
              <view class="draft_span">{{item.timeI}}</view>
            </view>
          </view>
-          <view class="more" bindtap="updataMore">
+          <view class="more" bindtap="updataMore" wx:if='{{listData.length>0}}'>
             {{message}}
           </view>
 </view>

@@ -32,27 +32,9 @@
          </view>
        </view>
    </view>
-   
-<!-- 
-    <view class='meActivityBoxItem2'> <text></text> 活动推荐 <text></text></view>
-
-    <view class='meActivityBoxItem3' wx:for="{{arr1}}" wx:key="{{index}}">
-       <view class='meActivityBoxItem3View1'>
-            <image src="{{item.image}}"></image>
-            <view class='meActivityBoxItem3ViewRight'>
-               <view class='meActivityBoxItem3ViewRightHeader'>{{item.name}}</view>
-               <view class='meActivityBoxItem3ViewRightPrice'>{{item.price}}</view>
-            </view>
-       </view>
-       <view class='meActivityBoxItem3View2'>
-        <view class='meActivityBoxItem3Viewitem1'><image src='../../images/position.png'></image><text>{{item.address}}</text></view>
-         <view class='meActivityBoxItem3Viewitem2'> <image src='../../images/time.png'></image><text>{{item.time}}</text></view>
-         
-         <view class='meActivityBoxItem3Viewitem3'>
-            <view class='meActivityBoxItem3Viewitem3Item2' data-multiactivity="{{item}}" bindtap='rightOffClick'>立即报名</view>
-            
-         </view>
-       </view>
-   </view> -->
+   <view class="lengthFalse" wx:if='{{arr.length<=0}}'>
+       <image src='../../images/queshengye.png'></image>
+       <view>你{{name}}活动区目前空空也～</view>
+   </view>  
 
 </scroll-view>

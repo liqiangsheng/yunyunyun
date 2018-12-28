@@ -1,0 +1,5 @@
+<!--pages/findDetail/findDetail.wxml-->
+<web-view src="{{url}}">
+
+</web-view>
+

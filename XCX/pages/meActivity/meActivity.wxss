@@ -347,3 +347,23 @@
     line-height: 29px;
     margin-right: 5px;
   }
+   .lengthFalse{
+   width: 100%;
+   padding-top: 100px;
+ 
+ } 
+   .lengthFalse image{
+     display: block;
+     margin: 0 auto;
+     width: 100px;
+     height:94px;
+   }
+   .lengthFalse view{
+     width: 100%;
+     text-align: center;
+     line-height: 50px;
+     font-weight:400;
+     color:rgba(153,153,153,1);
+     margin-top: 20px;
+     font-size:12px;
+   }

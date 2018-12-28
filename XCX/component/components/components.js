@@ -18,12 +18,12 @@ Component({
     pageNum:0,
     data: {
       p: 1, // request param//
-      s: 20, // request param//
-      bookId: "7",
+      s: 1000, // request param//
     },
   },
 
   attached: function () { //第一个生命周期方法
+
    let data= wx.getStorageSync("userInfo")
     if(data){
       wx.getSystemInfo({ //获取用户设备信息
@@ -35,85 +35,135 @@ Component({
         }
       });
       let that = this;
+      wx.showLoading({ //显示消息提示框  此处是提升用户体验的作用
+        title: '数据加载中',
+        icon: 'loading',
+      });
       wx.request({
-        url: API.apiDomain + '/apis/activity/' + API.activityEdition + '/activityImages/list',
+        url: API.apiDomain + '/apis/operation/' + API.operationEdition + '/customerPubContent/listOwner',
         method: "POST",
-        data: that.data.data,
+        header: {
+          "Authorization": "bearer " + data.access_token
+        },
+        data: {
+          p:this.data.data.p,
+          s: this.data.data.s,
+          // userId:data.id,
+          userId:"100",
+          pubStatus:true
+        },
+        complete() {  //请求结束后隐藏 loading 提示框
+          wx.hideLoading();
+        },
 
         success: function (res) {
-          console.log(res)
-          that.setData({
-            pageNum: Math.ceil(res.data.total / that.data.data.s)
-          })
-          if (that.data.pageNum > 1) {
+          if(res.data.status == true){
+            console.log(res)
             that.setData({
-              message: '点击加载更多...'
+              pageNum: Math.ceil(res.data.total / that.data.data.s)
             })
-          } else {
-            that.setData({
-              message: '这是我的底线...'
+            if (that.data.pageNum > 1) {
+              that.setData({
+                message: '点击加载更多...'
+              })
+            } else {
+              that.setData({
+                message: '这是我的底线...'
+              })
+            }
+            res.data.data.map((item, index) => {
+              item.height = parseInt(item.cover.height);
+              item.width = parseInt(item.cover.width);
+            })
+        
+            setTimeout(() => {
+            
+              that.setData({
+                listData: res.data.data
+              })
+              that.fillData(false, res.data.data);
+              console.log(res.data.data)
+            }, 500)
+          }else{
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常",
+
             })
           }
-          res.data.data.map((item, index) => {
-            wx.request({
-              url: item.imageUrl + "?imageInfo",
-              method: "GET",
-              success: function (res) {
-                item.height = parseInt(res.data.height);
-                item.width = parseInt(res.data.width);
-              }
-            })
-          })
+          
 
-
-          setTimeout(() => {
-            that.setData({
-              listData: res.data.data
-            })
-            that.fillData(false, that.data.listData);
-          }, 500)
-
-        }
+        },
+        
       })
     }
    
   },
 
   methods: {
+    goDetail(e){
+      console.log(e.currentTarget.dataset.id)
+      wx.navigateTo({
+        url: '../../pages/findDetail/findDetail?id=' + e.currentTarget.dataset.id,
+      })
+    },
     moreTap(){
+      let data = wx.getStorageSync("userInfo")
       this.data.data.p++;
       this.setData({
         data: this.data.data
       })
       let that= this;
       wx.request({
-        url: API.apiDomain + '/apis/activity/' + API.activityEdition + '/activityImages/list',
+        url: API.apiDomain + '/apis/operation/' + API.operationEdition + '/customerPubContent/listOwner',
         method: "POST",
-        data: that.data.data,
+        header: {
+          "Authorization": "bearer " + data.access_token
+        },
+        data: {
+          p: this.data.data.p,
+          s: this.data.data.s,
+          userId: data.id,
+          pubStatus: true
+        },
 
         success: function (res) {
           console.log(res)
-          that.setData({
-            pageNum: Math.ceil(res.data.total / that.data.data.s)
-          })
-          res.data.data.map((item, index) => {
-            wx.request({
-              url: item.imageUrl + "?imageInfo",
-              method: "GET",
-              success: function (res) {
-                item.height = parseInt(res.data.height);
-                item.width = parseInt(res.data.width);
-              }
-            })
-          })
-
-
-          setTimeout(() => {
+          if(res.data.status ==true){
             that.setData({
-              listData: that.data.listData.concat(res.data.data)
+              pageNum: Math.ceil(res.data.total / that.data.data.s)
             })
-            that.fillData(false, that.data.listData);
-          }, 500)
+            res.data.data.map((item, index) => {
+              item.height = parseInt(item.cover.height);
+              item.width = parseInt(item.cover.width);
+            
+            })
+
+
+            setTimeout(() => {
+              if(res.data.data.length>0){
+                that.setData({
+                  listData:res.data.data
+                })
+              
+                that.fillData(false, that.data.listData);
+              }else{
+                wx.showModal({
+                  showCancel: false,
+                  title: "这是我的底线...",
+
+                })
+              }
+            
+            }, 500)
+          }else{
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常",
+
+            })
+          }
+        
 
         }
       })
@@ -122,6 +172,7 @@ Component({
      * 填充数据
      */
     fillData: function (isPull, listData) {
+      console.log(listData)
       if (isPull) { //是否下拉刷新，是的话清除之前的数据
         leftList.length = 0;
         rightList.length = 0;
@@ -150,7 +201,7 @@ Component({
           rightHight = rightHight + tmp.itemHeight;
         }
       }
-
+     
       this.setData({
         leftList: leftList,
         rightList: rightList,

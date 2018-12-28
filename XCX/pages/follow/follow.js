@@ -1,4 +1,4 @@
-// pages/index/index.js
+// pages/follow/follow.js
 var apiDomian = require("../../js/api.js");  //数据请求api
 var formatTime = require("../../js/formatTime.js"); // 时间戳转时间
 let API = apiDomian.apidmain();
@@ -8,29 +8,32 @@ Page({
    * 页面的初始数据
    */
   data: {
-    url: "https://dcloud.butongtech.com/#",
+    url: "",
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    let that = this;
- 
-    let data = wx.getStorageSync("userInfo");
-    if(data){
-      that.data.url = API.url + "/homeIndex1_0?token=" + data.access_token + + "&id=" + data.id
+    let data = wx.getStorageSync("userInfo"), that = this;
+    console.log(data, "111")
+    if (data) {
+      that.data.url = API.url + "/follow?token=" + data.access_token + "&id=" + data.id
       that.setData({
         url: that.data.url,
       })
-    }else{
-      that.data.url = API.url + "/homeIndex1_0"
-      that.setData({
-        url: that.data.url,
+    } else {
+      wx.showModal({
+        showCancel: false,
+        title: "你还未登录，请登录",
       })
+      setTimeout(()=>{
+        wx.navigateTo({ //去我的个人资料
+          url: "../../pages/login/login"
+        })
+      },1000)
+
     }
-    console.log(that.data.url)
-      
 
   },
 

@@ -1,0 +1,31 @@
+$flex:flex;
+$width:100%;
+//@mixin style($background,$fontsize){
+// background:$background;
+// font-size:$fontsize;
+//}
+//.homeBox{
+//	width: $width;
+//	position: relative;
+//	@include style(red,20px);
+//	.footer{
+//		width: $width;
+//		display: $flex;
+//	}
+//}
+.footer{
+  width: $width;
+  display: $flex;
+  position: fixed;
+  bottom:0;
+  left: 0;
+  li{
+    flex: 1;
+    text-align: center;
+    line-height: 50px;
+  }
+  .active{
+    background: #72D992;
+    color: #fff;
+  }
+}
