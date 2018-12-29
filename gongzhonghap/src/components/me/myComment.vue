@@ -55,8 +55,8 @@ export default {
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){
-                commentFindMyCommentList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-//      commentFindMyCommentList("400",this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//                commentFindMyCommentList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+      commentFindMyCommentList("400",this.userInfo.data.access_token,this.p,this.s).then(res=>{
         if(res.status==true){
           this.pageNum = Math.ceil(res.total/this.s);
           if(this.pageNum>1){

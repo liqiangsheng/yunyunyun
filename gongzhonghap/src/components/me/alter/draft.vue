@@ -8,11 +8,11 @@
         <ul  class="draft_ul" v-else>
          <li v-for="(item,index) in listData">
            <div class="draft_img">
-             <img :src="item.url" alt="">
+             <img :src="item.cover.url?item.cover.url:'/static/images/defultphoto.png'" alt="">
            </div>
            <div class="draft_time">
              <h5>{{item.title}}</h5>
-             <span>{{item.time|formatTime}}</span>
+             <span>{{item.updateTime|formatTime1}}</span>
            </div>
          </li>
           <div class="messageFoot" @click="updataMore">
@@ -23,31 +23,75 @@
     </template>
 
     <script>
+      import { Toast } from 'mint-ui';  //弹框
+      import { Indicator } from 'mint-ui';
+      import { customerPubContentListOwner } from '../../../assets/js/promiseHttp';
       export default {
         name: 'draft',
         data(){
           return{
             p:1,  //页
             s:20, //每页多少
+            pages:0, //总共多少页
             message:"不同努力加载中...", //触底提示
-            listData:[
-              {title:"可爱大方的小果果搞怪",url:"./static/images/1.png",time:154189654123654},
-              {title:"可爱大方的小果果搞怪可爱大方的小果果搞怪可爱大方的小果果搞怪",url:"./static/images/2.png",time:154189654123654},
-              {title:"可爱大方的小果果搞怪",url:"./static/images/3.png",time:154189654123654},
-              {title:"可爱大方的小果果搞怪",url:"./static/images/4.png",time:154189654123654},
-              {title:"可爱大方的小果果搞怪",url:"./static/images/4.png",time:154189654123654},
-              {title:"可爱大方的小果果搞怪",url:"./static/images/4.png",time:154189654123654},
-              {title:"可爱大方的小果果搞怪",url:"./static/images/4.png",time:154189654123654},
-              {title:"可爱大方的小果果搞怪",url:"./static/images/4.png",time:154189654123654},
-            ],
+            userInfo:{},//用户数据
+            listData:[], //数据
           }
         },
         created() {
+          this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+          console.log(this.userInfo.data.access_token,"dshakdfjksdfk")
+          if(this.userInfo){
 
+            customerPubContentListOwner(this.userInfo.data.id,false,this.p,this.s,this.userInfo.data.access_token).then(res=>{  //false 为草稿
+//            customerPubContentListOwner("100",false,this.p,this.s,this.userInfo.data.access_token).then(res=>{  //false 为草稿
+              console.log(res,"草稿")
+              if(res.status == true){
+                this.pages = Math.ceil(res.total/this.s);
+                console.log( this.pages)
+                if(this.pages>1){
+                  this.message = "点击加载更多...";
+
+                }else{
+                  this.message = "这是我的底线...";
+                }
+                this.listData = res.data;
+              }else{
+                Indicator.close();
+                Toast("网络出错了，请重试")
+              }
+            })
+          }
         },
         methods:{
           updataMore(){ //点击加载更多
+            this.p++
+            let that = this;
+            if(that.pages<that.p){
+              that.p = that.pages;
+              Toast("没有更多发现了");
+              return;
+            }else if(that.pages==that.p){
 
+              customerPubContentListOwner(this.userInfo.data.id,false,this.p,this.s,this.userInfo.data.access_token).then(res=>{
+                if(res.status == true){
+                  that.listData = that.listData.concat(res.data);
+
+                }else{
+                  Indicator.close();
+                  Toast("网络出错了，请重试")
+                }
+              })
+            }else if(that.pages>that.p){
+              customerPubContentListOwner(this.userInfo.data.id,false,this.p,this.s,this.userInfo.data.access_token).then(res=>{
+                if(res.status == true){
+                  that.listData = that.listData.concat(res.data);
+                }else{
+                  Indicator.close();
+                  Toast("网络出错了，请重试")
+                }
+              })
+            }
           }
         }
       }

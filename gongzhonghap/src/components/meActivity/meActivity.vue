@@ -2,7 +2,7 @@
   <div id="meActivity">
 
     <ul class='meActivityBoxItem'>
-      <li class='meActivityBoxItemView1' v-for="(item,index) in titleArr"  @click='meActivityBoxItemView(index)'><span :class="{meActivityBoxItemViewActive:titleArrIndex == index }">{{item}}</span></li>
+      <li class='meActivityBoxItemView1' v-for="(item,index) in titleArr"  @click='meActivityBoxItemView(item,index)'><span :class="{meActivityBoxItemViewActive:titleArrIndex == index }">{{item}}</span></li>
     </ul>
      <div class="meActivityBoxItemView2" v-for="(item,index) in listData">
         <div class="meActivityBoxItemView2Header">
@@ -26,6 +26,10 @@
 
         </ul>
      </div>
+      <div class="lengthFalse" v-if="listData.length<=0">
+        <img src="/static/images/缺省图.png" alt="">
+        <p>你{{name}}活动区目前空空也～</p>
+      </div>
      <div class="moreClick" v-show="listData.length>0" @click="moreClick(obj.s)">{{message}}</div>
   </div>
 </template>
@@ -38,6 +42,7 @@ export default {
   name: 'meActivity',
   data(){
     return{
+      name:"全部",
        titleArr:["全部","待参加","待支付","已完成"],
       titleArrIndex:0, //选中的活动页面
       listData: [], // 活动列表数据
@@ -93,7 +98,8 @@ export default {
        }
 
     },
-    meActivityBoxItemView(i){ //头部点击
+    meActivityBoxItemView(v,i){ //头部点击
+      this.name = v;
      this.listData = [];
       this.titleArrIndex = i;
       if(this.titleArrIndex == 0){
@@ -309,5 +315,24 @@ export default {
     text-align: center;
     color: #666666;
   }
+ }
+ .lengthFalse{
+   width: 100%;
+   padding-top: 1rem;
+   img{
+     display: block;
+     margin: 0 auto;
+     width: 1rem;
+     height: 0.94rem;
+   }
+   p{
+     width: 100%;
+     text-align: center;
+     line-height: 0.5rem;
+     font-weight:400;
+     color:rgba(153,153,153,1);
+     margin-top: 0.2rem;
+     font-size: 0.12rem;
+   }
  }
 </style>

@@ -86,10 +86,10 @@ export function activityListData(p,s){
 }
 
 // 我的 头像初始数据
-
 export function IntallData(item){
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/findCommonUserById?userId=${item.data.id}`;
+    // let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/findCommonUserById?userId=200`;
     axios.get(url,{header:{'Content-Type': 'application/json','Accept': '*/*','Authorization':'Bearer '+item.data.access_token}}).then(res=>{
       resolve(res)
     }).catch(res=>{
@@ -963,5 +963,173 @@ export function commentFindCommentsByPubId(id,p,s){ //pubId 作品id
     })
   })
 }
-
+// POST /customerPubContent/listOwner 查登录用户发布的内容列表，草稿pubStatus:false，已发布pubStatus:true
+export function customerPubContentListOwner(id,pubStatus,p,s,token) { // 用户id，草稿pubStatus:false，已发布pubStatus:true
+  Indicator.open("加载中...")
+  let data = {userId:id,pubStatus:pubStatus,p:p,s:s}
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/listOwner",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+// POST /customerPubContent/list 传参是吃瓜页userId
+export function customerPubContentList(id,p,s) { // 用户id，
+  Indicator.open("加载中...")
+  let data = {userId:id,p:p,s:s}
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/list",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    // ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+// POST /customerPubContent/list 发现
+export function customerPubContentListHomePage(p,s) { // pubStatus 固定参数true
+  Indicator.open("加载中...")
+  let data = {p:p,s:s,pubStatus:true}
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/list",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//作品详情
+// GET /customerPubContent/findOne
+export function customerPubContentFindOne(id) { // 作品id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/findOne?id="+id);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//作品的点赞/customerPubContent/laudContent
+export function customerPubContentLaudContent(id,token) { // 作品id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/laudContent?id="+id);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText);
+        resolve(res) ;
+      }
+    }
+  })
+}
+//作品的取消点赞/customerPubContent/cancelLaudContent
+export function customerPubContentCancelLaudContent(id,token) { // 作品id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/cancelLaudContent?id="+id);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//作品的收藏/customerPubContent/favorContent
+export function customerPubContentFavorContent(id,token) { // 作品id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/favorContent?id="+id);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+//作品的取消收藏/customerPubContent/cancelFavorContent
+export function customerPubContentCancelFavorContent(id,token) { // 作品id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/cancelFavorContent?id="+id);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
+// POST /customerPubContent/listWithCare 关注列表
+export function customerPubContentListWithCare(p,s,token) {
+  Indicator.open("加载中...")
+  let data = {p:p,s:s}
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/listWithCare",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+    }
+  })
+}
 

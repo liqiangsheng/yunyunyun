@@ -94,7 +94,6 @@
 
       },
       goDetail(id){ //去详情
-
         this.$router.push({path:"/homeDetail" ,query: {id:id}})
       }
     }

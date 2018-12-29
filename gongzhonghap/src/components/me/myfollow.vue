@@ -4,7 +4,7 @@
        {{message}}
     </div>
      <div v-show="myfollow==true" class="myfollow_box">
-        <div class="myfollow_box_header">已关注 <span>{{totalAll}}</span> 位设计师</div>
+        <div class="myfollow_box_header">已关注 <span>{{objList.length}}</span> 位设计师</div>
         <ul v-if="objList.length>0">
           <li v-for="(item,index) in objList">
             <div class="myfollow_li1">
@@ -15,11 +15,11 @@
               <p style="width: 2rem;overflow: hidden;text-overflow: ellipsis;white-space: nowrap">{{item.regionName}} {{item.title}}</p>
               <p><span class="pSpan1">作品: </span><span class="pSpan2">{{item.titleCount}} </span><span class="pSpan3">粉丝：</span><span class="pSpan2">{{item.caredCount}}</span></p>
             </div>
-            <div class="myfollow_li3" @click="followClick(item)">
-              <img v-if="item.mutual==true" src="/static/images/已关注.png" alt="">
-              <img v-if="item.mutual==false" src="/static/images/互关注.png" alt="">
-              <span v-if="item.mutual==true">已关注</span>
-              <span v-if="item.mutual==false">互关注</span>
+            <div class="myfollow_li3" @click="followClick(item,index)">
+              <img v-if="item.mutual==false" src="/static/images/已关注.png" alt="">
+              <img v-if="item.mutual==true" src="/static/images/互关注.png" alt="">
+              <span v-if="item.mutual==false">已关注</span>
+              <span v-if="item.mutual==true">互关注</span>
             </div>
           </li>
         </ul>
@@ -33,7 +33,7 @@
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
-   import { customerCareNoteListCare } from '../../assets/js/promiseHttp';
+   import { customerCareNoteListCare,commonUserCancelCareUser,companyInfoCancelCareCompany } from '../../assets/js/promiseHttp';
 export default {
   name: 'myfollow',
   data(){
@@ -45,10 +45,7 @@ export default {
         message:"不同努力加载中...", //触底提示
         pageNum:"",//每页数据
         totalAll:0, //一共多少位设计师关注
-        objList:[
-          {bannerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 工业设计师",zuoping:"501",fensi:"2838",isguanzhun:false},
-          {bannerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 工业设计师",zuoping:"501",fensi:"2838",isguanzhun:true},
-        ], // 数据
+        objList:[], // 数据
       }
   },
   created(){
@@ -56,10 +53,10 @@ export default {
       document.title = "我的关注";
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    console.log(this.userInfo.data.access_token)
     if(this.userInfo){
       this.myfollow= true;
       customerCareNoteListCare(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//      customerCareNoteListCare("100",this.userInfo.data.access_token,this.p,this.s).then(res=>{
          if(res.status == true){
            this.totalAll = res.total;
            this.pageNum = Math.ceil(res.total/this.s);
@@ -69,6 +66,7 @@ export default {
              this.message = "这是我的底线..."
            }
            this.objList = res.data;
+
          }else {
             Toast("网络出错啦！请重试")
          }
@@ -80,8 +78,40 @@ export default {
   },
 
   methods: {
-    followClick(v){//关注
+    followClick(v,i){//关注
+      console.log(i)
+      let data = JSON.parse(localStorage.getItem("userInfo"));
+      if(!data){
+        Toast("您还未登录，请登录！");
+        setTimeout(()=>{
+          this.$router.push({path:"/login"})
+        },1000)
+      }else{
+     ///你关注的人，别人没关注你
+          if(v.userType == "1"){ //企业
 
+            companyInfoCancelCareCompany(v.id,data.data.id,v.userType).then(res=>{
+              if(res.data.status==true){
+
+               this.objList.splice(i,1)
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+          }else if(v.userType == "2"){  //个人
+
+            commonUserCancelCareUser(v.id,data.data.id,v.userType).then(res=>{
+              if(res.data.status==true){
+                console.log(this.objList)
+                console.log(Array.isArray(this.objList))
+                this.objList.splice(i,1)
+
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+          }
+        }
     },
     updataMore(){ //加载更多 分页
       this.p++;

@@ -109,7 +109,7 @@ export default {
       outBnt(){ //退出
         this.tabListBool = false;
         localStorage.removeItem("userInfo"); //清楚登录信息
-        this.$router.push({path:"/index"}); //去首页
+        this.$router.push({path:"/"}); //去首页
       },
       aboutBnt(v,v1){ //关于不同
         let obj = {}

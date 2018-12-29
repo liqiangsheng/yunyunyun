@@ -11,22 +11,22 @@
          </li>
        </ul>
        <ul class="myFabulous_ul" v-show="tabIndex==0">
-       <li v-for="(item,index) in ListData">
+       <li v-for="(item,index) in ListData" @click="goDetail(item)">
          <h5>{{item.title}}</h5>
          <div class="myFabulous_banner">
-           <img :src="item.coverUrl" alt="">
+           <img :src="item.cover.url" alt="">
          </div>
          <div class="myFabulous_bannaerUrl">
-           <div class="myFabulous_bannaerUrl_left">
-             <img :src="item.bannaerUrl?item.bannaerUrl:'/static/images/defultphoto.png'" alt="">
+           <div class="myFabulous_bannaerUrl_left" @click.stop="goHomePage(item)">
+             <img :src="item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt="">
            </div>
            <div class="myFabulous_name">
-             <b>{{item.userName}}</b>
-             <p>{{item.regionName}}</p>
+             <b>{{item.authorInfo.name}}</b>
+             <p>{{item.authorInfo.regionName}}</p>
            </div>
            <!--后台数据没有-->
            <div class="myFabulous_type">
-             平面设计
+             <p>{{item.authorInfo.title}}</p>
            </div>
          </div>
        </li>
@@ -35,7 +35,7 @@
          </div>
      </ul>
        <ul class="myFabulous_ul1" v-show="tabIndex==1">
-         <li v-for="(item,index) in articleData">
+         <li v-for="(item,index) in articleData" @click="goHomeDetail(item)">
               <div class="myFabulous_left">
                 <h5>{{item.title}}</h5>
                 <div style="color: #AAAAAA">
@@ -88,8 +88,8 @@ export default {
     if(this.userInfo){
       this.myfollow= true;
 
-//      customerLaudNoteListFavoredContent("100",this.userInfo.data.access_token,this.p,this.s).then(res=>{ //作品
-        customerLaudNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+      customerLaudNoteListFavoredContent("100",this.userInfo.data.access_token,this.p,this.s).then(res=>{ //作品
+//        customerLaudNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
         if(res.status ==true){
           this.pageNum = Math.ceil(res.total/this.s);
           if(this.pageNum>1){
@@ -111,10 +111,23 @@ export default {
   },
 
   methods: {
+    goHomeDetail(v){ //去文章详情
+      this.$router.push({path:"/homeDetail" ,query: {id:v.id}})
+    },
+    goDetail(v){ //去文章详情
+      this.$router.push({path:"/findDetail",query:{id:v.id}})
+    },
+    goHomePage(v){ //去个人 或则大咖
+      if(v.authorInfo.vUser==1){ //去吃瓜
+        this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
+      }else{//去大咖
+        this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//2 是个人
+      }
+    },
     tabClick(i){//tab的下标
       this.tabIndex =i;
       if(i==1){ //文章
-        //      customerLaudNoteLaudList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
+//              customerLaudNoteLaudList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
         customerLaudNoteLaudList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{ //文章
           if(res.status == true){
             this.pageNum1 = Math.ceil(res.total/this.s1);

@@ -82,7 +82,7 @@ export default {
     if(this.$router.history.current.query){
       this.Request = this.$router.history.current.query;
       sessionStorage.setItem("homePageObj",JSON.stringify(this.$router.history.current.query))
-      if(this.$router.history.current.query.state == "1"){
+      if(this.$router.history.current.query.state == "1"){//1是企业
         companyInfoFindOne(this.$router.history.current.query.id).then(res=>{
           console.log(res,"djalsdl;")
           if(res.status == true){
@@ -104,7 +104,7 @@ export default {
           }
         })
 
-      }else{
+      }else{//2是个人
         commonUserFindOne(this.$router.history.current.query.id).then(res=>{
           if(res.status==true){
               console.log(res.data,"daskfka")

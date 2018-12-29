@@ -42,7 +42,7 @@ const FireMap = resolve => require(['@/components/pictureLiveBroadcast/fireMap']
 const homeIndex = resolve => require(['@/components/homeIndex/homeIndex'], resolve); //资讯
 const HomeIndex1_0 = resolve => require(['@/components/homeIndex1_0/homeIndex1_0'], resolve); //首页
 const Follow = resolve => require(['@/components/homeIndex1_0/alter/follow'], resolve); //关注
-const FindDetail = resolve => require(['@/components/homeIndex1_0/findDetail'], resolve); //发现的详情
+const FindDetail = resolve => require(['@/components/homeIndex1_0/findDetail'], resolve); //作品详情发现的详情
 const PersonalMelonPages = resolve => require(['@/components/intelligentMatching/personalMelonPages'], resolve); //个人吃瓜页
 // import Home from '@/components/home/home'
 // import HomeMap from '@/components/homeMap/homeMap' //详情地图

@@ -12,13 +12,12 @@
               <div slot="loading" v-else></div>
             </div>
             <div id="img-info" slot-scope="props">
-
-              <h5>黑川雅之来报道！设计界绝对干货！！！这里有一枚...</h5>
+              <h5>{{props.value.title}}</h5>
               <ul class="img-info_ul">
-                <li  class="img-info_li1"><img src="/static/images/defultphoto.png" alt=""></li>
-                <li class="img-info_li2">dsfsdfds帅哥</li>
+                <li  class="img-info_li1"><img :src="props.value.authorInfo.ownerUrl?props.value.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt=""></li>
+                <li class="img-info_li2">{{props.value.authorInfo.name}}</li>
                 <li class="img-info_li3"><img src="/static/images/点赞1.png" alt=""></li>
-                <li class="img-info_li4">{{9999}}</li>
+                <li class="img-info_li4">{{props.value.laudedCount}}</li>
               </ul>
             </div>
           </vue-waterfall-easy>
@@ -33,7 +32,7 @@
   import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
-  import {activityImagesList,} from "../../../assets/js/promiseHttp.js"
+  import { customerPubContentListOwner} from "../../../assets/js/promiseHttp.js"
 export default {
   components: {
     vueWaterfallEasy
@@ -42,79 +41,76 @@ export default {
   data(){
     return{
       imgsArr:[],
-      bookId:{
         p: 1, // request param//
-        s: 1000, // request param//
-        bookId:"7",
-      }, //测试
+        s: 200, // request param//
       pages:0, //总共多少页
       isFirstLoad:true, //第一次加载
       maxCols:2,  //瀑布流显示最大的列数
       openPullDown:true,//下拉刷新
       OffsetHeight:0,//屏幕高度
+      userInfo:{},//用户数据
     }
   },
   created() {
 
     this.$nextTick(function(){
-      console.log(this.$refs)
       this.OffsetHeight = this.$refs.findBox.offsetHeight;
     })
-    activityImagesList(this.bookId).then(res=>{
+    this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    if(this.userInfo){
+      customerPubContentListOwner(this.userInfo.data.id,true,this.p,this.s,this.userInfo.data.access_token).then(res=>{
+//      customerPubContentListOwner("100",true,this.p,this.s,this.userInfo.data.access_token).then(res=>{
+        console.log(res,"原创")
+        if(res.status == true){
+          res.data.forEach((item,index)=>{
+            item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+          })
+          this.pages = Math.ceil(res.total/this.s);
+          this.imgsArr = res.data;
 
-      if(res.data.status==true){
-        res.data.data.forEach((item,index)=>{
-          item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
-        })
-        this.pages = Math.ceil(res.data.total/this.bookId.s)
-        this.imgsArr = res.data.data;
-      }else{
-        Toast("网络出错了，请重试")
-      }
-    })
+        }else{
+          Indicator.close();
+          Toast("网络出错了，请重试")
+        }
+      })
+    }
+
   },
   methods:{
-    clickFn(){
-
+    clickFn(event,{index,value}){
+      this.$router.push({path:"/findDetail",query:{id:value.id}}) //去发现的详情页面，记得带状态跟token
     },
     handleScroll(e){  //回到顶部按钮出现
-      console.log(e)
-      if(e.target.scrollTop>=(e.target.scrollHeight-this.OffsetHeight-0.5)){
 
-        this.bookId.p++
+      if(e.target.scrollTop>=(e.target.scrollHeight-this.OffsetHeight-0.5)){
+        this.p++
         let that = this;
-        if(that.pages<that.bookId.p){
-          that.bookId.p = that.pages;
+        if(that.pages<that.p){
+          that.p = that.pages;
           Toast("没有更多发现了");
           return;
-        }else if(that.pages==that.bookId.p){
-          Indicator.open("加载中")
-          activityImagesList(that.bookId).then(res=>{
-            if(res.data.status == true){
-              res.data.data.forEach((item,index)=>{
-                item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+        }else if(that.pages==that.p){
+          customerPubContentListOwner(this.userInfo.data.id,true,this.p,this.s,this.userInfo.data.access_token).then(res=>{
+//            customerPubContentListOwner("100",true,this.p,this.s,this.userInfo.data.access_token).then(res=>{
+            if(res.status == true){
+              res.data.forEach((item,index)=>{
+                item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
               })
-              that.imgsArr = that.imgsArr.concat(res.data.data);
-              setTimeout(()=>{
-                Indicator.close();
-              },200)
+              that.imgsArr = that.imgsArr.concat(res.data);
 
             }else{
               Indicator.close();
               Toast("网络出错了，请重试")
             }
           })
-        }else if(that.pages>that.bookId.p){
-          Indicator.open("加载中")
-          activityImagesList(that.bookId).then(res=>{
-            if(res.data.status == true){
-              res.data.data.forEach((item,index)=>{
-                item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+        }else if(that.pages>that.p){
+//          customerPubContentListOwner("100",true,this.p,this.s,this.userInfo.data.access_token).then(res=>{
+          customerPubContentListOwner(this.userInfo.data.id,true,this.p,this.s,this.userInfo.data.access_token).then(res=>{
+            if(res.status == true){
+              res.data.forEach((item,index)=>{
+                item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
               })
-              that.imgsArr = that.imgsArr.concat(res.data.data);
-              setTimeout(()=>{
-                Indicator.close();
-              },200)
+              that.imgsArr = that.imgsArr.concat(res.data);
 
             }else{
               Indicator.close();

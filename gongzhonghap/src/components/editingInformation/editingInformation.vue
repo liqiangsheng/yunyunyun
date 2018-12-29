@@ -98,7 +98,7 @@ export default {
       this.userId = data.data.user_id;
       EditingInformationIntall(data.data.user_id,data.data.access_token).then(res=>{
         if(res.data.status==true){
-          this.birthday = !!res.data.data.birthday?res.data.data.birthday:"请选择";
+          this.birthday = !!res.data.data.birthday?res.data.data.birthday:"19700101";
           this.region = !!res.data.data.region_name?res.data.data.region_name:"深圳市";
           this.regionId = !!res.data.data.region_id?res.data.data.region_id:"2018042317050430c6a250e4044f94bb4cc074302b789a";
           this.headerImg = !!res.data.data.owner_url?res.data.data.owner_url:"./static/images/defultphoto.png";

@@ -5,7 +5,7 @@
        {{message}}
     </div>
      <div v-show="myfollow==true" class="fans_box">
-        <div class="fans_box_header">您有 <span>{{totalAll}}</span> 位关注者</div>
+        <div class="fans_box_header">您有 <span>{{objList.length}}</span> 位关注者</div>
         <ul v-if="objList.length>0">
           <li v-for="(item,index) in objList">
             <div class="fans_li1">
@@ -34,7 +34,7 @@
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
-   import { customerCareNoteListCared } from '../../assets/js/promiseHttp';
+   import { customerCareNoteListCared,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany  } from '../../assets/js/promiseHttp';
 export default {
   name: 'fans',
   data(){
@@ -46,10 +46,7 @@ export default {
         message:"不同努力加载中...", //触底提示
         pageNum:"",//每页数据
         totalAll:0, //一共多少位设计师关注
-        objList:[
-          {bannerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 工业设计师",zuoping:"501",fensi:"2838",isguanzhun:"2"},
-          {bannerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 工业设计师",zuoping:"501",fensi:"2838",isguanzhun:"3"}
-        ], // 大咖说数据
+        objList:[], // 大咖说数据
       }
   },
   created(){
@@ -59,7 +56,9 @@ export default {
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){
       this.myfollow= true;
-      customerCareNoteListCared(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//      customerCareNoteListCared(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+      customerCareNoteListCared("100",this.userInfo.data.access_token,this.p,this.s).then(res=>{
+        console.log(res,'dsfsd')
         if(res.status == true){
           this.totalAll = res.total;
           this.pageNum = Math.ceil(res.total/this.s);
@@ -81,7 +80,46 @@ export default {
 
   methods: {
     followClick(v){//关注
+      console.log(v)
+      if(v.mutual == false){ //去关注
+        if(v.userType == "1"){ //企业
+          companyInfoCareCompany(v.id,this.userInfo.data.id,v.userType).then(res=>{
+            if(res.data.status==true){
+              v.mutual = true
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }else if(v.userType == "2"){  //个人
+          commonUserCareUser(v.id,this.userInfo.data.id,v.userType).then(res=>{
+            if(res.data.status==true){
+              v.mutual = true
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }
 
+      }else{ //取消
+        if(v.userType == "1"){ //企业
+          companyInfoCancelCareCompany(v.id,this.userInfo.data.id,v.userType).then(res=>{
+            if(res.data.status==true){
+              v.mutual = false
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }else if(v.userType == "2"){  //个人
+
+          commonUserCancelCareUser(v.id,this.userInfo.data.id,v.userType).then(res=>{
+            if(res.data.status==true){
+              v.mutual = false;
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }
+      }
     },
     updataMore(){ //加载更多 分页
       this.p++;

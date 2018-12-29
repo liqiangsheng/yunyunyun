@@ -28,6 +28,7 @@
     }
   },
   created() {
+    this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     questionAndAnswerList(this.userInfo.data.access_token,this.p,this.s).then(res=>{
            if(res.status == true){
              this.pageNum = Math.ceil(res.total/this.s);
@@ -40,7 +41,6 @@
            }else{
              Toast("网络出错啦！请重试")
            }
-      console.log(res,"fdsfsdkfs")
     })
   },
   methods:{

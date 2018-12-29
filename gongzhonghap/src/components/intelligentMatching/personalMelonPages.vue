@@ -2,48 +2,65 @@
   <!--个人吃瓜页-->
     <div id="personalMelonPages">
       <div class="personalMelonPages_header" ref="offsetHeight">
-        <img :src="BjImg" alt="" class="personalMelonPages_header_img">
+        <img :src="listData.ownerUrl?listData.ownerUrl:'/static/images/defultphoto.png'" alt="" class="personalMelonPages_header_img">
         <div class="personalMelonPages_header_box">
             <ul class="personalMelonPages_header_ul">
              <li class="personalMelonPages_header_li1">
-               <img :src="listData.bannerUrl" alt="">
+                 <img :src="listData.ownerUrl?listData.ownerUrl:'/static/images/defultphoto.png'" alt="">
              </li>
              <li class="personalMelonPages_header_li2">
                <b>{{listData.name}}</b>
-               <div>{{listData.address}}</div>
+               <div>{{listData.regionName}}</div>
              </li>
              <li class="personalMelonPages_header_li3">
                <div>
-                 <div v-if="listData.type==false" @click="followClick('关注')"><img src="/static/images/关注.png" alt="">关注</div>
-                 <div class="active" v-if="listData.type==true" @click="followClick('已关注')"><img src="/static/images/gou.png" alt="">已关注</div>
+                 <div v-if="listData.cared==false" @click="followClick('关注',listData)"><img src="/static/images/关注.png" alt="">关注</div>
+                 <div class="active" v-if="listData.cared==true" @click="followClick('已关注',listData)"><img src="/static/images/gou.png" alt="">已关注</div>
                </div>
              </li>
             </ul>
           <ul class="personalMelonPages_header_ul1">
-            <li v-for="(item,index) in headerList" @click="headerClick(item)">
-               <b>999</b>
-               <p>{{item}}</p>
+            <li>
+               <b>{{listData.viewCount?listData.viewCount:0}}</b>
+               <p>关注</p>
+            </li>
+            <li>
+              <b>{{listData.laudedCount?listData.laudedCount:0}}</b>
+              <p>粉丝</p>
+            </li>
+            <li>
+              <b>{{listData.commentCount?listData.commentCount:0}}</b>
+              <p>点赞</p>
             </li>
           </ul>
         </div>
       </div>
-      <div class="personalMelonPages_box" ref="findBox">
+      <div class="personalMelonPages_box" ref="findBox" v-if="imgsArr.length>0">
         <vue-waterfall-easy :imgsArr="imgsArr" srcKey="imageUrl1" :enablePullDownEvent="openPullDown" :maxCols="maxCols" @click="clickFn">
           <div slot="loading" slot-scope="{isFirstLoad}">
-            <div slot="loading" v-if="isFirstLoad">不同努力加载中...</div>
+            <div slot="loading" v-if="isFirstLoad">{{message}}</div>
             <div slot="loading" v-else></div>
           </div>
           <div id="img-info" slot-scope="props">
 
-            <h5>黑川雅之来报道！设计界绝对干货！！！这里有一枚...</h5>
+            <h5>{{props.value.title}}</h5>
             <ul class="img-info_ul">
-              <li  class="img-info_li1"><img src="/static/images/defultphoto.png" alt=""></li>
-              <li class="img-info_li2">dsfsdfds帅哥</li>
-              <li class="img-info_li3"><img src="/static/images/点赞1.png" alt=""></li>
-              <li class="img-info_li4">{{9999}}</li>
+              <li  class="img-info_li1">
+                  <img :src="props.value.authorInfo.ownerUrl?props.value.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt="">
+              </li>
+              <li class="img-info_li2">{{props.value.authorInfo.name}}</li>
+              <li class="img-info_li3">
+                <img src="/static/images/点赞1.png" alt="" v-if="props.value.laudedStatus==false">
+                <img src="/static/images/点赞2.png" alt="" v-else>
+              </li>
+              <li class="img-info_li4">{{props.value.laudedCount}}</li>
             </ul>
           </div>
         </vue-waterfall-easy>
+      </div>
+      <div class="lengthSmall" v-else>
+        <img src="/static/images/原创.png" alt="">
+         <p>{{listData.name}}还没有进行任何创作哦～</p>
       </div>
     </div>
   </template>
@@ -52,7 +69,7 @@
     import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
     import { Toast } from 'mint-ui';  //弹框
     import { Indicator } from 'mint-ui';
-    import {activityImagesList,} from "../../assets/js/promiseHttp.js"
+    import {customerPubContentList,commonUserFindOne,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany} from "../../assets/js/promiseHttp.js"
     export default {
       name: 'find',
       components: {
@@ -61,13 +78,10 @@
       data(){
         return{
           BjImg:"/static/images/5.png", //高斯模糊的背景
-          listData:{name:"Algernon",address:"深圳 , 南山",type:true,bannerUrl:"/static/images/5.png"}, //头部数据
-          headerList:["关注","粉丝","点赞"], //头数的按钮
-          bookId:{
-            p: 1, // request param//
-            s: 20, // request param//
-            bookId:"7",
-          }, //测试
+          listData:{}, //头部数据
+          message:"不同努力加载中...",
+           p: 1, // request param//
+          s: 20, // request param////测试
           pages:0, //总共多少页
           isFirstLoad:true, //第一次加载
           maxCols:2,  //瀑布流显示最大的列数
@@ -83,13 +97,24 @@
         })
         this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):"";
         console.log(this.$router.history.current.query.id)
-        activityImagesList(this.bookId).then(res=>{
-          if(res.data.status==true){
-            res.data.data.forEach((item,index)=>{
-              item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
-            })
-            this.pages = Math.ceil(res.data.total/this.bookId.s)
-            this.imgsArr = res.data.data;
+        commonUserFindOne(this.$router.history.current.query.id).then(res=>{
+          if(res.status == true){
+             this.listData =res.data
+          }else{
+            Toast("网络出错了，请重试")
+          }
+        })
+        console.log(this.$router.history.current.query.id)
+        customerPubContentList(this.$router.history.current.query.id,this.p,this.s).then(res=>{
+//        customerPubContentList(this.p,this.s).then(res=>{
+          console.log(res)
+          if(res.status==true){
+              res.data.forEach((item,index)=>{
+                item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+              })
+              this.pages = Math.ceil(res.total/this.s)
+              this.imgsArr = res.data;
+
           }else{
             Toast("网络出错了，请重试")
           }
@@ -97,15 +122,34 @@
 
       },
       methods:{
-        headerClick(v){ //点击头部的按钮
-           console.log(v,"fshkdfksdkfk")
-        },
-        followClick(v){ //点击是不是关注了
-          if(v=='关注'){
 
-          }else if(v=='已关注'){
-
+        followClick(v,v1){ //点击是不是关注了
+          let data = JSON.parse(localStorage.getItem("userInfo"))
+          if(data){
+            if(v=='关注'){ //关注
+              commonUserCareUser(v1.id,data.data.id,"2").then(res=>{
+                if(res.data.status==true){
+                  v1.cared =true
+                }else{
+                  Toast("网络出错了，请重试")
+                }
+              })
+            }else if(v=='已关注'){//取消关注
+              commonUserCancelCareUser(v1.id,data.data.id,"2").then(res=>{
+                if(res.data.status==true){
+                  v1.cared =false
+                }else{
+                  Toast("网络出错了，请重试")
+                }
+              })
+            }
+          }else{
+            Toast("您还未登陆，请登陆");
+            setTimeout(()=>{
+              this.push({path:"/login"});
+            },1000)
           }
+
         },
         clickFn(event,{index,value}){ //进入详情页
           console.log(value)
@@ -118,43 +162,35 @@
 //          console.log(e.target.OffsetHeight,"OffsetHeight")
           if(e.target.scrollTop>=(e.target.scrollHeight-e.target.clientHeight-0.5)){
 
-            this.bookId.p++
+            this.p++
             let that = this;
-            if(that.pages<that.bookId.p){
-              that.bookId.p = that.pages;
+            if(that.pages<that.p){
+              that.p = that.pages;
               Toast("没有更多数据了");
               return;
-            }else if(that.pages==that.bookId.p){
-              Indicator.open("加载中")
-              activityImagesList(that.bookId).then(res=>{
-                if(res.data.status == true){
-                  res.data.data.forEach((item,index)=>{
-                    item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+            }else if(that.pages==that.p){
+
+              customerPubContentList(this.$router.history.current.query.id,this.p,this.s).then(res=>{
+                if(res.status == true){
+                  res.data.forEach((item,index)=>{
+                    item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
                   })
-                  that.imgsArr = that.imgsArr.concat(res.data.data);
-                  setTimeout(()=>{
-                    Indicator.close();
-                  },200)
+                  that.imgsArr = that.imgsArr.concat(res.data);
+
 
                 }else{
-                  Indicator.close();
                   Toast("网络出错了，请重试")
                 }
               })
-            }else if(that.pages>that.bookId.p){
-              Indicator.open("加载中")
-              activityImagesList(that.bookId).then(res=>{
-                if(res.data.status == true){
-                  res.data.data.forEach((item,index)=>{
-                    item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+            }else if(that.pages>that.p){
+              customerPubContentList(this.$router.history.current.query.id,this.p,this.s).then(res=>{
+                if(res.status == true){
+                  res.data.forEach((item,index)=>{
+                    item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
                   })
-                  that.imgsArr = that.imgsArr.concat(res.data.data);
-                  setTimeout(()=>{
-                    Indicator.close();
-                  },200)
+                  that.imgsArr = that.imgsArr.concat(res.data);
 
                 }else{
-                  Indicator.close();
                   Toast("网络出错了，请重试")
                 }
               })
@@ -241,7 +277,7 @@
                width: 0.8rem;
                height: 0.3rem;
                text-align: center;
-               line-height: 0.3rem;
+               line-height: 0.32rem;
                border-radius: 0.03rem;
                border: 0.01rem solid #000000;
                float: right;
@@ -353,6 +389,25 @@
           line-height: 0.16rem;
         }
 
+      }
+    }
+    .lengthSmall{
+      width: 100%;
+      height: 100%;
+      background: #F7F7F7;
+      padding-top: 0.5rem;
+      img{
+        width: 1rem;
+        height: 0.94rem;
+        display: block;
+        margin: 0 auto;
+      }
+      p{
+        width: 100%;
+        line-height: 0.5rem;
+        margin-top: 0.2rem;
+        text-align: center;
+        color:rgba(153,153,153,1);
       }
     }
   </style>

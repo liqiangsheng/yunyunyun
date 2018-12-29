@@ -11,6 +11,10 @@
              </div>
              <div class="IntelligentMatchingDHeaderIndex2">
                <img :src="userDp" alt="" @click="authorClcik(messageArr.orgId,messageArr.createdUser)">
+               <div>
+                 <p>{{messageArr.sysUserContentVo.name}}</p>
+                 <span>{{messageArr.createdAt|formatTime}}</span>
+               </div>
                <button @click="isXCXClick">{{followMessage}}</button>
              </div>
              <div class="IntelligentMatchingDHeaderIndex3" v-if="messageArr.summary">
@@ -102,7 +106,7 @@ export default {
   name: 'IntelligentMatchingD',
   data(){
     return{
-      boxShow:false,//初始化数据成功
+      boxShow:true,//初始化数据成功
       followMessage:"", //关注
       actions:[{ name:"请下载不同Tech App" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
       sheetVisible:false, //是否显示弹框
@@ -512,19 +516,43 @@ export default {
      .IntelligentMatchingDHeaderIndex2{
        width: 100%;
        margin: 0.15rem 0;
+       height: 0.64rem;
        position: relative;
+       display: flex;
        img{
          display: inline-block;
-         width: 0.64rem;
-         height: 0.64rem;
+         width: 0.5rem;
+         height: 0.5rem;
          border-radius: 50%;
+         margin-left: 0.05rem;
+       }
+       >div{
+         width: 2rem;
+         height: 0.64rem;
+         p{
+           font-weight: 900;
+           font-size: 0.12rem;
+           line-height: 0.2rem;
+           overflow: hidden;
+           word-break:break-all;
+           text-overflow: ellipsis;
+           display: -webkit-box;
+           -webkit-line-clamp: 2;
+           -webkit-box-orient: vertical;
+         }
+         span{
+           color:rgba(102,102,102,1);
+           font-size: 0.1rem;
+           line-height: 0.2rem;
+         }
        }
        button{
          position: absolute;
          right: 0;
-         top: 0.08rem;
-         width: 1.0rem;
-         height: 0.4rem;
+         top: 0.1rem;
+         width: 0.7rem;
+         height: 0.3rem;
+         line-height: 0.3rem;
          border: 0;
          background:#050509;
          border-radius:0.05rem;

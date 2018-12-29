@@ -9,12 +9,17 @@
            </div>
            <div id="img-info" slot-scope="props">
 
-               <h5>黑川雅之来报道！设计界绝对干货！！！这里有一枚...</h5>
+               <h5>{{props.value.title}}</h5>
                 <ul class="img-info_ul">
-                  <li  class="img-info_li1" @clcik.stop="headerClick(item,index)"><img src="/static/images/defultphoto.png" alt=""></li>
-                  <li class="img-info_li2" @clcik.stop="headerClick(item,index)">dsfsdfds帅哥</li>
-                  <li class="img-info_li3" @clcik.stop="fabulousClick(item,index)"><img src="/static/images/点赞1.png" alt=""></li>
-                  <li class="img-info_li4" @clcik.stop="fabulousClick(item,index)">{{9999}}</li>
+                  <li  class="img-info_li1" @clcik.stop="headerClick(item,index)">
+                    <img :src="props.value.authorInfo.ownerUrl?props.value.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt="" >
+                  </li>
+                  <li class="img-info_li2" @clcik.stop="headerClick(item,index)">{{props.value.authorInfo.name}}</li>
+                  <li class="img-info_li3" @clcik.stop="fabulousClick(item,index)">
+                    <img src="/static/images/点赞1.png" alt="" v-if="props.value.laudedStatus==false">
+                    <img src="/static/images/点赞2.png" alt="" v-else>
+                  </li>
+                  <li class="img-info_li4" @clcik.stop="fabulousClick(item,index)">{{props.value.laudedCount}}</li>
                 </ul>
            </div>
          </vue-waterfall-easy>
@@ -26,7 +31,7 @@
   import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
-  import {activityImagesList,} from "../../../assets/js/promiseHttp.js"
+  import {customerPubContentListHomePage} from "../../../assets/js/promiseHttp.js"
   export default {
     name: 'find',
     components: {
@@ -34,11 +39,8 @@
     },
     data(){
       return{
-        bookId:{
           p: 1, // request param//
-          s: 20, // request param//
-          bookId:"7",
-        }, //测试
+          s: 20, // request param////测试
         pages:0, //总共多少页
         isFirstLoad:true, //第一次加载
         maxCols:2,  //瀑布流显示最大的列数
@@ -53,14 +55,14 @@
    this.$nextTick(function(){
      this.OffsetHeight = this.$refs.findBox.offsetHeight;
    })
-      activityImagesList(this.bookId).then(res=>{
-
-         if(res.data.status==true){
-           res.data.data.forEach((item,index)=>{
-             item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+      customerPubContentListHomePage(this.p,this.s).then(res=>{
+           console.log(res,"fdjsfgd")
+         if(res.status==true){
+           res.data.forEach((item,index)=>{
+             item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
            })
-           this.pages = Math.ceil(res.data.total/this.bookId.s)
-           this.imgsArr = res.data.data;
+           this.pages = Math.ceil(res.total/this.s)
+           this.imgsArr = res.data;
          }else{
            Toast("网络出错了，请重试")
          }
@@ -81,41 +83,34 @@
       handleScroll(e){  //回到顶部按钮出现
         if(e.target.scrollTop>=(e.target.scrollHeight-this.OffsetHeight-0.5)){
 
-          this.bookId.p++
+          this.p++
           let that = this;
-          if(that.pages<that.bookId.p){
-            that.bookId.p = that.pages;
+          if(that.pages<that.p){
+            that.p = that.pages;
             Toast("没有更多发现了");
             return;
-          }else if(that.pages==that.bookId.p){
-          Indicator.open("加载中")
-            activityImagesList(that.bookId).then(res=>{
-              if(res.data.status == true){
-                res.data.data.forEach((item,index)=>{
-                  item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+          }else if(that.pages==that.p){
+
+            customerPubContentListHomePage(this.p,this.s).then(res=>{
+              if(res.status == true){
+                res.data.forEach((item,index)=>{
+                  item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
                 })
-                that.imgsArr = that.imgsArr.concat(res.data.data);
-              setTimeout(()=>{
-                Indicator.close();
-              },200)
+                that.imgsArr = that.imgsArr.concat(res.data);
+
 
               }else{
               Indicator.close();
                 Toast("网络出错了，请重试")
               }
             })
-          }else if(that.pages>that.bookId.p){
-          Indicator.open("加载中")
-            activityImagesList(that.bookId).then(res=>{
-              if(res.data.status == true){
-                res.data.data.forEach((item,index)=>{
-                  item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+          }else if(that.pages>that.p){
+            customerPubContentListHomePage(this.p,this.s).then(res=>{
+              if(res.status == true){
+                res.data.forEach((item,index)=>{
+                  item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
                 })
-                that.imgsArr = that.imgsArr.concat(res.data.data);
-              setTimeout(()=>{
-                Indicator.close();
-              },200)
-
+                that.imgsArr = that.imgsArr.concat(res.data);
               }else{
                 Indicator.close();
                 Toast("网络出错了，请重试")

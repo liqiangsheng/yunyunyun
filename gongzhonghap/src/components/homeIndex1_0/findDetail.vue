@@ -9,18 +9,21 @@
              <ul class="follow_login_Follow_ul">
                <li class="follow_login_Follow_li" v-for="(item,index) in listData">
                  <div class="follow_login_Follow_li1">
-                   <img :src="item.url" alt="" @clcik="headerClick(item)">
-                    <p>{{item.name}}</p>
-                   <div v-if="item.type==false"><img src="/static/images/已关注.png" alt="">关注</div>
-                   <div v-if="item.type==true" class="active">取消关注</div>
+                   <img :src="item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt="" @click="headerClick(item)">
+                    <p>{{item.authorInfo.name}}</p>
+                   <div v-if="!item.authorInfo.caredStatus" @click="follow(item)"><img src="/static/images/已关注.png" alt="">关注</div>
+                   <div v-else class="active" @click="cancelFollow(item)">取消关注</div>
                  </div>
-                 <div class="follow_login_Follow_li2">
+                 <div class="follow_login_Follow_li2" ref="windwosWH">
                    <!--轮播-->
                    <div class="swiper-container">
                      <div class="swiper-wrapper">
-                       <div class="swiper-slide" v-for="(item,index) in item.bannerUrl">
+                       <div class="swiper-slide" v-for="(item1,index1) in item.attachments">
                          <div class="imgIs">
-                           <img :src="item" >
+                           <img :src="item1.url" >
+                           <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*imgW+'px',top:item2.axesyRate*imgW+'px'}">
+                           <img src="/static/images/标签.png" alt=""><span>{{item2.title}}</span>
+                           </div>
                          </div>
                        </div>
                      </div>
@@ -31,20 +34,24 @@
                  </div>
                  <div class="follow_login_Follow_li3">
                    <p>{{item.message1}}</p>
-                   <div v-show="item.message&&item.message.length>69" @click="openClick(item,index)">{{item.value}}</div>
+                   <div v-show="item.content&&item.content.length>69" @click="openClick(item,index)">{{item.value}}</div>
                  </div>
                  <div class="follow_login_Follow_li4">
                    <div>
-                     <img src="/static/images/关注阅读量.png" alt="">12616
+                     <img src="/static/images/关注阅读量.png" alt="">  {{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}
+                   </div>
+                   <div @click="laudedStatus(item)">
+                     <img src="/static/images/点赞2.png" alt="" v-if="item.laudedStatus==true">
+                     <img src="/static/images/点赞.png" alt="" v-else>
+                     {{item.laudedCount<10000?item.laudedCount:(item.laudedCount/10000).toFixed(2)+'万'}}
+                   </div>
+                   <div @click="favoredStatus(item)">
+                     <img src="/static/images/收藏2.png" alt="" v-if="item.favoredStatus==true">
+                     <img src="/static/images/收藏1.png" alt="" v-else>
+                     {{item.favoredCount<10000?item.favoredCount:(item.favoredCount/10000).toFixed(2)+'万'}}
                    </div>
                    <div>
-                     <img src="/static/images/点赞.png" alt="">12616
-                   </div>
-                   <div>
-                     <img src="/static/images/收藏1.png" alt="">12616
-                   </div>
-                   <div>
-                     <img src="/static/images/分享.png" alt="">12616
+                     <img src="/static/images/分享.png" alt="">3.25万
                    </div>
 
                  </div>
@@ -72,6 +79,9 @@
             </div>
           </li>
         </ul>
+      <div class="messageFoot" @click="updataMore">
+        {{message}}
+      </div>
     </div>
     <div class="findDetailFoot" @click="giveClick" v-if="state!='XCX'">
       <div class="footer">
@@ -89,6 +99,9 @@
             <img src="/static/images/bianxie.png" alt="">
           </li>
         </ul>
+        <div>
+
+        </div>
       </div>
     </div>
     <mt-actionsheet
@@ -103,7 +116,7 @@
   import { Actionsheet } from 'mint-ui';
   import Vue from 'vue';
   Vue.component(Actionsheet.name, Actionsheet);
-  import {commentFindCommentsByPubId} from '../../assets/js/promiseHttp'; //数据
+  import {commentFindCommentsByPubId,customerPubContentFindOne,customerPubContentLaudContent,customerPubContentCancelLaudContent,customerPubContentFavorContent,customerPubContentCancelFavorContent,commentlaudComment,commentCancelLaudComment,replylaudReply,replyCancelLaudReply,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany } from '../../assets/js/promiseHttp'; //数据
 
   export default {
   name: 'follow',
@@ -113,6 +126,7 @@
       p:1,  //页
       s:20, //每页多少
       message:"不同努力加载中...", //触底提示
+      messageOne:"不同努力加载中...", //触底提示
       pageNum:"",//每页数据
       state:"", //是不是小程序 是的话就不显示
       actions:[{ name:"请下载不同Tech App" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
@@ -122,97 +136,316 @@
       userInfo:"", //用户信息
       LoginShow:false, //登录没登录
       followIsShow:false, //关注的人未发布作品
-      listData:[
-        {type:false,name:"fanner Walker",url:"/static/images/defultphoto.png",message:"来自深圳及全国各地的会员单位700余家，建立了市级工业设计公共服务平台，下设四个中心（深港设计中设计庇护形象作为设庇护形象作为设计主思路。计主思路，并将其形象抽象化应用于造型语言中外部造型取中国传统汉服的层叠交错的造型语言，使其更加检...型家用轿车将禅所隐喻的",
-          bannerUrl:["/static/images/home_banner2.png","/static/images/home_banner1.png","/static/images/home_banner3.png"]},
-       ],//数据
+      listData:[],//数据
+      imgW:320,
+      imgH:175,
     }
   },
   created() {
     this.$nextTick(function () {
       document.title = "设计未来，大不同"
     })
-    this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+//    this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):{data:{id:"",userType:""}};
+    this.userInfo = {data:{currentUser:this.$router.history.current.query.currentUser,id:this.$router.history.current.query.id,access_token:this.$router.history.current.query.token,userType:this.$router.history.current.query.userType,}}
 //    if(this.userInfo){ //登录的情况  //
 //    }else{//没有登录的情况
 //
 //    }
     if(this.$router.history.current.query.id){ //这个id请求数据 截取url的
+      customerPubContentFindOne(this.$router.history.current.query.id).then(res=>{
+        console.log(res,"fdskjfgd")
+        if(res.status == true){
+
+          let arrdata = [res.data];
+          arrdata.forEach((item,index)=>{
+            item.messageShow = false;
+            item.message1 = "";
+            item.value = "展开";
+            if(item.content.length>69){
+              item.message1=item.content.substring(0,69)+"...";
+              item.messageShow = true;
+              item.value = "展开";
+            }else{
+              item.messageShow = false;
+              item.message1 = item.content;
+            }
+          })
+          this.listData = arrdata;
+          this.$nextTick(()=>{
+            this.imgW = this.$refs.windwosWH[0].offsetWidth;
+            this.imgH = this.$refs.windwosWH[0].offsetHeight;
+            console.log(this.imgW)
+            console.log(this.$refs)
+            console.log(this.imgH)
+            console.log(this.$refs.windwosWH[0].firstElementChild.clientHeight)
+            console.log(this.$refs.windwosWH[0].clientHeight)
+            //     滑动
+            var mySwiper = new Swiper ('.swiper-container', {
+              autoplay:false,
+              loop:true,
+              // 如果需要分页器
+              pagination: {
+                el: '.swiper-pagination',
+              },
+            })
+          })
+
+        }else{
+          Toast("网络出错了，请重试")
+        }
+      })
       commentFindCommentsByPubId(this.$router.history.current.query.id,this.p,this.s).then(res=>{
-//      commentFindCommentsByPubId("1",this.p,this.s).then(res=>{
         console.log(res)
         if(res.data.status==true){
+          if(res.data.data.length>0){
             res.data.data.forEach((item,index)=>{
-            if(item.sysUserContentVo){
-              if(item.sysUserContentVo.userDp){
-                item.userDp = item.sysUserContentVo.userDp;
-              }else {
+              if(item.sysUserContentVo){
+                if(item.sysUserContentVo.userDp){
+                  item.userDp = item.sysUserContentVo.userDp;
+                }else {
+                  item.userDp = "./static/images/defultphoto.png";
+                }
+                if(item.sysUserContentVo.name){
+                  item.name = item.sysUserContentVo.name;
+                }else {
+                  item.name = "游客";
+                }
+              }else{
                 item.userDp = "./static/images/defultphoto.png";
-              }
-              if(item.sysUserContentVo.name){
-                item.name = item.sysUserContentVo.name;
-              }else {
                 item.name = "游客";
               }
+
+
+            })
+            this.pageNum = Math.ceil(res.data.total/this.s);
+            if(this.pageNum >1){
+              this.message = "点击加载更多..."
             }else{
-              item.userDp = "./static/images/defultphoto.png";
-              item.name = "游客";
+              this.message = "这是我的底线..."
             }
-
-
-          })
-          this.pageNum = Math.ceil(res.data.total/this.s);
-          if(this.pageNum >1){
-            this.message = "点击加载更多..."
+            this.commenArr = res.data.data;
           }else{
-            this.message = "这是我的底线..."
+            this.commenArr = res.data.data;
+            this.message = "暂无更多评论..."
           }
-          this.commenArr = res.data.data;
+
         }else{
           Toast("网络出错了，请重试")
         }
       })
     }
-    this.$nextTick(()=>{
-      //     滑动
-      var mySwiper = new Swiper ('.swiper-container', {
-        autoplay:false,
-        loop:true,
-        // 如果需要分页器
-        pagination: {
-          el: '.swiper-pagination',
-        },
-      })
-    })
-      this.listData.forEach((item,index)=>{
-        item.messageShow = false;
-        item.message1 = "";
-        item.value = "展开";
-        if(item.message.length>69){
-          item.message1=item.message.substring(0,69)+"...";
-          item.messageShow = true;
-          item.value = "展开";
-        }else{
-          item.messageShow = false;
-          item.message1 = item.message;
-        }
-      })
-
-
-
 
   },
   methods:{
+    cancelFollow(v){ //取消关注
+      v.favoredStatus = false;
+      let data = JSON.parse(localStorage.getItem("userInfo"));
+      if(!data){
+        Toast("您还未登录，请登录！");
+        setTimeout(()=>{
+          this.$router.push({path:"/login"})
+        },1000)
+      }else{
+        if(v.userType == "1"){ //企业
+          companyInfoCancelCareCompany(v.authorInfo.id,data.data.id,v.userType).then(res=>{
+            if(res.data.status==true){
+              v.authorInfo.caredStatus = false;
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }else if(v.userType == "2"){  //个人
+          commonUserCancelCareUser(v.authorInfo.id,data.data.id,v.userType).then(res=>{
+            if(res.data.status==true){
+              v.authorInfo.caredStatus = false;
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }
+      }
+    },
+   follow(v){ //关注
+     let data = JSON.parse(localStorage.getItem("userInfo"));
+     if(!data){
+       Toast("您还未登录，请登录！");
+       setTimeout(()=>{
+         this.$router.push({path:"/login"})
+       },1000)
+     }else{
+       if(v.userType == "1"){ //企业
+         companyInfoCareCompany(v.authorInfo.id,data.data.id,v.userType).then(res=>{
+           if(res.data.status==true){
+             v.authorInfo.caredStatus = true;
+           }else{
+             Toast("网络出错了，请重试")
+           }
+         })
+       }else if(v.userType == "2"){  //个人
+         commonUserCareUser(v.authorInfo.id,data.data.id,v.userType).then(res=>{
+           if(res.data.status==true){
+             v.authorInfo.caredStatus = true;
+           }else{
+             Toast("网络出错了，请重试")
+           }
+         })
+       }
+     }
+   },
+    commentariesClickTwo(v){ //评论去的点赞 第二级级的赞
+      let data = JSON.parse(localStorage.getItem("userInfo"));
+        if(!data){
+          Toast("您还未登录，请登录！");
+          setTimeout(()=>{
+            this.$router.push({path:"/login"})
+          },1000)
+        }else{
+          if(v.lauded == false){ //点赞
+            v.lauded = true;
+            replylaudReply(v.id,data.data.access_token).then(res=>{
+              if(res.status==true){
+//                    this.query(this.detailId);
+                v.laudedCount =  v.laudedCount+1;
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+          }else {  //取消赞
+            v.lauded = false;
+            replyCancelLaudReply(v.id,data.data.access_token).then(res=>{
+              if(res.status==true){
+                v.laudedCount =  v.laudedCount-1;
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+
+          }
+        }
+
+    },
+    commentariesClick(v){ //评论去的点赞 第一级的赞
+      let data = JSON.parse(localStorage.getItem("userInfo"));
+      if(!data){
+          Toast("您还未登录，请登录！");
+          setTimeout(()=>{
+            this.$router.push({path:"/login"})
+          },1000)
+        }else{
+          if(v.lauded == false){ //点赞
+            v.lauded = true;
+            commentlaudComment(v.id,data.data.access_token).then(res=>{
+              if(res.status==true){
+//                    this.query(this.detailId);
+                v.laudedCount =  v.laudedCount+1;
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+          }else {  //取消赞
+            v.lauded = false;
+            commentCancelLaudComment(v.id,data.data.access_token).then(res=>{
+              if(res.status==true){
+//                    this.query(this.detailId);
+                v.laudedCount =  v.laudedCount-1;
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+
+          }
+        }
+    },
+    nextPageClick(v){ //去下一页数据
+      console.log(v);
+      let data = JSON.parse(localStorage.getItem("userInfo"));
+      if(data){
+        sessionStorage.setItem("nextPageDetail",JSON.stringify(v));
+        this.$router.push({path:"/IntelligentComment",query:{id:v.id,token:data.data.access_token}})
+      }else{
+        Toast("您还未登陆，请登陆！")
+        setTimeout(()=>{
+          this.$router.push({path:"/login"})
+        },1000)
+      }
+
+    },
+    laudedStatus(v){ // 点赞
+      console.log(v)
+      let data = JSON.parse(localStorage.getItem("userInfo"));
+      console.log(data,"fdhsjkfks")
+      if(data){
+        v.laudedStatus = !v.laudedStatus
+          if(v.laudedStatus == true){ //点赞
+          customerPubContentLaudContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
+            console.log(res)
+            if(res.status == true){
+              v.laudedCount = v.laudedCount+1
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }else { //取消点赞
+          customerPubContentCancelLaudContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
+            if(res.status == true){
+              v.laudedCount = v.laudedCount-1;
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }
+      }else{
+        Toast("您还未登陆，请登陆！")
+        setTimeout(()=>{
+          this.$router.push({path:"/login"})
+        },1000)
+      }
+
+    },
+    favoredStatus(v){ //收藏
+      let data = JSON.parse(localStorage.getItem("userInfo"));
+      if(data){
+        v.favoredStatus = !v.favoredStatus
+        if(v.favoredStatus == true){ //点赞
+          customerPubContentFavorContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
+
+            if(res.status == true){
+              v.favoredCount = v.favoredCount+1
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }else { //取消点赞
+          customerPubContentCancelFavorContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
+            if(res.status == true){
+              v.favoredCount = v.favoredCount-1;
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }
+      }else{
+        Toast("您还未登陆，请登陆！")
+        setTimeout(()=>{
+          this.$router.push({path:"/login"})
+        },1000)
+      }
+    },
     headerClick(v){//点击头像 去吃瓜页 或则设计师主页 或者企业
+      if(v.authorInfo.vUser==1){ //去吃瓜
+        this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
+      }else{//去大咖
+        this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//2 是个人
+      }
 
     },
     openClick(v,i){ //展开收起
       v.messageShow = !v.messageShow;
       if(v.messageShow==false){
-        v.message1 = this.listData[i].message;
+        v.message1 = this.listData[i].content;
         v.value = "收起";
       }else{ //张开
-        v.message1=v.message.substring(0,69)+"...";
+        v.message1=v.content.substring(0,69)+"...";
         v.value = "展开";
       }
       this.listData[i] = v; //赋值给原来的小标值
@@ -226,6 +459,69 @@
     },
     Android(){//安卓下载
       location.href="https://www.pgyer.com/designcloud"
+    },
+    updataMore(){ //加载更多 分页
+      this.p++;
+      if(this.p>this.pageNum){
+        this.message = "这是我的底线..."
+        Toast("这是最后一页啦！")
+      }else if(this.p==this.pageNum){
+        this.message = "这是我的底线..."
+        commentFindCommentsByPubId(this.$router.history.current.query.id,this.p,this.s).then(res=>{
+          if(res.data.status == true){
+            res.data.data.forEach((item,index)=>{
+              if(item.sysUserContentVo){
+                if(item.sysUserContentVo.userDp){
+                  item.userDp = item.sysUserContentVo.userDp;
+                }else {
+                  item.userDp = "./static/images/defultphoto.png";
+                }
+                if(item.sysUserContentVo.name){
+                  item.name = item.sysUserContentVo.name;
+                }else {
+                  item.name = "游客";
+                }
+              }else{
+                item.userDp = "./static/images/defultphoto.png";
+                item.name = "游客";
+              }
+
+
+            })
+            this.commenArr =  this.commenArr.concat(res.data.data);
+          }else{
+            Toast("网络出错啦，请重试")
+          }
+        })
+      }else if(this.p<this.pageNum){
+        this.message = "点击加载更多..."
+        commentFindCommentsByPubId(this.$router.history.current.query.id,this.p,this.s).then(res=>{
+          if(res.data.status == true){
+            res.data.data.forEach((item,index)=>{
+              if(item.sysUserContentVo){
+                if(item.sysUserContentVo.userDp){
+                  item.userDp = item.sysUserContentVo.userDp;
+                }else {
+                  item.userDp = "./static/images/defultphoto.png";
+                }
+                if(item.sysUserContentVo.name){
+                  item.name = item.sysUserContentVo.name;
+                }else {
+                  item.name = "游客";
+                }
+              }else{
+                item.userDp = "./static/images/defultphoto.png";
+                item.name = "游客";
+              }
+
+
+            })
+            this.commenArr =  this.commenArr.concat(res.data.data);
+          }else{
+            Toast("网络出错啦，请重试")
+          }
+        })
+      }
     },
   }
 }
@@ -313,9 +609,37 @@
 
               .imgIs{
                 width: 100%;
-                img{
+                position: relative;
+                >img{
                   display: block;
                   width: 100%;
+                }
+                >.biaoqian{
+                  position: absolute;
+                  left: 0;
+                  top:0;
+                  height: 0.2rem;
+                  img{
+                    width: 0.13rem;
+                    height: 0.2rem;
+                    display: inline-block;
+                    float: left;
+                    margin: 0;
+                  }
+                  span{
+                    display: inline-block;
+                    float: left;
+                    line-height: 0.2rem;
+                    padding: 0 0.05rem;
+                    background: rgba(5,5,9,0.4);
+                    color: #ffffff;
+                    border-radius: 0.2rem;
+                    border: 0.01rem solid #ffffff;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                    font-size: 0.1rem;
+                  }
                 }
               }
 
@@ -332,11 +656,12 @@
               font-weight:400;
               line-height: 0.28rem;
               color:rgba(5,5,9,1);
+              word-wrap:break-word;
             }
             >div{
               position: absolute;
               right: 0.15rem;
-              bottom: 0.03rem;
+              bottom: -0.16rem;
               width: 0.5rem;
               height: 0.24rem;
               text-align: center;
@@ -344,7 +669,7 @@
               font-size:0.12rem;
               font-family:PingFangSC-Medium;
               font-weight:500;
-              color:rgba(5,5,9,1);
+              color:#21CB61;
             }
           }
           .follow_login_Follow_li4{
@@ -454,7 +779,6 @@
       padding: 0.1rem;
       box-sizing: border-box;
       width: 100%;
-      margin-bottom: 0.5rem;
       background: #ffffff;
       >li{
         width: 100%;
@@ -603,6 +927,15 @@
       }
 
     }
+  }
+  .messageFoot{
+    width: 100%;
+    height: 0.4rem;
+    line-height: 0.4rem;
+    background: #F7F7F7;
+    color: rgba(5,5,5,0.3);
+    text-align: center;
+    margin-bottom: 0.5rem;
   }
 }
 </style>
