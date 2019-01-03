@@ -892,3 +892,28 @@ export function allInformationAndPubFindMyCaredList(loginUser,userType,p,s,token
     }
   })
 }
+// 意见反馈
+export function suggestionTrackListOwner(token,p,s) { //id 用户id
+  Indicator.open("加载中...")
+  let data ={p:p,s:s}
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain+"/apis/operation/"+operationEdition+"/suggestionTrack/listOwner",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
+    }
+  })
+}

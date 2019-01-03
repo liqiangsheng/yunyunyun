@@ -131,7 +131,7 @@
     data(){
       return{
         p:1, //第几页
-        s:20,//每页多少
+        s:1,//每页多少
         pageNum:0, //总共多少页
         imgW:320,
         imgH:175,
@@ -158,7 +158,7 @@
     },
     created() {
      document.title = "关注列表"
-      this.userInfo = {data:{id:this.$router.history.current.query.id,access_token:this.$router.history.current.query.token}}
+      this.userInfo = {data:{id:this.$router.history.current.query.id,access_token:this.$router.history.current.query.token,userType:this.$router.history.current.query.userType}}
       if(this.userInfo.data.access_token){ //登录的情况  //
         this.LoginShow = true;
         allInformationAndPubFindMyCaredList( this.userInfo.data.id,this.userInfo.data.userType,this.p,this.s,this.userInfo.data.access_token).then(res=>{
@@ -257,9 +257,10 @@
           this.message = "这是我的底线..."
           Toast("这是最后一页啦！")
         }else if(this.p==this.pageNum){
-          this.message = "这是我的底线..."
+
           allInformationAndPubFindMyCaredList( this.userInfo.data.id,this.userInfo.data.userType,this.p,this.s,this.userInfo.data.access_token).then(res=>{
             if(res.status == true){
+              this.message = "这是我的底线..."
               res.data.forEach((item,index)=>{
                 item.messageShow = false;
                 item.message1 = "";
@@ -292,9 +293,10 @@
             }
           })
         }else if(this.p<this.pageNum){
-          this.message = "点击加载更多..."
+
           allInformationAndPubFindMyCaredList( this.userInfo.data.id,this.userInfo.data.userType,this.p,this.s,this.userInfo.data.access_token).then(res=>{
             if(res.status == true){
+              this.message = "点击加载更多..."
               res.data.forEach((item,index)=>{
                 item.messageShow = false;
                 item.message1 = "";
