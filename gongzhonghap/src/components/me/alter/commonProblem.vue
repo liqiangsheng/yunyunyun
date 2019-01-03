@@ -3,15 +3,19 @@
     <div class="commonProblem_box" ref="scrollBox" v-if="lisrData.length>0">
       <ul class="commonProblem_ul">
         <li v-for="(item,index) in lisrData">
-          <div class="commonProblem_title">{{item.time|formatTime1}}</div>
-          <div class="commonProblem_message" :class="{avtive:item.state==true}">
-            <img class="commonProblem_you_img"  v-if="item.state==false" :src="item.url" alt="">
-            <div class="commonProblem_you" v-if="item.state==false"><p v-if="item.type==1">{{item.value}}</p><img :src="item.value" alt="" v-if="item.type==2"></div>
-            <div class="commonProblem_me" v-if="item.state==true"><p v-if="item.type==1">{{item.value}}</p><img :src="item.value" alt="" v-if="item.type==2"></div>
-            <img class="commonProblem_me_img"  v-if="item.state==true" :src="item.url" alt="">
+          <div class="commonProblem_title">{{item.trackTime|formatTime1}}</div>
+          <div class="commonProblem_message" :class="{avtive:item.senderId==userInfo.data.id}">
+            <img class="commonProblem_you_img"  v-if="item.senderId!=userInfo.data.id" :src="item.senderUrl?item.senderUrl:'/static/images/defultphoto.png'" alt="">
+            <div class="commonProblem_you" v-if="item.senderId!=userInfo.data.id"><p v-if="item.content">{{item.content}}</p><img :src="item.url" alt="" v-if="item.url"></div>
+            <div class="commonProblem_me" v-if="item.senderId==userInfo.data.id"><p v-if="item.content">{{item.content}}</p><img :src="item.url" alt="" v-if="item.url"></div>
+            <img class="commonProblem_me_img"  v-if="item.senderId==userInfo.data.id" :src="item.senderUrl?item.senderUrl:'/static/images/defultphoto.png'" alt="">
           </div>
         </li>
+        <div class="messageFoot" @click="updataMore" v-if="lisrData.length>0">
+          {{message}}
+        </div>
       </ul>
+
     </div>
     <div v-else class="lengthFalse">
       <img src="/static/images/缺省图.png" alt="">
@@ -45,17 +49,15 @@
   name: 'commonProblem',
   data(){
     return{
+      p:1,
+      s:20,
+      userInfo:{},
+      pageNum:0,
+      message:"",
       actions:[{ name:"请下载不同Tech App提意见" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
       sheetVisible:false, //是否显示弹框
       messageValue:"", //意见的内容
-      lisrData:[
-//        {time:1541111115484123,url:"./static/images/people.png",state:false,value:"都是根本就发斯蒂芬根深蒂固",type:1},
-//        {time:1541111115484123,url:"./static/images/people.png",state:true,value:"./static/images/zhifubao.jpg",type:2},
-//        {time:1541111115484123,url:"./static/images/people.png",state:true,value:"./static/images/11111.jpg",type:2},
-//        {time:1541111115484123,url:"./static/images/people.png",state:false,value:"./static/images/活动.png",type:2},
-//        {time:1541111115484123,url:"./static/images/people.png",state:true,value:"你好，感谢反馈意见！如果可以，请附上界面截屏， 以便我们查看问题～",type:1},
-//        {time:1541111115484123,url:"./static/images/people.png",state:false,value:"你好，我想请问一下，为什么我发布的作品不见了？如截图！～",type:1},
-      ],
+      lisrData:[],
     }
   },
   created() {
@@ -66,7 +68,21 @@
         var scrollHeight = document.documentElement.scrollHeight||document.body.scrollHeight;
       }
     })
-    let userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    suggestionTrackListOwner(this.userInfo.data.access_token,this.p,this.s).then(res=>{
+      if(res.status ==true){
+        this.pageNum = Math.ceil(res.total/this.s);
+        if(this.pageNum>1){
+          this.message = "点击加载更多..."
+        }else{
+          this.message = "这是我的底线..."
+        }
+        this.lisrData = res.data;
+      }else{
+        Toast("网络出错啦，请重试")
+
+      }
+    })
 
   },
   methods:{
@@ -81,6 +97,32 @@
     },
     okClick(){
 
+    },
+    updataMore(){ //加载更多 分页
+      this.p++;
+      if(this.p>this.pageNum){
+        this.message = "这是我的底线..."
+        Toast("这是最后一页啦！")
+      }else if(this.p==this.pageNum){
+        suggestionTrackListOwner(this.userInfo.data.access_token,this.p,this.s).then(res=>{
+          if(res.status == true){
+            this.message = "这是我的底线..."
+
+            this.lisrData = this.lisrData.concat(res.data);
+          }else{
+            Toast("网络出错啦，请重试")
+          }
+        })
+      }else if(this.p<this.pageNum){
+        suggestionTrackListOwner(this.userInfo.data.access_token,this.p,this.s).then(res=>{
+          if(res.status == true){
+            this.message = "点击加载更多..."
+            this.lisrData =  this.lisrData.concat(res.data);
+          }else{
+            Toast("网络出错啦，请重试")
+          }
+        })
+      }
     },
     sendClick(){//发送
       if(this.messageValue==""){
@@ -167,6 +209,7 @@
                 display: block;
                 max-width: 1rem;
                 float: right;
+                margin-top: 0.1rem;
               }
             }
             .commonProblem_you{ //左
@@ -186,6 +229,7 @@
               img{
                 display: block;
                 max-width: 1rem;
+                margin-top: 0.1rem;
               }
             }
           }
@@ -279,4 +323,12 @@
       margin-top: 0.2rem;
     }
   }
+.messageFoot{
+  width: 100%;
+  height: 0.3rem;
+  line-height: 0.3rem;
+  color: rgba(5,5,5,0.3);
+  text-align: center;
+  margin-top: 0.1rem;
+}
 </style>

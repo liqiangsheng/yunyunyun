@@ -980,6 +980,31 @@ export function questionAndAnswerList(token,p,s) { //id 用户id
     }
   })
 }
+// 意见反馈
+export function suggestionTrackListOwner(token,p,s) { //id 用户id
+  Indicator.open("加载中...")
+  let data ={p:p,s:s}
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/suggestionTrack/listOwner",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
+    }
+  })
+}
 // 我的点赞作品
 export function customerLaudNoteListFavoredContent(id,token,p,s) { //userId 用户id
   Indicator.open("加载中...")
@@ -1341,4 +1366,26 @@ export function allInformationAndPubFindMyCaredList(loginUser,userType,p,s,token
     }
   })
 }
-
+// 分享
+export function shareInfoShareUrl(url) { //url域名
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/wxShare/shareInfo?shareUrl="+url);
+    ajax.setRequestHeader("Content-Type","application/json");
+    // ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
+    }
+  })
+}

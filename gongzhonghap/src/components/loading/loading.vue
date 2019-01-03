@@ -24,9 +24,11 @@ export default {
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
     if(this.userInfo){
-         setTimeout(()=>{
-           this.$router.push({path:"/acknowledgementOfOrder"})
-         },1000)
+      if(this.$store.state.loadingFalse==false){
+        setTimeout(()=>{
+          this.$router.push({path:"/acknowledgementOfOrder"})
+        },1000)
+      }
     }else{
       Toast("登录出错啦！请重新登录")
     }

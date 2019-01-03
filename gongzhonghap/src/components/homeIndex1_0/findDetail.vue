@@ -116,7 +116,8 @@
   import { Actionsheet } from 'mint-ui';
   import Vue from 'vue';
   Vue.component(Actionsheet.name, Actionsheet);
-  import {commentFindCommentsByPubId,customerPubContentFindOne,customerPubContentLaudContent,customerPubContentCancelLaudContent,customerPubContentFavorContent,customerPubContentCancelFavorContent,commentlaudComment,commentCancelLaudComment,replylaudReply,replyCancelLaudReply,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany } from '../../assets/js/promiseHttp'; //数据
+  import wxShare from "../../assets/js/wxShare"
+  import {shareInfoShareUrl,commentFindCommentsByPubId,customerPubContentFindOne,customerPubContentLaudContent,customerPubContentCancelLaudContent,customerPubContentFavorContent,customerPubContentCancelFavorContent,commentlaudComment,commentCancelLaudComment,replylaudReply,replyCancelLaudReply,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany } from '../../assets/js/promiseHttp'; //数据
 
   export default {
   name: 'follow',
@@ -236,7 +237,27 @@
     }
 
   },
+    mounted(){
+      this.share();
+
+    },
+
   methods:{
+    share(){//分享
+      shareInfoShareUrl(window.location.href.split('#')[0]).then(res=>{
+         if(res.status==true){
+           let obj = {
+             title:this.listData[0].authorInfo.name,
+             desc:this.listData[0].message1,
+             url:location.href,
+             imgUrl:this.listData[0].authorInfo.ownerUrl,
+           }
+           wxShare.wxShare(res.data,obj)
+         }else{
+           Toast("网络出错了，请重试")
+         }
+      })
+    },
     cancelFollow(v){ //取消关注
       v.favoredStatus = false;
       let data = JSON.parse(localStorage.getItem("userInfo"));

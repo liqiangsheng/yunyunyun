@@ -18,4 +18,7 @@ export let mutations = {
   homePageIndex(state,data){
     state.homePageIndex=data;
   },
+  loadingFalse(state,data){
+    state.loadingFalse=data;
+  },
 }

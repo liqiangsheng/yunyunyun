@@ -5,14 +5,14 @@
     <div class="telPhone">
         <div class='telPhoneImae'> <img src='/static/images/tel.png'/><span class='add86'>+86</span> </div>
          <div class="xian"></div>
-          <input type='number' @blur='telPhone' placeholder="请输入手机号码" v-model='telValue'/>
+          <input oninput="if(value.length>11)value=value.slice(0,11)" type='number' @blur='telPhone' placeholder="请输入手机号码" v-model='telValue'/>
 
     </div>
 
         <div class="verificatioCode">
           <div class='verificatioCodeImage'><img src='/static/images/code.png'></div>
           <div class="xian"></div>
-          <input  @blur='codePsd'type="number" placeholder="请输入验证码" v-model='psdValue'/>
+          <input  @blur='codePsd' oninput="if(value.length>6)value=value.slice(0,6)" type="number" placeholder="请输入验证码" v-model='psdValue'/>
           <button class="ObtainCode"  @click="ObtainCode" v-if='isShow'>{{code}}</button>
           <button class="ObtainCode"  disabled v-if='!isShow'>{{codeNum}}秒后重新发送</button>
         </div>

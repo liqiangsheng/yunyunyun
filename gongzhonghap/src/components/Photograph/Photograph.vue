@@ -81,6 +81,7 @@ export default {
         this.faceUrl = res;
         console.log( this.faceUrl )
         sessionStorage.setItem("faceUrl", JSON.stringify(this.faceUrl)) //面部识别参数
+        this.$store.dispatch('loadingFalse',false) //是顺着去加载页还是退回来false为顺着去
         this.$router.push({path:"/loading"})
       })
     },

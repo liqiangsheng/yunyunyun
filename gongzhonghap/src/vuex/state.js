@@ -6,4 +6,5 @@ export let state = {
   tabbarAarrIndex:0, //设计咖 智慧团 资源池下标
   headerIndex:0, //设计咖 智慧团 资源池头部下标
   homePageIndex:0, //个人主页，简介下标
+  loadingFalse:false,//有没有在等待页面出现
 }

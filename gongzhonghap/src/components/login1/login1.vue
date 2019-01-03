@@ -3,12 +3,12 @@
     <div class='loginTitle1'><img :src='infoData.bannerUrl'/></div>
     <div class="telPhone1">
       <div class='telPhoneImae1'> <img src='/static/images/tel.png'/><span class='add861'>+86</span> </div>
-      <div class='telPhoneImae11'><input type='number' @blur='telPhone' placeholder="请输入手机号码" v-model='telValue'/></div>
+      <div class='telPhoneImae11'><input type='number' oninput="if(value.length>11)value=value.slice(0,11)" @blur='telPhone' placeholder="请输入手机号码" v-model='telValue'/></div>
     </div>
 
     <div class="verificatioCode1">
       <div class='verificatioCodeImage1'><img src='/static/images/code.png'></div>
-      <div class='verificatioCodeImage11'><input  @blur='codePsd' placeholder="请输入验证码" v-model='psdValue'/>
+      <div class='verificatioCodeImage11'><input  oninput="if(value.length>6)value=value.slice(0,6)" @blur='codePsd' placeholder="请输入验证码" v-model='psdValue'/>
         <button @click="ObtainCode" v-if='isShow'>{{code}}</button>
         <button disabled v-else>{{codeNum}}秒</button>
       </div>

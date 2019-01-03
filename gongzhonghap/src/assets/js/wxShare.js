@@ -3,7 +3,7 @@
 console.log(wx)
 export default {
      wxShare(newVal, _shareObj,_this){ //newVal后台返回的分享参数 ，_shareObj分享的内容 ，_this == this
-        if(newVal == null || newVal == undefined || _this.$store.state.browerType != 1){//
+        if(newVal == null || newVal == undefined ){//
             return;
         }
         console.log("微信分享：");
@@ -11,9 +11,9 @@ export default {
         console.log( _shareObj);
         wx.config({
             debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: newVal.appid || null, // 必填，公众号的唯一标识
+            appId: newVal.appId || null, // 必填，公众号的唯一标识
             timestamp: newVal.timestamp || null, // 必填，生成签名的时间戳
-            nonceStr: newVal.nonce_str || null, // 必填，生成签名的随机串
+            nonceStr: newVal.noncestr || null, // 必填，生成签名的随机串
             signature: newVal.signature || null, // 必填，签名，见附录1
             jsApiList: [
             "onMenuShareTimeline",
@@ -27,28 +27,30 @@ export default {
             // }
             //分享给朋友
             wx.onMenuShareAppMessage({
-            title: _shareObj.title || "", // 分享标题
-            desc: _shareObj.desc || "", // 分享描述
-            link: _shareObj.url || "", // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: _shareObj.imgUrl || "", // 分享图标
+            title: _shareObj.title || "「不同」", // 分享标题
+            desc: _shareObj.desc || "「不同」是一家致力于推动中国工业设计创新的技术服务公司", // 分享描述
+            link: _shareObj.url || location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+            imgUrl: _shareObj.imgUrl || "https://pub.qinius.butongtech.com/180%2A180@3x.png", // 分享图标
             //   type: _shareObj.desc || "", // 分享类型,music、video或link，不填默认为link
             //   dataUrl: "", // 如果type是music或video，则要提供数据链接，默认为空
             success: function() {
                 // 用户确认分享后执行的回调函数
-                // alert("分享成功");
+                alert("分享成功");
             },
             cancel: function() {
                 // 用户取消分享后执行的回调函数
+              alert("取消");
             }
             });
 
             //分享到朋友圈
             wx.onMenuShareTimeline({
-            title: _shareObj.title || "", // 分享标题
+            title: _shareObj.title || "「不同」", // 分享标题
             link: _shareObj.url || location.href, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
-            imgUrl: _shareObj.imgUrl || "", // 分享图标
+            imgUrl: _shareObj.imgUrl || "https://pub.qinius.butongtech.com/180%2A180@3x.png", // 分享图标
             success: function() {
                 // 用户确认分享后执行的回调函数
+               console.log(res)
             },
             cancel: function() {
                 // 用户取消分享后执行的回调函数

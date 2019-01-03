@@ -17,4 +17,7 @@ export let actions={ //异步处理VUEX
   homePageIndex(store,data){
     store.commit("homePageIndex",data)
   },
+  loadingFalse(store,data){
+    store.commit("loadingFalse",data)
+  },
 };
