@@ -139,7 +139,11 @@ Page({
         })
         return;
       } else {
-
+        wx.showToast({
+          title: '加载中',
+          icon: 'loading',
+          duration: 20000
+        })
         wx.request({// 请求登录数据
           url: API.apiDomain + '/apis/operation/' + API.operationEdition +'/sysUserOperation/bindMobile',
           data: { "mobile": that.data.telValue, "verifyCode": that.data.psdValue, "mobileType": "XCX" },
@@ -150,6 +154,7 @@ Page({
           },
           success(res) {
             if (res.data.status == true) {
+              wx.hideToast();
               wx.request({ //登录成功去请求个人数据保存
                 url: API.apiDomain + '/apis/operation/' + API.operationEdition +'/commonUser/findCommonUserById',
                 method: "GET",

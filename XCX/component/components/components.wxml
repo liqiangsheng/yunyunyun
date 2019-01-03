@@ -21,7 +21,7 @@
           <view class='img-infoBox' bindtap='goDetail' data-id="{{item.id}}">
             <view class='img-infoBoxInfo'>{{item.title}}</view>
                 <view class="img-info">
-                  <view class="img-info_li1"><image src="{{item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'../../imgages/defultphoto.png'}}" alt=""></image></view>
+                  <view class="img-info_li1"><image src="{{item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'../../images/defultphoto.png'}}" alt=""></image></view>
                   <view class="img-info_li2">{{item.authorInfo.name}}</view>
                   <view class="img-info_li3"><image src="../../images/dianzan1.png" alt=""></image></view>
                   <view class="img-info_li4">{{item.laudedCount}}</view>

@@ -14,18 +14,7 @@ Component({
   */
   data: {
     message: "不同努力加载中...",
-    leftList: [],//左侧集合
-    rightList: [],//右侧集合
-    listData: [
-      { title: "可爱大方的小果果搞怪", url: "../../images/1.png", time: 154189654123654 },
-      { title: "可爱大方的小果果搞怪可爱大方的小果果搞怪可爱大方的小果果搞怪121312312", url: "../../images/2.png", time: 154189654123654 },
-      { title: "可爱大方的小果果搞怪", url: "../../images/3.png", time: 154189654123654 },
-      { title: "可爱大方的小果果搞怪", url: "../../images/5.png", time: 154189654123654 },
-      { title: "可爱大方的小果果搞怪", url: "../../images/4.png", time: 154189654123654 },
-      { title: "可爱大方的小果果搞怪", url: "../../images/6.png", time: 154189654123654 },
-      { title: "可爱大方的小果果搞怪", url: "../../images/4.png", time: 154189654123654 },
-      { title: "可爱大方的小果果搞怪", url: "../../images/4.png", time: 154189654123654 },
-    ], //数据
+    listData: [], //数据
     pageNum: 0,
     data: {
       p: 1, // request param//
@@ -49,8 +38,8 @@ Component({
           "Authorization": "bearer " + data.access_token
         },
         data: {
-          p: this.data.p,
-          s: this.data.s,
+          p: this.data.data.p,
+          s: this.data.data.s,
           userId: data.id,
           // userId: "100",
           pubStatus: false
@@ -61,15 +50,15 @@ Component({
 
 
         success: function (res) {
-          console.log(res)
+
           if(res.data.status == true){
-            console.log(res)
-            console.log(that.data.data.s)
+           
+       
             let num = Math.ceil(res.data.total / that.data.data.s);
             that.setData({
               pageNum: num
             })
-            console.log(that.data.data.s)
+          
             if (num > 1) {
               that.setData({
                 message: '点击加载更多...'
@@ -85,7 +74,7 @@ Component({
               item.timeI = formatTime.formatTime5(item.updateTime) 
             
             })
-            console.log(res.data.data)
+          
             that.setData({
               listData: res.data.data
             })
@@ -126,14 +115,15 @@ Component({
           "Authorization": "bearer " + data.access_token
         },
         data: {
-          p: this.data.p,
-          s: this.data.s,
+          p: this.data.data.p,
+          s: this.data.data.s,
           userId: data.id,
+          //  userId: "100",
           pubStatus: false
         },
 
         success: function (res) {
-          console.log(res)
+
           if(res.data.status==true){
             res.data.data.forEach((item, index) => {
               item.timeI = formatTime.formatTime5(item.updateTime)

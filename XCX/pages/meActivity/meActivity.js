@@ -170,7 +170,10 @@ Page({
     })
   },
   resetData(a){ //初始化数据
-   
+    wx.showLoading({
+      title: '加载中',
+      mask:true,
+    })
     let data = wx.getStorageSync("userInfo"), that = this;
     wx.request({
       method: 'POST',

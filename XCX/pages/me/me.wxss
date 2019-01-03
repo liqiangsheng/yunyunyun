@@ -110,3 +110,6 @@
       border-bottom: 2px solid #000000;
    }
  
+ .Me_draft{
+   width: 100%;
+ }

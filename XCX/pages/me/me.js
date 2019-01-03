@@ -36,7 +36,7 @@ Page({
  
   },
   Me_tabClick(e) { ////原创 草稿
-
+    console.log(e.currentTarget.dataset.index)
     this.setData({
       meTabIndex: e.currentTarget.dataset.index
     })
@@ -168,6 +168,11 @@ Page({
        that.setData({
          tabListBool:true
        })
+       wx.showToast({
+         title: '加载中',
+         icon: 'loading',
+         duration: 20000
+       })
        wx.request({ //设置的默认东西
 
          url: API.apiDomain + '/apis/operation/' + API.operationEdition +'/commonUser/findCommonUserById',
@@ -183,7 +188,7 @@ Page({
          success: function (res) {
           
            if (res.data.status == true) {
-             console.log(res.data.data,"dbasdkas")
+             wx.hideToast();
              that.setData({
                bgImge: res.data.data.owner_url ? res.data.data.owner_url : "../../images/defultphoto.png" ,
                userInfo: {

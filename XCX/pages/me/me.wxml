@@ -29,7 +29,7 @@
     </view>
       <!--,//原创 草稿组件-->
     <view  class="Me_draft">
-      <Original class='Me_Original' wx:if="{{meTabIndex==0}}"></Original>
+        <Original class='Me_Original' prop-a="{{imgList}}" wx:if="{{meTabIndex==0}}"></Original>
         <Draft wx:if="{{meTabIndex==1}}"></Draft>
     </view>
     

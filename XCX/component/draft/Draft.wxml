@@ -1,7 +1,7 @@
 <!--component/draft/Draft.wxml-->
 <view class='componentsBox_Show' wx:if='{{listData.length<=0}}'>
    <image src="../../images/yuanchuang.png"></image>
-   <view>你还没有进行任何创作哦～</view>
+   <view>你还没有任何草稿哦～</view>
 </view>
 
  <view class="draft_ul" v-else>

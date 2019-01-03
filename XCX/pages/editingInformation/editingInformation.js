@@ -282,12 +282,18 @@ Page({
   
   headPortrait() { //上传照片
     let that = this
+    wx.showToast({
+      title: '加载中',
+      icon: 'loading',
+      duration: 20000
+    })
     wx.chooseImage({
       count: 1,
       sizeType: ['original', 'compressed'],
       sourceType: ['album', 'camera'],
       success(res) {
         // tempFilePath可以作为img标签的src属性显示图片
+        wx.hideToast();
         const tempFilePaths = res.tempFilePaths
        
         that.setData({
@@ -315,8 +321,10 @@ Page({
     let that = this;
     let data = wx.getStorageSync("userInfo");
     if(data){
-      wx.showLoading({
-        title: '加载中...',
+      wx.showToast({
+        title: '加载中',
+        icon: 'loading',
+        duration: 20000
       })
       wx.request({
         url: API.apiDomain + '/apis/operation/' + API.operationEdition +'/sysUserOperation/updateUserInfo',
@@ -337,10 +345,10 @@ Page({
           let obj ={};
           
           if(res.data.status == true){
+            wx.hideToast();
             obj.name = that.data.userName;
             obj.header = that.data.imgSrc;
             wx.setStorageSync("userInfoImgs", obj)
-            wx.hideLoading();
           
             setTimeout(()=>{
               wx.navigateBack({

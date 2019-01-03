@@ -218,9 +218,12 @@ Page({
           icon: 'success',
           duration: 2000
         })
-      wx.switchTab({
-        url: '../../pages/index/index'
-      })
+        setTimeout(()=>{
+          wx.switchTab({
+            url: '../../pages/index/index'
+          })
+        },1000)
+     
     } else {
       wx.setStorageSync("userInfoImgs", that.data.userInfo)
       wx.showToast({

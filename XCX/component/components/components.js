@@ -18,7 +18,7 @@ Component({
     pageNum:0,
     data: {
       p: 1, // request param//
-      s: 1000, // request param//
+      s: 20, // request param//
     },
   },
 
@@ -48,8 +48,8 @@ Component({
         data: {
           p:this.data.data.p,
           s: this.data.data.s,
-          // userId:data.id,
-          userId:"100",
+          userId:data.id,
+          // userId:"100",
           pubStatus:true
         },
         complete() {  //请求结束后隐藏 loading 提示框
@@ -58,7 +58,6 @@ Component({
 
         success: function (res) {
           if(res.data.status == true){
-            console.log(res)
             that.setData({
               pageNum: Math.ceil(res.data.total / that.data.data.s)
             })
@@ -82,8 +81,7 @@ Component({
                 listData: res.data.data
               })
               that.fillData(false, res.data.data);
-              console.log(res.data.data)
-            }, 500)
+            }, 100)
           }else{
             wx.showModal({
               showCancel: false,
@@ -102,7 +100,6 @@ Component({
 
   methods: {
     goDetail(e){
-      console.log(e.currentTarget.dataset.id)
       wx.navigateTo({
         url: '../../pages/findDetail/findDetail?id=' + e.currentTarget.dataset.id,
       })
@@ -124,11 +121,11 @@ Component({
           p: this.data.data.p,
           s: this.data.data.s,
           userId: data.id,
+          // userId: "100",
           pubStatus: true
         },
 
         success: function (res) {
-          console.log(res)
           if(res.data.status ==true){
             that.setData({
               pageNum: Math.ceil(res.data.total / that.data.data.s)
@@ -143,10 +140,10 @@ Component({
             setTimeout(() => {
               if(res.data.data.length>0){
                 that.setData({
-                  listData:res.data.data
+                  listData: that.data.listData.concat(res.data.data)
                 })
               
-                that.fillData(false, that.data.listData);
+                that.fillData(true, that.data.listData);
               }else{
                 wx.showModal({
                   showCancel: false,
@@ -155,7 +152,7 @@ Component({
                 })
               }
             
-            }, 500)
+            }, 100)
           }else{
             wx.showModal({
               showCancel: false,
@@ -172,7 +169,6 @@ Component({
      * 填充数据
      */
     fillData: function (isPull, listData) {
-      console.log(listData)
       if (isPull) { //是否下拉刷新，是的话清除之前的数据
         leftList.length = 0;
         rightList.length = 0;
@@ -206,7 +202,11 @@ Component({
         leftList: leftList,
         rightList: rightList,
       });
-    
+
+      leftList=[];
+      rightList=[];
+      leftHight = 0;
+      rightHight = 0;
     },
   }
 })

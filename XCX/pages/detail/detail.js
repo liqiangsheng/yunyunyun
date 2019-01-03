@@ -266,24 +266,28 @@ Page({
       var date = new Date();
       var nowTime = date.getTime();
     if (nowTime > that.data.banner.endTime) { //判断活动结束或者正在进行中  上线放开
+  
       wx.showToast({
-        title: '该活动已结束',
-        icon: 'success',
+        duration: 2000,
+        title: "该活动已结束",
+        icon: "none"
       })
       return;
     } else if (nowTime > that.data.banner.signEndTime) {
-      wx.showModal({
-        showCancel: false,
+      wx.showToast({
+        duration: 2000,
         title: "活动报名已结束",
-        icon: 'success',
+        icon: "none"
       })
+
       return;
     } else if (nowTime < that.data.banner.signStartTime) {
-      wx.showModal({
-        showCancel: false,
+      wx.showToast({
+        duration: 2000,
         title: "活动尚未开始报名，请选择其他活动！",
-        icon: 'success',
+        icon: "none"
       })
+    
       return;
     }
     if (data) { //有没有登录      //登录了

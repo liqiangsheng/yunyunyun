@@ -18,10 +18,11 @@ Page({
     let data = wx.getStorageSync("userInfo"), that = this;
     console.log(data, "111")
     if (data) {
-      that.data.url = API.url + "/follow?token=" + data.access_token + "&id=" + data.id
+      that.data.url = API.url + "/follow?token=" + data.access_token + "&id=" + data.id + "&userType=" + data.userType;
       that.setData({
         url: that.data.url,
       })
+      console.log(that.data.url)
     } else {
       wx.showModal({
         showCancel: false,
