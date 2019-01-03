@@ -39,6 +39,7 @@ export default {
     }
   },
   created() {
+    document.title = "智慧团"
     operationTeamInfos(this.p,this.s).then(res=>{
       if(res.data.status == true){
           this.pageNum = Math.ceil(res.data.total/this.s);

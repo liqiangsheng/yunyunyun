@@ -11,7 +11,12 @@
       </div>
       <div class="IntelligentMatchingDHeaderIndex2">
         <img :src="userDp" alt="" @click="authorClcik(messageArr.orgId,messageArr.createdUser)">
-        <button @click="giveClick">作者</button>
+        <div>
+          <p>{{titleName}}</p>
+          <span>{{messageArr.createdAt|formatTime}}</span>
+        </div>
+
+        <button>关注</button>
       </div>
       <div class="IntelligentMatchingDHeaderIndex3" v-if="messageArr.summary">
         <img src="/static/images/shuangying1.png" alt="" style="margin: 0 0.1rem">
@@ -98,7 +103,7 @@
     name: 'IntelligentMatchingD',
     data(){
       return{
-        boxShow:false,//初始化数据成功
+        boxShow:true,//初始化数据成功
         actions:[{ name:"请下载App" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
         sheetVisible:false, //是否显示弹框
         messageArr:{},//文章
@@ -106,11 +111,12 @@
         p:1, //分页
         s:20,//分页
         userDp:"./static/images/defultphoto.png",
+        titleName:"",//名字点赞的
       }
     },
     created(){
       this.$nextTick(function () {
-        document.title = "主页详情";
+        document.title = "文章详情";
       })
 
       if(this.$router.history.current.query.id){
@@ -120,7 +126,8 @@
               this.userDp = res.data.sysUserContentVo.userDp;
             }
               this.boxShow=true;//初始化数据成功
-              this.messageArr = res.data
+            this.titleName = res.data.sysUserContentVo.name;
+            this.messageArr = res.data
           }else{
             Toast("网络出错了，请重试")
           }
@@ -214,19 +221,43 @@
       .IntelligentMatchingDHeaderIndex2{
         width: 100%;
         margin: 0.15rem 0;
+        height: 0.64rem;
         position: relative;
+        display: flex;
         img{
           display: inline-block;
-          width: 0.64rem;
-          height: 0.64rem;
+          width: 0.5rem;
+          height: 0.5rem;
           border-radius: 50%;
+          margin-right: 0.05rem;
+        }
+        >div{
+          width: 2rem;
+          height: 0.64rem;
+          p{
+            font-weight: 900;
+            font-size: 0.12rem;
+            line-height: 0.2rem;
+            overflow: hidden;
+            word-break:break-all;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+          }
+          span{
+            color:rgba(102,102,102,1);
+            font-size: 0.1rem;
+            line-height: 0.2rem;
+          }
         }
         button{
           position: absolute;
           right: 0;
-          top: 0.08rem;
-          width: 1.0rem;
-          height: 0.4rem;
+          top: 0.1rem;
+          width: 0.7rem;
+          height: 0.3rem;
+          line-height: 0.3rem;
           border: 0;
           background:#050509;
           border-radius:0.05rem;
@@ -359,8 +390,8 @@
           height: 0.8rem;
           >img{
             display: block;
-            width: 100%;
-            height: 100%;
+            width: 0.8rem;
+            height: 0.8rem;
             border-radius: 50%;
           }
         }

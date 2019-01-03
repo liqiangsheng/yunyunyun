@@ -1,6 +1,6 @@
 <template>
   <div id="commonProblem">
-    <div class="commonProblem_box" ref="scrollBox">
+    <div class="commonProblem_box" ref="scrollBox" v-if="lisrData.length>0">
       <ul class="commonProblem_ul">
         <li v-for="(item,index) in lisrData">
           <div class="commonProblem_title">{{item.time|formatTime1}}</div>
@@ -13,7 +13,10 @@
         </li>
       </ul>
     </div>
-
+    <div v-else class="lengthFalse">
+      <img src="/static/images/缺省图.png" alt="">
+      <p>你的个人意见区目前空空也～</p>
+    </div>
      <!--<div class="commonProblem_input" @click="footClick">-->
         <!--<div class="commonProblem_img">-->
           <!--<img src="/static/images/people.png" alt=""  disabled="disabled">-->
@@ -44,12 +47,12 @@ export default {
       sheetVisible:false, //是否显示弹框
       messageValue:"", //意见的内容
       lisrData:[
-        {time:1541111115484123,url:"./static/images/people.png",state:false,value:"都是根本就发斯蒂芬根深蒂固",type:1},
-        {time:1541111115484123,url:"./static/images/people.png",state:true,value:"./static/images/zhifubao.jpg",type:2},
-        {time:1541111115484123,url:"./static/images/people.png",state:true,value:"./static/images/11111.jpg",type:2},
-        {time:1541111115484123,url:"./static/images/people.png",state:false,value:"./static/images/活动.png",type:2},
-        {time:1541111115484123,url:"./static/images/people.png",state:true,value:"你好，感谢反馈意见！如果可以，请附上界面截屏， 以便我们查看问题～",type:1},
-        {time:1541111115484123,url:"./static/images/people.png",state:false,value:"你好，我想请问一下，为什么我发布的作品不见了？如截图！～",type:1},
+//        {time:1541111115484123,url:"./static/images/people.png",state:false,value:"都是根本就发斯蒂芬根深蒂固",type:1},
+//        {time:1541111115484123,url:"./static/images/people.png",state:true,value:"./static/images/zhifubao.jpg",type:2},
+//        {time:1541111115484123,url:"./static/images/people.png",state:true,value:"./static/images/11111.jpg",type:2},
+//        {time:1541111115484123,url:"./static/images/people.png",state:false,value:"./static/images/活动.png",type:2},
+//        {time:1541111115484123,url:"./static/images/people.png",state:true,value:"你好，感谢反馈意见！如果可以，请附上界面截屏， 以便我们查看问题～",type:1},
+//        {time:1541111115484123,url:"./static/images/people.png",state:false,value:"你好，我想请问一下，为什么我发布的作品不见了？如截图！～",type:1},
       ],
     }
   },
@@ -252,6 +255,24 @@ export default {
         text-align: center;
       }
     }
+  }
+}
+.lengthFalse{
+  width: 100%;
+  padding-top: 1rem;
+  img{
+    display: block;
+    margin: 0 auto;
+    width: 1rem;
+    height: 0.94rem;
+  }
+  p{
+    width: 100%;
+    text-align: center;
+    line-height: 0.5rem;
+    font-weight:400;
+    color:rgba(153,153,153,1);
+    margin-top: 0.2rem;
   }
 }
 </style>

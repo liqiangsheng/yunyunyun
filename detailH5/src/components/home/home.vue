@@ -220,7 +220,7 @@ export default {
     next()
   },
   created(){
-
+       document.title="活动详情"
   },
   methods:{
 

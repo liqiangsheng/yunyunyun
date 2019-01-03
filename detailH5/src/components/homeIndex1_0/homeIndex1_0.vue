@@ -18,6 +18,10 @@
 <script>
   import Find from './alter/find.vue';
   import Follow from './alter/follow.vue';
+  import { Toast } from 'mint-ui';  //弹框
+  import { Actionsheet } from 'mint-ui';
+  import Vue from 'vue';
+  Vue.component(Actionsheet.name, Actionsheet);
   export default {
     name: 'find',
     components:{
@@ -27,16 +31,22 @@
       return{
         headerTab:["发现","关注"], //tab
         headerTabIndex:0,//是关注还是发现
+        token:"",
+        id:"",
       }
     },
     created() {
-
     },
     methods:{
       tabClick(i){//头部切换
         this.headerTabIndex =i;
         if(i==1){
-          this.$router.push({path:"/follow"})
+//          this.$router.push({path:"/follow",query:{token:this.token,id:this.id}})
+          if(window.__wxjs_environment === 'miniprogram'){
+            wx.miniProgram.navigateTo({url: '../../pages/follow/follow'})   //跳回小程序需要显示的页面路劲
+          }else{
+            Toast("请在微信浏览器里打开");
+          }
         }
       }
     }

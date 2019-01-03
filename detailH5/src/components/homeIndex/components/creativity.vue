@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import DesignOffee from "./design_offee.vue" //设计咖
+  import DesignOffee from "./design_offee1.vue" //设计咖
   import IntelligenceOrps from "./Intelligence_orps.vue" //智慧团
   import ResourcePool from "./resource_pool.vue" //资源池
 export default {
@@ -31,11 +31,13 @@ export default {
     }
   },
   created() {
-
+    document.title = "创新力"
+    this.headerIndex = this.$store.state.tabbarAarrIndex; //点击还回回到原来的页面
   },
   methods:{
     headerClick(index){
       this.headerIndex = index;
+      this.$store.dispatch("tabbarAarrIndex",this.headerIndex) //设计咖 智慧团 资源池下标存VueX
     }
   }
 }

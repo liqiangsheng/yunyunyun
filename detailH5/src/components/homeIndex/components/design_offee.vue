@@ -38,7 +38,7 @@ export default {
   data(){
     return{
       p:1,  //页
-      s:5, //每页多少
+      s:20, //每页多少
       message:"不同努力加载中...", //触底提示
       pageNum:"",//每页数据
       objList:[], // 智慧团数据
@@ -47,6 +47,7 @@ export default {
     }
   },
   created() {
+    document.title = "设计咖"
     commonUserList(this.p,this.s).then(res=>{
       if(res.data.status == true){
         console.log(res,"fhsdfjk")

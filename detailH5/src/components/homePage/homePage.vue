@@ -73,14 +73,16 @@ export default {
   methods:{
     listClick(i){ //列表点击
       this.homePageIndex = i;
+      this.$store.dispatch("homePageIndex",this.homePageIndex);//vueX保存下标
     }
   },
   created(){
+    console.log( this.$store.state.homePageIndex)
     console.log(this.$router.history.current.query)
     if(this.$router.history.current.query){
       this.Request = this.$router.history.current.query;
       sessionStorage.setItem("homePageObj",JSON.stringify(this.$router.history.current.query))
-      if(this.$router.history.current.query.state == "1"){
+      if(this.$router.history.current.query.state == "1"){//企业
         companyInfoFindOne(this.$router.history.current.query.id).then(res=>{
           console.log(res,"djalsdl;")
           if(res.status == true){
@@ -97,13 +99,14 @@ export default {
             })
             res.data.logoUrl1 = "./static/images/defultphoto.png";
             this.objData = res.data;
+            this.homePageIndex = this.$store.state.homePageIndex;// vueX拿数据
           }else{
             Toast("网络出错了，请重试")
           }
         })
 
       }else{
-        commonUserFindOne(this.$router.history.current.query.id).then(res=>{
+        commonUserFindOne(this.$router.history.current.query.id).then(res=>{ //个人
           if(res.status==true){
             console.log(res.data,"daskfka")
             let num = res.data.designerUser.powerIndex*10 / 100;
@@ -119,6 +122,7 @@ export default {
             res.data.laudedCount = res.data.laudedCount?res.data.laudedCount:0;
             res.data.ownerUrl1 = "./static/images/defultphoto.png";
             this.objData = res.data;
+            this.homePageIndex = this.$store.state.homePageIndex;// vueX拿数据
           }else{
             Toast("网络出错了，请重试")
           }

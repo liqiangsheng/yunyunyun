@@ -9,18 +9,21 @@
         <ul class="follow_login_Follow_ul">
           <li class="follow_login_Follow_li" v-for="(item,index) in listData">
             <div class="follow_login_Follow_li1">
-              <img :src="item.url" alt="">
-              <p>{{item.name}}</p>
-              <div v-if="item.type==false"><img src="/static/images/已关注.png" alt="">关注</div>
-              <div v-if="item.type==true" class="active">取消关注</div>
+              <img :src="item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt="" @click="headerClick(item)">
+              <p>{{item.authorInfo.name}}</p>
+              <div v-if="!item.authorInfo.caredStatus"><img src="/static/images/已关注.png" alt="">关注</div>
+              <div v-else class="active">取消关注</div>
             </div>
-            <div class="follow_login_Follow_li2">
+            <div class="follow_login_Follow_li2" ref="windwosWH">
               <!--轮播-->
               <div class="swiper-container">
                 <div class="swiper-wrapper">
-                  <div class="swiper-slide" v-for="(item,index) in item.bannerUrl">
+                  <div class="swiper-slide" v-for="(item1,index1) in item.attachments">
                     <div class="imgIs">
-                      <img :src="item" >
+                      <img :src="item1.url" >
+                      <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*imgW+'px',top:item2.axesyRate*imgW+'px'}">
+                        <img src="/static/images/标签.png" alt=""><span>{{item2.title}}</span>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -31,20 +34,25 @@
             </div>
             <div class="follow_login_Follow_li3">
               <p>{{item.message1}}</p>
-              <div v-show="item.message&&item.message.length>69" @click="openClick(item,index)">{{item.value}}</div>
+              <div v-show="item.content&&item.content.length>69" @click="openClick(item,index)">{{item.value}}</div>
             </div>
             <div class="follow_login_Follow_li4">
+                <div>
+                  <img src="/static/images/关注阅读量.png" alt="">
+                  {{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}
+                </div>
+                <div>
+                  <img src="/static/images/点赞2.png" alt="" v-if="item.laudedStatus==true">
+                  <img src="/static/images/点赞.png" alt="" v-else>
+                  {{item.laudedCount<10000?item.laudedCount:(item.laudedCount/10000).toFixed(2)+'万'}}
+                </div>
+                <div>
+                  <img src="/static/images/收藏2.png" alt="" v-if="item.favoredStatus==true">
+                  <img src="/static/images/收藏1.png" alt="" v-else>
+                  {{item.favoredCount<10000?item.favoredCount:(item.favoredCount/10000).toFixed(2)+'万'}}
+                </div>
               <div>
-                <img src="/static/images/关注阅读量.png" alt="">12616
-              </div>
-              <div>
-                <img src="/static/images/点赞.png" alt="">12616
-              </div>
-              <div>
-                <img src="/static/images/收藏1.png" alt="">12616
-              </div>
-              <div>
-                <img src="/static/images/分享.png" alt="">12616
+                <img src="/static/images/分享.png" alt="">1.2万
               </div>
 
             </div>
@@ -61,17 +69,20 @@
             <div class="time">{{item.createdAt|formatTime1}}</div>
             <div class="commen">
               {{item.commentContent}}
-              <div class="zan1" @click="commentariesClick(item)"><img src="/static/images/zan1.png" alt="">{{item.laudedCount}}</div>
+              <div class="zan1"><img src="/static/images/zan1.png" alt="">{{item.laudedCount}}</div>
             </div>
             <ul class="ReplyUl" v-if="item.replyVoList.length>0">
               <li v-for="(item1,index1) in item.replyVoList"  class="ReplyLi">
-                <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div @click="commentariesClickTwo(item1)"><img src="/static/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
+                <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div><img src="/static/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
               </li>
-              <span style="width: 100%;display: inline-block;text-align: center" v-if="item.replyListTotal>2" @click="nextPageClick(item)">共有{{item.replyListTotal}}条评论</span>
+              <!--<span style="width: 100%;display: inline-block;text-align: center" v-if="item.replyListTotal>2" @click="nextPageClick(item)">共有{{item.replyListTotal}}条评论</span>-->
             </ul>
           </div>
         </li>
       </ul>
+      <div class="messageFoot" @click="updataMore">
+        {{message}}
+      </div>
     </div>
     <!--<div class="findDetailFoot" @click="giveClick" v-if="state!='XCX'">-->
       <!--<div class="footer">-->
@@ -103,7 +114,7 @@
   import { Actionsheet } from 'mint-ui';
   import Vue from 'vue';
   Vue.component(Actionsheet.name, Actionsheet);
-  import {commentFindCommentsByPubId} from '../../assets/js/promiseHttp'; //数据
+  import {commentFindCommentsByPubId,customerPubContentFindOne,customerPubContentLaudContent,customerPubContentCancelLaudContent,customerPubContentFavorContent,customerPubContentCancelFavorContent,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany } from '../../assets/js/promiseHttp'; //数据
 
   export default {
     name: 'follow',
@@ -122,10 +133,9 @@
         userInfo:"", //用户信息
         LoginShow:false, //登录没登录
         followIsShow:false, //关注的人未发布作品
-        listData:[
-          {type:false,name:"fanner Walker",url:"/static/images/defultphoto.png",message:"来自深圳及全国各地的会员单位700余家，建立了市级工业设计公共服务平台，下设四个中心（深港设计中设计庇护形象作为设庇护形象作为设计主思路。计主思路，并将其形象抽象化应用于造型语言中外部造型取中国传统汉服的层叠交错的造型语言，使其更加检...型家用轿车将禅所隐喻的",
-            bannerUrl:["/static/images/home_banner2.png","/static/images/home_banner1.png","/static/images/home_banner3.png"]},
-        ],//数据
+        listData:[],//数据
+        imgW:320,
+        imgH:175,
       }
     },
     created() {
@@ -138,84 +148,108 @@
 //
 //    }
       if(this.$router.history.current.query.id){ //这个id请求数据 截取url的
+//        customerPubContentFindOne("1").then(res=>{
+        customerPubContentFindOne(this.$router.history.current.query.id).then(res=>{
+          console.log(res,"fdskjfgd")
+          if(res.status == true){
+            let arrdata = [res.data];
+            arrdata.forEach((item,index)=>{
+              item.messageShow = false;
+              item.message1 = "";
+              item.value = "展开";
+              if(item.content.length>69){
+                item.message1=item.content.substring(0,69)+"...";
+                item.messageShow = true;
+                item.value = "展开";
+              }else{
+                item.messageShow = false;
+                item.message1 = item.content;
+              }
+            })
+            this.listData = arrdata;
+            this.$nextTick(()=>{
+              this.imgW = this.$refs.windwosWH[0].offsetWidth;
+              this.imgH = this.$refs.windwosWH[0].offsetHeight;
+              //     滑动
+              var mySwiper = new Swiper ('.swiper-container', {
+                autoplay:false,
+                loop:true,
+                // 如果需要分页器
+                pagination: {
+                  el: '.swiper-pagination',
+                },
+              })
+            })
+
+          }else{
+            Toast("网络出错了，请重试")
+          }
+        })
+
         commentFindCommentsByPubId(this.$router.history.current.query.id,this.p,this.s).then(res=>{
           console.log(res)
           if(res.data.status==true){
+         if(res.data.data.length>0){
+               res.data.data.forEach((item,index)=>{
+                 if(item.sysUserContentVo){
+                   if(item.sysUserContentVo.userDp){
+                     item.userDp = item.sysUserContentVo.userDp;
+                   }else {
+                     item.userDp = "./static/images/defultphoto.png";
+                   }
+                   if(item.sysUserContentVo.name){
+                     item.name = item.sysUserContentVo.name;
+                   }else {
+                     item.name = "游客";
+                   }
+                 }else{
+                   item.userDp = "./static/images/defultphoto.png";
+                   item.name = "游客";
+                 }
 
-            res.data.data.forEach((item,index)=>{
-              if(item.sysUserContentVo){
-                if(item.sysUserContentVo.userDp){
-                  item.userDp = item.sysUserContentVo.userDp;
-                }else {
-                  item.userDp = "./static/images/defultphoto.png";
-                }
-                if(item.sysUserContentVo.name){
-                  item.name = item.sysUserContentVo.name;
-                }else {
-                  item.name = "游客";
-                }
-              }else{
-                item.userDp = "./static/images/defultphoto.png";
-                item.name = "游客";
-              }
 
+               })
+               this.pageNum = Math.ceil(res.data.total/this.s);
+               if(this.pageNum >1){
+                 this.message = "点击加载更多..."
+               }else{
+                 this.message = "这是我的底线..."
+               }
+               this.commenArr = res.data.data;
+         }else{
+           this.commenArr = res.data.data;
+           this.message = "暂无更多评论..."
+         }
 
-            })
-            this.pageNum = Math.ceil(res.data.total/this.s);
-            if(this.pageNum >1){
-              this.message = "点击加载更多..."
-            }else{
-              this.message = "这是我的底线..."
-            }
-            this.commenArr = res.data.data;
           }else{
             Toast("网络出错了，请重试")
           }
         })
       }
-      this.$nextTick(()=>{
-        //     滑动
-        var mySwiper = new Swiper ('.swiper-container', {
-          autoplay:false,
-          loop:true,
-          // 如果需要分页器
-          pagination: {
-            el: '.swiper-pagination',
-          },
-        })
-      })
-      this.listData.forEach((item,index)=>{
-        item.messageShow = false;
-        item.message1 = "";
-        item.value = "展开";
-        if(item.message.length>69){
-          item.message1=item.message.substring(0,69)+"...";
-          item.messageShow = true;
-          item.value = "展开";
-        }else{
-          item.messageShow = false;
-          item.message1 = item.message;
-        }
-      })
-
-
-
-
     },
     methods:{
-      swiperleft(){
+      headerClick(v){
+        console.log(v.authorInfo)
+        if(v.authorInfo.vUser==1){ //去吃瓜
+          this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
+        }else{//去大咖
+          this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//2 是个人
+        }
+
+      },
+      swiperleft(){ //不能删除 切记 不然小程序运行不了
 //        Toast("zuo")
       },
-      swiperright(){
+      swiperright(){//不能删除  切记 不然小程序运行不了
 //        Toast("you")
       },
       openClick(v,i){ //展开收起
         v.messageShow = !v.messageShow;
         if(v.messageShow==false){
-          v.message1 = this.listData[i].message;
+          v.message1 = this.listData[i].content;
           v.value = "收起";
         }else{ //张开
-          v.message1=v.message.substring(0,69)+"...";
+          v.message1=v.content.substring(0,69)+"...";
           v.value = "展开";
         }
         this.listData[i] = v; //赋值给原来的小标值
@@ -229,6 +263,69 @@
       },
       Android(){//安卓下载
         location.href="https://www.pgyer.com/designcloud"
+      },
+      updataMore(){ //加载更多 分页
+        this.p++;
+        if(this.p>this.pageNum){
+          this.message = "这是我的底线..."
+          Toast("这是最后一页啦！")
+        }else if(this.p==this.pageNum){
+          this.message = "这是我的底线..."
+          commentFindCommentsByPubId(this.$router.history.current.query.id,this.p,this.s).then(res=>{
+            if(res.data.status == true){
+              res.data.data.forEach((item,index)=>{
+                if(item.sysUserContentVo){
+                  if(item.sysUserContentVo.userDp){
+                    item.userDp = item.sysUserContentVo.userDp;
+                  }else {
+                    item.userDp = "./static/images/defultphoto.png";
+                  }
+                  if(item.sysUserContentVo.name){
+                    item.name = item.sysUserContentVo.name;
+                  }else {
+                    item.name = "游客";
+                  }
+                }else{
+                  item.userDp = "./static/images/defultphoto.png";
+                  item.name = "游客";
+                }
+
+
+              })
+              this.commenArr =  this.commenArr.concat(res.data.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
+          })
+        }else if(this.p<this.pageNum){
+          this.message = "点击加载更多..."
+          commentFindCommentsByPubId(this.$router.history.current.query.id,this.p,this.s).then(res=>{
+            if(res.data.status == true){
+              res.data.data.forEach((item,index)=>{
+                if(item.sysUserContentVo){
+                  if(item.sysUserContentVo.userDp){
+                    item.userDp = item.sysUserContentVo.userDp;
+                  }else {
+                    item.userDp = "./static/images/defultphoto.png";
+                  }
+                  if(item.sysUserContentVo.name){
+                    item.name = item.sysUserContentVo.name;
+                  }else {
+                    item.name = "游客";
+                  }
+                }else{
+                  item.userDp = "./static/images/defultphoto.png";
+                  item.name = "游客";
+                }
+
+
+              })
+              this.commenArr =  this.commenArr.concat(res.data.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
+          })
+        }
       },
     }
   }
@@ -316,9 +413,36 @@
 
                 .imgIs{
                   width: 100%;
-                  img{
+                  >img{
                     display: block;
                     width: 100%;
+                  }
+                  >.biaoqian{
+                    position: absolute;
+                    left: 0;
+                    top:0;
+                   height: 0.2rem;
+                    img{
+                      width: 0.13rem;
+                      height: 0.2rem;
+                      display: inline-block;
+                      float: left;
+                      margin: 0;
+                    }
+                    span{
+                      display: inline-block;
+                      float: left;
+                      line-height: 0.2rem;
+                      padding: 0 0.05rem;
+                      background: rgba(5,5,9,0.4);
+                      color: #ffffff;
+                      border-radius: 0.2rem;
+                      border: 0.01rem solid #ffffff;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                      white-space: nowrap;
+                      font-size: 0.1rem;
+                    }
                   }
                 }
 
@@ -335,11 +459,12 @@
                 font-weight:400;
                 line-height: 0.28rem;
                 color:rgba(5,5,9,1);
+                word-wrap:break-word;
               }
               >div{
                 position: absolute;
                 right: 0.15rem;
-                bottom: 0.03rem;
+                bottom: -0.16rem;
                 width: 0.5rem;
                 height: 0.24rem;
                 text-align: center;
@@ -347,7 +472,7 @@
                 font-size:0.12rem;
                 font-family:PingFangSC-Medium;
                 font-weight:500;
-                color:rgba(5,5,9,1);
+                color:#21CB61;
               }
             }
             .follow_login_Follow_li4{
@@ -606,5 +731,13 @@
 
       }
     }*/
+    .messageFoot{
+      width: 100%;
+      height: 0.4rem;
+      line-height: 0.4rem;
+      background: #F7F7F7;
+      color: rgba(5,5,5,0.3);
+      text-align: center;
+    }
   }
 </style>

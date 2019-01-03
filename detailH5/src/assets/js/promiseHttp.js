@@ -152,6 +152,10 @@ export function getData (token) { //请求数据
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
     }
   })
 }
@@ -168,6 +172,10 @@ export function getDataPost (token,data) { //请求数据
       if (ajax.readyState==4 &&ajax.status==200) {
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
       }
     }
   })
@@ -188,6 +196,10 @@ export function informationId(id) { //请求数据
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
     }
   })
 }
@@ -206,6 +218,10 @@ export function companyInfoFindOne(id) { //请求数据
       if (ajax.readyState==4 &&ajax.status==200) {
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
       }
     }
   })
@@ -226,6 +242,10 @@ export function commonUserFindOne(id) { //请求数据
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
     }
   })
 }
@@ -244,6 +264,10 @@ export function findInformationListByUserIdUserId(id,p,s) { //请求数据
       if (ajax.readyState==4 &&ajax.status==200) {
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
       }
     }
   })
@@ -264,6 +288,10 @@ export function findCommentsByInfoId(id,p,s) { //请求数据
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
     }
   })
 }
@@ -275,6 +303,9 @@ export function proposalContactTrack(obj) { //请求数据
     axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
       Indicator.close();
       resolve(res)
+    }).catch(res=>{
+        Indicator.close()
+        Toast("500后台服务器错误！")
     })
   })
 }
@@ -287,6 +318,9 @@ export function telCode(tel){
     axios.get(url).then(res=>{
       Indicator.close();
       resolve(res)
+    }).catch(res=>{
+        Indicator.close()
+        Toast("500后台服务器错误！")
     })
   })
 }
@@ -313,6 +347,9 @@ export function companyList(p,s){
     axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
       Indicator.close();
       resolve(res)
+    }).catch(res=>{
+        Indicator.close()
+        Toast("500后台服务器错误！")
     })
   })
 }
@@ -363,6 +400,10 @@ export function customerCareNoteListCare(id,token,p,s) { //id 用户id
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
     }
   })
 }
@@ -382,6 +423,10 @@ export function customerCareNoteListCared(id,token,p,s) { //id 用户id
         Indicator.close();
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
       }
     }
   })
@@ -403,6 +448,10 @@ export function customerFavoriteNoteMyFavoriteList(id,token,p,s) { //id 用户id
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
     }
   })
 }
@@ -422,6 +471,10 @@ export function customerLaudNoteLaudList(id,token,p,s) { //id 用户id
         Indicator.close();
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
       }
     }
   })
@@ -444,6 +497,10 @@ export function questionAndAnswerList(token,p,s) {
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
     }
   })
 }
@@ -463,6 +520,10 @@ export function customerLaudNoteListFavoredContent(id,token,p,s) { //userId 用�
         Indicator.close();
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
       }
     }
   })
@@ -484,6 +545,10 @@ export function customerFavoriteNoteListFavoredContent(id,token,p,s) { //userId 
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
     }
   })
 }
@@ -502,6 +567,10 @@ export function commentFindMyCommentList(id,token,p,s) { //userId 用户id
         Indicator.close();
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
       }
     }
   })
@@ -522,6 +591,10 @@ export function commentFindForMeCommentList(id,token,p,s) { //userId 用户id
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
     }
   })
 }
@@ -541,6 +614,10 @@ export function customerLaudNoteLaudForMeList(id,token,p,s) { //userId 用户id
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
     }
   })
 }
@@ -558,5 +635,260 @@ export function commentFindCommentsByPubId(id,p,s){ //pubId 作品id
     })
   })
 }
+// POST /customerPubContent/list 传参是吃瓜页userId
+export function customerPubContentList(id,p,s,token) { // 用户id，
+  Indicator.open("加载中...")
+  let data = {userId:id,p:p,s:s}
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain+"/apis/operation/"+operationEdition+"/customerPubContent/list",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    // ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
+    }
+  })
+}
+// POST /customerPubContent/list 发现
+export function customerPubContentListHomePage(p,s) { // pubStatus 固定参数true
+  Indicator.open("加载中...")
+  let data = {p:p,s:s,pubStatus:true}
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain+"/apis/operation/"+operationEdition+"/customerPubContent/list",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
+    }
+  })
+}
+//作品详情
+// GET /customerPubContent/findOne
+export function customerPubContentFindOne(id) { // 作品id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain+"/apis/operation/"+operationEdition+"/customerPubContent/findOne?id="+id);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
+    }
+  })
+}
+//作品的点赞/customerPubContent/laudContent
+export function customerPubContentLaudContent(id) { // 作品id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain+"/apis/operation/"+operationEdition+"/customerPubContent/laudContent?id="+id);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
+    }
+  })
+}
+//作品的取消点赞/customerPubContent/cancelLaudContent
+export function customerPubContentCancelLaudContent(id) { // 作品id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain+"/apis/operation/"+operationEdition+"/customerPubContent/cancelLaudContent?id="+id);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
+    }
+  })
+}
+//作品的收藏/customerPubContent/favorContent
+export function customerPubContentFavorContent(id) { // 作品id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain+"/apis/operation/"+operationEdition+"/customerPubContent/favorContent?id="+id);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
+    }
+  })
+}
+//作品的取消收藏/customerPubContent/cancelFavorContent
+export function customerPubContentCancelFavorContent(id) { // 作品id
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain+"/apis/operation/"+operationEdition+"/customerPubContent/cancelFavorContent?id="+id);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
+    }
+  })
+}
+//详情里面的关注个人
+export function commonUserCareUser(userId,currentUser,userType){ //userId关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain}/apis/operation/${operationEdition}/commonUser/careUser?userId=${userId}&currentUser=${currentUser}&userType=${userType}`;
+    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
+      resolve(res)
+    }).catch(function (error) {
+      Indicator.close();
+      Toast(error)
+    })
+  })
+}
+//详情里面的取消关注个人
+export function commonUserCancelCareUser(userId,currentUser,userType){ //userId取消关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain}/apis/operation/${operationEdition}/commonUser/careUser?userId=${userId}&currentUser=${currentUser}&userType=${userType}`;
+    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
+      resolve(res)
+    }).catch(function (error) {
+      Indicator.close();
+      Toast(error)
+    })
+  })
+}
+//详情里面的关注企业
+export function companyInfoCareCompany(companyId,currentUser,userType){ //companyId关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain}/apis/operation/${operationEdition}/companyInfo/careCompany?companyId=${companyId}&currentUser=${currentUser}&userType=${userType}`;
+    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
+      resolve(res)
+    }).catch(function (error) {
+      Indicator.close();
+      Toast(error)
+    })
+  })
+}
+//详情里面的取消关注企业
+export function companyInfoCancelCareCompany(companyId,currentUser,userType){ //companyId取消关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain}/apis/operation/${operationEdition}/companyInfo/cancelCareCompany?companyId=${companyId}&currentUser=${currentUser}&userType=${userType}`;
+    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
+      resolve(res)
+    }).catch(function (error) {
+      Indicator.close();
+      Toast(error)
+    })
+  })
+}
+// POST /customerPubContent/listWithCare 关注列表
+export function customerPubContentListWithCare(p,s,token) {
+  Indicator.open("加载中...")
+  let data = {p:p,s:s}
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',window.common.apiDomain+"/apis/operation/"+operationEdition+"/customerPubContent/listWithCare",true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
+    }
+  })
+}
 
-
+// GET /allInformationAndPub/findMyCaredList 关注列表
+export function allInformationAndPubFindMyCaredList(loginUser,userType,p,s,token) {//loginUser登录的id  //userType登录的状态
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain+"/apis/content/"+contentEdition+"/allInformationAndPub/findMyCaredList?loginUser="+loginUser+"&userType="+userType+"&p="+p+"&s="+s);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500后台服务器错误！")
+      }
+    }
+  })
+}

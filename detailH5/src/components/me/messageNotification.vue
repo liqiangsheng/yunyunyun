@@ -1,12 +1,12 @@
 <template>
   <div id="messageNotification">
-    <div class="messageNotification_falseBox" v-show="myfollow==false">
+    <div class="messageNotification_falseBox" v-if="objList.length<=0">
       <img src="/static/images/缺省图.png" alt="">
       你的消息区目前空空也～
     </div>
-    <div class="messageNotification_box" v-show="myfollow==true">
+    <div class="messageNotification_box" v-else>
 
-      <ul class="messageNotification_ul" v-show="objList.length>0">
+      <ul class="messageNotification_ul">
         <li v-for="(item,index) in objList" @click="activityClick(item)">
              <div class="messageNotification_img">
                <img src="/static/images/审核.png" alt="" v-if="item.state=='1'">
@@ -22,7 +22,7 @@
         </li>
       </ul>
 
-      <div class="messageFoot" @click="updataMore" v-if="objList.length>0&&myfollow==true">
+      <div class="messageFoot" @click="updataMore">
         {{message}}
       </div>
       <ActivityDetailAlter v-if="activetyShow" @isActivetyShow="isActivetyShow"></ActivityDetailAlter>
@@ -42,22 +42,21 @@ export default {
   data(){
     return{
       activetyShow:false, //活动显示
-      myfollow:true, //数据请求成功显示
       userInfo:{}, //用户信息
       p:1,  //页
       s:20, //每页多少
       message:"不同努力加载中...", //触底提示
       pageNum:"",//每页数据
       objList:[
-        {time:1541851441523,value:"你的分享没有成功，请修改后再次尝试。原因：存在敏感内容",state:'1'},
-        {time:1541819441523,value:"你的账号在另外一个设备上同时登录，登录异常！请你及时进行修改密码。",state:'2'},
-        {time:1541014411523,value:"深圳市工业设计大展将于11月5日至7日在深圳会展中心召开，届时各界大咖云集，与你共商设计深圳市工业...",state:'3'},
-        {time:1541014411523,value:"深圳市工业设计大展将于11月5日至7日在深圳会展中心召开，届时各界大咖云集，与你共商设计深圳市工业...",state:'3'},
-        {time:154101441523,value:"深圳市工业设计大展将于11月5日至7日在深圳会展中心召开，届时各界大咖云集，与你共商设计深圳市工业...",state:'3'},
-        {time:1541014141523,value:"深圳市工业设计大展将于11月5日至7日在深圳会展中心召开，届时各界大咖云集，与你共商设计深圳市工业...",state:'3'},
-        {time:1531854141523,value:"修改密码请手机验证。",state:'3'},
-        {time:1541874141523,value:"恭喜你，注册已通过！",state:'2'},
-        {time:1541851441523,value:"你的分享没有成功，请修改后再次尝试。原因：存在敏感内容",state:'1'},
+//        {time:1541851441523,value:"你的分享没有成功，请修改后再次尝试。原因：存在敏感内容",state:'1'},
+//        {time:1541819441523,value:"你的账号在另外一个设备上同时登录，登录异常！请你及时进行修改密码。",state:'2'},
+//        {time:1541014411523,value:"深圳市工业设计大展将于11月5日至7日在深圳会展中心召开，届时各界大咖云集，与你共商设计深圳市工业...",state:'3'},
+//        {time:1541014411523,value:"深圳市工业设计大展将于11月5日至7日在深圳会展中心召开，届时各界大咖云集，与你共商设计深圳市工业...",state:'3'},
+//        {time:154101441523,value:"深圳市工业设计大展将于11月5日至7日在深圳会展中心召开，届时各界大咖云集，与你共商设计深圳市工业...",state:'3'},
+//        {time:1541014141523,value:"深圳市工业设计大展将于11月5日至7日在深圳会展中心召开，届时各界大咖云集，与你共商设计深圳市工业...",state:'3'},
+//        {time:1531854141523,value:"修改密码请手机验证。",state:'3'},
+//        {time:1541874141523,value:"恭喜你，注册已通过！",state:'2'},
+//        {time:1541851441523,value:"你的分享没有成功，请修改后再次尝试。原因：存在敏感内容",state:'1'},
       ], // 数据
     }
   },

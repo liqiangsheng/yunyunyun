@@ -5,7 +5,7 @@
        {{message}}
     </div>
      <div v-show="myfollow==true" class="fans_box">
-        <div class="fans_box_header">您有 <span>{{totalAll}}</span> 位关注者</div>
+        <div class="fans_box_header">您有 <span>{{objList.length}}</span> 位关注者</div>
         <ul v-if="objList.length>0">
           <li v-for="(item,index) in objList">
             <div class="fans_li1">
@@ -34,7 +34,7 @@
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
-   import { customerCareNoteListCared } from '../../assets/js/promiseHttp';
+  import { customerCareNoteListCared,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany  } from '../../assets/js/promiseHttp';
 export default {
   name: 'fans',
   data(){
@@ -79,7 +79,45 @@ export default {
 
   methods: {
     followClick(v){//关注
+      if(v.mutual == false){ //去关注
+        if(v.userType == "1"){ //企业
+          companyInfoCareCompany(v.id,this.userInfo.data.id,v.userType).then(res=>{
+            if(res.data.status==true){
+              v.mutual = true
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }else if(v.userType == "2"){  //个人
+          commonUserCareUser(v.id,this.userInfo.data.id,v.userType).then(res=>{
+            if(res.data.status==true){
+              v.mutual = true
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }
 
+      }else{ //取消
+        if(v.userType == "1"){ //企业
+          companyInfoCancelCareCompany(v.id,this.userInfo.data.id,v.userType).then(res=>{
+            if(res.data.status==true){
+              v.mutual = false
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }else if(v.userType == "2"){  //个人
+
+          commonUserCancelCareUser(v.id,this.userInfo.data.id,v.userType).then(res=>{
+            if(res.data.status==true){
+              v.mutual = false;
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }
+      }
     },
     updataMore(){ //加载更多 分页
       this.p++;

@@ -12,7 +12,7 @@
         <div class="verificatioCode">
           <div class='verificatioCodeImage'><img src='/static/images/code.png'></div>
           <div class="xian"></div>
-          <input  @blur='codePsd' placeholder="请输入验证码" v-model='psdValue'/>
+          <input  @blur='codePsd'type="number" placeholder="请输入验证码" v-model='psdValue'/>
           <button class="ObtainCode"  @click="ObtainCode" v-if='isShow'>{{code}}</button>
           <button class="ObtainCode"  disabled v-if='!isShow'>{{codeNum}}秒后重新发送</button>
         </div>

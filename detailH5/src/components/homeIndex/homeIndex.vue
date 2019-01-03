@@ -33,11 +33,13 @@ export default {
     }
   },
   created() {
-
+    document.title = "资讯"
+    this.headerIndex = this.$store.state.headerIndex; //点击还回回到原来的页面
   },
   methods:{
     headerClick(i){//头部按钮
       this.headerIndex = i;
+      this.$store.dispatch("headerIndex",this.headerIndex) //设计咖 智慧团 资源池下标存VueX
     },
 
   },

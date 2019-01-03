@@ -44,6 +44,7 @@ export default {
     }
   },
   created() {
+    document.title = "资源池"
     companyList(this.p,this.s).then(res=>{
       if(res.data.status == true){
         this.pageNum = Math.ceil(res.data.total/this.s);

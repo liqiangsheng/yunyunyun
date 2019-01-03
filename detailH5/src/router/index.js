@@ -33,7 +33,6 @@ import Follow from '@/components/homeIndex1_0/alter/follow' //首页关注
 import FindDetail from '@/components/homeIndex1_0/findDetail' //发现的详情
 import PersonalMelonPages from '@/components/intelligentMatching/personalMelonPages' //个人吃瓜页
 
-
 Vue.use(Router)
 
 export default new Router({
