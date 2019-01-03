@@ -73,12 +73,14 @@ export default {
   methods:{
     listClick(i){ //列表点击
       this.homePageIndex = i;
+      this.$store.dispatch("homePageIndex",this.homePageIndex);//vueX保存下标
     }
   },
   created(){
     this.$nextTick(function () {
-      document.title = "主页";
+      document.title = "个人主页"
     })
+
     if(this.$router.history.current.query){
       this.Request = this.$router.history.current.query;
       sessionStorage.setItem("homePageObj",JSON.stringify(this.$router.history.current.query))
@@ -99,6 +101,7 @@ export default {
             })
             res.data.logoUrl1 = "./static/images/defultphoto.png";
             this.objData = res.data;
+            this.homePageIndex = this.$store.state.homePageIndex;// vueX拿数据
           }else{
             Toast("网络出错了，请重试")
           }
@@ -121,6 +124,7 @@ export default {
             res.data.laudedCount = res.data.laudedCount?res.data.laudedCount:0;
             res.data.ownerUrl1 = "./static/images/defultphoto.png";
             this.objData = res.data;
+            this.homePageIndex = this.$store.state.homePageIndex;// vueX拿数据
           }else{
             Toast("网络出错了，请重试")
           }

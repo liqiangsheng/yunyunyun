@@ -9,9 +9,9 @@
           </div>
           <div class="new_horizons_centent_look">
             <h5>{{item.title}}</h5>
-            <span><img src="/static/images/查看.png" alt="">{{item.viewCount?item.viewCount:"0"}}</span><br>
-            <span><img src="/static/images/收藏.png" alt="">{{item.laudedCount?item.laudedCount:"0"}}</span>
-            <span><img src="/static/images/评论.png" alt="">{{item.commentCount?item.commentCount:"0"}}</span>
+            <span><img src="/static/images/查看.png" alt="">{{item.viewCount?item.viewCount:0}}</span><br>
+            <span><img src="/static/images/收藏.png" alt="">{{item.laudedCount?item.laudedCount:0}}</span>
+            <span><img src="/static/images/评论.png" alt="">{{item.commentCount?item.commentCount:0}}</span>
           </div>
         </li>
       </ul>
@@ -38,6 +38,7 @@
       }
     },
     created() {
+      document.title = "新视界"
       specialSubjectFindSubjectInfoByCategory("5",this.p,this.s).then(res=>{
         if(res.data.status == true){
           this.pageNum = Math.ceil(res.data.data.totalAll/this.s);

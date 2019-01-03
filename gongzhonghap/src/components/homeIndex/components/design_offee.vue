@@ -1,7 +1,7 @@
 <template>
   <!--设计咖-->
-  <div id="design_offee" v-on:swipeleft="swiperleft" v-on:swiperight="swiperright">
-    <v-touch class="swiperBox">
+  <div id="design_offee">
+    <v-touch class="swiperBox" v-on:swipeleft="swiperleft" v-on:swiperight="swiperright">
       <!---->
       <div class="swiper-container">
         <div class="swiper-wrapper">
@@ -46,10 +46,15 @@ export default {
       objList:[], // 智慧团数据
       style:{}, //星星的赞
       starLength:{}, //星星的长度
+      p:1, //第一页
+      s:1000,//每页数量
+      pageNum:0,//一共多少页
+      total:0 //总共多少条
     }
   },
   created() {
-    commonUserList().then(res=>{
+    document.title = "设计咖"
+    commonUserList(this.p,this.s).then(res=>{
       if(res.data.status == true){
         console.log(res,"fhsdfjk")
         res.data.data.forEach((item,index)=>{
@@ -59,6 +64,7 @@ export default {
         this.$nextTick(()=>{
             //     滑动
             var mySwiper = new Swiper ('.swiper-container', {
+              loop:true,
               effect : 'coverflow',
               slidesPerView: 1.35,
               centeredSlides: true,
@@ -68,6 +74,9 @@ export default {
                 depth:100,
                 modifier: 8,
                 slideShadows : false
+              },
+              lazy: {
+                loadPrevNext: true,
               },
               // 如果需要分页器
               pagination: {

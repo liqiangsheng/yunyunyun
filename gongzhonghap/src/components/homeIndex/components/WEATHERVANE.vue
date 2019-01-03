@@ -61,6 +61,7 @@
           }
         },
         created() {
+          document.title = "风向标"
           specialSubjectFindSubjectInfoByCategory("3",this.p,this.s).then(res=>{
             if(res.data.status == true){
               this.pageNum = Math.ceil(res.data.data.totalAll/this.s);

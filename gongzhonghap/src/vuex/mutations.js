@@ -9,4 +9,13 @@ export let mutations = {
   payId(state,data){
     state.payId=data;
   },
+  tabbarAarrIndex(state,data){
+    state.tabbarAarrIndex=data;
+  },
+  headerIndex(state,data){
+    state.headerIndex=data;
+  },
+  homePageIndex(state,data){
+    state.homePageIndex=data;
+  },
 }

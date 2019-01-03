@@ -51,9 +51,11 @@
       }
     },
     created() {
+
       this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):"";
    this.$nextTick(function(){
      this.OffsetHeight = this.$refs.findBox.offsetHeight;
+     document.title = "发现"
    })
       customerPubContentListHomePage(this.p,this.s).then(res=>{
            console.log(res,"fdjsfgd")

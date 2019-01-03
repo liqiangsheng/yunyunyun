@@ -12,7 +12,7 @@
         <div class="verificatioCode">
           <div class='verificatioCodeImage'><img src='/static/images/code.png'></div>
           <div class="xian"></div>
-          <input  @blur='codePsd' placeholder="请输入验证码" v-model='psdValue'/>
+          <input  @blur='codePsd'type="number" placeholder="请输入验证码" v-model='psdValue'/>
           <button class="ObtainCode"  @click="ObtainCode" v-if='isShow'>{{code}}</button>
           <button class="ObtainCode"  disabled v-if='!isShow'>{{codeNum}}秒后重新发送</button>
         </div>
@@ -85,7 +85,12 @@ export default {
 
            if(res.data.status==true){
              window.localStorage.setItem("userInfo",JSON.stringify(res.data))
-             this.$router.go(-1);//返回上一层
+             Indicator.open("正在登录...");
+             setTimeout(()=>{
+               Indicator.close();
+               this.$router.go(-1);//返回上一层
+             },1000)
+
            }else{
              if (res.statusCode == 500) {
                Toast("网络异常，请重试")

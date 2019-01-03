@@ -32,16 +32,18 @@
              <ul class="follow_login_Follow_ul" v-if="followIsShow==false&&listData.length>0">
                <li class="follow_login_Follow_li" v-for="(item,index) in listData">
                  <div class="follow_login_Follow_li1">
-                   <img :src="item.authorInfo.ownerUrl" alt="">
-                    <p>{{item.authorInfo.name}}</p>
-                   <div v-if="!item.authorInfo.caredStatus" @click="follow(item)"><img src="/static/images/已关注.png" alt="">关注</div>
+                   <img :src="item.caredUserMap.ownerUrl" alt="">
+                    <p>{{item.caredUserMap.name}}</p>
+                   <div v-if="!item.caredUserMap.caredStatus" @click="follow(item)"><img src="/static/images/已关注.png" alt="">关注</div>
                    <div  v-else class="active" @click="cancelFollow(item)">取消关注</div>
                  </div>
-                 <div class="follow_login_Follow_li2" ref="windwosWH">
+
+                 <!--作品-->
+                 <div class="follow_login_Follow_li2" ref="windwosWH" v-if="item.type==2">
                    <!--轮播-->
-                   <div class="swiper-container">
+                   <div :class="'swiper-container'+index">
                      <div class="swiper-wrapper">
-                       <div class="swiper-slide" v-for="(item1,index1) in item.attachments">
+                       <div class="swiper-slide" v-for="(item1,index1) in item.customerPubContentMap.attachments">
                          <div class="imgIs">
                            <img :src="item1.url" >
                            <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*imgW+'px',top:item2.axesyRate*imgW+'px'}">
@@ -51,17 +53,42 @@
                        </div>
                      </div>
                      <!-- 如果需要分页器 -->
-                     <div class="swiper-pagination"></div>
+                     <div :class="'swiper-pagination'+index" style="text-align: center"></div>
                    </div>
                    <!---->
                  </div>
+
+                 <!--文章-->
+                 <div class="follow_login_Follow_li2_2" v-else>
+                   <img :src="item.bannerDetailUrl" alt="">
+                 </div>
+
                  <div class="follow_login_Follow_li3">
                    <p>{{item.message1}}</p>
                    <div v-show="item.content&&item.content.length>69" @click="openClick(item,index)">{{item.value}}</div>
                  </div>
-                 <div class="follow_login_Follow_li4">
+                 <div class="follow_login_Follow_li4" v-if="item.type==2">
                    <div>
-                     <img src="/static/images/关注阅读量.png" alt="">  {{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}
+                     <img src="/static/images/关注阅读量.png" alt="">  {{item.customerPubContentMap.commentedCount<10000?item.customerPubContentMap.commentedCount:(item.customerPubContentMap.commentedCount/10000).toFixed(2)+'万'}}
+                   </div>
+                   <div @click="laudedStatus(item)">
+                     <img src="/static/images/点赞2.png" alt="" v-if="item.customerPubContentMap.laudedStatus==true">
+                     <img src="/static/images/点赞.png" alt="" v-else>
+                     {{item.customerPubContentMap.laudedCount<10000?item.customerPubContentMap.laudedCount:(item.customerPubContentMap.laudedCount/10000).toFixed(2)+'万'}}
+                   </div>
+                   <div @click="favoredStatus(item)">
+                     <img src="/static/images/收藏2.png" alt="" v-if="item.customerPubContentMap.favoredStatus==true">
+                     <img src="/static/images/收藏1.png" alt="" v-else>
+                     {{item.customerPubContentMap.favoredCount<10000?item.customerPubContentMap.favoredCount:(item.customerPubContentMap.favoredCount/10000).toFixed(2)+'万'}}
+                   </div>
+                   <div>
+                     <img src="/static/images/分享.png" alt="">1.25万
+                   </div>
+
+                 </div>
+                 <div class="follow_login_Follow_li4" v-else>
+                   <div>
+                     <img src="/static/images/关注阅读量.png" alt="">  {{item.commentedCount<10000?item.commentedCount:(item.commentedCount/10000).toFixed(2)+'万'}}
                    </div>
                    <div @click="laudedStatus(item)">
                      <img src="/static/images/点赞2.png" alt="" v-if="item.laudedStatus==true">
@@ -81,7 +108,7 @@
                </li>
 
              </ul>
-          <div class="messageFoot" @click="updataMore">
+          <div class="messageFoot" @click="updataMore" v-if="listData.length>0">
             {{message}}
           </div>
         </div>
@@ -100,7 +127,7 @@
   import { Actionsheet } from 'mint-ui';
   import Vue from 'vue';
   Vue.component(Actionsheet.name, Actionsheet);
-  import {customerPubContentListWithCare,customerPubContentLaudContent,customerPubContentCancelLaudContent,customerPubContentFavorContent,customerPubContentCancelFavorContent,commonUserCareUser,companyInfoCareCompany,commonUserCancelCareUser,companyInfoCancelCareCompany} from '../../../assets/js/promiseHttp'; //数据
+  import {allInformationAndPubFindMyCaredList,customerPubContentLaudContent,customerPubContentCancelLaudContent,customerPubContentFavorContent,customerPubContentCancelFavorContent,commonUserCareUser,companyInfoCareCompany,commonUserCancelCareUser,companyInfoCancelCareCompany} from '../../../assets/js/promiseHttp'; //数据
 
   export default {
   name: 'follow',
@@ -133,48 +160,62 @@
     }
   },
   created() {
-
+    document.title = "关注列表"
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    console.log(this.userInfo);
-
     if(this.userInfo){ //登录的情况  //
       this.LoginShow = true;
-      customerPubContentListWithCare(this.p,this.s,this.userInfo.data.access_token).then(res=>{
-        console.log(res,"关注")
+      allInformationAndPubFindMyCaredList("100","2",this.p,this.s,this.userInfo.data.access_token).then(res=>{
+        console.log(res,"fhsdjkfgdkshkgdfsjkghjksdh")
         if(res.status == true){
-            res.data.forEach((item,index)=>{
-              item.messageShow = false;
-              item.message1 = "";
-              item.value = "展开";
-              if(item.content.length>69){
-                item.message1=item.content.substring(0,69)+"...";
-                item.messageShow = true;
-                item.value = "展开";
-              }else{
+          res.data.forEach((item,index)=>{
                 item.messageShow = false;
-                item.message1 = item.content;
+                item.message1 = "";
+                item.value = "展开";
+                if(item.type==2){
+
+                  if(item.customerPubContentMap.content.length>69){
+                    item.message1=item.customerPubContentMap.content.substring(0,69)+"...";
+                    item.messageShow = true;
+                    item.value = "展开";
+                  }else{
+                    item.messageShow = false;
+                    item.message1 = item.customerPubContentMap.content;
+                  }
+                }else{
+                  if(item.content.length>69){
+                    item.message1=item.content.substring(0,69)+"...";
+                    item.messageShow = true;
+                    item.value = "展开";
+                  }else{
+                    item.messageShow = false;
+                    item.message1 = item.content;
+                  }
+                }
+
+              })
+             this.pageNum = Math.ceil(res.total/this.s);
+              console.log(this.pageNum)
+              if(this.pageNum>1){
+                this.message = '点击加载更多...';
+              }else{
+                this.message = '这是我的底线...';
               }
-            })
-            this.pageNum = Math.ceil(res.total/this.s);
-            console.log(this.pageNum)
-            if(this.pageNum>1){
-              this.message = '点击加载更多...';
-            }else{
-              this.message = '这是我的底线...';
-            }
-            this.listData = res.data
-            this.$nextTick(()=>{
+              this.listData = res.data
+          this.$nextTick(()=>{
               this.imgW = this.$refs.windwosWH[0].offsetWidth;
               this.imgH = this.$refs.windwosWH[0].offsetHeight;
               //     滑动
-              var mySwiper = new Swiper ('.swiper-container', {
+            for(var i = 0;i<1000;i++){
+              var mySwiper = new Swiper ('.swiper-container'+i, {
                 autoplay:false,
                 loop:true,
                 // 如果需要分页器
                 pagination: {
-                  el: '.swiper-pagination',
+                  el: '.swiper-pagination'+i,
                 },
               })
+            }
+
             })
 
         }else{
@@ -188,7 +229,6 @@
   },
   methods:{
     cancelFollow(v){ //取消关注
-      v.favoredStatus = false;
       let data = JSON.parse(localStorage.getItem("userInfo"));
       if(!data){
         Toast("您还未登录，请登录！");
@@ -197,17 +237,17 @@
         },1000)
       }else{
         if(v.userType == "1"){ //企业
-          companyInfoCancelCareCompany(v.authorInfo.id,data.data.id,v.userType).then(res=>{
+          companyInfoCancelCareCompany(v.caredUserMap.id,data.data.id,v.userType).then(res=>{
             if(res.data.status==true){
-              v.authorInfo.caredStatus = false;
+              v.caredUserMap.caredStatus = false;
             }else{
               Toast("网络出错了，请重试")
             }
           })
         }else if(v.userType == "2"){  //个人
-          commonUserCancelCareUser(v.authorInfo.id,data.data.id,v.userType).then(res=>{
+          commonUserCancelCareUser(v.caredUserMap.id,data.data.id,v.userType).then(res=>{
             if(res.data.status==true){
-              v.authorInfo.caredStatus = false;
+              v.caredUserMap.caredStatus = false;
             }else{
               Toast("网络出错了，请重试")
             }
@@ -216,6 +256,7 @@
       }
     },
     follow(v){ //关注
+      console.log(v)
       let data = JSON.parse(localStorage.getItem("userInfo"));
       if(!data){
         Toast("您还未登录，请登录！");
@@ -224,17 +265,17 @@
         },1000)
       }else{
         if(v.userType == "1"){ //企业
-          companyInfoCareCompany(v.authorInfo.id,data.data.id,v.userType).then(res=>{
+          companyInfoCareCompany(v.caredUserMap.id,data.data.id,v.userType).then(res=>{
             if(res.data.status==true){
-              v.authorInfo.caredStatus = true;
+              v.caredUserMap.caredStatus = true;
             }else{
               Toast("网络出错了，请重试")
             }
           })
         }else if(v.userType == "2"){  //个人
-          commonUserCareUser(v.authorInfo.id,data.data.id,v.userType).then(res=>{
+          commonUserCareUser(v.caredUserMap.id,data.data.id,v.userType).then(res=>{
             if(res.data.status==true){
-              v.authorInfo.caredStatus = true;
+              v.caredUserMap.caredStatus = true;
             }else{
               Toast("网络出错了，请重试")
             }
@@ -244,27 +285,49 @@
     },
     laudedStatus(v){ // 点赞
       console.log(v)
+
       let data = JSON.parse(localStorage.getItem("userInfo"));
       console.log(data,"fdhsjkfks")
       if(data){
-        v.laudedStatus = !v.laudedStatus
-        if(v.laudedStatus == true){ //点赞
-          customerPubContentLaudContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
-            console.log(res)
-            if(res.status == true){
-              v.laudedCount = v.laudedCount+1
-            }else{
-              Toast("网络出错了，请重试")
-            }
-          })
-        }else { //取消点赞
-          customerPubContentCancelLaudContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
-            if(res.status == true){
-              v.laudedCount = v.laudedCount-1;
-            }else{
-              Toast("网络出错了，请重试")
-            }
-          })
+        if(v.type == 2) { //作品
+          v.customerPubContentMap.laudedStatus = !v.customerPubContentMap.laudedStatus
+          if (v.customerPubContentMap.laudedStatus == true) { //点赞
+            customerPubContentLaudContent(this.$router.history.current.query.id, data.data.access_token).then(res => {
+              if (res.status == true) {
+                v.customerPubContentMap.laudedCount = v.customerPubContentMap.laudedCount + 1
+              } else {
+                Toast("网络出错了，请重试")
+              }
+            })
+          } else { //取消点赞
+            customerPubContentCancelLaudContent(this.$router.history.current.query.id, data.data.access_token).then(res => {
+              if (res.status == true) {
+                v.customerPubContentMap.laudedCount = v.customerPubContentMap.laudedCount - 1;
+              } else {
+                Toast("网络出错了，请重试")
+              }
+            })
+          }
+        }else{ //文章
+          v.laudedStatus = !v.laudedStatus
+          if(v.laudedStatus == true){ //点赞
+            customerPubContentLaudContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
+              console.log(res)
+              if(res.status == true){
+                v.laudedCount = v.laudedCount+1
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+          }else { //取消点赞
+            customerPubContentCancelLaudContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
+              if(res.status == true){
+                v.laudedCount = v.laudedCount-1;
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+          }
         }
       }else{
         Toast("您还未登陆，请登陆！")
@@ -277,24 +340,46 @@
     favoredStatus(v){ //收藏
       let data = JSON.parse(localStorage.getItem("userInfo"));
       if(data){
-        v.favoredStatus = !v.favoredStatus
-        if(v.favoredStatus == true){ //点赞
-          customerPubContentFavorContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
+        if(v.type==2){//作品
+          v.customerPubContentMap.favoredStatus = !v.customerPubContentMap.favoredStatus
+          if(v.customerPubContentMap.favoredStatus == true){ //点赞
+            customerPubContentFavorContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
 
-            if(res.status == true){
-              v.favoredCount = v.favoredCount+1
-            }else{
-              Toast("网络出错了，请重试")
-            }
-          })
-        }else { //取消点赞
-          customerPubContentCancelFavorContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
-            if(res.status == true){
-              v.favoredCount = v.favoredCount-1;
-            }else{
-              Toast("网络出错了，请重试")
-            }
-          })
+              if(res.status == true){
+                v.customerPubContentMap.favoredCount = v.customerPubContentMap.favoredCount+1
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+          }else { //取消点赞
+            customerPubContentCancelFavorContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
+              if(res.status == true){
+                v.customerPubContentMap.favoredCount = v.customerPubContentMap.favoredCount-1;
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+          }
+        }else{//文章
+          v.favoredStatus = !v.favoredStatus
+          if(v.favoredStatus == true){ //点赞
+            customerPubContentFavorContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
+
+              if(res.status == true){
+                v.favoredCount = v.favoredCount+1
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+          }else { //取消点赞
+            customerPubContentCancelFavorContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
+              if(res.status == true){
+                v.favoredCount = v.favoredCount-1;
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+          }
         }
       }else{
         Toast("您还未登陆，请登陆！")
@@ -331,20 +416,33 @@
         Toast("这是最后一页啦！")
       }else if(this.p==this.pageNum){
         this.message = "这是我的底线..."
-        customerPubContentListWithCare(this.p,this.s,this.userInfo.data.access_token).then(res=>{
+        allInformationAndPubFindMyCaredList("100","2",this.p,this.s,this.userInfo.data.access_token).then(res=>{
           if(res.status == true){
             res.data.forEach((item,index)=>{
               item.messageShow = false;
               item.message1 = "";
               item.value = "展开";
-              if(item.content.length>69){
-                item.message1=item.content.substring(0,69)+"...";
-                item.messageShow = true;
-                item.value = "展开";
+              if(item.type==2){
+
+                if(item.customerPubContentMap.content.length>69){
+                  item.message1=item.customerPubContentMap.content.substring(0,69)+"...";
+                  item.messageShow = true;
+                  item.value = "展开";
+                }else{
+                  item.messageShow = false;
+                  item.message1 = item.customerPubContentMap.content;
+                }
               }else{
-                item.messageShow = false;
-                item.message1 = item.content;
+                if(item.content.length>69){
+                  item.message1=item.content.substring(0,69)+"...";
+                  item.messageShow = true;
+                  item.value = "展开";
+                }else{
+                  item.messageShow = false;
+                  item.message1 = item.content;
+                }
               }
+
             })
             this.listData = this.listData.concat(res.data);
           }else{
@@ -353,20 +451,33 @@
         })
       }else if(this.p<this.pageNum){
         this.message = "点击加载更多..."
-        customerPubContentListWithCare(this.p,this.s,this.userInfo.data.access_token).then(res=>{
+        allInformationAndPubFindMyCaredList("100","2",this.p,this.s,this.userInfo.data.access_token).then(res=>{
           if(res.status == true){
             res.data.forEach((item,index)=>{
               item.messageShow = false;
               item.message1 = "";
               item.value = "展开";
-              if(item.content.length>69){
-                item.message1=item.content.substring(0,69)+"...";
-                item.messageShow = true;
-                item.value = "展开";
+              if(item.type==2){
+
+                if(item.customerPubContentMap.content.length>69){
+                  item.message1=item.customerPubContentMap.content.substring(0,69)+"...";
+                  item.messageShow = true;
+                  item.value = "展开";
+                }else{
+                  item.messageShow = false;
+                  item.message1 = item.customerPubContentMap.content;
+                }
               }else{
-                item.messageShow = false;
-                item.message1 = item.content;
+                if(item.content.length>69){
+                  item.message1=item.content.substring(0,69)+"...";
+                  item.messageShow = true;
+                  item.value = "展开";
+                }else{
+                  item.messageShow = false;
+                  item.message1 = item.content;
+                }
               }
+
             })
             this.listData =  this.listData.concat(res.data);
           }else{
@@ -465,6 +576,7 @@
       overflow-y: auto;
       .follow_login_Follow_ul{
         width: 100%;
+        overflow-x: hidden;
         .follow_login_Follow_li{
           width: 100%;
           background: #ffffff;
@@ -518,6 +630,14 @@
               background: #ffffff;
               border:0.01rem solid #EEEEEE;
               color: #666666;
+            }
+          }
+          .follow_login_Follow_li2_2{
+            width: 100%;
+            margin: 0.05rem 0 0.1rem 0;
+            img{
+              display: block;
+              width: 100%;
             }
           }
           .follow_login_Follow_li2{
@@ -711,7 +831,7 @@
   line-height: 0.3rem;
   color: rgba(5,5,5,0.3);
   text-align: center;
-  margin-top: 0.2rem;
+  margin-top: 0.1rem;
 }
 .lengthSmall{
   width: 100%;

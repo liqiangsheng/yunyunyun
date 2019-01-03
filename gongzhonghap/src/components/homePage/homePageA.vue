@@ -46,6 +46,7 @@
       }
     },
     created(){
+
       if(this.$router.history.current.query){
         findInformationListByUserIdUserId(this.$router.history.current.query.id,this.page,this.s).then(res=>{
           console.log(res)

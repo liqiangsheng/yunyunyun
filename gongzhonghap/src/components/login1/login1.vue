@@ -84,7 +84,11 @@ export default {
 
            if(res.data.status==true){
              window.localStorage.setItem("userInfo",JSON.stringify(res.data))
-             this.$router.go(-1);//返回上一层
+             Indicator.open("正在登录...");
+             setTimeout(()=>{
+               Indicator.close();
+               this.$router.go(-1);//返回上一层
+             },1000)
            }else{
              if (res.statusCode == 500) {
                 Toat("网络异常，请重试")

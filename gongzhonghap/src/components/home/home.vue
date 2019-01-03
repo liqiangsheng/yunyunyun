@@ -206,7 +206,6 @@ export default {
   },
   created(){
     this.state = this.$router.history.current.query.state?this.$router.history.current.query.state:"XCX"; //
-    console.log(this.$router.history.current.query.state,";oqo")
     this.$nextTick(function () {
       document.title = "活动详情";
     })
@@ -218,24 +217,31 @@ export default {
          if(data){
            let date = new Date();
            let nowTime = date.getTime();
-           if (nowTime > this.acivityArr.endTime) { //判断活动结束或者正在进行中  上线放开
+           if (nowTime > this.acivityArr.endTime||this.objData.endTime) { //判断活动结束或者正在进行中  上线放开
              Toast("该活动已结束");
              return;
            }
-           if (nowTime > this.acivityArr.signEndTime) {
+           if (nowTime > this.acivityArr.signEndTime||this.objData.signEndTime) {
              Toast("活动报名已结束");
              return;
            }
-           if (nowTime < this.acivityArr.signStartTime) {cnpm
+           if (nowTime < this.acivityArr.signStartTime||this.objData.signStartTime) {
              Toast("活动尚未开始报名，请选择其他活动！");
              return;
            }
-           sessionStorage.setItem("activityInfo", JSON.stringify(this.objData)) //保存活动信息
-           this.$store.dispatch("multiActivityId",this.objData.id) //保存选中的Id 在vueX
+           let obj = this.objData?this.objData:this.acivityArr;
+           sessionStorage.setItem("activityInfo", JSON.stringify(obj)) //保存活动信息
+           this.$store.dispatch("multiActivityId",obj.id) //保存选中的Id 在vueX
            this.$router.push({path:"/multiActivity",})  //去选票
          }else{
-           this.$store.dispatch("multiActivityId",this.objData.id) //保存选中的Id 在vueX
-           this.$router.push({path:"/login1"})
+           let obj = this.objData?this.objData:this.acivityArr;
+           sessionStorage.setItem("activityInfo", JSON.stringify(obj)) //保存活动信息
+           this.$store.dispatch("multiActivityId",obj.id) //保存选中的Id 在vueX
+           Toast("你未登录，正在跳转登录页面...");
+           setTimeout(()=>{
+             this.$router.push({path:"/login1"})
+           },1000)
+
          }
     },
     quiry(){ //初始化数据
@@ -244,7 +250,7 @@ export default {
 
       Indicator.open('加载中...')
        InitializationData(this.id).then(res=>{  //数据加载
-         if(!!res.data.status){
+         if(res.data.status==true){
 
            if(res.data.data.multiActivity == true){
 
@@ -437,7 +443,6 @@ export default {
          prams.orderField = "start_time";
          prams.orderString ="asc" ;
       activitySchedulelist(prams).then(res=>{
-        console.log(res,"活动按拍")
         if(res.data.status == true){
           for (var i = 0; i < res.data.data.length;i++){
                 res.data.data[i].startTime =formatTime4(res.data.data[i].startTime)
@@ -467,7 +472,6 @@ export default {
       prams1.orderField = "start_time";
       prams1.orderString ="asc" ;
       honoredGuestlist(prams1).then(res=>{
-            console.log(res,"11111")
         if(res.data.status==true){
           for (var i = 0; i < res.data.data.length; i++) {
             res.data.data[i].centerIsshow =  true;

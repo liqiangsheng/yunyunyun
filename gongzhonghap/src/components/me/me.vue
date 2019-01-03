@@ -1,10 +1,10 @@
 <template>
   <div id="Me">
 
-    <div class="userinfo">
-      <img class='bgImge' :src='bgImge'/>
+    <div class="userinfo" @click="loginBnt">
+      <img class='bgImge' :src='bgImge' @click="loginBnt"/>
       <div>
-        <img @click="loginBnt" class="userinfoImage" :src="userInfo.header"/>
+        <img class="userinfoImage" :src="userInfo.header"/>
         <span class="userinfo-nickname">{{userInfo.name}}</span>
       </div>
       <div class="userinfo_set" @click.stop="setClick">

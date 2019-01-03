@@ -30,11 +30,13 @@ export default {
     }
   },
   created() {
-
+    document.title = "创新力"
+    this.headerIndex = this.$store.state.tabbarAarrIndex; //点击还回回到原来的页面
   },
   methods:{
     headerClick(index){
       this.headerIndex = index;
+      this.$store.dispatch("tabbarAarrIndex",this.headerIndex) //设计咖 智慧团 资源池下标存VueX
     }
   }
 }

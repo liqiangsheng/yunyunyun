@@ -12,7 +12,7 @@
              <div class="IntelligentMatchingDHeaderIndex2">
                <img :src="userDp" alt="" @click="authorClcik(messageArr.orgId,messageArr.createdUser)">
                <div>
-                 <p>{{messageArr.sysUserContentVo.name}}</p>
+                 <p>{{titleName}}</p>
                  <span>{{messageArr.createdAt|formatTime}}</span>
                </div>
                <button @click="isXCXClick">{{followMessage}}</button>
@@ -126,11 +126,12 @@ export default {
       fabulousNum:"",// 赞的数量
       lauded:false,// 赞的状态
       fabulousMessage:"赞",// 赞
+      titleName:"",//名字点赞的
     }
   },
   created(){
     this.$nextTick(function () {
-      document.title = "主页详情";
+      document.title = "文章详情";
     })
     this.operationUser = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")).data:"";
     this.NativeState = this.$router.history.current.query.state?this.$router.history.current.query.state:"XCX";
@@ -354,6 +355,7 @@ export default {
           this.boxShow = true;
           this.orgId = res.data.orgId;
           this.userId = res.data.createdUser;
+          this.titleName = res.data.sysUserContentVo.name;
           this.messageArr = res.data;
           this.cared =res.data.cared;
           this.lauded =res.data.lauded;
@@ -524,7 +526,7 @@ export default {
          width: 0.5rem;
          height: 0.5rem;
          border-radius: 50%;
-         margin-left: 0.05rem;
+         margin-right: 0.05rem;
        }
        >div{
          width: 2rem;
