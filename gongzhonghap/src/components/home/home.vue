@@ -217,18 +217,18 @@ export default {
          if(data){
            let date = new Date();
            let nowTime = date.getTime();
-           if (nowTime > this.acivityArr.endTime||this.objData.endTime) { //判断活动结束或者正在进行中  上线放开
-             Toast("该活动已结束");
-             return;
-           }
-           if (nowTime > this.acivityArr.signEndTime||this.objData.signEndTime) {
-             Toast("活动报名已结束");
-             return;
-           }
-           if (nowTime < this.acivityArr.signStartTime||this.objData.signStartTime) {
-             Toast("活动尚未开始报名，请选择其他活动！");
-             return;
-           }
+//           if (nowTime > this.acivityArr.endTime||this.objData.endTime) { //判断活动结束或者正在进行中  上线放开
+//             Toast("该活动已结束");
+//             return;
+//           }
+//           if (nowTime > this.acivityArr.signEndTime||this.objData.signEndTime) {
+//             Toast("活动报名已结束");
+//             return;
+//           }
+//           if (nowTime < this.acivityArr.signStartTime||this.objData.signStartTime) {
+//             Toast("活动尚未开始报名，请选择其他活动！");
+//             return;
+//           }
            let obj = this.objData?this.objData:this.acivityArr;
            sessionStorage.setItem("activityInfo", JSON.stringify(obj)) //保存活动信息
            this.$store.dispatch("multiActivityId",obj.id) //保存选中的Id 在vueX

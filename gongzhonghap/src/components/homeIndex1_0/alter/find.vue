@@ -2,13 +2,16 @@
   <!--发现-->
   <div id="find">
        <div class="find_box" ref="findBox">
-         <vue-waterfall-easy :imgsArr="imgsArr" srcKey="imageUrl1" :enablePullDownEvent="openPullDown" :maxCols="maxCols" @click="clickFn">
-           <div slot="loading" slot-scope="{isFirstLoad}">
-             <div slot="loading" v-if="isFirstLoad">不同努力加载中...</div>
+         <!--<div v-if="pullDownDistance>50" style="text-align: center;line-height: 0.3rem">松手刷新...</div>-->
+         <!--<vue-waterfall-easy ref="waterfall" :imgsArr="imgsArr" srcKey="imageUrl1" @click="clickFn" :enablePullDownEvent="openPullDown" :maxCols="maxCols"  @scrollReachBottom="getData" @pullDownMove="pullDownMove" @pullDownEnd="pullDownEnd">-->
+         <!--<vue-waterfall-easy ref="waterfall" :imgsArr="imgsArr" srcKey="imageUrl1" @click="clickFn" :maxCols="maxCols"  @scrollReachBottom="getData">-->
+         <vue-waterfall-easy ref="waterfall" :imgsArr="imgsArr" srcKey="imageUrl1" @click="clickFn" :maxCols="maxCols">
+         <div slot="loading" slot-scope="{isFirstLoad}">
+             <div slot="loading" v-if="isFirstLoad"></div>
              <div slot="loading" v-else></div>
            </div>
+           <div slot="waterfall-over"> {{message}}</div>
            <div id="img-info" slot-scope="props">
-
                <h5>{{props.value.title}}</h5>
                 <ul class="img-info_ul">
                   <li  class="img-info_li1" @clcik.stop="headerClick(item,index)">
@@ -24,6 +27,7 @@
            </div>
          </vue-waterfall-easy>
        </div>
+
   </div>
 </template>
 
@@ -39,15 +43,18 @@
     },
     data(){
       return{
-          p: 1, // request param//
-          s: 20, // request param////测试
-        pages:0, //总共多少页
+        refshash:"下拉刷新",
+        p:1,  //页
+        s:20, //每页多少
+        message:"", //触底提示
+        pages:0,//每页数据
         isFirstLoad:true, //第一次加载
         maxCols:2,  //瀑布流显示最大的列数
         openPullDown:true,//下拉刷新
         OffsetHeight:0,//屏幕高度
         imgsArr:[], //数据
         userInfo:"", //用户信息
+        pullDownDistance:0,//下拉的距离
       }
     },
     created() {
@@ -58,29 +65,63 @@
      document.title = "发现"
    })
       customerPubContentListHomePage(this.p,this.s).then(res=>{
-           console.log(res,"fdjsfgd")
-         if(res.status==true){
-           res.data.forEach((item,index)=>{
-             item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
-           })
-           this.pages = Math.ceil(res.total/this.s)
-           this.imgsArr = res.data;
-         }else{
-           Toast("网络出错了，请重试")
-         }
-       })
-
+        console.log(res,"fdjsfgd")
+        if(res.status==true){
+          res.data.forEach((item,index)=>{
+            item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+          })
+          this.pages = Math.ceil(res.total/this.s)
+          this.imgsArr = res.data;
+        }else{
+          Toast("网络出错了，请重试")
+        }
+      })
+//      this.getData(); //下拉加载
     },
     methods:{
+//      pullDownMove(pullDownDistance){ //下拉刷新
+//        this.pullDownDistance =pullDownDistance;
+//      },
+//      pullDownEnd(pullDownDistance){//下拉刷新
+//        if(this.pullDownDistance>50){
+//          this.p=1;
+//          this.imgsArr = [];
+//          this.getData();
+//        }
+//        this.pullDownDistance = 0
+//      },
       headerClick(v,i){ //去吃瓜页
-        console.log(11111111)
+//        console.log(11111111)
       },
       fabulousClick(v,i){//登录的话去点赞 没登录去登录页
-        console.log(11111111)
+//        console.log(11111111)
       },
       clickFn(event,{index,value}){ //进入详情页
-        console.log(value)
+
         this.$router.push({path:"/findDetail",query:{id:value.id}}) //去发现的详情页面，记得带状态跟token
+      },
+      getData(){  //加载更多...
+        this.query();
+      },
+
+      query(){
+        customerPubContentListHomePage(this.p,this.s).then(res=>{
+              if(res.status == true){
+                res.data.forEach((item,index)=>{
+                  item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+                })
+                if(res.data.length>0){
+                  this.imgsArr = this.imgsArr.concat(res.data);
+                }else{
+                  this.$refs.waterfall.waterfallOver()
+                  this.message = "这是我的底线..."
+                }
+
+                this.p++;
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
       },
       handleScroll(e){  //回到顶部按钮出现
         if(e.target.scrollTop>=(e.target.scrollHeight-this.OffsetHeight-0.5)){
@@ -89,10 +130,9 @@
           let that = this;
           if(that.pages<that.p){
             that.p = that.pages;
-            Toast("没有更多发现了");
-            return;
+            this.message = "这是我的底线...";
+            this.$refs.waterfall.waterfallOver();
           }else if(that.pages==that.p){
-
             customerPubContentListHomePage(this.p,this.s).then(res=>{
               if(res.status == true){
                 res.data.forEach((item,index)=>{
@@ -102,7 +142,6 @@
 
 
               }else{
-              Indicator.close();
                 Toast("网络出错了，请重试")
               }
             })
@@ -114,7 +153,7 @@
                 })
                 that.imgsArr = that.imgsArr.concat(res.data);
               }else{
-                Indicator.close();
+
                 Toast("网络出错了，请重试")
               }
             })
@@ -125,7 +164,6 @@
     },
     mounted() {
       window.addEventListener('scroll',this.handleScroll,true) //监听高度
-
     },
   }
 
@@ -135,6 +173,7 @@
   #find {
     width: 100%;
     height: 100%;
+    overflow-y: auto;
     .find_box{
       width: 100%;
       height: 100%;
@@ -164,8 +203,8 @@
       width: 100%;
       overflow: hidden;
       margin-top: 0.05rem;
-      display: flex;
       .img-info_li1{
+        float: left;
        width: 0.16rem;
         height: 0.16rem;
         img{
@@ -175,6 +214,7 @@
         }
       }
       .img-info_li2{
+        float: left;
        width: 0.9rem;
         line-height: 0.16rem;
         margin-left: 0.05rem;
@@ -187,6 +227,7 @@
         white-space: nowrap;
       }
       .img-info_li3{
+        float: left;
         width: 0.14rem;
         height: 0.13rem;
         margin-right: 0.04rem;
@@ -197,11 +238,19 @@
        }
       }
       .img-info_li4{
-        flex: 1;
+        float: left;
         font-size:0.1rem;
         line-height: 0.16rem;
       }
 
     }
+  }
+  .messageFoot{
+    width: 100%;
+    height: 0.3rem;
+    line-height: 0.3rem;
+    color: rgba(5,5,5,0.3);
+    text-align: center;
+    margin-top: 0.2rem;
   }
 </style>

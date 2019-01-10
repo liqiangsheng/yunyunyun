@@ -99,9 +99,10 @@
 <script>
   import { Toast } from 'mint-ui';  //弹框
   import { Actionsheet } from 'mint-ui';
+  import wxShare from "../../assets/js/wxShare"
   import Vue from 'vue';
   Vue.component(Actionsheet.name, Actionsheet);
-  import { informationId,findCommentsByInfoId,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany,informationLaudInformation,informationCancelLaudInformation,commentlaudComment,commentCancelLaudComment,replylaudReply,replyCancelLaudReply } from '../../assets/js/promiseHttp'; //数据
+  import {shareInfoShareUrl,informationId,findCommentsByInfoId,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany,informationLaudInformation,informationCancelLaudInformation,commentlaudComment,commentCancelLaudComment,replylaudReply,replyCancelLaudReply } from '../../assets/js/promiseHttp'; //数据
 export default {
   name: 'IntelligentMatchingD',
   data(){
@@ -155,8 +156,28 @@ export default {
 
 
   },
+  mounted(){
+    setTimeout(()=>{
+      this.share();
+    },200)
+  },
   methods:{
-
+    share(){//分享
+      shareInfoShareUrl(window.location.href.split('#')[0]).then(res=>{
+        console.log(this.messageArr,"fndskjkfjk")
+        if(res.status==true){
+          let obj = {
+            title:this.messageArr.title,
+            desc:this.messageArr.summary,
+            url:location.href,
+            imgUrl:this.messageArr.bannerDetailUrl,
+          }
+          wxShare.wxShare(res.data,obj)
+        }else{
+          Toast("网络出错了，请重试")
+        }
+      })
+    },
     IOS(){
       location.href="https://itunes.apple.com/cn/app/id1439775835"
     },
@@ -164,7 +185,7 @@ export default {
         location.href="https://www.pgyer.com/designcloud"
     },
     nextPageClick(v){ //去下一页数据
-         console.log(v);
+//         console.log(v);
          sessionStorage.setItem("nextPageDetail",JSON.stringify(v));
          this.$router.push({path:"/IntelligentComment",query:{id:v.id,token:this.operationUser.access_token}})
     },
@@ -181,7 +202,7 @@ export default {
                 v.lauded = true;
                 replylaudReply(v.id,this.operationUser.access_token).then(res=>{
                   if(res.status==true){
-//                    this.query(this.detailId);
+                    Toast("点赞成功")
                     v.laudedCount =  v.laudedCount+1;
                   }else{
                     Toast("网络出错了，请重试")
@@ -191,7 +212,7 @@ export default {
                 v.lauded = false;
                 replyCancelLaudReply(v.id,this.operationUser.access_token).then(res=>{
                   if(res.status==true){
-//                    this.query(this.detailId);
+                    Toast("取消点赞")
                     v.laudedCount =  v.laudedCount-1;
                   }else{
                     Toast("网络出错了，请重试")
@@ -216,7 +237,7 @@ export default {
                 v.lauded = true;
                 commentlaudComment(v.id,this.operationUser.access_token).then(res=>{
                   if(res.status==true){
-//                    this.query(this.detailId);
+                     Toast("点赞成功")
                     v.laudedCount =  v.laudedCount+1;
                   }else{
                     Toast("网络出错了，请重试")
@@ -226,7 +247,7 @@ export default {
                 v.lauded = false;
                 commentCancelLaudComment(v.id,this.operationUser.access_token).then(res=>{
                   if(res.status==true){
-//                    this.query(this.detailId);
+                    Toast("取消点赞")
                     v.laudedCount =  v.laudedCount-1;
                   }else{
                     Toast("网络出错了，请重试")
@@ -248,13 +269,14 @@ export default {
                 this.$router.push({path:"/login"})
               },1000)
           }else{
-             if(this.lauded ==false){ //没点赞的
+            this.lauded = !this.lauded;
+            if(this.lauded ==false){ //没点赞的
                informationLaudInformation(this.detailId,this.operationUser.access_token).then(res=>{
 
                  if(res.status == true){
-                     this.fabulousNum = res.data.laudedCount;
+                    Toast("点赞成功")
+                     this.fabulousNum = this.fabulousNum+1;
                      this.fabulousMessage = "已赞"
-                       this.lauded = true;
                  }else{
                    Toast("网络出错了，请重试")
                  }
@@ -262,9 +284,9 @@ export default {
              }else {//点赞的了
                informationCancelLaudInformation(this.detailId,this.operationUser.access_token).then(res=>{
                  if(res.status == true){
-                   this.fabulousNum = res.data.laudedCount;
+                   Toast("取消点赞")
+                   this.fabulousNum = this.fabulousNum-1;
                    this.fabulousMessage = "赞"
-                   this.lauded = false;
                  }else{
                    Toast("网络出错了，请重试")
                  }
@@ -293,8 +315,9 @@ export default {
             if(this.cared == false){ //没有关注
 
               commonUserCareUser(this.userId,this.operationUser.id,this.orgId).then(res=>{
-                console.log(res,"skdkkfsdk")
+//                console.log(res,"skdkkfsdk")
                 if(res.data.status == true){
+                  Toast("关注成功")
                   this.cared = true;
                   this.followMessage = "已关注";
                 }else{
@@ -305,6 +328,7 @@ export default {
               commonUserCancelCareUser(this.userId,this.operationUser.id,this.orgId).then(res=>{
 
                 if(res.data.status == true){
+                  Toast("关注已取消")
                   this.cared = false;
                   this.followMessage = "+ 关注";
                 }else{
@@ -316,8 +340,8 @@ export default {
               if(this.cared == false){ //没有关注  //固定传2
 
                 companyInfoCareCompany(this.userId,this.operationUser.id,'2').then(res=>{
-                  console.log(res,"skdkkfsdk")
                   if(res.data.status == true){
+                    Toast("关注成功")
                     this.cared = true;
                     this.followMessage = "已关注";
                   }else{
@@ -328,6 +352,7 @@ export default {
                 companyInfoCancelCareCompany(this.userId,this.operationUser.id,'2').then(res=>{
 
                   if(res.data.status == true){
+                    Toast("关注已取消")
                     this.cared = false;
                     this.followMessage = "+ 关注";
                   }else{
@@ -559,6 +584,7 @@ export default {
          background:#050509;
          border-radius:0.05rem;
          color: #FFFFFF;
+         outline: none;
        }
      }
      .IntelligentMatchingDHeaderIndex3{
@@ -586,10 +612,10 @@ export default {
        width: 100%;
        font-size:0.14rem;
        font-family:PingFangSC-Medium;
-       font-weight:500;
+       font-weight:900;
        color:rgba(5,5,9,1);
-       line-height:0.42rem;
-       height: 0.42rem;
+       line-height:0.24rem;
+       /*height: 0.42rem;*/
        span{
          display: inline-block;
          width: 0.04rem;
@@ -607,6 +633,7 @@ export default {
        color:rgba(5,5,9,1);
        line-height: 0.28rem;
        margin-bottom: 0.1rem;
+       word-break:break-all;
        img{
          display: block;
          width: 100%;

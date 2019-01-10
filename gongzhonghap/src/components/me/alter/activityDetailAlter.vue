@@ -1,11 +1,12 @@
 <template>
   <div id="activityDetailAlter">
-   <p class="activityDetailAlter_p">{{listData.time|formatTime1}}</p>
+   <p class="activityDetailAlter_p">{{listData.createdAt|formatTime}}</p>
     <div class="activityDetailAlter_img">
-      <img :src="listData.bannerUrl" alt="">
+      <img :src="listData.url" alt="">
     </div>
     <div class="activityDetailAlter_value">
-     {{listData.value}}
+     {{listData.content}}
+      <a :href="listData.elink" v-if="!!listData.elink">点击查看详情>></a>
     </div>
     <div class="activityDetailAlter_bnt" @click="okClick">
       确定
@@ -14,18 +15,36 @@
 </template>
 
 <script>
+  import { Toast } from 'mint-ui';  //弹框
+  import { notificationFindOne } from '../../../assets/js/promiseHttp';
 export default {
   name: 'activityDetailAlter',
+  props:['childrenValue',"userInfo"],
   data(){
     return{
-      listData:{bannerUrl:"./static/images/okOrder.png",time:15412121212121,value:"本次大会由11名嘉宾带来精彩演讲，其中剑桥大学莎特沃兹基金会研究员Jenny Molloy是GOSH的核心成员组织者，围绕“Gosh：2025让开放科学硬件无处不在”的主题发表演讲；加纳的技术创新中心Kumasi Hive联合创始人兼首席执行官Jorgeppiah、技术员Harry Akligoh以及贝宁经济学家和统计学家Justin Ahinon 展示了非洲开放科学与硬件项目；瑞士骇客协会主席Rachel Aronoff带来如何使任何人都能通过检查颊细胞中的DNA损伤来测试其基因组完整性的主题演讲；另有电子工程师Kaspar Emanuel、开源云P2P软件Subutai用户社区经FelipFonseca分别介绍自己创立的开源平台及研究成果等。"}
+      listData:{},
     }
   },
   created() {
     this.$nextTick(function () {
-      document.title = "活动通知";
+      if(this.childrenValue.notifyType == 1){
+        document.title = "系统通知";
+      }else if(this.childrenValue.notifyType == 2){
+        document.title = "审核通知";
+      }else if(this.childrenValue.notifyType == 3){
+        document.title = "活动通知";
+      }else if(this.childrenValue.notifyType == 4){
+        document.title = "其他通知";
+      }
+
     })
-    //            ?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim         7牛的缩略图
+    notificationFindOne(this.childrenValue.id,this.userInfo.data.access_token).then(res=>{
+      if(res.status==true){
+        this.listData = res.data;
+      }else{
+        Toast("网络出错啦，请重试")
+      }
+    })
   },
   methods:{
     okClick(){

@@ -1,10 +1,13 @@
 <template>
   <!--评论-->
   <div id="myComment">
-
+    <div class="praiseMe_box_false" v-if="objList.length<=0">
+      <img src="/static/images/缺省图.png" alt="">
+      <p>我的评论区目前空空也～</p>
+    </div>
      <div class="myComment_box">
          <ul>
-           <li v-for="(item,index) in objList">
+           <li v-for="(item,index) in objList" v-if="objList.length>0">
              <div class="myComment_ul">
                <div class="myComment_me"><span>我 </span>评论了文章：<span  v-if="item.ctype!=1"> {{item.replyContent}}</span><span  v-else> {{item.commentContent}}</span></div>
                <div class="myComment_time">{{item.createTime|formatTime1}}</div>
@@ -27,7 +30,7 @@
            </li>
          </ul>
      </div>
-    <div class="messageFoot" @click="updataMore">
+    <div class="messageFoot" @click="updataMore" v-if="objList.length>0">
       {{message}}
     </div>
   </div>
@@ -55,8 +58,8 @@ export default {
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){
-//                commentFindMyCommentList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-      commentFindMyCommentList("400",this.userInfo.data.access_token,this.p,this.s).then(res=>{
+                commentFindMyCommentList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//      commentFindMyCommentList("400",this.userInfo.data.access_token,this.p,this.s).then(res=>{
         if(res.status==true){
           this.pageNum = Math.ceil(res.total/this.s);
           if(this.pageNum>1){
@@ -225,6 +228,26 @@ export default {
       }
     }
 
+  }
+  .praiseMe_box_false{
+    width: 100%;
+    padding-top: 1rem;
+    img{
+      display: block;
+      width: 1rem;
+      height: 0.94rem;
+      margin: 0 auto;
+    }
+    p{
+      font-size:0.12rem;
+      font-family:PingFangSC-Regular;
+      font-weight:400;
+      color:rgba(153,153,153,1);
+      line-height:0.5rem;
+      text-align: center;
+      width: 100%;
+
+    }
   }
   .messageFoot{
     width: 100%;

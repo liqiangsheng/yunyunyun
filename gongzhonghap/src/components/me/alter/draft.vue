@@ -40,15 +40,12 @@
         },
         created() {
           this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-          console.log(this.userInfo.data.access_token,"dshakdfjksdfk")
           if(this.userInfo){
 
             customerPubContentListOwner(this.userInfo.data.id,false,this.p,this.s,this.userInfo.data.access_token).then(res=>{  //false 为草稿
-//            customerPubContentListOwner("100",false,this.p,this.s,this.userInfo.data.access_token).then(res=>{  //false 为草稿
-              console.log(res,"草稿")
+//              console.log(res,"草稿")
               if(res.status == true){
                 this.pages = Math.ceil(res.total/this.s);
-                console.log( this.pages)
                 if(this.pages>1){
                   this.message = "点击加载更多...";
 

@@ -11,8 +11,8 @@
                  <div class="follow_login_Follow_li1">
                    <img :src="item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt="" @click="headerClick(item)">
                     <p>{{item.authorInfo.name}}</p>
-                   <div v-if="!item.authorInfo.caredStatus" @click="follow(item)"><img src="/static/images/已关注.png" alt="">关注</div>
-                   <div v-else class="active" @click="cancelFollow(item)">取消关注</div>
+                   <div v-if="item.authorInfo.caredStatus==0&&userInfo.data.id!=item.authorInfo.id" @click="follow(item)"><img src="/static/images/已关注.png" alt="">关注</div>
+                   <div v-if="item.authorInfo.caredStatus==1&&userInfo.data.id!=item.authorInfo.id" class="active" @click="cancelFollow(item)">取消关注</div>
                  </div>
                  <div class="follow_login_Follow_li2" ref="windwosWH">
                    <!--轮播-->
@@ -20,7 +20,7 @@
                      <div class="swiper-wrapper">
                        <div class="swiper-slide" v-for="(item1,index1) in item.attachments">
                          <div class="imgIs">
-                           <img :src="item1.url" >
+                           <img :src="item1.url" />
                            <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*imgW+'px',top:item2.axesyRate*imgW+'px'}">
                            <img src="/static/images/标签.png" alt=""><span>{{item2.title}}</span>
                            </div>
@@ -38,7 +38,7 @@
                  </div>
                  <div class="follow_login_Follow_li4">
                    <div>
-                     <img src="/static/images/关注阅读量.png" alt="">  {{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}
+                     <img src="/static/images/关注阅读量.png" alt="">  {{item.commentedCount<10000?item.commentedCount:(item.commentedCount/10000).toFixed(2)+'万'}}
                    </div>
                    <div @click="laudedStatus(item)">
                      <img src="/static/images/点赞2.png" alt="" v-if="item.laudedStatus==true">
@@ -51,7 +51,8 @@
                      {{item.favoredCount<10000?item.favoredCount:(item.favoredCount/10000).toFixed(2)+'万'}}
                    </div>
                    <div>
-                     <img src="/static/images/分享.png" alt="">3.25万
+                     <img src="/static/images/look.png" alt="">
+                     {{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}
                    </div>
 
                  </div>
@@ -134,7 +135,7 @@
       sheetVisible:false, //弹框提示
       headerTab:["发现","关注"], //tab
       headerTabIndex:1,//是关注还是发现
-      userInfo:"", //用户信息
+      userInfo:{}, //用户信息
       LoginShow:false, //登录没登录
       followIsShow:false, //关注的人未发布作品
       listData:[],//数据
@@ -144,10 +145,10 @@
   },
   created() {
     this.$nextTick(function () {
-      document.title = "设计未来，大不同"
+      document.title = "作品详情"
     })
-//    this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):{data:{id:"",userType:""}};
-    this.userInfo = {data:{currentUser:this.$router.history.current.query.currentUser,id:this.$router.history.current.query.id,access_token:this.$router.history.current.query.token,userType:this.$router.history.current.query.userType,}}
+    this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):{data:{id:"",userType:""}};
+//    this.userInfo = {data:{currentUser:this.$router.history.current.query.currentUser,id:this.$router.history.current.query.id,access_token:this.$router.history.current.query.token,userType:this.$router.history.current.query.userType,}}
 //    if(this.userInfo){ //登录的情况  //
 //    }else{//没有登录的情况
 //
@@ -175,11 +176,6 @@
           this.$nextTick(()=>{
             this.imgW = this.$refs.windwosWH[0].offsetWidth;
             this.imgH = this.$refs.windwosWH[0].offsetHeight;
-            console.log(this.imgW)
-            console.log(this.$refs)
-            console.log(this.imgH)
-            console.log(this.$refs.windwosWH[0].firstElementChild.clientHeight)
-            console.log(this.$refs.windwosWH[0].clientHeight)
             //     滑动
             var mySwiper = new Swiper ('.swiper-container', {
               autoplay:false,
@@ -196,7 +192,7 @@
         }
       })
       commentFindCommentsByPubId(this.$router.history.current.query.id,this.p,this.s).then(res=>{
-        console.log(res)
+//        console.log(res)
         if(res.data.status==true){
           if(res.data.data.length>0){
             res.data.data.forEach((item,index)=>{
@@ -238,8 +234,9 @@
 
   },
     mounted(){
-      this.share();
-
+      setTimeout(()=>{
+        this.share();
+      },200)
     },
 
   methods:{
@@ -247,7 +244,7 @@
       shareInfoShareUrl(window.location.href.split('#')[0]).then(res=>{
          if(res.status==true){
            let obj = {
-             title:this.listData[0].authorInfo.name,
+             title:this.listData[0].authorInfo.title,
              desc:this.listData[0].message1,
              url:location.href,
              imgUrl:this.listData[0].authorInfo.ownerUrl,
@@ -270,6 +267,7 @@
         if(v.userType == "1"){ //企业
           companyInfoCancelCareCompany(v.authorInfo.id,data.data.id,v.userType).then(res=>{
             if(res.data.status==true){
+              Toast("关注已取消")
               v.authorInfo.caredStatus = false;
             }else{
               Toast("网络出错了，请重试")
@@ -278,6 +276,7 @@
         }else if(v.userType == "2"){  //个人
           commonUserCancelCareUser(v.authorInfo.id,data.data.id,v.userType).then(res=>{
             if(res.data.status==true){
+              Toast("关注已取消")
               v.authorInfo.caredStatus = false;
             }else{
               Toast("网络出错了，请重试")
@@ -297,6 +296,7 @@
        if(v.userType == "1"){ //企业
          companyInfoCareCompany(v.authorInfo.id,data.data.id,v.userType).then(res=>{
            if(res.data.status==true){
+             Toast("关注成功")
              v.authorInfo.caredStatus = true;
            }else{
              Toast("网络出错了，请重试")
@@ -305,6 +305,7 @@
        }else if(v.userType == "2"){  //个人
          commonUserCareUser(v.authorInfo.id,data.data.id,v.userType).then(res=>{
            if(res.data.status==true){
+             Toast("关注成功")
              v.authorInfo.caredStatus = true;
            }else{
              Toast("网络出错了，请重试")
@@ -325,7 +326,7 @@
             v.lauded = true;
             replylaudReply(v.id,data.data.access_token).then(res=>{
               if(res.status==true){
-//                    this.query(this.detailId);
+                   Toast("点赞成功")
                 v.laudedCount =  v.laudedCount+1;
               }else{
                 Toast("网络出错了，请重试")
@@ -335,6 +336,7 @@
             v.lauded = false;
             replyCancelLaudReply(v.id,data.data.access_token).then(res=>{
               if(res.status==true){
+                Toast("点赞已取消")
                 v.laudedCount =  v.laudedCount-1;
               }else{
                 Toast("网络出错了，请重试")
@@ -357,7 +359,7 @@
             v.lauded = true;
             commentlaudComment(v.id,data.data.access_token).then(res=>{
               if(res.status==true){
-//                    this.query(this.detailId);
+                   Toast("点赞成功")
                 v.laudedCount =  v.laudedCount+1;
               }else{
                 Toast("网络出错了，请重试")
@@ -367,7 +369,7 @@
             v.lauded = false;
             commentCancelLaudComment(v.id,data.data.access_token).then(res=>{
               if(res.status==true){
-//                    this.query(this.detailId);
+                 Toast("点赞已取消")
                 v.laudedCount =  v.laudedCount-1;
               }else{
                 Toast("网络出错了，请重试")
@@ -378,7 +380,7 @@
         }
     },
     nextPageClick(v){ //去下一页数据
-      console.log(v);
+//      console.log(v);
       let data = JSON.parse(localStorage.getItem("userInfo"));
       if(data){
         sessionStorage.setItem("nextPageDetail",JSON.stringify(v));
@@ -392,15 +394,16 @@
 
     },
     laudedStatus(v){ // 点赞
-      console.log(v)
+//      console.log(v)
       let data = JSON.parse(localStorage.getItem("userInfo"));
-      console.log(data,"fdhsjkfks")
+//      console.log(data,"fdhsjkfks")
       if(data){
         v.laudedStatus = !v.laudedStatus
           if(v.laudedStatus == true){ //点赞
           customerPubContentLaudContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
-            console.log(res)
+//            console.log(res)
             if(res.status == true){
+              Toast("点赞成功")
               v.laudedCount = v.laudedCount+1
             }else{
               Toast("网络出错了，请重试")
@@ -409,6 +412,7 @@
         }else { //取消点赞
           customerPubContentCancelLaudContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
             if(res.status == true){
+              Toast("点赞已取消")
               v.laudedCount = v.laudedCount-1;
             }else{
               Toast("网络出错了，请重试")
@@ -431,6 +435,7 @@
           customerPubContentFavorContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
 
             if(res.status == true){
+              Toast("收藏成功")
               v.favoredCount = v.favoredCount+1
             }else{
               Toast("网络出错了，请重试")
@@ -439,6 +444,7 @@
         }else { //取消点赞
           customerPubContentCancelFavorContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
             if(res.status == true){
+              Toast("收藏已取消")
               v.favoredCount = v.favoredCount-1;
             }else{
               Toast("网络出错了，请重试")
@@ -453,10 +459,10 @@
       }
     },
     headerClick(v){//点击头像 去吃瓜页 或则设计师主页 或者企业
-      if(v.authorInfo.vUser==1){ //去吃瓜
+      if(v.authorInfo.vUser==0){ //去吃瓜
         this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
       }else{//去大咖
-        this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//2 是个人
+        this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//1 是大咖
       }
 
     },
@@ -827,7 +833,13 @@
             font-family:PingFangSC-Medium;
             font-weight:500;
             color:rgba(5,5,9,1);
-            line-height:0.48rem;
+            line-height:0.2rem;
+            max-height: 0.4rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
           }
           .time{
             font-size:0.09rem;

@@ -34,6 +34,7 @@ const vFilter={
       if(nowDate<(value+60000)){
         return second+"秒前"
       }else if(nowDate>(value+60000)&&nowDate<(value+3540000)){
+        console.log(minute<"fenzhong")
         return minute+"分钟前"
       }else if(nowDate>(value+3540000)&&nowDate<(value+14160000)){
         return h+"小时前"

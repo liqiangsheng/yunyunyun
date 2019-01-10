@@ -14,7 +14,12 @@
              <h5>{{item.laudName}}</h5>
              <p>{{item.laudtime|formatTime1}}</p>
              <div class="praiseMe_box_true_right_div">
-               赞了这篇文章
+               <!--2是赞的回复-->
+               <!--1是赞的评论-->
+               <!--0是赞的文章资讯-->
+               <span v-if="item.typer==1">赞了这条评论</span>
+               <span v-if="item.typer==2">2是赞的回复</span>
+               <span v-if="item.typer==0">赞了这篇文章</span>
              </div>
               <div class="praiseMe_box_true_right_box">
                 <div class="praiseMe_box_true_right_box_top" v-if="item.typer!=0">
@@ -61,8 +66,8 @@ export default {
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){
-      customerLaudNoteLaudForMeList("20181203103707dc00a09e48224f51bf733765edfa7633", this.userInfo.data.access_token,this.p,this.s).then(res=>{
-//      customerLaudNoteLaudForMeList(this.userInfo.data.id, this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//      customerLaudNoteLaudForMeList("20181203103707dc00a09e48224f51bf733765edfa7633", this.userInfo.data.access_token,this.p,this.s).then(res=>{
+      customerLaudNoteLaudForMeList(this.userInfo.data.id, this.userInfo.data.access_token,this.p,this.s).then(res=>{
         console.log(res)
         if(res.status==true){
           this.pageNum = Math.ceil(res.total/this.s);
@@ -95,8 +100,8 @@ export default {
         Toast("这是最后一页啦！")
       }else if(this.p==this.pageNum){
         this.message = "这是我的底线..."
-//        customerLaudNoteLaudForMeList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-          customerLaudNoteLaudForMeList("20181203103707dc00a09e48224f51bf733765edfa7633", this.userInfo.data.access_token,this.p,this.s).then(res=>{
+        customerLaudNoteLaudForMeList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//          customerLaudNoteLaudForMeList("20181203103707dc00a09e48224f51bf733765edfa7633", this.userInfo.data.access_token,this.p,this.s).then(res=>{
 
           if(res.status == true){
             this.objList = this.objList.concat(res.data);
@@ -106,8 +111,8 @@ export default {
         })
       }else if(this.p<this.pageNum){
         this.message = "点击加载更多..."
-//          customerLaudNoteLaudForMeList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-          customerLaudNoteLaudForMeList("20181203103707dc00a09e48224f51bf733765edfa7633", this.userInfo.data.access_token,this.p,this.s).then(res=>{
+          customerLaudNoteLaudForMeList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//          customerLaudNoteLaudForMeList("20181203103707dc00a09e48224f51bf733765edfa7633", this.userInfo.data.access_token,this.p,this.s).then(res=>{
 
           if(res.status == true){
             this.objList =  this.objList.concat(res.data);

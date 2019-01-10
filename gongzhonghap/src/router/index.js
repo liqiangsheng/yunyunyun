@@ -44,6 +44,7 @@ const HomeIndex1_0 = resolve => require(['@/components/homeIndex1_0/homeIndex1_0
 const Follow = resolve => require(['@/components/homeIndex1_0/alter/follow'], resolve); //关注
 const FindDetail = resolve => require(['@/components/homeIndex1_0/findDetail'], resolve); //作品详情发现的详情
 const PersonalMelonPages = resolve => require(['@/components/intelligentMatching/personalMelonPages'], resolve); //个人吃瓜页
+const Release = resolve => require(['@/components/release/release'], resolve); //发布
 // import Home from '@/components/home/home'
 // import HomeMap from '@/components/homeMap/homeMap' //详情地图
 // import Index from '@/components/index/index' //首页
@@ -88,6 +89,7 @@ const PersonalMelonPages = resolve => require(['@/components/intelligentMatching
 // import Follow from '@/components/homeIndex1_0/alter/follow' //首页
 // import FindDetail from '@/components/homeIndex1_0/findDetail' //发现的详情
 // import PersonalMelonPages from '@/components/intelligentMatching/personalMelonPages' //个人吃瓜页
+// import Release from '@/components/release/release' //发布
 
 
 Vue.use(Router)
@@ -122,6 +124,11 @@ export default new Router({
       path: '/index',
       name: 'index',
       component: Index,
+    },
+    {
+      path: '/release',
+      name: 'release',
+      component: Release,
     },
     {
       path: '/contact',

@@ -21,43 +21,39 @@
             </ul>
           <ul class="personalMelonPages_header_ul1">
             <li>
-               <b>{{listData.viewCount?listData.viewCount:0}}</b>
+               <b>{{listData.careCount?listData.careCount:0}}</b>
                <p>关注</p>
             </li>
             <li>
-              <b>{{listData.laudedCount?listData.laudedCount:0}}</b>
+              <b>{{listData.caredCount?listData.caredCount:0}}</b>
               <p>粉丝</p>
             </li>
             <li>
-              <b>{{listData.commentCount?listData.commentCount:0}}</b>
+              <b>{{listData.laudCount?listData.laudCount:0}}</b>
               <p>点赞</p>
             </li>
           </ul>
         </div>
       </div>
-      <div class="personalMelonPages_box" ref="findBox" v-if="imgsArr.length>0">
-        <vue-waterfall-easy :imgsArr="imgsArr" srcKey="imageUrl1" :enablePullDownEvent="openPullDown" :maxCols="maxCols" @click="clickFn">
-          <div slot="loading" slot-scope="{isFirstLoad}">
-            <div slot="loading" v-if="isFirstLoad">{{message}}</div>
-            <div slot="loading" v-else></div>
-          </div>
-          <div id="img-info" slot-scope="props">
 
-            <h5>{{props.value.title}}</h5>
+      <div class="componentsBox" v-if="imgsArr.length>0">
+        <ul id="box">
+          <li v-for="(item,index) in imgsArr" @click="clickFn(item,index)" >
+            <img :src="item.imageUrl1" alt="">
+            <h5>{{item.title}}</h5>
             <ul class="img-info_ul">
-              <li  class="img-info_li1">
-                  <img :src="props.value.authorInfo.ownerUrl?props.value.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt="">
-              </li>
-              <li class="img-info_li2">{{props.value.authorInfo.name}}</li>
-              <li class="img-info_li3">
-                <img src="/static/images/点赞1.png" alt="" v-if="props.value.laudedStatus==false">
-                <img src="/static/images/点赞2.png" alt="" v-else>
-              </li>
-              <li class="img-info_li4">{{props.value.laudedCount}}</li>
+              <li  class="img-info_li1"><img :src="item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt=""></li>
+              <li class="img-info_li2">{{item.authorInfo.name}}</li>
+              <li class="img-info_li3"><img src="/static/images/点赞1.png" alt=""></li>
+              <li class="img-info_li4">{{item.laudedCount}}</li>
             </ul>
-          </div>
-        </vue-waterfall-easy>
+          </li>
+          <!--<li style="text-align: center;line-height: 1.0rem;color: #999999" v-if="!!message">-->
+            <!--{{message}}-->
+          <!--</li>-->
+        </ul>
       </div>
+
       <div class="lengthSmall" v-else>
         <img src="/static/images/原创.png" alt="">
          <p>{{listData.name}}还没有进行任何创作哦～</p>
@@ -69,7 +65,8 @@
     import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
     import { Toast } from 'mint-ui';  //弹框
     import { Indicator } from 'mint-ui';
-    import {customerPubContentList,commonUserFindOne,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany} from "../../assets/js/promiseHttp.js"
+    import wxShare from "../../assets/js/wxShare"
+    import {customerPubContentList,commonUserFindOne,commonUserCareUser,commonUserCancelCareUser,companyInfoCareCompany,companyInfoCancelCareCompany,shareInfoShareUrl} from "../../assets/js/promiseHttp.js"
     export default {
       name: 'find',
       components: {
@@ -77,58 +74,91 @@
       },
       data(){
         return{
+          reachBottomDistance:150,
           BjImg:"/static/images/5.png", //高斯模糊的背景
           listData:{}, //头部数据
-          message:"不同努力加载中...",
+          message:"",
            p: 1, // request param//
-          s: 20, // request param////测试
+          s:20, // request param////测试
           pages:0, //总共多少页
           isFirstLoad:true, //第一次加载
           maxCols:2,  //瀑布流显示最大的列数
           openPullDown:true,//下拉刷新
           imgsArr:[], //数据
           userInfo:"", //用户信息
-          offsetHeight:0 //头部高度
+          offsetHeight:0, //头部高度
+          gap : 5, //10px的像素差距
+//          BottomPx:{bottom:0},
         }
       },
       created() {
         this.$nextTick(function () {
-          document.title = "个人吃瓜页"
+          window.addEventListener('scroll',this.handleScroll,true) //监听高度
         })
         this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):"";
-        console.log(this.$router.history.current.query.id)
-        commonUserFindOne(this.$router.history.current.query.id).then(res=>{
-          if(res.status == true){
-             this.listData =res.data
-          }else{
-            Toast("网络出错了，请重试")
-          }
-        })
-        console.log(this.$router.history.current.query.id)
-        customerPubContentList(this.$router.history.current.query.id,this.p,this.s).then(res=>{
-//        customerPubContentList(this.p,this.s).then(res=>{
-          console.log(res)
-          if(res.status==true){
-              res.data.forEach((item,index)=>{
-                item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
-              })
-              this.pages = Math.ceil(res.total/this.s)
-              this.imgsArr = res.data;
 
+        commonUserFindOne(this.$router.history.current.query.id).then(res=>{
+
+          if(res.status == true){
+             this.listData =res.data;
+            this.$nextTick(function () {
+              document.title = res.data.name +"的主页"
+            })
+
+//            console.log(this.listData)
           }else{
             Toast("网络出错了，请重试")
           }
         })
+
+        this.IndicatorData();
 
       },
       methods:{
+        IndicatorData(){ //初始数据
+          customerPubContentList(this.$router.history.current.query.id,this.p,this.s,true).then(res=>{
+            if(res.status == true){
+              res.data.forEach((item,index)=>{
+                item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+              })
+              this.pages = Math.ceil(res.total/this.s);
+              this.imgsArr = res.data;
+              setTimeout(()=>{
+                this.$nextTick(function(){
+                  let  box = document.getElementById('box');
+                  let items = box.children;
+                  this.waterFull(items);
+                })
+              },200)
 
+            }else{
+              Indicator.close();
+              Toast("网络出错了，请重试")
+            }
+          })
+        },
+        share(){//分享
+          shareInfoShareUrl(window.location.href.split('#')[0]).then(res=>{
+            if(res.status==true){
+              let obj = {
+                title:this.listData.regionName,
+                desc:this.listData.introduce,
+                url:location.href,
+                imgUrl:this.listData.ownerUrl,
+              }
+              wxShare.wxShare(res.data,obj)
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        },
         followClick(v,v1){ //点击是不是关注了
           let data = JSON.parse(localStorage.getItem("userInfo"))
           if(data){
             if(v=='关注'){ //关注
               commonUserCareUser(v1.id,data.data.id,"2").then(res=>{
                 if(res.data.status==true){
+                  Toast("关注成功")
                   v1.cared =true
                 }else{
                   Toast("网络出错了，请重试")
@@ -137,6 +167,7 @@
             }else if(v=='已关注'){//取消关注
               commonUserCancelCareUser(v1.id,data.data.id,"2").then(res=>{
                 if(res.data.status==true){
+                  Toast("关注已取消")
                   v1.cared =false
                 }else{
                   Toast("网络出错了，请重试")
@@ -152,44 +183,64 @@
 
         },
         clickFn(event,{index,value}){ //进入详情页
-          console.log(value)
+//          console.log(value)
           this.$router.push({path:"/findDetail",query:{id:value.id}}) //去发现的详情页面，记得带状态跟token
         },
         handleScroll(e){  //回到顶部按钮出现
 //          console.log(e,"scrollTop")
 //          console.log(e.target.scrollTop,"scrollTop")
 //          console.log(e.target.scrollHeight,"OffsetHeight")
-//          console.log(e.target.OffsetHeight,"OffsetHeight")
-          if(e.target.scrollTop>=(e.target.scrollHeight-e.target.clientHeight-0.5)){
-
+//          console.log(e.target.clientHeight,"OffsetHeight")
+////          console.log(e.target.scrollingElement.scrollTop,"OffsetHeigh1t1")
+////          console.log(e.target.scrollingElement.scrollHeight,"OffsetHeight1")
+////          console.log(e.target.scrollingElement.clientHeight,"OffsetHeight1")
+          let scrollTop = e.target.scrollTop?e.target.scrollTop:e.target.scrollingElement.scrollTop;
+          let scrollHeight = e.target.scrollHeight?e.target.scrollHeight:e.target.scrollingElement.scrollHeight;
+          let clientHeight = e.target.clientHeight?e.target.clientHeight:e.target.scrollingElement.clientHeight;
+          if(scrollTop>=(scrollHeight-clientHeight-0.5)){
             this.p++
             let that = this;
             if(that.pages<that.p){
               that.p = that.pages;
-              Toast("没有更多数据了");
-              return;
+              this.message = "这是我的底线...";
+              Toast("被你看光啦")
+//              this.BottomPx = {bottom:'0.3rem'};
+              return
             }else if(that.pages==that.p){
 
-              customerPubContentList(this.$router.history.current.query.id,this.p,this.s).then(res=>{
+              customerPubContentList(this.$router.history.current.query.id,this.p,this.s,true).then(res=>{
                 if(res.status == true){
                   res.data.forEach((item,index)=>{
                     item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
                   })
                   that.imgsArr = that.imgsArr.concat(res.data);
-
+                  setTimeout(()=>{
+                    this.$nextTick(function(){
+                      let  box = document.getElementById('box');
+                      let items = box.children;
+                      this.waterFull(items);
+                    })
+                  },200)
 
                 }else{
                   Toast("网络出错了，请重试")
                 }
               })
             }else if(that.pages>that.p){
-              customerPubContentList(this.$router.history.current.query.id,this.p,this.s).then(res=>{
+              customerPubContentList(this.$router.history.current.query.id,this.p,this.s,true).then(res=>{
                 if(res.status == true){
                   res.data.forEach((item,index)=>{
                     item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
                   })
                   that.imgsArr = that.imgsArr.concat(res.data);
 
+                  setTimeout(()=>{
+                    this.$nextTick(function(){
+                      let  box = document.getElementById('box');
+                      let items = box.children;
+                      this.waterFull(items);
+                    })
+                  },200)
                 }else{
                   Toast("网络出错了，请重试")
                 }
@@ -198,17 +249,154 @@
           }
 
         },
+        waterFull(items){//瀑布流
+          // 1- 确定列数  = 页面的宽度 / 图片的宽度
+          let columns = 2; //2列
+          let itemWidth= (this.sizeWidth().width - this.gap) /2; //2列每列的宽度
+          var arr = [];
+          for(var i= 0 ;i<items.length;i++){
+//        console.log(items[i].offsetHeight,"items")
+            if(i<columns){
+              // 2- 确定第一行
+              items[i].style.top = 0;
+              items[i].style.left = (itemWidth + this.gap) * i + 'px';
+              arr.push(items[i].offsetHeight);
+            }else{
+// 其他行
+              // 3- 找到数组中最小高度  和 它的索引
+              var minHeight = arr[0];
+              var index = 0;
+              for (var j = 0; j < arr.length; j++) {
+                if (minHeight > arr[j]) {
+                  minHeight = arr[j];
+                  index = j;
+                }
+              }
+              // 4- 设置下一行的第一个盒子位置
+              // top值就是最小列的高度 + gap
+              items[i].style.top = arr[index] + this.gap + 'px';
+              // left值就是最小列距离左边的距离
+              items[i].style.left = items[index].offsetLeft + 'px';
+
+              // 5- 修改最小列的高度
+              // 最小列的高度 = 当前自己的高度 + 拼接过来的高度 + 间隙的高度
+              arr[index] = arr[index] + items[i].offsetHeight + this.gap;
+            }
+          }
+        },
+        sizeWidth() {//宽，高
+          return {
+            width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+          }
+        },
       },
       mounted() {
-        window.addEventListener('scroll',this.handleScroll,true) //监听高度
+        setTimeout(()=>{
+          this.share();
+        },200)
       },
     }
 
   </script>
 
   <style scoped lang="less">
+    .componentsBox{
+      width: 100%;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      top:1.8rem;
+      right: 0;
+      overflow: hidden;
+      >ul{
+        width: 100%;
+        height: 100%;
+        overflow: scroll;
+        position: relative;
+        >li{
+          width: 49.2vw;
+          position: absolute;
+          background: #ffffff;
+          >img{
+            display: block;
+            width: 100%;
+
+          }
+          >h5{
+            width: 100%;
+            font-size:0.12rem;
+            font-family:PingFangSC-Regular;
+            font-weight:400;
+            color:rgba(5,5,9,1);
+            line-height:0.2rem;
+            overflow : hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            word-break:break-all;
+            padding: 0 0.05rem;
+            box-sizing: border-box;
+          }
+          >.img-info_ul{
+            width: 100%;
+            overflow: hidden;
+            margin-top: 0.05rem;
+            padding: 0.05rem;
+            box-sizing: border-box;
+            .img-info_li1{
+              width: 0.16rem;
+              height: 0.16rem;
+              float: left;
+              img{
+                display: block;
+                width: 0.16rem;
+                height: 0.16rem;
+              }
+            }
+            .img-info_li2{
+              float: left;
+              width: 0.9rem;
+              line-height: 0.16rem;
+              margin-left: 0.05rem;
+              font-size:0.1rem;
+              font-family:PingFangSC-Regular;
+              font-weight:400;
+              color:rgba(102,102,102,1);
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+            .img-info_li3{
+              float: left;
+              width: 0.14rem;
+              height: 0.13rem;
+              margin-right: 0.04rem;
+              img{
+                display: inline-block;
+                width: 0.14rem;
+                height: 0.13rem;
+              }
+            }
+            .img-info_li4{
+              float: left;
+              font-size:0.1rem;
+              line-height: 0.16rem;
+            }
+
+          }
+        }
+      }
+    }
+
     #personalMelonPages {
       width: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      right: 0;
       .personalMelonPages_box{
         position: absolute;
         left: 0;
@@ -237,33 +425,45 @@
           box-sizing: border-box;
           .personalMelonPages_header_ul{
             width: 100%;
-            display: flex;
             padding: 0 0.16rem;
             box-sizing: border-box;
             .personalMelonPages_header_li1{
               width: 0.6rem;
               height: 0.6rem;
+              float: left;
+              margin: 0;
+              padding: 0;
               img{
                 display: block;
                 width: 0.6rem;
+                padding: 0;
                 height: 0.6rem;
+                margin: 0;
+                border-radius: 50%;
               }
             }
             .personalMelonPages_header_li2{
-              width: 1.8rem;
+              width: 1.9rem;
+              float: left;
               margin-left: 0.1rem;
               height: 0.6rem;
               b{
-                font-size:0.17rem;
+                width: 100%;
+                display: block;
+                font-size:0.12rem;
                 font-family:PingFangSC-Medium;
                 font-weight:500;
                 color:rgba(5,5,9,1);
-                line-height: 0.34rem;
+                max-height: 0.4rem;
+                line-height: 0.2rem;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                white-space: nowrap;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
               }
               >div{
+                line-height: 0.2rem;
                 font-size:0.12rem;
                 font-family:PingFangSC-Regular;
                 font-weight:400;
@@ -271,10 +471,10 @@
               }
             }
             .personalMelonPages_header_li3{
-              flex: 1;
+              float: right;
               margin-top: 0.15rem;
              >div{
-               width: 0.8rem;
+               width: 0.7rem;
                height: 0.3rem;
                text-align: center;
                line-height: 0.32rem;
@@ -283,7 +483,7 @@
                float: right;
                div{
                  width: 100%;
-                 img{
+                 >img{
                    width: 0.1rem;
                    height: 0.11rem;
                    display: inline-block;
@@ -301,10 +501,13 @@
 
           }
           .personalMelonPages_header_ul1{
+            position: absolute;
+            left: 0;
+            top: 1.2rem;
             width: 100%;
             height: 0.5rem;
             display: flex;
-            margin-top:0.28rem ;
+            /*margin-top:0.28rem ;*/
             background:rgba(255,255,255,0.3);
             li{
              flex: 1;
@@ -328,69 +531,7 @@
         }
       }
     }
-    #img-info{
-      width: 100%;
-      padding: 0.06rem;
-      box-sizing: border-box;
-      background: #ffffff;
-      h5{
-        width: 100%;
-        font-size:0.12rem;
-        font-family:PingFangSC-Regular;
-        font-weight:400;
-        color:rgba(5,5,9,1);
-        line-height:0.2rem;
-        overflow : hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        word-break:break-all;
-      }
-      .img-info_ul{
-        width: 100%;
-        overflow: hidden;
-        margin-top: 0.05rem;
-        display: flex;
-        .img-info_li1{
-          width: 0.16rem;
-          height: 0.16rem;
-          img{
-            display: block;
-            width: 0.16rem;
-            height: 0.16rem;
-          }
-        }
-        .img-info_li2{
-          width: 0.9rem;
-          line-height: 0.16rem;
-          margin-left: 0.05rem;
-          font-size:0.1rem;
-          font-family:PingFangSC-Regular;
-          font-weight:400;
-          color:rgba(102,102,102,1);
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
-        .img-info_li3{
-          width: 0.14rem;
-          height: 0.13rem;
-          margin-right: 0.04rem;
-          img{
-            display: inline-block;
-            width: 0.14rem;
-            height: 0.13rem;
-          }
-        }
-        .img-info_li4{
-          flex: 1;
-          font-size:0.1rem;
-          line-height: 0.16rem;
-        }
 
-      }
-    }
     .lengthSmall{
       width: 100%;
       height: 100%;

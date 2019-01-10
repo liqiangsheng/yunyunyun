@@ -67,7 +67,8 @@
   import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
   import imgenlarge from './imgenlarge.vue'
   import welcomePage from './welcomePage.vue'
-  import {activityImagesList,activityImagesBookFindOne,activityImageslistHot} from "../../assets/js/promiseHttp.js"
+  import wxShare from "../../assets/js/wxShare"
+  import {activityImagesList,activityImagesBookFindOne,activityImageslistHot,shareInfoShareUrl} from "../../assets/js/promiseHttp.js"
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
 export default {
@@ -210,9 +211,26 @@ export default {
   mounted() {
     window.addEventListener('scroll', this.handleScroll) //监听回到顶部按钮出现
     let that = this;
-
+    setTimeout(()=>{
+      this.share();
+    },200)
   },
   methods: {
+    share(){//分享
+      shareInfoShareUrl(window.location.href.split('#')[0]).then(res=>{
+        if(res.status==true){
+          let obj = {
+            title:this.objDataTitle.name,
+            desc:this.objDataTitle.remark,
+            url:location.href,
+            imgUrl:this.objDataTitle.bannerImageList[0].imageUrl,
+          }
+          wxShare.wxShare(res.data,obj)
+        }else{
+          Toast("网络出错了，请重试")
+        }
+      })
+    },
     temp(v){ //欢迎页进入
       this.pageShow = v.isbool;
       this.bookId.bookId = v.bookId;

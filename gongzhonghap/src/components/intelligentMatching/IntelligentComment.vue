@@ -78,6 +78,7 @@
                 v.lauded = true;
                 replylaudReply(v.id,this.operationUser.access_token).then(res=>{
                   if(res.status==true){
+                    Toast("点赞成功")
                     v.laudedCount =  v.laudedCount+1;
                   }else{
                     Toast("网络出错了，请重试")
@@ -87,6 +88,7 @@
                 v.lauded = false;
                 replyCancelLaudReply(v.id,this.operationUser.access_token).then(res=>{
                   if(res.status==true){
+                    Toast("点赞已取消")
                     v.laudedCount =  v.laudedCount-1;
                   }else{
                     Toast("网络出错了，请重试")
@@ -109,7 +111,7 @@
                 v.lauded = true;
                 commentlaudComment(v.id,this.operationUser.access_token).then(res=>{
                   if(res.status==true){
-
+                    Toast("点赞成功")
                     v.laudedCount =  v.laudedCount+1;
                   }else{
                     Toast("网络出错了，请重试")
@@ -119,6 +121,7 @@
                 v.lauded = false;
                 commentCancelLaudComment(v.id,this.operationUser.access_token).then(res=>{
                   if(res.status==true){
+                    Toast("点赞已取消")
                     v.laudedCount =  v.laudedCount-1;
                   }else{
                     Toast("网络出错了，请重试")

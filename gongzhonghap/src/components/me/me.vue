@@ -3,20 +3,44 @@
 
     <div class="userinfo" @click="loginBnt">
       <img class='bgImge' :src='bgImge' @click="loginBnt"/>
-      <div>
+      <div class="userinfo_box">
         <img class="userinfoImage" :src="userInfo.header"/>
         <span class="userinfo-nickname">{{userInfo.name}}</span>
       </div>
       <div class="userinfo_set" @click.stop="setClick">
-         个人资料 <img src="/static/images/goBack.png" alt="">
+         消息 <img src="/static/images/goBack.png" alt="">
       </div>
     </div>
     <ul class="me_ul" v-if="tabListBool">
-      <li v-for="(item,index) in tabList" @click='myfollowBnt(item)'>
+      <li @click='myfollowBnt(1)'>
          <span>
-           {{item.num}}
+             {{userInfo.care_count>10000?userInfo.care_count/10000+'万':userInfo.care_count}}
          </span><br>
-         {{item.name}}
+        关注
+      </li>
+      <li @click='myfollowBnt(2)'>
+         <span>
+                {{userInfo.care_count>10000?userInfo.care_count/10000+'万':userInfo.care_count}}
+         </span><br>
+        粉丝
+      </li>
+      <li @click='myfollowBnt(3)'>
+         <span>
+                {{userInfo.laud_count>10000?userInfo.laud_count/10000+'万':userInfo.laud_count}}
+         </span><br>
+        点赞
+      </li>
+      <li @click='myfollowBnt(4)'>
+         <span>
+                {{userInfo.favorite_count>10000?userInfo.favorite_count/10000+'万':userInfo.favorite_count}}
+         </span><br>
+        收藏
+      </li>
+      <li @click='myfollowBnt(5)'>
+         <span>
+                {{userInfo.comment_count>10000?userInfo.comment_count/10000+'万':userInfo.comment_count}}
+         </span><br>
+        评论
       </li>
     </ul>
     <ul class="Me_tab">
@@ -32,7 +56,7 @@
 
     <ul class="Indextab">
       <li v-for="(item,index) in tabbarArr" class="indexTabLi" @click="tabarClick(index)">
-        <img :src="tabbarAarrIndex==index?item.icon:item.icon1" alt="" class="indexTabImg">
+        <img :src="tabbarAarrIndex==index?item.icon:item.icon1" alt="" class="indexTabImg" :class="{active:index==2}">
         {{item.name}}
       </li>
     </ul>
@@ -65,10 +89,11 @@ export default {
         tabbarArr:[  //、、tab
           {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
           {name:"资讯",icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
+          {icon:"./static/images/zhaio.png",icon1:"./static/images/zhaio.png",path:"/release"},
           {name:"智慧活动",icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
           {name:"我的",icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
         ],
-        tabbarAarrIndex:3,  //点击tab的下标
+        tabbarAarrIndex:4,  //点击tab的下标
       }
   },
   created(){
@@ -84,6 +109,11 @@ export default {
                 this.bgImge=res.data.data.owner_url;
                 this.userInfo.header= res.data.data.owner_url?res.data.data.owner_url:"./static/images/defultphoto.png";
                 this.userInfo.name= res.data.data.name;
+                 this.userInfo.care_count = res.data.data.care_count ?res.data.data.care_count:0 ;
+                 this.userInfo.cared_count = res.data.data.cared_count?res.data.data.cared_count:0 ;
+                 this.userInfo.comment_count = res.data.data.comment_count?res.data.data.comment_count:0 ;
+                 this.userInfo.favorite_count = res.data.data.favorite_count?res.data.data.favorite_count:0 ;
+                 this.userInfo.laud_count = res.data.data.laud_count?res.data.data.laud_count:0 ;
                 }else{
                    Toast("网络异常，请重试")
                }
@@ -111,15 +141,15 @@ export default {
     myfollowBnt(v){ //我的关注 粉丝 点赞 收藏 评论
       let data = JSON.parse(localStorage.getItem("userInfo"))
       if(data){
-          if(v.name == "关注"){
+          if(v == 1){
             this.$router.push({path:"/myfollow"})
-          }else if(v.name == "粉丝"){
+          }else if(v == 2){
             this.$router.push({path:"/fans"})
-          }else if(v.name == "点赞"){
+          }else if(v == 3){
             this.$router.push({path:"/myFabulous"})
-          }else if(v.name == "收藏"){
+          }else if(v == 4){
             this.$router.push({path:"/myCollection"})
-          }else if(v.name == "评论"){
+          }else if(v == 5){
             this.$router.push({path:"/myComment"})
           }
 
@@ -135,7 +165,8 @@ export default {
       loginBnt(){ //登录
         let data = JSON.parse(localStorage.getItem("userInfo"))
         if(data){
-          Toast("已登录，请勿重复登录")
+//          Toast("已登录，请勿重复登录")
+          this.$router.push({path:"/editingInformation"})
         }else{
           this.$router.push({path:"/login"})
         }
@@ -170,36 +201,40 @@ export default {
       filter: blur(15px);
       opacity:0.3;
     }
-    .userinfoImage{
-      width: 0.65rem;
-      height:  0.65rem;
-      border-radius: 100%;
-      position: absolute;
-      left: 40%;
-      top: .35rem;
-
-    }
-    .userinfo-nickname{
+    .userinfo_box{
+      width: 100%;
       position: absolute;
       left: 0;
-      top: 1.1rem;
-      display: block;
-      width: 100%;
-      text-align: center;
-      height:.16rem;
-      font-size:.17rem;
-      font-family:PingFangSC-Regular;
-      font-weight:400;
-      color:rgba(5,5,9,1);
+      top: 0.35rem;
+      .userinfoImage{
+        width: 0.65rem;
+        height:  0.65rem;
+        border-radius: 100%;
+        margin: 0 auto;
+      }
+      .userinfo-nickname{
+        display: block;
+        width: 100%;
+        text-align: center;
+        height:.16rem;
+        font-size:.17rem;
+        font-family:PingFangSC-Regular;
+        font-weight:400;
+        color:rgba(5,5,9,1);
+        margin-top: 0.15rem;
+      }
     }
+
+
     .userinfo_set{
-      width:1.0rem;
+      width:0.8rem;
       height: 0.32rem;
       background:rgba(0,0,0,0.2);
       border-radius:0.16rem;
       position: absolute;
       right: -0.15rem;
       top: 0.48rem;
+      padding-left: 0.1rem;
       line-height: 0.32rem;
       text-indent: 0.05rem;
       font-size:0.12rem;
@@ -235,6 +270,10 @@ export default {
   display:block;
   margin: 0 auto;
 }
+  .indexTabImg.active{
+    width: 0.32rem;
+    height: 0.32rem;
+  }
   .me_ul{
     width: 100%;
     background:rgba(255,255,255,0.3);

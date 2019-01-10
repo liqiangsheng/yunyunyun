@@ -9,18 +9,20 @@
             <input id="upload_file" type="file" class="file-input" accept="image/png,image/jpeg,image/jpg" @change="inputChange($event)"/>
           </div>
         </li>
-        <li>
+        <li @click="goName('用户名')">
           <div class="first">用户名</div>
           <div class="last">
             <img class='right' src="/static/images/right.png" alt="">
-            <input type="text" placeholder="请填写用户名" v-model="nameValue">
+            <p>{{nameValue}}</p>
+            <!--<input type="text" placeholder="请填写用户名" v-model="nameValue">-->
           </div>
         </li>
-        <li>
+        <li @click="goName('个人简介')">
           <div class="first">个人简介</div>
           <div class="last">
             <img class='right' src="/static/images/right.png" alt="">
-            <input type="text" placeholder="请填写个人简介" v-model="introductionValue">
+            <p>{{introductionValue}}</p>
+            <!--<input type="text" placeholder="请填写个人简介" v-model="introductionValue">-->
           </div>
         </li>
       </ul>
@@ -41,6 +43,7 @@
       <button @click="okEditClick">确定编辑</button>
       <nameValue v-if="sexShow" :sexShow="sexShow" @sex="sex"></nameValue>
       <City v-if="cityShow" @cityObj="cityObj"></City>
+      <InputValue v-if="valueShow" :value="value" @nameValue1="nameValue1" @introductionValue1="introductionValue1"></InputValue>
     <mt-datetime-picker
       type="date"
       ref="picker"
@@ -60,16 +63,19 @@
   import { Toast } from 'mint-ui';  //弹框
   import nameValue from "./nameValue.vue"
   import City from "./city.vue"
+  import InputValue from "./alter/input.vue"
   import { DatetimePicker,Picker } from 'mint-ui';
   import Vue from "vue";
   Vue.component(DatetimePicker.name, DatetimePicker,Picker.name, Picker);
 export default {
   components:{
-    nameValue,City
+    nameValue,City,InputValue
   },
   name: 'EditingInformation',
   data(){
     return{
+      value:"",
+      valueShow:false, //文字框显示
       startDate: new Date(1900), //开始时间
       endDate: new Date(), //开始时间
       headerImg:"./static/images/defultphoto.png", //头像
@@ -90,7 +96,7 @@ export default {
   },
   created(){
     this.$nextTick(function () {
-      document.title = "个人资料编辑";
+      document.title = "编辑资料";
     })
     let data = JSON.parse(localStorage.getItem("userInfo"));
     if(!!data){
@@ -130,6 +136,23 @@ export default {
 
   },
   methods:{
+    introductionValue1(v){ //个人简介
+      this.introductionValue = v;
+      this.valueShow = false
+    },
+    nameValue1(v){//名字
+      this.nameValue = v;
+      this.valueShow = false
+    },
+    goName(v){//打开输入框
+      console.log(v)
+      if(v==='用户名'){
+        this.value = v;
+      }else if(v==='个人简介'){
+        this.value = v;
+      }
+      this.valueShow = true;
+    },
     inputChange(event){ //图片上传的事件
       upImgQiniu(event,this.qiniuToken).then(res=>{
         this.headerImg = res;
@@ -137,6 +160,10 @@ export default {
     },
     okEditClick(){ //确定编辑
 //      console.log(this.token,"dsakdkasdk")
+      if(!this.nameValue){
+        Toast("姓名不能为空")
+        return
+      }
       let obj = {};
         obj.birthday= this.birthday;
         obj.regionId= this.regionId;
@@ -237,12 +264,16 @@ export default {
             border-radius: 50%;
             float: right;
           }
-          input{
+          p{
+            line-height: 0.5rem;
             float: right;
             outline: none;
             height: 100%;
             text-align: right;
-           width: 1.6rem;
+           width: 2rem;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
           #upload_file{
             position: absolute;

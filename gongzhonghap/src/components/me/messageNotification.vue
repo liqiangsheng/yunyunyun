@@ -8,31 +8,38 @@
 
       <ul class="messageNotification_ul">
         <li v-for="(item,index) in objList" @click="activityClick(item)">
+          <mt-cell-swipe :right="[{content: '删除',style: { background: 'red', color: '#fff',width:'100%'},handler:()=>handler(item)}]">
              <div class="messageNotification_img">
-               <img src="/static/images/审核.png" alt="" v-if="item.state=='1'">
-               <img src="/static/images/系统.png" alt="" v-else-if="item.state=='2'">
-               <img src="/static/images/活动.png" alt="" v-else>
+               <img src="/static/images/系统.png" alt="" v-if="item.notifyType=='1'">
+               <img src="/static/images/审核.png" alt="" v-if="item.notifyType=='2'">
+               <img src="/static/images/活动.png" alt="" v-if="item.notifyType=='3'">
+               <img src="/static/images/xialian.png" alt=""  v-if="item.notifyType=='4'">
              </div>
             <div class="messageNotification_right">
-              <h5 v-if="item.state=='1'">审核通知 <span>{{item.time|formatTime1}}</span></h5>
-              <h5 v-if="item.state=='2'">活动通知 <span>{{item.time|formatTime1}}</span></h5>
-              <h5 v-if="item.state=='3'">审核通知 <span>{{item.time|formatTime1}}</span></h5>
-              <p>{{item.value}}</p>
+              <h5 v-if="item.notifyType=='1'">{{item.title}} <span>{{item.notifyTime|formatTime}}</span></h5>
+              <h5 v-if="item.notifyType=='2'">{{item.title}}  <span>{{item.notifyTime|formatTime}}</span></h5>
+              <h5 v-if="item.notifyType=='3'">{{item.title}} <span>{{item.notifyTime|formatTime}}</span></h5>
+              <h5 v-if="item.notifyType=='4'">{{item.title}} <span>{{item.notifyTime|formatTime}}</span></h5>
+              <p>{{item.content}}</p>
             </div>
+          </mt-cell-swipe>
         </li>
       </ul>
 
       <div class="messageFoot" @click="updataMore">
         {{message}}
       </div>
-      <ActivityDetailAlter v-if="activetyShow" @isActivetyShow="isActivetyShow"></ActivityDetailAlter>
+      <ActivityDetailAlter v-if="activetyShow" @isActivetyShow="isActivetyShow" :childrenValue="childrenValue" :userInfo="userInfo"></ActivityDetailAlter>
     </div>
   </div>
 </template>
 
 <script>
+  import Vue from 'vue';
   import { Toast } from 'mint-ui';  //弹框
-  import { customerCareNoteListCare } from '../../assets/js/promiseHttp';
+  import { CellSwipe } from 'mint-ui';
+  Vue.component(CellSwipe.name, CellSwipe);
+  import { notificationList,notificationRemove } from '../../assets/js/promiseHttp';
   import ActivityDetailAlter from "./alter/activityDetailAlter.vue"
 export default {
   name: 'messageNotification',
@@ -41,6 +48,7 @@ export default {
   },
   data(){
     return{
+      childrenValue:{},//传给子组件的值
       activetyShow:false, //活动显示
       myfollow:true, //数据请求成功显示
       userInfo:{}, //用户信息
@@ -48,17 +56,7 @@ export default {
       s:20, //每页多少
       message:"不同努力加载中...", //触底提示
       pageNum:"",//每页数据
-      objList:[
-//        {time:1541851441523,value:"你的分享没有成功，请修改后再次尝试。原因：存在敏感内容",state:'1'},
-//        {time:1541819441523,value:"你的账号在另外一个设备上同时登录，登录异常！请你及时进行修改密码。",state:'2'},
-//        {time:1541014411523,value:"深圳市工业设计大展将于11月5日至7日在深圳会展中心召开，届时各界大咖云集，与你共商设计深圳市工业...",state:'3'},
-//        {time:1541014411523,value:"深圳市工业设计大展将于11月5日至7日在深圳会展中心召开，届时各界大咖云集，与你共商设计深圳市工业...",state:'3'},
-//        {time:154101441523,value:"深圳市工业设计大展将于11月5日至7日在深圳会展中心召开，届时各界大咖云集，与你共商设计深圳市工业...",state:'3'},
-//        {time:1541014141523,value:"深圳市工业设计大展将于11月5日至7日在深圳会展中心召开，届时各界大咖云集，与你共商设计深圳市工业...",state:'3'},
-//        {time:1531854141523,value:"修改密码请手机验证。",state:'3'},
-//        {time:1541874141523,value:"恭喜你，注册已通过！",state:'2'},
-//        {time:1541851441523,value:"你的分享没有成功，请修改后再次尝试。原因：存在敏感内容",state:'1'},
-      ], // 数据
+      objList:[], // 数据
     }
   },
   created() {
@@ -67,55 +65,98 @@ export default {
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){
-      if(this.objList.length>0){
-        this.myfollow= true;
-      }else{
-        this.myfollow= false;
-      }
+     this.query();
     }else{
       this.myfollow= false;
     }
+
   },
   methods:{
+    query(){ //初始化数据
+      notificationList(this.p,this.s,this.userInfo.data.access_token).then(res=>{
+        this.pageNum = Math.ceil(res.toatl/this.s);
+        if(this.pageNum>1){
+          this.message = "点击加载更多..."
+        }else{
+          this.message = "这是我的底线..."
+        }
+        if(res.status == true){
+          if(res.data.length>0){
+            this.myfollow= true;
+          }else{
+            this.myfollow= false;
+          }
+          this.objList =  res.data;
+        }else{
+          this.myfollow= false;
+          Toast("网络出错啦，请重试")
+        }
+      })
+    },
+    handler(v){ //删除
+      notificationRemove(v.id,this.userInfo.data.access_token).then(res=>{
+        if(res.status==true){
+            Toast("删除成功");
+           this.query();
+        }else {
+          Toast("网络出错啦，请重试")
+        }
+      })
+    },
     isActivetyShow(v){ //关闭活动按钮
       this.activetyShow =v;
     },
     activityClick(item){ //点击的是活动
-      if(item.state=='2'){
+//      if(item.state=='3'){
+        this.childrenValue= item;
         this.activetyShow = !this.activetyShow;
-      }
+//      }
     },
     updataMore(){ //加载更多 分页
-//      this.p++;
-//      if(this.p>this.pageNum){
-//        this.message = "这是我的底线..."
-//        Toast("这是最后一页啦！")
-//      }else if(this.p==this.pageNum){
-//        this.message = "这是我的底线..."
-//        customerCareNoteListCare(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-//          if(res.status == true){
-//            this.objList = this.objList.concat(res.data);
-//          }else{
-//            Toast("网络出错啦，请重试")
-//          }
-//        })
-//      }else if(this.p<this.pageNum){
-//        this.message = "点击加载更多..."
-//        customerCareNoteListCare(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-//          if(res.status == true){
-//            this.objList =  this.objList.concat(res.data);
-//          }else{
-//            Toast("网络出错啦，请重试")
-//          }
-//        })
-//      }
+      this.p++;
+      if(this.p>this.pageNum){
+        this.message = "这是我的底线..."
+        Toast("这是最后一页啦！")
+      }else if(this.p==this.pageNum){
+        notificationList(this.p,this.s,this.userInfo.data.access_token).then(res=>{
+          if(res.status == true){
+            this.message = "这是我的底线..."
+            this.objList = this.objList.concat(res.data);
+          }else{
+            Toast("网络出错啦，请重试")
+          }
+        })
+      }else if(this.p<this.pageNum){
+        notificationList(this.p,this.s,this.userInfo.data.access_token).then(res=>{
+          if(res.status == true){
+            this.message = "点击加载更多..."
+            this.objList =  this.objList.concat(res.data);
+          }else{
+            Toast("网络出错啦，请重试")
+          }
+        })
+      }
     },
   },
 }
 
 </script>
-
+<style>
+  .mint-cell-swipe{
+    border: 0;
+  }
+  .mint-cell-swipe .mint-cell-wrapper{
+    /*background: red;*/
+    display: block;
+    border: 0;
+    padding-top: 0.05rem;
+  }
+  .mint-cell-swipe .mint-cell-wrapper .mint-cell-value{
+    border: none;
+  }
+</style>
 <style scoped lang="less">
+
 #messageNotification {
   position: absolute;
   left:0;
@@ -153,6 +194,16 @@ export default {
         background: #ffffff;
         padding: 0.17rem;
         box-sizing: border-box;
+        .mint-cell-swipe{
+          width: 100% !important;
+          border: 0;
+          .mint-cell-wrapper{
+            .mint-cell-title{
+              flex: none !important;
+            }
+          }
+
+        }
         .messageNotification_img{
           width: 0.45rem;
           height: 0.45rem;

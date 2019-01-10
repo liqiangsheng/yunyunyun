@@ -7,7 +7,7 @@
         <div class="myfollow_box_header">已关注 <span>{{objList.length}}</span> 位设计师</div>
         <ul v-if="objList.length>0">
           <li v-for="(item,index) in objList">
-            <div class="myfollow_li1">
+            <div class="myfollow_li1" @click="headerClick(item)">
               <img :src="item.url?item.url:'/static/images/defultphoto.png'" alt="">
             </div>
             <div class="myfollow_li2">
@@ -78,9 +78,19 @@ export default {
   },
 
   methods: {
+    headerClick(v){//点击头像 去吃瓜页 或则设计师主页 或者企业
+//      console.log(v)
+//      if(v.authorInfo.vUser==0){ //去吃瓜
+//        this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
+//      }else{//去大咖
+//        this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//1 是大咖
+//      }
+
+    },
     followClick(v,i){//关注
-      console.log(i)
+      console.log(v)
       let data = JSON.parse(localStorage.getItem("userInfo"));
+      console.log(data.data.id)
       if(!data){
         Toast("您还未登录，请登录！");
         setTimeout(()=>{
@@ -89,23 +99,19 @@ export default {
       }else{
      ///你关注的人，别人没关注你
           if(v.userType == "1"){ //企业
-
-            companyInfoCancelCareCompany(v.id,data.data.id,v.userType).then(res=>{
+            companyInfoCancelCareCompany(v.userId,data.data.id,v.userType).then(res=>{
               if(res.data.status==true){
-
+                Toast("关注已取消");
                this.objList.splice(i,1)
               }else{
                 Toast("网络出错了，请重试")
               }
             })
-          }else if(v.userType == "2"){  //个人
-
-            commonUserCancelCareUser(v.id,data.data.id,v.userType).then(res=>{
+          }else{  //个人
+            commonUserCancelCareUser(v.userId,data.data.id,v.userType).then(res=>{
               if(res.data.status==true){
-                console.log(this.objList)
-                console.log(Array.isArray(this.objList))
+                Toast("关注已取消");
                 this.objList.splice(i,1)
-
               }else{
                 Toast("网络出错了，请重试")
               }

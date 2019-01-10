@@ -166,6 +166,7 @@ export default {
 <style lang="less">
   #homePageB{
     background: #EEEEEE;
+    overflow-y: auto;
     .swiper-container{
       width: 100%;
       max-height: 2.55rem;

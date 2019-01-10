@@ -32,14 +32,19 @@
                 </div>
                 <div style='color:rgba(254,95,95,1);display: inline-block' v-if="item.youhuijia<=0&&item.originalPrice>0">{{item.originalPrice}} </div>
                 <div style='color:#21CB61;display: inline-block' v-if='item.originalPrice==0'>免费 </div>
-                <div class='multiActivityBoxState1' v-if='item.remainingState=="已售完"'>
+                <div class='multiActivityBoxState1' v-if='item.remainingState=="已售完"&&item.bgItem==false'>
                   {{item.remainingState}}
                 </div>
-                <div class='multiActivityBoxState1' v-else-if='item.remainingState=="已购买"'>
-                  {{item.staremainingStatete}}
-                </div>
-                <div class='multiActivityBoxState'  v-else-if='item.remainingState=="抢票中"'>
+                <div class='multiActivityBoxState1' v-else-if='item.remainingState=="已购买"&&item.bgItem==false'>
                   {{item.remainingState}}
+                </div>
+                <div class='multiActivityBoxState'  v-else-if='item.remainingState=="抢票中"&&item.bgItem==false'>
+                  {{item.remainingState}}
+                </div>
+                <div class='multiActivityBoxStateADD'  v-else-if='item.bgItem==true'>
+                  <img src="/static/images/reduce.png" alt="">
+                  <input type="num" value="1" disabled="disabled"/>
+                  <img style="opacity: 0.3;" src="/static/images/add.png" alt="">
                 </div>
               </div>
             <div class="discount" v-if="item.youhuijia>0">
@@ -69,15 +74,21 @@
                  </div>
                  <div style='color:rgba(254,95,95,1);display: inline-block' v-if="item.youhuijia<=0&&item.originalPrice>0">{{item.originalPrice}} </div>
                  <div style='color:#21CB61;display: inline-block' v-if='item.originalPrice==0'>免费 </div>
-                 <div class='multiActivityBoxState1' v-if='item.remainingState=="已售完"'>
+                 <div class='multiActivityBoxState1' v-if='item.remainingState=="已售完"&&item.bgItem==false'>
                    {{item.remainingState}}
                  </div>
-                 <div class='multiActivityBoxState1' v-else-if='item.remainingState=="已购买"'>
-                   {{item.staremainingStatete}}
-                 </div>
-                 <div class='multiActivityBoxState'  v-else-if='item.remainingState=="抢票中"'>
+                 <div class='multiActivityBoxState1' v-else-if='item.remainingState=="已购买"&&item.bgItem==false'>
                    {{item.remainingState}}
                  </div>
+                 <div class='multiActivityBoxState'  v-else-if='item.remainingState=="抢票中"&&item.bgItem==false'>
+                   {{item.remainingState}}
+                 </div>
+             <div class='multiActivityBoxStateADD'  v-else-if='item.bgItem==true'>
+               <img src="/static/images/reduce.png" alt="">
+               <input type="num" value="1" disabled="disabled"/>
+               <img style="opacity: 0.3;" src="/static/images/add.png" alt="">
+             </div>
+
            </div>
            <div class="discount" v-if="item.youhuijia>0">
              注：已优惠 <span style='color:#FE5F5F'>{{item.youhuijia}}</span>元
@@ -269,6 +280,22 @@ export default {
 </script>
 
 <style scoped lang="less">
+  .multiActivityBoxStateADD{
+    width: 0.6rem;
+    height: 0.3rem;
+    float: right;
+    img{
+      display: inline-flex;
+      width: 0.13rem;
+      height: 0.13rem;
+    }
+    input{
+      width: 0.2rem;
+      border: 0.01rem solid #eaeaea;
+      border-radius: 0.02rem;
+      text-align: center;
+    }
+  }
 #multiActivity{
   position: absolute;
   left: 0;

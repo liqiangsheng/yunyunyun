@@ -1,5 +1,5 @@
 <template>
-  <div id="homePage">
+  <v-touch id="homePage" v-on:swipeleft="swiperleft" v-on:swiperight="swiperright">
       <div class="homePageHeader">
         <img :src="objData.logoUrl?objData.logoUrl:objData.logoUrl1" alt="" class="backgroundImg" v-if="Request.state==1">
         <img :src="objData.ownerUrl?objData.ownerUrl:objData.ownerUrl1" alt="" class="backgroundImg" v-if="Request.state==2">
@@ -40,7 +40,7 @@
       <HomePageA v-if="homePageIndex == 0" :displayState="Request.state" :requestA="Request.source" :objData="objData"></HomePageA>
       <HomePageB v-if="homePageIndex == 1" :displayState="Request.state" :requestA="Request.source" :objData="objData"></HomePageB>
     </div>
-  </div>
+  </v-touch>
 </template>
 
 <script>
@@ -71,6 +71,14 @@ export default {
     }
   },
   methods:{
+    swiperleft(){
+      this.homePageIndex = 1;
+      this.$store.dispatch("homePageIndex",this.homePageIndex);//vueX保存下标
+    },
+    swiperright(){
+      this.homePageIndex = 0;
+      this.$store.dispatch("homePageIndex",this.homePageIndex);//vueX保存下标
+    },
     listClick(i){ //列表点击
       this.homePageIndex = i;
       this.$store.dispatch("homePageIndex",this.homePageIndex);//vueX保存下标

@@ -56,9 +56,7 @@ export default {
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){
       this.myfollow= true;
-//      customerCareNoteListCared(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-      customerCareNoteListCared("100",this.userInfo.data.access_token,this.p,this.s).then(res=>{
-        console.log(res,'dsfsd')
+      customerCareNoteListCared(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
         if(res.status == true){
           this.totalAll = res.total;
           this.pageNum = Math.ceil(res.total/this.s);
@@ -80,19 +78,25 @@ export default {
 
   methods: {
     followClick(v){//关注
+      console.log(v.mutual)
       console.log(v)
+//      v.mutual = !v.mutual
       if(v.mutual == false){ //去关注
         if(v.userType == "1"){ //企业
-          companyInfoCareCompany(v.id,this.userInfo.data.id,v.userType).then(res=>{
+          v.userType = '1'
+          companyInfoCareCompany(v.userId,this.userInfo.data.id,v.userType).then(res=>{
             if(res.data.status==true){
+              Toast("关注成功");
               v.mutual = true
             }else{
               Toast("网络出错了，请重试")
             }
           })
-        }else if(v.userType == "2"){  //个人
-          commonUserCareUser(v.id,this.userInfo.data.id,v.userType).then(res=>{
+        }else{  //个人
+          v.userType = '2';
+          commonUserCareUser(v.userId,this.userInfo.data.id,v.userType).then(res=>{
             if(res.data.status==true){
+              Toast("关注成功");
               v.mutual = true
             }else{
               Toast("网络出错了，请重试")
@@ -102,17 +106,20 @@ export default {
 
       }else{ //取消
         if(v.userType == "1"){ //企业
-          companyInfoCancelCareCompany(v.id,this.userInfo.data.id,v.userType).then(res=>{
+          v.userType = '1';
+          companyInfoCancelCareCompany(v.userId,this.userInfo.data.id,v.userType).then(res=>{
             if(res.data.status==true){
+              Toast("关注已取消");
               v.mutual = false
             }else{
               Toast("网络出错了，请重试")
             }
           })
-        }else if(v.userType == "2"){  //个人
-
-          commonUserCancelCareUser(v.id,this.userInfo.data.id,v.userType).then(res=>{
+        }else {  //个人
+          v.userType = '2';
+          commonUserCancelCareUser(v.userId,this.userInfo.data.id,v.userType).then(res=>{
             if(res.data.status==true){
+              Toast("关注已取消");
               v.mutual = false;
             }else{
               Toast("网络出错了，请重试")

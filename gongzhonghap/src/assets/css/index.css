@@ -29,6 +29,10 @@
   display:block;
   margin: 0 auto;
 }
+.indexTabImg.active{
+  width: 0.32rem;
+  height: 0.32rem;
+}
 
 .homeBottom{
   min-height: 2.5rem;

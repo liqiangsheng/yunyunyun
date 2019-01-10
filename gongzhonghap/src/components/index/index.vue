@@ -90,7 +90,7 @@
     </div>
     <ul class="Indextab">
        <li v-for="(item,index) in tabbarAarr" class="indexTabLi" @click="tabarClick(index)">
-         <img :src="tabbarAarrIndex==index?item.icon:item.icon1" alt="" class="indexTabImg">
+         <img :src="tabbarAarrIndex==index?item.icon:item.icon1" alt="" class="indexTabImg" :class="{active:index==2}">
          {{item.name}}
        </li>
     </ul>
@@ -113,10 +113,11 @@ export default {
       tabbarAarr:[  //、、tab
         {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
         {name:"资讯",icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
+        {icon:"./static/images/zhaio.png",icon1:"./static/images/zhaio.png",path:"/release"},
         {name:"智慧活动",icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
         {name:"我的",icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
       ],
-      tabbarAarrIndex:2,  //点击tab的下标
+      tabbarAarrIndex:3,  //点击tab的下标
       p:1, //第几页
       s:3,// 、、一夜多少
       num1:0,//嘉宾列表

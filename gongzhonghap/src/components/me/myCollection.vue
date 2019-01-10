@@ -8,7 +8,15 @@
            <span :class="{active:tabIndex==index}">{{item}}</span>
          </li>
        </ul>
-       <ul class="myFabulous_ul" v-show="tabIndex==0">
+       <div class="praiseMe_box_false" v-if="tabIndex==0&&ListData.length<=0">
+         <img src="/static/images/缺省图.png" alt="">
+         <p>你的收藏作品区目前空空也～</p>
+       </div>
+       <div class="praiseMe_box_false" v-if="tabIndex==1&&articleData.length<=0">
+         <img src="/static/images/缺省图.png" alt="">
+         <p>你的收藏文章区目前空空也～</p>
+       </div>
+       <ul class="myFabulous_ul" v-show="tabIndex==0&&ListData.length>0">
        <li v-for="(item,index) in ListData" @click="goDetail(item)">
          <h5>{{item.title}}</h5>
          <div class="myFabulous_banner">
@@ -28,7 +36,7 @@
          </div>
        </li>
      </ul>
-       <ul class="myFabulous_ul1" v-show="tabIndex==1">
+       <ul class="myFabulous_ul1" v-show="tabIndex==1&&articleData.length>0">
          <li v-for="(item,index) in articleData" @click="goHomeDetail(item)">
               <div class="myFabulous_left">
                 <h5>{{item.title}}</h5>
@@ -43,10 +51,10 @@
          </li>
        </ul>
      </div>
-    <div class="messageFoot" @click="updataMore(0)" v-if="tabIndex==0">
+    <div class="messageFoot" @click="updataMore(0)" v-if="tabIndex==0&&ListData.length>0">
       {{message}}
     </div>
-    <div class="messageFoot" @click="updataMore(1)" v-if="tabIndex==1">
+    <div class="messageFoot" @click="updataMore(1)" v-if="tabIndex==1&&articleData.length>0">
       {{message1}}
     </div>
   </div>
@@ -71,15 +79,7 @@ export default {
         tablist:["作品","文章"], //tab选择
         tabIndex:0, //tab选择xiabiao
         tabIndex1:0, //tab选择xiabiao
-        ListData:[
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",bannaerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 包装设计师",type:"平面广告"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",bannaerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 包装设计师",type:"平面广告"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",bannaerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 包装设计师",type:"平面广告"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",bannaerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 包装设计师",type:"平面广告"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",bannaerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 包装设计师",type:"平面广告"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",bannaerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 包装设计师",type:"平面广告"},
-          {title:"白色调——小米MIX3&OPPO R17 PRO&联想S5 PRO",banner:"./static/images/success.png",bannaerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 包装设计师",type:"平面广告"},
-          ], // 数据
+        ListData:[], // 数据
         articleData:[],
       }
   },
@@ -89,9 +89,7 @@ export default {
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){ //默认文章列表数据
-      customerFavoriteNoteListFavoredContent("100",this.userInfo.data.access_token,this.p,this.s).then(res=>{
-//      customerFavoriteNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-          console.log(res,"fdskfjksdk")
+      customerFavoriteNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
         if(res.status == true){
           this.pageNum = Math.ceil(res.total/this.s);
           if(this.pageNum>1){
@@ -113,24 +111,24 @@ export default {
 
   methods: {
     goHomeDetail(v){ //去文章详情
+
       this.$router.push({path:"/homeDetail" ,query: {id:v.id}})
     },
     goDetail(v){ //去文章详情
      this.$router.push({path:"/findDetail",query:{id:v.id}})
     },
     goHomePage(v){ //去个人 或则大咖
-      if(v.authorInfo.vUser==1){ //去吃瓜
+      console.log(v)
+      if(v.authorInfo.vUser==0){ //去吃瓜
         this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
       }else{//去大咖
-        this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//2 是个人
+        this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//1是个人
       }
     },
     tabClick(i){//tab的下标
       this.tabIndex =i;
       if(i==1){
         customerFavoriteNoteMyFavoriteList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-//        customerFavoriteNoteMyFavoriteList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
-          console.log(res)
           if(res.status == true){
             this.pageNum1 = Math.ceil(res.total/this.s1);
             if(this.pageNum1 >1){
@@ -144,9 +142,7 @@ export default {
           }
         })
       }else{
-//        customerFavoriteNoteListFavoredContent("100",this.userInfo.data.access_token,this.p,this.s).then(res=>{
       customerFavoriteNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-          console.log(res,"fdskfjksdk")
           if(res.status == true){
             this.pageNum = Math.ceil(res.total/this.s);
             if(this.pageNum>1){
@@ -170,8 +166,6 @@ export default {
         }else if(this.p1==this.pageNum1){
           this.message1 = "这是我的底线..."
           customerFavoriteNoteMyFavoriteList(this.userInfo.data.id,this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
-//          customerFavoriteNoteMyFavoriteList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
-
             if(res.status == true){
               this.articleData = this.articleData.concat(res.data);
             }else{
@@ -181,8 +175,6 @@ export default {
         }else if(this.p1<this.pageNum1){
           this.message1 = "点击加载更多..."
           customerFavoriteNoteMyFavoriteList(this.userInfo.data.id,this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
-//          customerFavoriteNoteMyFavoriteList("20181029135051f8409b01d673463dac60267851da2312",this.userInfo.data.access_token,this.p1,this.s1).then(res=>{
-
             if(res.status == true){
               this.articleData =  this.articleData.concat(res.data);
             }else{
@@ -373,6 +365,26 @@ export default {
           }
         }
       }
+    }
+  }
+  .praiseMe_box_false{
+    width: 100%;
+    padding-top: 1rem;
+    img{
+      display: block;
+      width: 1rem;
+      height: 0.94rem;
+      margin: 0 auto;
+    }
+    p{
+      font-size:0.12rem;
+      font-family:PingFangSC-Regular;
+      font-weight:400;
+      color:rgba(153,153,153,1);
+      line-height:0.5rem;
+      text-align: center;
+      width: 100%;
+
     }
   }
   .messageFoot{

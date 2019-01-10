@@ -647,67 +647,100 @@ export function specialSubjectFindSubjectInfoByCategory(state,p,s){
 }
 //详情里面的关注个人
 export function commonUserCareUser(userId,currentUser,userType){ //userId关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
-  Indicator.open("加载中...")
+
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/careUser?userId=${userId}&currentUser=${currentUser}&userType=${userType}`;
     axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
-      Indicator.close();
       resolve(res)
     }).catch(function (error) {
-      Indicator.close();
-      Toast(error)
+      Toast("点赞500后台出错啦")
     })
   })
 }
 //详情里面的取消关注个人
 export function commonUserCancelCareUser(userId,currentUser,userType){ //userId取消关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
-  Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/careUser?userId=${userId}&currentUser=${currentUser}&userType=${userType}`;
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/cancelCareUser?userId=${userId}&currentUser=${currentUser}&userType=${userType}`;
     axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
-      Indicator.close();
       resolve(res)
     }).catch(function (error) {
-      Indicator.close();
-      Toast(error)
+      Toast("取消点赞500后台出错啦")
     })
   })
 }
 //详情里面的关注企业
 export function companyInfoCareCompany(companyId,currentUser,userType){ //companyId关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
-  Indicator.open("加载中...")
+
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/careCompany?companyId=${companyId}&currentUser=${currentUser}&userType=${userType}`;
     axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
-      Indicator.close();
       resolve(res)
     }).catch(function (error) {
-      Indicator.close();
-      Toast(error)
+
+      Toast("点赞500后台出错啦")
     })
   })
 }
 //详情里面的取消关注企业
 export function companyInfoCancelCareCompany(companyId,currentUser,userType){ //companyId取消关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
-  Indicator.open("加载中...")
+
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/cancelCareCompany?companyId=${companyId}&currentUser=${currentUser}&userType=${userType}`;
     axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
-      Indicator.close();
+
       resolve(res)
     }).catch(function (error) {
-      Indicator.close();
-      Toast(error)
+      Toast("取消点赞500后台出错啦")
     })
   })
 }
 //详情里面的文章的点赞
 export function informationLaudInformation(informationId,token) { //informationId 点赞谁informationId
-  Indicator.open("加载中...")
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
     ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/information/laudInformation?informationId="+informationId);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Toast("点赞500后台服务器错误！")
+      }
+    }
+  })
+}
+//详情里面的文章的取消点赞
+export function informationCancelLaudInformation(informationId,token) { //informationId 点赞谁informationId
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/information/cancelLaudInformation?informationId="+informationId);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Toast("取消点赞500后台服务器错误！")
+      }
+    }
+  })
+}
+//详情里面的文章的收藏
+export function informationFavoriteInformation(informationId,token) { //informationId 收藏谁informationId
+  return new Promise(function (resolve,reject) {
+    // var data =data
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/information/favoriteInformation?informationId="+informationId);
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -724,12 +757,12 @@ export function informationLaudInformation(informationId,token) { //informationI
     }
   })
 }
-//详情里面的文章的取消点赞
-export function informationCancelLaudInformation(informationId,token) { //informationId 点赞谁informationId
+//详情里面的文章的取消收藏
+export function informationCancelFavoriteInformation(informationId,token) { //informationId 收藏谁informationId
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/information/cancelLaudInformation?informationId="+informationId);
+    ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/information/cancelFavoriteInformation?informationId="+informationId);
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -757,14 +790,13 @@ export function commentlaudComment(commentId,token) { //commentId 点赞谁comme
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      Indicator.close();
       if (ajax.readyState==4 &&ajax.status==200) {
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
       if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+
+        Toast("点赞500后台服务器错误！")
       }
     }
   })
@@ -779,14 +811,12 @@ export function commentCancelLaudComment(commentId,token) { //commentId 取消�
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      Indicator.close();
       if (ajax.readyState==4 &&ajax.status==200) {
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
       if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        Toast("取消点赞500后台服务器错误！")
       }
     }
   })
@@ -801,14 +831,12 @@ export function replylaudReply(replyId,token) { //replyId 点赞谁replyId
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      Indicator.close();
       if (ajax.readyState==4 &&ajax.status==200) {
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
       if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        Toast("点赞500后台服务器错误！")
       }
     }
   })
@@ -816,21 +844,18 @@ export function replylaudReply(replyId,token) { //replyId 点赞谁replyId
 //详情里面的评论的取消点赞 第二级
 export function replyCancelLaudReply(replyId,token) { //reply 取消点赞谁replyId
   return new Promise(function (resolve,reject) {
-    // var data =data
     let ajax = new XMLHttpRequest();
     ajax.open('get',window.common.apiDomain20020+"/apis/content/"+contentEdition+"/reply/cancelLaudReply?replyId="+replyId);
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      Indicator.close();
       if (ajax.readyState==4 &&ajax.status==200) {
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
       if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        Toast("取消点赞500后台服务器错误！")
       }
     }
   })
@@ -1162,9 +1187,9 @@ export function customerPubContentListOwner(id,pubStatus,p,s,token) { // 用户i
   })
 }
 // POST /customerPubContent/list 传参是吃瓜页userId
-export function customerPubContentList(id,p,s) { // 用户id，
+export function customerPubContentList(id,p,s,pubStatus) { // 用户id，
   Indicator.open("加载中...")
-  let data = {userId:id,p:p,s:s}
+  let data = {userId:id,p:p,s:s,pubStatus:pubStatus}
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
@@ -1232,7 +1257,6 @@ export function customerPubContentFindOne(id) { // 作品id
 }
 //作品的点赞/customerPubContent/laudContent
 export function customerPubContentLaudContent(id,token) { // 作品id
-  Indicator.open("加载中...")
   return new Promise(function (resolve,reject) {
     let ajax = new XMLHttpRequest();
     ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/laudContent?id="+id);
@@ -1241,12 +1265,10 @@ export function customerPubContentLaudContent(id,token) { // 作品id
     ajax.send();
     ajax.onreadystatechange = function () {
       if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
         let res= JSON.parse(ajax.responseText);
         resolve(res) ;
       }
       if(ajax.status==500){
-        Indicator.close()
         Toast("500后台服务器错误！")
       }
     }
@@ -1254,7 +1276,6 @@ export function customerPubContentLaudContent(id,token) { // 作品id
 }
 //作品的取消点赞/customerPubContent/cancelLaudContent
 export function customerPubContentCancelLaudContent(id,token) { // 作品id
-  Indicator.open("加载中...")
   return new Promise(function (resolve,reject) {
     let ajax = new XMLHttpRequest();
     ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/cancelLaudContent?id="+id);
@@ -1263,12 +1284,10 @@ export function customerPubContentCancelLaudContent(id,token) { // 作品id
     ajax.send();
     ajax.onreadystatechange = function () {
       if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
       if(ajax.status==500){
-        Indicator.close()
         Toast("500后台服务器错误！")
       }
     }
@@ -1276,7 +1295,6 @@ export function customerPubContentCancelLaudContent(id,token) { // 作品id
 }
 //作品的收藏/customerPubContent/favorContent
 export function customerPubContentFavorContent(id,token) { // 作品id
-  Indicator.open("加载中...")
   return new Promise(function (resolve,reject) {
     let ajax = new XMLHttpRequest();
     ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/favorContent?id="+id);
@@ -1285,12 +1303,10 @@ export function customerPubContentFavorContent(id,token) { // 作品id
     ajax.send();
     ajax.onreadystatechange = function () {
       if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
       if(ajax.status==500){
-        Indicator.close()
         Toast("500后台服务器错误！")
       }
     }
@@ -1298,7 +1314,6 @@ export function customerPubContentFavorContent(id,token) { // 作品id
 }
 //作品的取消收藏/customerPubContent/cancelFavorContent
 export function customerPubContentCancelFavorContent(id,token) { // 作品id
-  Indicator.open("加载中...")
   return new Promise(function (resolve,reject) {
     let ajax = new XMLHttpRequest();
     ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/cancelFavorContent?id="+id);
@@ -1307,12 +1322,10 @@ export function customerPubContentCancelFavorContent(id,token) { // 作品id
     ajax.send();
     ajax.onreadystatechange = function () {
       if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
       if(ajax.status==500){
-        Indicator.close()
         Toast("500后台服务器错误！")
       }
     }
@@ -1384,7 +1397,73 @@ export function shareInfoShareUrl(url) { //url域名
       }
       if(ajax.status==500){
         Indicator.close()
-        Toast("500后台服务器错误！")
+        Toast("500分享后台服务器错误！")
+      }
+    }
+  })
+}
+// 通知列表notification/list
+export function notificationList(p,s,token) {
+  Indicator.open("加载中...")
+  let data = {p:p,s:s}
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',`${window.common.apiDomain20020}/apis/operation/${operationEdition}/notification/list`,true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500通知后台服务器错误！")
+      }
+    }
+  })
+}
+// 通知列表notification/list
+export function notificationFindOne(id,token) {
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',`${window.common.apiDomain20020}/apis/operation/${operationEdition}/notification/findOne?id=${id}`);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500通知后台服务器错误！")
+      }
+    }
+  })
+}
+// 通知列表删除notification/remove
+export function notificationRemove(id,token) { //传数组
+  let arr = [];
+  arr.push(id);
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',`${window.common.apiDomain20020}/apis/operation/${operationEdition}/notification/remove`,true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(arr));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Toast("500通知后台服务器错误！")
       }
     }
   })

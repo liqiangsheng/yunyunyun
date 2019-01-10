@@ -105,6 +105,7 @@
 <style scoped lang="less">
   #homePageA{
     overflow: hidden;
+    overflow-y: auto;
   }
    .homePageAItem{
      width: 94%;

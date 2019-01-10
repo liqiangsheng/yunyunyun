@@ -1,10 +1,10 @@
 <template>
   <div id="PersonalSettings">
     <ul class='meList'>
-        <li @click='settingBnt'>
-        设置
-        <img src='/static/images/right.png'/>
-       </li>
+        <!--<li @click='settingBnt'>-->
+        <!--设置-->
+        <!--<img src='/static/images/right.png'/>-->
+       <!--</li>-->
        <li @click='meActivityBnt'>
         我的活动
          <img src='/static/images/right.png'/>
@@ -17,10 +17,10 @@
         点赞我的
         <img src='/static/images/right.png'/>
       </li>
-      <li @click='collect_my'>
-        收藏我的
-        <img src='/static/images/right.png'/>
-      </li>
+      <!--<li @click='collect_my'>-->
+        <!--收藏我的-->
+        <!--<img src='/static/images/right.png'/>-->
+      <!--</li>-->
       <li @click='commentBnt'>
         消息通知
         <img src='/static/images/right.png'/>
@@ -55,7 +55,7 @@ export default {
   },
   created(){
     this.$nextTick(function () {
-      document.title = "个人设置";
+      document.title = "消息";
     })
   },
 
@@ -113,7 +113,7 @@ export default {
           localStorage.removeItem("userInfo"); //清楚登录信息
           Toast("退出成功！")
           setTimeout(()=>{
-            this.$router.push({path:"/"}); //去首页
+            this.$router.push({path:"/me"}); //去首页
           },1000)
 
         }else{

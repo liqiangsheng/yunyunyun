@@ -65,11 +65,9 @@
         document.title = "评论我的";
       })
       this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-      this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
       if(this.userInfo){
-//        commentFindForMeCommentList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-        commentFindForMeCommentList("20181203103707dc00a09e48224f51bf733765edfa7633",this.userInfo.data.access_token,this.p,this.s).then(res=>{
-          console.log(res,"fsdjkfjksdjk")
+        commentFindForMeCommentList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+
           if(res.status==true){
             this.pageNum = Math.ceil(res.total/this.s);
             if(this.pageNum>1){
@@ -102,7 +100,6 @@
         }else if(this.p==this.pageNum){
           this.message = "这是我的底线..."
           commentFindForMeCommentList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-//          commentFindForMeCommentList("20181203103707dc00a09e48224f51bf733765edfa7633",this.userInfo.data.access_token,this.p,this.s).then(res=>{
 
             if(res.status == true){
               this.objList = this.objList.concat(res.data);
@@ -113,8 +110,6 @@
         }else if(this.p<this.pageNum){
           this.message = "点击加载更多..."
           commentFindForMeCommentList(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-//          commentFindForMeCommentList("20181203103707dc00a09e48224f51bf733765edfa7633",this.userInfo.data.access_token,this.p,this.s).then(res=>{
-
             if(res.status == true){
               this.objList =  this.objList.concat(res.data);
             }else{
