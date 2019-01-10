@@ -81,7 +81,7 @@ export default {
     followClick(v){//关注
       if(v.mutual == false){ //去关注
         if(v.userType == "1"){ //企业
-          companyInfoCareCompany(v.id,this.userInfo.data.id,v.userType).then(res=>{
+          companyInfoCareCompany(v.userId,this.userInfo.data.id,v.userType).then(res=>{
             if(res.data.status==true){
               v.mutual = true
             }else{
@@ -89,7 +89,7 @@ export default {
             }
           })
         }else if(v.userType == "2"){  //个人
-          commonUserCareUser(v.id,this.userInfo.data.id,v.userType).then(res=>{
+          commonUserCareUser(v.userId,this.userInfo.data.id,v.userType).then(res=>{
             if(res.data.status==true){
               v.mutual = true
             }else{
@@ -100,7 +100,7 @@ export default {
 
       }else{ //取消
         if(v.userType == "1"){ //企业
-          companyInfoCancelCareCompany(v.id,this.userInfo.data.id,v.userType).then(res=>{
+          companyInfoCancelCareCompany(v.userId,this.userInfo.data.id,v.userType).then(res=>{
             if(res.data.status==true){
               v.mutual = false
             }else{
@@ -109,7 +109,7 @@ export default {
           })
         }else if(v.userType == "2"){  //个人
 
-          commonUserCancelCareUser(v.id,this.userInfo.data.id,v.userType).then(res=>{
+          commonUserCancelCareUser(v.userId,this.userInfo.data.id,v.userType).then(res=>{
             if(res.data.status==true){
               v.mutual = false;
             }else{

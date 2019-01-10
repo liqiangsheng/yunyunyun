@@ -636,9 +636,9 @@ export function commentFindCommentsByPubId(id,p,s){ //pubId 作品id
   })
 }
 // POST /customerPubContent/list 传参是吃瓜页userId
-export function customerPubContentList(id,p,s,token) { // 用户id，
+export function customerPubContentList(id,p,s) { // 用户id， pubStatus:true,就是不包括草稿
   Indicator.open("加载中...")
-  let data = {userId:id,p:p,s:s}
+  let data = {userId:id,p:p,s:s,pubStatus:true}
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
@@ -806,7 +806,7 @@ export function commonUserCareUser(userId,currentUser,userType){ //userId关注�
 export function commonUserCancelCareUser(userId,currentUser,userType){ //userId取消关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
   Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
-    let url = `${window.common.apiDomain}/apis/operation/${operationEdition}/commonUser/careUser?userId=${userId}&currentUser=${currentUser}&userType=${userType}`;
+    let url = `${window.common.apiDomain}/apis/operation/${operationEdition}/commonUser/cancelCareUser?userId=${userId}&currentUser=${currentUser}&userType=${userType}`;
     axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
       Indicator.close();
       resolve(res)
@@ -913,6 +913,72 @@ export function suggestionTrackListOwner(token,p,s) { //id 用户id
       if(ajax.status==500){
         Indicator.close()
         Toast("500后台服务器错误！")
+      }
+    }
+  })
+}
+// 通知列表notification/list
+export function notificationList(p,s,token) {
+  Indicator.open("加载中...")
+  let data = {p:p,s:s}
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',`${window.common.apiDomain}/apis/operation/${operationEdition}/notification/list`,true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(data));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500通知后台服务器错误！")
+      }
+    }
+  })
+}
+// 通知列表notification/list
+export function notificationFindOne(id,token) {
+  Indicator.open("加载中...")
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',`${window.common.apiDomain}/apis/operation/${operationEdition}/notification/findOne?id=${id}`);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        Indicator.close();
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Indicator.close()
+        Toast("500通知后台服务器错误！")
+      }
+    }
+  })
+}
+// 通知列表删除notification/remove
+export function notificationRemove(id,token) { //传数组
+  let arr = [];
+  arr.push(id);
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('post',`${window.common.apiDomain}/apis/operation/${operationEdition}/notification/remove`,true);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send(JSON.stringify(arr));
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4 &&ajax.status==200) {
+        let res= JSON.parse(ajax.responseText)
+        resolve(res) ;
+      }
+      if(ajax.status==500){
+        Toast("500通知后台服务器错误！")
       }
     }
   })

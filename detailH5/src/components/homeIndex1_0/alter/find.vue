@@ -2,11 +2,15 @@
   <!--发现-->
   <div id="find">
     <div class="find_box" ref="findBox">
-      <vue-waterfall-easy :imgsArr="imgsArr" srcKey="imageUrl1" @click="clickFn" :enablePullDownEvent="openPullDown" :maxCols="maxCols">
-        <div slot="loading" slot-scope="{isFirstLoad}">
-          <div slot="loading" v-if="isFirstLoad">不同努力加载中...</div>
+      <!--<div v-if="pullDownDistance>50" style="text-align: center;line-height: 0.3rem">松手刷新...</div>-->
+      <!--<vue-waterfall-easy ref="waterfall" :imgsArr="imgsArr" srcKey="imageUrl1" @click="clickFn" :enablePullDownEvent="openPullDown" :maxCols="maxCols"  @scrollReachBottom="getData" @pullDownMove="pullDownMove" @pullDownEnd="pullDownEnd">-->
+      <!--<vue-waterfall-easy ref="waterfall" :imgsArr="imgsArr" srcKey="imageUrl1" @click="clickFn" :maxCols="maxCols"  @scrollReachBottom="getData">-->
+      <vue-waterfall-easy ref="waterfall" :imgsArr="imgsArr" srcKey="imageUrl1" @click="clickFn" :maxCols="maxCols">
+      <div slot="loading" slot-scope="{isFirstLoad}">
+          <div slot="loading" v-if="isFirstLoad"></div>
           <div slot="loading" v-else></div>
         </div>
+        <div slot="waterfall-over"> {{message}}</div>
         <div id="img-info" slot-scope="props">
           <!--<h5>{{props.value.name}}</h5>-->
           <h5>{{props.value.title}}</h5>
@@ -39,6 +43,7 @@
       return{
         p: 1, // request param//
         s: 20, // request param////测试
+        message:"", //触底提示
         pages:0, //总共多少页
         isFirstLoad:true, //第一次加载
         maxCols:2,  //瀑布流显示最大的列数
@@ -46,6 +51,7 @@
         OffsetHeight:0,//屏幕高度
         imgsArr:[], //数据
         userInfo:"", //用户信息
+        pullDownDistance:0,//下拉的距离
       }
     },
     created() {
@@ -65,12 +71,46 @@
           Toast("网络出错了，请重试")
         }
       })
+//      this.getData(); //下拉加载
 
     },
     methods:{
+//      pullDownMove(pullDownDistance){
+//        this.pullDownDistance =pullDownDistance;
+//      },
+//      pullDownEnd(pullDownDistance){
+//        if(this.pullDownDistance>50){
+//          this.p=1;
+//          this.imgsArr = [];
+//          this.getData();
+//        }
+//        this.pullDownDistance = 0
+//      },
+      getData(){  //加载更多...
+        this.query();
+      },
       clickFn(event,{index,value}){
         console.log(value)
         this.$router.push({path:"/findDetail",query:{id:value.id}}) //去发现的详情页面，记得带状态跟token
+      },
+      query(){
+        customerPubContentListHomePage(this.p,this.s).then(res=>{
+          if(res.status == true){
+            res.data.forEach((item,index)=>{
+              item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+            })
+            if(res.data.length>0){
+              this.imgsArr = this.imgsArr.concat(res.data);
+            }else{
+              this.$refs.waterfall.waterfallOver()
+              this.message = "这是我的底线..."
+            }
+
+            this.p++;
+          }else{
+            Toast("网络出错了，请重试")
+          }
+        })
       },
       handleScroll(e){  //回到顶部按钮出现
         if(e.target.scrollTop>=(e.target.scrollHeight-this.OffsetHeight-0.5)){
@@ -79,8 +119,8 @@
           let that = this;
           if(that.pages<that.p){
             that.p = that.pages;
-            Toast("没有更多发现了");
-            return;
+            this.message = "这是我的底线...";
+            this.$refs.waterfall.waterfallOver()
           }else if(that.pages==that.p){
 
             customerPubContentListHomePage(this.p,this.s).then(res=>{
@@ -124,6 +164,7 @@
   #find {
     width: 100%;
     height: 100%;
+    overflow-y: auto;
     .find_box{
       width: 100%;
       height: 100%;
@@ -153,8 +194,8 @@
       width: 100%;
       overflow: hidden;
       margin-top: 0.05rem;
-      display: flex;
       .img-info_li1{
+        float: left;
         width: 0.16rem;
         height: 0.16rem;
         img{
@@ -164,6 +205,7 @@
         }
       }
       .img-info_li2{
+        float: left;
         width: 0.9rem;
         line-height: 0.16rem;
         margin-left: 0.05rem;
@@ -176,6 +218,7 @@
         white-space: nowrap;
       }
       .img-info_li3{
+        float: left;
         width: 0.14rem;
         height: 0.13rem;
         margin-right: 0.04rem;
@@ -186,7 +229,7 @@
         }
       }
       .img-info_li4{
-        flex: 1;
+        float: left;
         font-size:0.1rem;
         line-height: 0.16rem;
       }

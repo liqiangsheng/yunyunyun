@@ -88,7 +88,7 @@
         ///你关注的人，别人没关注你
         if(v.userType == "1"){ //企业
 
-          companyInfoCancelCareCompany(v.id,this.$router.history.current.query.id,v.userType).then(res=>{
+          companyInfoCancelCareCompany(v.userId,this.$router.history.current.query.id,v.userType).then(res=>{
             if(res.data.status==true){
 
               this.objList.splice(i,1)
@@ -98,7 +98,7 @@
           })
         }else if(v.userType == "2"){  //个人
 
-          commonUserCancelCareUser(v.id,this.$router.history.current.query.id,v.userType).then(res=>{
+          commonUserCancelCareUser(v.userId,this.$router.history.current.query.id,v.userType).then(res=>{
             if(res.data.status==true){
               console.log(this.objList)
               console.log(Array.isArray(this.objList))

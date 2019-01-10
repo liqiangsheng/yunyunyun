@@ -289,10 +289,9 @@
         width: 100%;
         font-size:0.14rem;
         font-family:PingFangSC-Medium;
-        font-weight:500;
+        font-weight:900;
         color:rgba(5,5,9,1);
-        line-height:0.42rem;
-        height: 0.42rem;
+        line-height:0.24rem;
         span{
           display: inline-block;
           width: 0.04rem;
@@ -310,6 +309,7 @@
         color:rgba(5,5,9,1);
         line-height: 0.28rem;
         margin-bottom: 0.1rem;
+        word-break:break-all;
         img{
           display: block;
           width: 100%;

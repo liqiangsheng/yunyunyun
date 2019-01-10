@@ -39,7 +39,7 @@
             <div class="follow_login_Follow_li4">
                 <div>
                   <img src="/static/images/关注阅读量.png" alt="">
-                  {{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}
+                  {{item.commentedCount<10000?item.commentedCount:(item.commentedCount/10000).toFixed(2)+'万'}}
                 </div>
                 <div>
                   <img src="/static/images/点赞2.png" alt="" v-if="item.laudedStatus==true">
@@ -52,7 +52,8 @@
                   {{item.favoredCount<10000?item.favoredCount:(item.favoredCount/10000).toFixed(2)+'万'}}
                 </div>
               <div>
-                <img src="/static/images/分享.png" alt="">1.2万
+                <img src="/static/images/look.png" alt="">
+                {{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}
               </div>
 
             </div>
@@ -140,7 +141,7 @@
     },
     created() {
       this.$nextTick(function () {
-        document.title = "设计未来，大不同"
+        document.title = "作品详情"
       })
       this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
 //    if(this.userInfo){ //登录的情况  //
@@ -229,11 +230,11 @@
     },
     methods:{
       headerClick(v){
-        console.log(v.authorInfo)
-        if(v.authorInfo.vUser==1){ //去吃瓜
+//        console.log(v.authorInfo)
+        if(v.authorInfo.vUser==0){ //去吃瓜
           this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
         }else{//去大咖
-          this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//2 是个人
+          this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//1 是大咖
         }
 
       },

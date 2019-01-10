@@ -39,19 +39,38 @@
       }
     },
     methods:{
+      checkTel(){
+//    var isPhone = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
+        var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+//    if(isMob.test(this.tel)||isPhone.test(this.tel){
+        if(isMob.test(this.tel)){
+          return true;
+        }
+        else{
+          return false;
+        }
+      },
       okClcik(){//确定
         if(!this.name){
           Toast("请填写姓名")
           return
-        }
-        if(!this.tel){
-          Toast("请填写电话号码")
+        }else if(this.name.length>50){
+          Toast("姓名的长度不能超过50")
           return
         }
-        if(!this.emil){
-          Toast("请填写正确电子邮件")
+        if(!this.checkTel()){
+          Toast("请填写正确手机号")
           return
         }
+        var reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$"); //正则表达式
+        if(this.emil === ""){ //输入不能为空
+          Toast("电子邮件不能为空!");
+          return false;
+        }else if(!reg.test(this.emil)){ //正则验证不通过，格式不对
+          Toast("电子邮件验证不通过!");
+          return false;
+        }
+
         let obj={
           "email": this.emil,
           "contactName": this.name,

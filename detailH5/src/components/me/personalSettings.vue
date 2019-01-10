@@ -1,14 +1,22 @@
 <template>
   <div id="PersonalSettings">
     <ul class='meList'>
-        <li @click='settingBnt'>
-        设置
-        <img src='/static/images/right.png'/>
-       </li>
+        <!--<li @click='settingBnt'>-->
+        <!--设置-->
+        <!--<img src='/static/images/right.png'/>-->
+       <!--</li>-->
        <li @click='meActivityBnt'>
         我的活动
          <img src='/static/images/right.png'/>
        </li>
+      <li @click='comment_my'>
+        评论我的
+        <img src='/static/images/right.png'/>
+      </li>
+      <li @click='praise_my'>
+        点赞我的
+        <img src='/static/images/right.png'/>
+      </li>
       <li @click='commentBnt'>
         消息通知
         <img src='/static/images/right.png'/>
@@ -43,11 +51,27 @@ export default {
   },
   created(){
     this.$nextTick(function () {
-      document.title = "个人设置";
+      document.title = "消息";
     })
   },
 
   methods:{
+    comment_my(){ //评论我的
+      let data = JSON.parse(localStorage.getItem("userInfo"))
+      if (data) {
+        this.$router.push({path:"/comment_on_my"})
+      } else {
+        Toast("您未登录，请登录！")
+      }
+    },
+    praise_my(){ //点赞我的
+      let data = JSON.parse(localStorage.getItem("userInfo"))
+      if (data) {
+        this.$router.push({path:"/praiseMe"})
+      } else {
+        Toast("您未登录，请登录！")
+      }
+    },
     commentBnt(){ //消息通知
       let data = JSON.parse(localStorage.getItem("userInfo"))
       if(data){

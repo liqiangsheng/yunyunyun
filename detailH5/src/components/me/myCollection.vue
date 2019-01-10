@@ -8,7 +8,15 @@
            <span :class="{active:tabIndex==index}">{{item}}</span>
          </li>
        </ul>
-       <ul class="myFabulous_ul" v-show="tabIndex==0">
+       <div class="praiseMe_box_false" v-if="tabIndex==0&&ListData.length<=0">
+         <img src="/static/images/缺省图.png" alt="">
+         <p>你的收藏作品区目前空空也～</p>
+       </div>
+       <div class="praiseMe_box_false" v-if="tabIndex==1&&articleData.length<=0">
+         <img src="/static/images/缺省图.png" alt="">
+         <p>你的收藏文章区目前空空也～</p>
+       </div>
+       <ul class="myFabulous_ul" v-show="tabIndex==0&&ListData.length>0">
        <li v-for="(item,index) in ListData" @click="goDetail(item)">
          <h5>{{item.title}}</h5>
          <div class="myFabulous_banner">
@@ -28,7 +36,7 @@
          </div>
        </li>
      </ul>
-       <ul class="myFabulous_ul1" v-show="tabIndex==1">
+       <ul class="myFabulous_ul1" v-show="tabIndex==1&&articleData.length>0">
          <li v-for="(item,index) in articleData" @click="goHomeDetail(item)">
               <div class="myFabulous_left">
                 <h5>{{item.title}}</h5>
@@ -43,10 +51,10 @@
          </li>
        </ul>
      </div>
-    <div class="messageFoot" @click="updataMore(0)" v-if="tabIndex==0">
+    <div class="messageFoot" @click="updataMore(0)" v-if="tabIndex==0&&ListData.length>0">
       {{message}}
     </div>
-    <div class="messageFoot" @click="updataMore(1)" v-if="tabIndex==1">
+    <div class="messageFoot" @click="updataMore(1)" v-if="tabIndex==1&&articleData.length>0">
       {{message1}}
     </div>
   </div>
@@ -112,10 +120,10 @@ export default {
       this.$router.push({path:"/findDetail",query:{id:v.id}})
     },
     goHomePage(v){ //去个人 或则大咖
-      if(v.authorInfo.vUser==1){ //去吃瓜
+      if(v.authorInfo.vUser==0){ //去吃瓜
         this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
       }else{//去大咖
-        this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//2 是个人
+        this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//1 是个人
       }
     },
     tabClick(i){//tab的下标
@@ -370,6 +378,26 @@ export default {
           }
         }
       }
+    }
+  }
+  .praiseMe_box_false{
+    width: 100%;
+    padding-top: 1rem;
+    img{
+      display: block;
+      width: 1rem;
+      height: 0.94rem;
+      margin: 0 auto;
+    }
+    p{
+      font-size:0.12rem;
+      font-family:PingFangSC-Regular;
+      font-weight:400;
+      color:rgba(153,153,153,1);
+      line-height:0.5rem;
+      text-align: center;
+      width: 100%;
+
     }
   }
   .messageFoot{

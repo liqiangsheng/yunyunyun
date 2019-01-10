@@ -14,7 +14,12 @@
           <h5>{{item.laudName}}</h5>
           <p>{{item.laudtime|formatTime1}}</p>
           <div class="praiseMe_box_true_right_div">
-            赞了这篇文章
+            <!--2是赞的回复-->
+            <!--1是赞的评论-->
+            <!--0是赞的文章资讯-->
+            <span v-if="item.typer==1">赞了这条评论</span>
+            <span v-if="item.typer==2">2是赞的回复</span>
+            <span v-if="item.typer==0">赞了这篇文章</span>
           </div>
           <div class="praiseMe_box_true_right_box">
             <div class="praiseMe_box_true_right_box_top" v-if="item.typer!=0">
