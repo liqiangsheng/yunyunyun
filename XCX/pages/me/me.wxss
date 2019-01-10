@@ -60,12 +60,13 @@
 }
 
   .userinfo_set{
-      width:100px;
+      width:80px;
       height: 32px;
       background:rgba(0,0,0,0.2);
       border-radius:16px;
       position: absolute;
       right: -15px;
+       padding-left: 10px;
       top: 48px;
       line-height: 32px;
       text-indent: 5px;
@@ -113,3 +114,4 @@
  .Me_draft{
    width: 100%;
  }
+ 

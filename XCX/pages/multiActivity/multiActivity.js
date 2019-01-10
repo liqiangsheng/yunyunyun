@@ -116,6 +116,7 @@ Page({
                arr: that.data.arr,
                meActivityBoxIsSHOW:true
              })
+             console.log(that.data.arr,"that.data.arr")
            }else{
              that.setData({
                meActivityBoxIsSHOW: false

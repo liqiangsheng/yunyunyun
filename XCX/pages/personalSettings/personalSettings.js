@@ -16,7 +16,7 @@ Page({
     let v = e.currentTarget.dataset.item;
     let data = wx.getStorageSync('userInfo')//获取本地存储信息
     if (data) {
-      if (v.name == "关注") {
+      if (v.name == "关注") { 
         wx.navigateTo({ //去我的页面关注
           url: "../../pages/myfollow/myfollow"
         })

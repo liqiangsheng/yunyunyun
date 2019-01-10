@@ -17,6 +17,7 @@ Page({
       header: "../../images/defultphoto.png",
       name: "登录",
     },
+    objList:{},
     hasUserInfo: false,
   },
   setClick(){
@@ -36,36 +37,36 @@ Page({
  
   },
   Me_tabClick(e) { ////原创 草稿
-    console.log(e.currentTarget.dataset.index)
     this.setData({
       meTabIndex: e.currentTarget.dataset.index
     })
   },
   myfollowBnt(e){
+    // console.log(e.currentTarget.dataset.item)
 
     let v = e.currentTarget.dataset.item;
     let data = wx.getStorageSync('userInfo')//获取本地存储信息
     if (data) {
-      if (v.name == "关注") {
+      if (v == "1") {
         wx.navigateTo({ //去我的页面关注
           url: "../../pages/myfollow/myfollow"
         })
       
-      } else if (v.name == "粉丝") {
+      } else if (v == "2") {
         wx.navigateTo({ //去我的页面粉丝
           url: "../../pages/fans/fans"
         })
-      } else if (v.name == "点赞") {
+      } else if (v == "3") {
         wx.navigateTo({ //去我的页面点赞
           url: "../../pages/myFabulous/myFabulous"
         })
        
-      } else if (v.name == "收藏") {
+      } else if (v == "4") {
         wx.navigateTo({ //去我的页面收藏
           url: "../../pages/myCollection/myCollection"
         })
       
-      } else if (v.name == "评论") {
+      } else if (v == "5") {
         wx.navigateTo({ //去我的页面评论
           url: "../../pages/myComment/myComment"
         })
@@ -150,10 +151,8 @@ Page({
         url: "../../pages/login/login"
       })
     }else{
-      wx.showToast({
-        title: ' 你已登录！',
-        icon: 'success',
-        duration: 2000
+      wx.navigateTo({
+        url: "../../pages/editingInformation/editingInformation"
       })
     }
    
@@ -163,7 +162,6 @@ Page({
    userInfoFun(){ //登录本地拿
      var that = this
      let data = wx.getStorageSync('userInfo')//获取本地存储信息
-     console.log(data)
      if (data){
        that.setData({
          tabListBool:true
@@ -189,15 +187,21 @@ Page({
           
            if (res.data.status == true) {
              wx.hideToast();
+             res.data.data.care_count=res.data.data.care_count ? res.data.data.care_count : 0;
+             res.data.data.cared_count=res.data.data.cared_count ? res.data.data.cared_count : 0;
+             res.data.data.comment_count=res.data.data.comment_count ? res.data.data.comment_count : 0;
+             res.data.data.favorite_count=res.data.data.favorite_count ? res.data.data.favorite_count : 0;
+             res.data.data.laud_count=res.data.data.laud_count ? res.data.data.laud_count : 0;
              that.setData({
                bgImge: res.data.data.owner_url ? res.data.data.owner_url : "../../images/defultphoto.png" ,
                userInfo: {
                  header: res.data.data.owner_url ? res.data.data.owner_url : "../../images/defultphoto.png" ,
                  name: res.data.data.name,
-               }
+               },
+               objList: res.data.data,
              })
-
-
+            //  console.log(that.data.objList,"fsdkfsdk")
+               
            } else {
              that.setData({
                bgImge: "../../images/bg.png",

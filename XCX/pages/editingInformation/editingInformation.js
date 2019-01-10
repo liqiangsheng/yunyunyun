@@ -89,12 +89,36 @@ Page({
   },
   textareaBlur(e) { //个人简介
     let that = this;
+    if (e.detail.value.length>200){
+      wx.showModal({
+        showCancel: false,
+        title: "长度不能大于200",
+
+      })
+      return;
+    }
     that.setData({
       personal: e.detail.value
     })
   },
   userNameBlur(e) {//用户名
     let that = this;
+    if (e.detail.value.length > 50) {
+      wx.showModal({
+        showCancel: false,
+        title: "长度不能大于50",
+
+      })
+      return;
+    }
+    if (!e.detail.value) {
+      wx.showModal({
+        showCancel: false,
+        title: "用户名不能为空",
+
+      })
+      return;
+    }
     that.setData({
       userName: e.detail.value
     })

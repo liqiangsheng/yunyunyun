@@ -25,6 +25,7 @@ Component({
   attached: function () { //第一个生命周期方法
 
    let data= wx.getStorageSync("userInfo")
+     console.log(data)
     if(data){
       wx.getSystemInfo({ //获取用户设备信息
         success: (res) => {
@@ -58,6 +59,7 @@ Component({
 
         success: function (res) {
           if(res.data.status == true){
+            wx.hideLoading();
             that.setData({
               pageNum: Math.ceil(res.data.total / that.data.data.s)
             })

@@ -42,15 +42,20 @@
                <text>{{item.num}}</text>
                 <image class='add' src='../../images/add.png' data-index='{{index}}' bindtap='addClick'></image>
              </view> -->
-               <view class='multiActivityBoxState1' wx:if='{{item.remainingState=="已售完"}}'>
+               <view class='multiActivityBoxState1' wx:if='{{item.remainingState=="已售完"&&item.bgItem==false}}'>
                {{item.remainingState}}
                </view>
-              <view class='multiActivityBoxState1' wx:elif='{{item.remainingState=="已购买"}}'>
+              <view class='multiActivityBoxState1' wx:if='{{item.remainingState=="已购买"&&item.bgItem==false}}'>
               {{item.staremainingStatete}}
               </view>
-              <view class='multiActivityBoxState'  wx:elif='{{item.remainingState=="抢票中"}}'>
+              <view class='multiActivityBoxState'  wx:if='{{item.remainingState=="抢票中"&&item.bgItem==false}}'>
               {{item.remainingState}}
               </view>
+               <view class='multiActivityBoxStateADD'  wx:if='{{item.bgItem==true}}'>
+                  <image src="../../images/reduce.png"></image>
+                  <text>1</text>
+                  <image style="opacity: 0.3;" src="../../images/add.png" ></image>
+                </view>
           </view>
           <view class='item5' wx:if="{{item.youhuijia>0}}">
           注：已优惠 
@@ -86,15 +91,20 @@
              <view style='color:rgba(254,95,95,1)' wx:if="{{item.youhuijia<=0}}">{{item.originalPrice}} </view>
              <view style='color:#21CB61' wx:if='{{item.originalPrice==0}}'>免费 </view>
              
-               <view class='multiActivityBoxState1' wx:if='{{item.remainingState=="已售完"}}'>
+               <view class='multiActivityBoxState1' wx:if='{{item.remainingState=="已售完&&item.bgItem==false"}}'>
                {{item.remainingState}}
                </view>
-              <view class='multiActivityBoxState1' wx:elif='{{item.remainingState=="已购买"}}'>
+              <view class='multiActivityBoxState1' wx:elif='{{item.remainingState=="已购买&&item.bgItem==false"}}'>
               {{item.remainingState}}
               </view>
-              <view class='multiActivityBoxState'  wx:elif='{{item.remainingState=="抢票中"}}'>
+              <view class='multiActivityBoxState'  wx:elif='{{item.remainingState=="抢票中&&item.bgItem==false"}}'>
               {{item.remainingState}}
               </view>
+                 <view class='multiActivityBoxStateADD'  wx:if='{{item.bgItem==true}}'>
+                  <image src="../../images/reduce.png"></image>
+                  <text>1</text>
+                  <image style="opacity: 0.3;" src="../../images/add.png" ></image>
+                </view>
           </view>
           <view class='item5' wx:if="{{item.youhuijia>0}}">
           注：已优惠 

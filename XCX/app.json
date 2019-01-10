@@ -1,9 +1,9 @@
 {
   "pages": [
-      "pages/me/me",
     "pages/index/index",
-    "pages/findDetail/findDetail",
+      "pages/me/me",
   
+    "pages/findDetail/findDetail",
     "pages/follow/follow",
     "pages/homeIndex1_0/homeIndex1_0",
     "pages/personalSettings/personalSettings",

@@ -1,24 +1,48 @@
 <!--pages/me/me.wxml-->
 <scroll-view class='meBox'>
   <view class="userinfo">
-      <image class='bgImge' src='{{bgImge}}'></image>
+      <image class='bgImge' src='{{bgImge}}' bindtap='loginBnt'></image>
       <block>
-        <image bindtap="bindViewTap" class="userinfoImage" src="{{userInfo.header}}" mode="cover" bindtap='loginBnt'></image>
+        <image class="userinfoImage" src="{{userInfo.header}}" mode="cover" bindtap='loginBnt'></image>
         <text class="userinfo-nickname">{{userInfo.name}}</text>
       </block> 
     </view>
 
      <view class='userinfo_set' bindtap='setClick'>
-            个人资料 <image src="../../images/goBack.png" alt=""></image>
+            消息 <image src="../../images/goBack.png" alt=""></image>
      </view>
 
      <view class="me_ul" wx:if="{{tabListBool}}">
-        <view class='me_li' wx:for="{{tabList}}" bindtap='myfollowBnt' wx:key='' data-item='{{item}}'>
-          <view class='me_span'>
-            {{item.num}}
-          </view>
-          {{item.name}}
-      </view>
+        <view class='me_li' bindtap='myfollowBnt' data-item='1'>
+            <view class='me_span'>
+              {{objList.care_count>10000?objList.care_count/10000+'万':objList.care_count}}
+            </view>
+            关注
+       </view>
+         <view class='me_li' bindtap='myfollowBnt' data-item='2'>
+            <view class='me_span'>
+               {{objList.cared_count>10000?objList.cared_count/10000+'万':objList.cared_count}}
+            </view>
+            粉丝
+       </view>
+         <view class='me_li' bindtap='myfollowBnt' data-item='3'>
+            <view class='me_span'>
+                {{objList.laud_count>10000?objList.laud_count/10000+'万':objList.laud_count}}
+            </view>
+            点赞
+       </view>
+         <view class='me_li' bindtap='myfollowBnt' data-item='4'>
+            <view class='me_span'>
+               {{objList.favorite_count>10000?objList.favorite_count/10000+'万':objList.favorite_count}}
+            </view>
+           收藏
+       </view>
+         <view class='me_li' bindtap='myfollowBnt' data-item='5'>
+            <view class='me_span'>
+               {{objList.comment_count>10000?objList.comment_count/10000+'万':objList.comment_count}}
+            </view>
+            评论
+       </view>
      
    </view>
     <!-- 原创，草稿 -->

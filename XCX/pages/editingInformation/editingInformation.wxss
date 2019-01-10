@@ -51,18 +51,22 @@
   font-weight:400;
   color:rgba(102,102,102,1);
   position: relative;
-  display: flex;
 }
 .editingInformationBoxItemValue1{
   width: 56px;
   margin-right: 5px;
+  float: left;
+
 }
 .editingInformationBoxItemValue{
-  display: inline-block;
-  flex: 1;
+  width: 200px;
+  display: block;
+  margin-right: 20px;
+    float: right;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-align: right;
 }
 .headPortrait{
   width: 40px;
@@ -79,8 +83,13 @@
   border-radius: 50%;
 }
 .editingInformationBoxRight{
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   display: inline-block;
-  float: right;
+  text-align: right;
+    float: right;
   margin-right: 20px;
 }
 .editingInformationBoxImage{

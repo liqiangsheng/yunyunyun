@@ -291,3 +291,31 @@
       font-size: 18px;
       font-weight: 900;
     }
+    .multiActivityBoxStateADD{
+     width: 66px;
+    height: 24px;
+    border-radius:5px;
+    text-align: center;
+    line-height: 24px;
+    color:rgba(255,255,255,1);
+    position: absolute;
+    right: 10px;
+    top: 5px;
+ 
+  }
+    .multiActivityBoxStateADD image{
+       display: inline-block;
+      width: 13px;
+      height: 13px;
+    }
+    .multiActivityBoxStateADD  text{
+       display: inline-block;
+      width: 20px;
+      margin: 5px;
+      height: 20px;
+      line-height: 20px;
+      border: 1px solid #eaeaea;
+      border-radius:2px;
+      text-align: center;
+      color: #999999;
+    }

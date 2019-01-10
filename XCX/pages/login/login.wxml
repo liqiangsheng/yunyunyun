@@ -4,12 +4,12 @@
   <view class='loginTitle'>{{titleText}}</view>
   <view class="telPhone">
     <view class='telPhoneImae'> <image src='../../images/tel.png'></image><text class='add86'>+86</text> </view>
-    <view class='telPhoneImae1'><input type='number' bindblur='telPhone' placeholder="请输入手机号码" value='{{telValue}}'/></view>
+    <view class='telPhoneImae1'><input type='number' bindblur='telPhone' maxlength="11"  placeholder="请输入手机号码" value='{{telValue}}'/></view>
   </view>
   
     <view class="verificatioCode">
        <view class='verificatioCodeImage'><image src='../../images/code.png'></image></view>
-       <view class='verificatioCodeImage1'><input  bindblur='codePsd' placeholder="请输入验证码" value='{{psdValue}}'/></view>
+       <view class='verificatioCodeImage1'><input type='number' maxlength="6"  bindblur='codePsd' placeholder="请输入验证码" value='{{psdValue}}'/></view>
        <button style='font-size:12px;line-height:50px;'  bindtap="ObtainCode" wx:if='{{isShow}}'>{{code}}</button>
        <button style='font-size:12px;line-height:50px;' disabled wx:else='{{!isShow}}'>{{codeNum}}秒后重新发送</button>
     </view>

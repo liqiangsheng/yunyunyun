@@ -2,10 +2,10 @@
 <view class='meBox'>
 
     <view class='meList'>
-        <view bindtap='settingBnt'>
+        <!-- <view bindtap='settingBnt'>
         设置
         <image src='../../images/right.png'></image>
-       </view>
+       </view> -->
        <view bindtap='meActivityBnt'>
         我的活动
         <image src='../../images/right.png'></image>
@@ -18,10 +18,10 @@
         点赞我的
         <image src='../../images/right.png'></image>
        </view>
-        <view bindtap='collect_my'>
+        <!-- <view bindtap='collect_my'>
         收藏我的
         <image src='../../images/right.png'></image>
-       </view>
+       </view> -->
         <view bindtap='commentBnt'>
         消息通知
         <image src='../../images/right.png'></image>
