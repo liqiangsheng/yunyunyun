@@ -47,7 +47,7 @@
     </div>
     <ul class="IntelligentMatchingDItem5" v-if="boxShow">
       <li v-for="(item,index) in commenArr" v-if="!!item.sysUserContentVo">
-        <div class="IntelligentMatchingDItemL">
+        <div class="IntelligentMatchingDItemL" @click="commentGoHomepage(item)">
           <img :src="item.userDp" alt="" @click="giveClick">
         </div>
         <div class="IntelligentMatchingDItemR">
@@ -157,11 +157,27 @@ export default {
 
   },
   mounted(){
-    setTimeout(()=>{
-      this.share();
-    },200)
+    if(window.common.apiDomain20020=='https://dcloud.butongtech.com:20020'){
+      setTimeout(()=>{
+        this.share();
+      },200)
+    }
   },
   methods:{
+    commentGoHomepage(v){//点击评论的头像
+      console.log(v,"fsjk")
+      if(v.orgId=='2'){ //个人
+        if(v.vUser==false){ //去吃瓜
+          this.$router.push({path:"/personalMelonPages",query:{id:v.createdUser}})
+        }else{//去大咖
+          this.$router.push({path:"/homePage",query:{state:2,id:v.createdUser}})//1  true是大咖个人
+        }
+      }else if(v.orgId=='1'){ //企业
+        this.$router.push({path:"/homePage",query:{state:1,id:v.createdUser}})//1 是大咖企业
+      }else {
+        Toast("后台参数错误")
+      }
+    },
     share(){//分享
       shareInfoShareUrl(window.location.href.split('#')[0]).then(res=>{
         console.log(this.messageArr,"fndskjkfjk")
@@ -270,7 +286,7 @@ export default {
               },1000)
           }else{
             this.lauded = !this.lauded;
-            if(this.lauded ==false){ //没点赞的
+            if(this.lauded ==true){ //没点赞的
                informationLaudInformation(this.detailId,this.operationUser.access_token).then(res=>{
 
                  if(res.status == true){
@@ -710,12 +726,12 @@ export default {
        border-bottom: 0.01rem solid rgba(220,220,220,1);
        display: flex;
        >.IntelligentMatchingDItemL{
-         width: 0.8rem;
-         height: 0.8rem;
+         width: 0.6rem;
+         height: 0.6rem;
          >img{
            display: block;
-           width: 0.8rem;
-           height: 0.8rem;
+           width: 0.6rem;
+           height: 0.6rem;
            border-radius: 50%;
          }
        }

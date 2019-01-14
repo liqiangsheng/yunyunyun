@@ -1,6 +1,6 @@
 <template>
   <!--原创-->
-  <div id="original" ref="findBox">
+  <div id="original" ref="findBox" @scroll="boxScroll">
        <div v-if="imgsArr.length<=0" class="original_NolistData">
          <img src="/static/images/原创.png" alt="">
          <p>你还没有进行任何创作哦～</p>
@@ -8,7 +8,7 @@
 
     <div class="componentsBox" v-else>
       <ul id="box">
-        <li v-for="(item,index) in imgsArr" @click="clickFn(item,index)" >
+        <li v-for="(item,index) in imgsArr" @click.stop="clickFn(item,index)" >
           <img :src="item.imageUrl1" alt="">
           <h5>{{item.title}}</h5>
             <ul class="img-info_ul">
@@ -18,9 +18,9 @@
               <li class="img-info_li4">{{item.laudedCount}}</li>
             </ul>
         </li>
-        <!--<li style="text-align: center;line-height: 1.0rem;color: #999999">-->
-          <!--{{message}}-->
-        <!--</li>-->
+        <li style="text-align: center;line-height: 1.0rem;color: #999999" v-show="!!message">
+          {{message}}
+        </li>
       </ul>
     </div>
   </div>
@@ -28,13 +28,13 @@
 </template>
 
 <script>
-  import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
+//  import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
   import { customerPubContentListOwner} from "../../../assets/js/promiseHttp.js"
 export default {
   components: {
-    vueWaterfallEasy
+//    vueWaterfallEasy
   },
   name: 'original',
   data(){
@@ -57,7 +57,7 @@ export default {
 
     this.$nextTick(function(){
       this.OffsetHeight = this.$refs.findBox.offsetHeight;
-      window.addEventListener('scroll',this.handleScroll,true)
+//      window.addEventListener('scroll',this.handleScroll,true)
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){
@@ -66,6 +66,9 @@ export default {
 
   },
   methods:{
+    boxScroll(e){ //滚动事件
+      this.handleScroll(e);
+    },
     waterFull(items){//瀑布流
       // 1- 确定列数  = 页面的宽度 / 图片的宽度
       let columns = 2; //2列
@@ -140,7 +143,7 @@ export default {
         let that = this;
         if(that.pages<that.p){
           that.p = that.pages;
-          Toast("被你看光啦")
+//          Toast("被你看光啦")
           this.message = "这是我的底线...";
           return;
         }else if(that.pages==that.p){

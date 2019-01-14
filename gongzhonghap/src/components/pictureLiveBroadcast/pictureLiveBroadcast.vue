@@ -211,9 +211,11 @@ export default {
   mounted() {
     window.addEventListener('scroll', this.handleScroll) //监听回到顶部按钮出现
     let that = this;
-    setTimeout(()=>{
-      this.share();
-    },200)
+    if(window.common.apiDomain20020=='https://dcloud.butongtech.com:20020'){
+      setTimeout(()=>{
+        this.share();
+      },200)
+    }
   },
   methods: {
     share(){//分享

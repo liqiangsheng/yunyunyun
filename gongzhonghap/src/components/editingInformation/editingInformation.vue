@@ -27,7 +27,7 @@
         </li>
       </ul>
       <ul class="editingInformationBoxItem1">
-        <li>
+        <li v-if="userInfo.data.userType=='2'">
           <div class="first">性别</div>
           <div class="last" @click="sexClick"> <img class='right' src="/static/images/right.png" alt=""><span>{{sexMessage}}</span></div>
         </li>
@@ -59,7 +59,7 @@
 </template>
 
 <script>
-  import { EditingInformationIntall,qiniuToken,upImgQiniu,OkEditingInformation} from '../../assets/js/promiseHttp'; //数据
+  import {EditingInformationIntall1, EditingInformationIntall,qiniuToken,upImgQiniu,OkEditingInformation} from '../../assets/js/promiseHttp'; //数据
   import { Toast } from 'mint-ui';  //弹框
   import nameValue from "./nameValue.vue"
   import City from "./city.vue"
@@ -78,7 +78,7 @@ export default {
       valueShow:false, //文字框显示
       startDate: new Date(1900), //开始时间
       endDate: new Date(), //开始时间
-      headerImg:"./static/images/defultphoto.png", //头像
+      headerImg:"https://pub.qinius.butongtech.com/defult_photo@3x.png", //头像
       introductionValue:"", //简介
       nameValue:"", //名字
       sexMessage:"请选择", //性别
@@ -92,6 +92,7 @@ export default {
       qiniuToken:"", //七牛的Token
       token:"", //登录的token
       userId:"", //登录的id
+      userInfo:{},
     }
   },
   created(){
@@ -99,27 +100,51 @@ export default {
       document.title = "编辑资料";
     })
     let data = JSON.parse(localStorage.getItem("userInfo"));
+    console.log(data)
+    this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(!!data){
       this.token = data.data.access_token;
       this.userId = data.data.user_id;
-      EditingInformationIntall(data.data.user_id,data.data.access_token).then(res=>{
-        if(res.data.status==true){
-          this.birthday = !!res.data.data.birthday?res.data.data.birthday:"19700101";
-          this.region = !!res.data.data.region_name?res.data.data.region_name:"深圳市";
-          this.regionId = !!res.data.data.region_id?res.data.data.region_id:"2018042317050430c6a250e4044f94bb4cc074302b789a";
-          this.headerImg = !!res.data.data.owner_url?res.data.data.owner_url:"./static/images/defultphoto.png";
-          this.nameValue = res.data.data.name;
-          this.introductionValue = res.data.data.introduce;
-          this.sexNum = !!res.data.data.sex?res.data.data.sex:"0";
-          if(res.data.data.sex == "0"){
-            this.sexMessage = "男"
-          }else {
-            this.sexMessage = "女"
+      if(data.data.userType == "2"){
+        EditingInformationIntall(data.data.user_id,data.data.access_token).then(res=>{
+          if(res.data.status==true){
+            this.birthday = !!res.data.data.birthday?res.data.data.birthday:"19700101";
+            this.region = !!res.data.data.region_name?res.data.data.region_name:"深圳市";
+            this.regionId = !!res.data.data.region_id?res.data.data.region_id:"2018042317050430c6a250e4044f94bb4cc074302b789a";
+            this.headerImg = !!res.data.data.owner_url?res.data.data.owner_url:"https://pub.qinius.butongtech.com/defult_photo@3x.png";
+            this.nameValue = res.data.data.name;
+            this.introductionValue = res.data.data.introduce;
+            this.sexNum = !!res.data.data.sex?res.data.data.sex:"0";
+            if(res.data.data.sex == "0"){
+              this.sexMessage = "男"
+            }else {
+              this.sexMessage = "女"
+            }
+          }else{
+            Toast("网络异常，请重试")
           }
-        }else{
-          Toast("网络异常，请重试")
-        }
-      })
+        })
+      }else if(data.data.userType == "1"){
+        EditingInformationIntall1(data.data.user_id,data.data.access_token).then(res=>{
+          if(res.data.status==true){
+            this.birthday = !!res.data.data.birthday?res.data.data.birthday:"19700101";
+            this.region = !!res.data.data.region_name?res.data.data.region_name:"深圳市";
+            this.regionId = !!res.data.data.region_id?res.data.data.region_id:"2018042317050430c6a250e4044f94bb4cc074302b789a";
+            this.headerImg = !!res.data.data.owner_url?res.data.data.owner_url:"https://pub.qinius.butongtech.com/defult_photo@3x.png";
+            this.nameValue = res.data.data.name;
+            this.introductionValue = res.data.data.introduce;
+            this.sexNum = !!res.data.data.sex?res.data.data.sex:"0";
+            if(res.data.data.sex == "0"){
+              this.sexMessage = "男"
+            }else {
+              this.sexMessage = "女"
+            }
+          }else{
+            Toast("网络异常，请重试")
+          }
+        })
+      }
+
       qiniuToken(data.data.access_token).then(res=>{
 
         if(res.status==true){

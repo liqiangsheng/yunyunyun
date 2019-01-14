@@ -8,7 +8,7 @@
         <div class="fans_box_header">您有 <span>{{objList.length}}</span> 位关注者</div>
         <ul v-if="objList.length>0">
           <li v-for="(item,index) in objList">
-            <div class="fans_li1">
+            <div class="fans_li1" @click.stop="goHomepage(item)">
               <img :src="item.url?item.url:'/static/images/defultphoto.png'" alt="">
             </div>
             <div class="fans_li2">
@@ -77,6 +77,21 @@ export default {
   },
 
   methods: {
+    goHomepage(v){// 去吃瓜或者大咖
+
+      if(v.userType=="2"){ //个人
+        if(v.vuser==false){ //去吃瓜
+          this.$router.push({path:"/personalMelonPages",query:{id:v.userId}})
+        }else{//去大咖
+          this.$router.push({path:"/homePage",query:{state:2,id:v.userId}})//1  true是大咖个人
+        }
+      }else if(v.userType=='1'){ //企业
+        this.$router.push({path:"/homePage",query:{state:1,id:v.userId}})//1 是大咖企业
+      }else {
+        Toast("后台参数错误")
+      }
+
+    },
     followClick(v){//关注
       console.log(v.mutual)
       console.log(v)

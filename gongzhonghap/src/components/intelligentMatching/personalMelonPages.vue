@@ -37,8 +37,8 @@
       </div>
 
       <div class="componentsBox" v-if="imgsArr.length>0">
-        <ul id="box">
-          <li v-for="(item,index) in imgsArr" @click="clickFn(item,index)" >
+        <ul id="box" @scroll="boxScroll">
+          <li v-for="(item,index) in imgsArr" @click.stop="clickFn(item,index)" >
             <img :src="item.imageUrl1" alt="">
             <h5>{{item.title}}</h5>
             <ul class="img-info_ul">
@@ -48,9 +48,9 @@
               <li class="img-info_li4">{{item.laudedCount}}</li>
             </ul>
           </li>
-          <!--<li style="text-align: center;line-height: 1.0rem;color: #999999" v-if="!!message">-->
-            <!--{{message}}-->
-          <!--</li>-->
+          <li style="text-align: center;line-height: 1.0rem;color: #999999" v-show="!!message">
+           {{message}}
+          </li>
         </ul>
       </div>
 
@@ -62,7 +62,7 @@
   </template>
 
   <script>
-    import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
+//    import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
     import { Toast } from 'mint-ui';  //弹框
     import { Indicator } from 'mint-ui';
     import wxShare from "../../assets/js/wxShare"
@@ -70,7 +70,7 @@
     export default {
       name: 'find',
       components: {
-        vueWaterfallEasy
+//        vueWaterfallEasy
       },
       data(){
         return{
@@ -93,7 +93,8 @@
       },
       created() {
         this.$nextTick(function () {
-          window.addEventListener('scroll',this.handleScroll,true) //监听高度
+          let box = document.getElementById('box')
+//          box.addEventListener('scroll',this.handleScroll) //监听高度
         })
         this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):"";
 
@@ -115,6 +116,9 @@
 
       },
       methods:{
+        boxScroll(e){ //滚动事件
+          this.handleScroll(e);
+        },
         IndicatorData(){ //初始数据
           customerPubContentList(this.$router.history.current.query.id,this.p,this.s,true).then(res=>{
             if(res.status == true){
@@ -191,19 +195,16 @@
 //          console.log(e.target.scrollTop,"scrollTop")
 //          console.log(e.target.scrollHeight,"OffsetHeight")
 //          console.log(e.target.clientHeight,"OffsetHeight")
-////          console.log(e.target.scrollingElement.scrollTop,"OffsetHeigh1t1")
-////          console.log(e.target.scrollingElement.scrollHeight,"OffsetHeight1")
-////          console.log(e.target.scrollingElement.clientHeight,"OffsetHeight1")
-          let scrollTop = e.target.scrollTop?e.target.scrollTop:e.target.scrollingElement.scrollTop;
-          let scrollHeight = e.target.scrollHeight?e.target.scrollHeight:e.target.scrollingElement.scrollHeight;
-          let clientHeight = e.target.clientHeight?e.target.clientHeight:e.target.scrollingElement.clientHeight;
+          let scrollTop = e.target.scrollTop?e.target.scrollTop:0;
+          let scrollHeight = e.target.scrollHeight?e.target.scrollHeight:0;
+          let clientHeight = e.target.clientHeight?e.target.clientHeight:0;
           if(scrollTop>=(scrollHeight-clientHeight-0.5)){
             this.p++
             let that = this;
             if(that.pages<that.p){
               that.p = that.pages;
               this.message = "这是我的底线...";
-              Toast("被你看光啦")
+//              Toast("被你看光啦")
 //              this.BottomPx = {bottom:'0.3rem'};
               return
             }else if(that.pages==that.p){
@@ -292,9 +293,11 @@
         },
       },
       mounted() {
-        setTimeout(()=>{
-          this.share();
-        },200)
+        if(window.common.apiDomain20020=='https://dcloud.butongtech.com:20020'){
+          setTimeout(()=>{
+            this.share();
+          },200)
+        }
       },
     }
 

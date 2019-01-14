@@ -5,7 +5,7 @@
         <li v-for="(item,index) in lisrData">
           <div class="commonProblem_title">{{item.trackTime|formatTime1}}</div>
           <div class="commonProblem_message" :class="{avtive:item.senderId==userInfo.data.id}">
-            <img class="commonProblem_you_img"  v-if="item.senderId!=userInfo.data.id" :src="item.senderUrl?item.senderUrl:'/static/images/defultphoto.png'" alt="">
+            <img class="commonProblem_you_img" v-if="item.senderId!=userInfo.data.id" :src="item.senderUrl?item.senderUrl:'/static/images/defultphoto.png'" alt="">
             <div class="commonProblem_you" v-if="item.senderId!=userInfo.data.id"><p v-if="item.content">{{item.content}}</p><img :src="item.url" alt="" v-if="item.url"></div>
             <div class="commonProblem_me" v-if="item.senderId==userInfo.data.id"><p v-if="item.content">{{item.content}}</p><img :src="item.url" alt="" v-if="item.url"></div>
             <img class="commonProblem_me_img"  v-if="item.senderId==userInfo.data.id" :src="item.senderUrl?item.senderUrl:'/static/images/defultphoto.png'" alt="">

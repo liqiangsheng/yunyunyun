@@ -95,7 +95,8 @@ export default {
 //    console.log(this.userInfo.data.access_token)
     if(this.userInfo){
       this.myfollow= true;
-        customerLaudNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+//        customerLaudNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
+                    customerLaudNoteListFavoredContent("100", this.userInfo.data.access_token,this.p,this.s).then(res=>{
         if(res.status ==true){
           this.pageNum = Math.ceil(res.total/this.s);
           if(this.pageNum>1){
@@ -124,10 +125,14 @@ export default {
       this.$router.push({path:"/findDetail",query:{id:v.id}})
     },
     goHomePage(v){ //去个人 或则大咖
-      if(v.authorInfo.vUser==0){ //去吃瓜
-        this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
-      }else{//去大咖
-        this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//1是个人
+      if(v.authorInfo.userType == '2'){// 人
+        if(v.authorInfo.vUser==false){//去吃瓜
+          this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
+        }else{
+          this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//1  true是大咖
+        }
+      }else {//企业
+        this.$router.push({path:"/homePage",query:{state:1,id:v.authorInfo.id}})//1 是大咖
       }
     },
     tabClick(i){//tab的下标

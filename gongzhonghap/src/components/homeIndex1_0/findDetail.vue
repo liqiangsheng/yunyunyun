@@ -21,7 +21,7 @@
                        <div class="swiper-slide" v-for="(item1,index1) in item.attachments">
                          <div class="imgIs">
                            <img :src="item1.url" />
-                           <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*imgW+'px',top:item2.axesyRate*imgW+'px'}">
+                           <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*imgW+'px',top:item2.axesyRate*imgH+'px'}">
                            <img src="/static/images/标签.png" alt=""><span>{{item2.title}}</span>
                            </div>
                          </div>
@@ -62,7 +62,7 @@
         <ul class="IntelligentMatchingDItem5">
           <li v-for="(item,index) in commenArr" v-if="!!item.sysUserContentVo">
             <div class="IntelligentMatchingDItemL">
-              <img :src="item.userDp" alt="" @click="giveClick">
+              <img :src="item.userDp" alt="" @click="commentGoHomepage(item)">
             </div>
             <div class="IntelligentMatchingDItemR">
               <h5>{{item.name}}</h5>
@@ -174,8 +174,11 @@
           })
           this.listData = arrdata;
           this.$nextTick(()=>{
-            this.imgW = this.$refs.windwosWH[0].offsetWidth;
-            this.imgH = this.$refs.windwosWH[0].offsetHeight;
+            setTimeout(()=>{
+              this.imgW = this.$refs.windwosWH[0].offsetWidth;
+              this.imgH = this.$refs.windwosWH[0].offsetHeight;
+            },200)
+
             //     滑动
             var mySwiper = new Swiper ('.swiper-container', {
               autoplay:false,
@@ -234,12 +237,30 @@
 
   },
     mounted(){
-      setTimeout(()=>{
-        this.share();
-      },200)
+      if(window.common.apiDomain20020=='https://dcloud.butongtech.com:20020'){
+        setTimeout(()=>{
+          this.share();
+        },200)
+      }
+
     },
 
   methods:{
+    commentGoHomepage(v){//点击评论的头像
+      console.log(v,"fsjk")
+      if(v.orgId=='2'){ //个人
+        if(v.vUser==false){ //去吃瓜
+          this.$router.push({path:"/personalMelonPages",query:{id:v.createdUser}})
+        }else{//去大咖
+          this.$router.push({path:"/homePage",query:{state:2,id:v.createdUser}})//1  true是大咖个人
+        }
+      }else if(v.orgId=='1'){ //企业
+        this.$router.push({path:"/homePage",query:{state:1,id:v.createdUser}})//1 是大咖企业
+      }else {
+        Toast("后台参数错误")
+      }
+    },
+
     share(){//分享
       shareInfoShareUrl(window.location.href.split('#')[0]).then(res=>{
          if(res.status==true){
@@ -286,6 +307,7 @@
       }
     },
    follow(v){ //关注
+     console.log(v)
      let data = JSON.parse(localStorage.getItem("userInfo"));
      if(!data){
        Toast("您还未登录，请登录！");
@@ -459,12 +481,15 @@
       }
     },
     headerClick(v){//点击头像 去吃瓜页 或则设计师主页 或者企业
-      if(v.authorInfo.vUser==0){ //去吃瓜
-        this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
-      }else{//去大咖
-        this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//1 是大咖
-      }
-
+         if(v.authorInfo.userType=="2"){ //个人
+             if(v.authorInfo.vUser==0){ //去吃瓜
+               this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
+             }else{//去大咖
+               this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//1  true是大咖个人
+             }
+         }else{ //企业
+           this.$router.push({path:"/homePage",query:{state:1,id:v.authorInfo.id}})//1 是大咖企业
+        }
     },
     openClick(v,i){ //展开收起
       v.messageShow = !v.messageShow;
@@ -813,12 +838,12 @@
         border-bottom: 0.01rem solid rgba(220,220,220,1);
         display: flex;
         >.IntelligentMatchingDItemL{
-          width: 0.8rem;
-          height: 0.8rem;
+          width: 0.6rem;
+          height: 0.6rem;
           >img{
             display: block;
-            width: 0.8rem;
-            height: 0.8rem;
+            width: 0.6rem;
+            height: 0.6rem;
             border-radius: 50%;
           }
         }

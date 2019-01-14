@@ -8,7 +8,7 @@
 
       <ul class="messageNotification_ul">
         <li v-for="(item,index) in objList" @click="activityClick(item)">
-          <mt-cell-swipe :right="[{content: '删除',style: { background: 'red', color: '#fff',width:'100%'},handler:()=>handler(item)}]">
+          <!--<mt-cell-swipe :right="[{content: '删除',style: { background: 'red', color: '#fff',width:'100%'},handler:()=>handler(item)}]">-->
              <div class="messageNotification_img">
                <img src="/static/images/系统.png" alt="" v-if="item.notifyType=='1'">
                <img src="/static/images/审核.png" alt="" v-if="item.notifyType=='2'">
@@ -22,7 +22,7 @@
               <h5 v-if="item.notifyType=='4'">{{item.title}} <span>{{item.notifyTime|formatTime}}</span></h5>
               <p>{{item.content}}</p>
             </div>
-          </mt-cell-swipe>
+          <!--</mt-cell-swipe>-->
         </li>
       </ul>
 

@@ -196,10 +196,15 @@
   },
   methods:{
     headerClick(v){//点击头像 去吃瓜页 或则设计师主页 或者企业
-      if(v.caredUserMap.vUser==0){ //去吃瓜
-        this.$router.push({path:"/personalMelonPages",query:{id:v.caredUserMap.id}})
-      }else{//去大咖
-        this.$router.push({path:"/homePage",query:{state:2,id:v.caredUserMap.id}})//1 是大咖
+//       console.log(v)
+      if(v.caredUserMap.userType=="2"){ //个人
+        if(v.caredUserMap.vUser==0){ //去吃瓜
+          this.$router.push({path:"/personalMelonPages",query:{id:v.caredUserMap.id}})
+        }else{//去大咖
+          this.$router.push({path:"/homePage",query:{state:2,id:v.caredUserMap.id}})//1  true是大咖个人
+        }
+      }else{ //企业
+        this.$router.push({path:"/homePage",query:{state:1,id:v.caredUserMap.id}})//1 是大咖企业
       }
 
     },

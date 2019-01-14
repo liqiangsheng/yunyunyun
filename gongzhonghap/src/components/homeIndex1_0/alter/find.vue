@@ -125,7 +125,6 @@
       },
       handleScroll(e){  //回到顶部按钮出现
         if(e.target.scrollTop>=(e.target.scrollHeight-this.OffsetHeight-0.5)){
-
           this.p++
           let that = this;
           if(that.pages<that.p){

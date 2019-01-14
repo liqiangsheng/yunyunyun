@@ -85,11 +85,22 @@ export function activityListData(p,s){
   })
 }
 
-// 我的 头像初始数据
+// 我的 头像初始数据 //个人
 export function IntallData(item){
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/findCommonUserById?userId=${item.data.id}`;
     // let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/findCommonUserById?userId=200`;
+    axios.get(url,{header:{'Content-Type': 'application/json','Accept': '*/*','Authorization':'Bearer '+item.data.access_token}}).then(res=>{
+      resolve(res)
+    }).catch(res=>{
+      Toast("500后台服务器错误！")
+    })
+  })
+}
+// 我的 头像初始数据 //企业
+export function companyInfofindCompanyInfoById(item){
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/findCompanyInfoById?companyId=${item.data.id}`;
     axios.get(url,{header:{'Content-Type': 'application/json','Accept': '*/*','Authorization':'Bearer '+item.data.access_token}}).then(res=>{
       resolve(res)
     }).catch(res=>{
@@ -149,11 +160,29 @@ export function  levelCity(){
   })
 }
 
-//  编辑页面初始化数据
+//  编辑页面初始化数据//个人
 export function  EditingInformationIntall(userId,token){
   Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/findCommonUserById?userId=${userId}`;
+    axios.get(url, {header: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      "Authorization": "Bearer " + token
+    }},).then(res=>{
+      Indicator.close()
+      resolve(res)
+    }).catch(res=>{
+      Indicator.close()
+      Toast("500后台服务器错误！")
+    })
+  })
+}
+//  编辑页面初始化数据 //企业
+export function  EditingInformationIntall1(userId,token){
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/findCompanyInfoById?companyId=${userId}`;
     axios.get(url, {header: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',

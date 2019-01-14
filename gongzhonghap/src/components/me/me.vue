@@ -67,7 +67,7 @@
 <script>
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
-   import { IntallData } from '../../assets/js/promiseHttp';
+   import { IntallData,companyInfofindCompanyInfoById } from '../../assets/js/promiseHttp';
    import Original from "./alter/original.vue"  //原创
    import Draft from "./alter/draft.vue"  //草稿
 export default {
@@ -103,21 +103,40 @@ export default {
        if(JSON.parse(window.localStorage.getItem("userInfo"))){    //获取本地存储信息
          this.tabListBool = true;
         let data = JSON.parse(window.localStorage.getItem("userInfo"))
+         console.log(data)
+         if(data.data.userType=='2'){
            IntallData(data).then(res=>{
 
-               if(res.data.status ==true){
-                this.bgImge=res.data.data.owner_url;
-                this.userInfo.header= res.data.data.owner_url?res.data.data.owner_url:"./static/images/defultphoto.png";
-                this.userInfo.name= res.data.data.name;
-                 this.userInfo.care_count = res.data.data.care_count ?res.data.data.care_count:0 ;
-                 this.userInfo.cared_count = res.data.data.cared_count?res.data.data.cared_count:0 ;
-                 this.userInfo.comment_count = res.data.data.comment_count?res.data.data.comment_count:0 ;
-                 this.userInfo.favorite_count = res.data.data.favorite_count?res.data.data.favorite_count:0 ;
-                 this.userInfo.laud_count = res.data.data.laud_count?res.data.data.laud_count:0 ;
-                }else{
-                   Toast("网络异常，请重试")
-               }
+             if(res.data.status ==true){
+               this.bgImge=res.data.data.owner_url;
+               this.userInfo.header= res.data.data.owner_url?res.data.data.owner_url:"./static/images/defultphoto.png";
+               this.userInfo.name= res.data.data.name;
+               this.userInfo.care_count = res.data.data.care_count ?res.data.data.care_count:0 ;
+               this.userInfo.cared_count = res.data.data.cared_count?res.data.data.cared_count:0 ;
+               this.userInfo.comment_count = res.data.data.comment_count?res.data.data.comment_count:0 ;
+               this.userInfo.favorite_count = res.data.data.favorite_count?res.data.data.favorite_count:0 ;
+               this.userInfo.laud_count = res.data.data.laud_count?res.data.data.laud_count:0 ;
+             }else{
+               Toast("网络异常，请重试")
+             }
            })
+         }else{
+           companyInfofindCompanyInfoById(data).then(res=>{
+             if(res.data.status ==true){
+               this.bgImge=res.data.data.owner_url;
+               this.userInfo.header= res.data.data.owner_url?res.data.data.owner_url:"./static/images/defultphoto.png";
+               this.userInfo.name= res.data.data.name;
+               this.userInfo.care_count = res.data.data.care_count ?res.data.data.care_count:0 ;
+               this.userInfo.cared_count = res.data.data.cared_count?res.data.data.cared_count:0 ;
+               this.userInfo.comment_count = res.data.data.comment_count?res.data.data.comment_count:0 ;
+               this.userInfo.favorite_count = res.data.data.favorite_count?res.data.data.favorite_count:0 ;
+               this.userInfo.laud_count = res.data.data.laud_count?res.data.data.laud_count:0 ;
+             }else{
+               Toast("网络异常，请重试")
+             }
+           })
+         }
+
        }else{
              this.tabListBool = false;
              this.bgImge="./static/images/bg.png";
