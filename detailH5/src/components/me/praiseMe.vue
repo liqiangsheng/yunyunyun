@@ -8,7 +8,7 @@
     <ul class="praiseMe_box_true" v-else>
       <li v-for="(item,index) in objList">
         <div class="praiseMe_box_true_left">
-          <img :src="item.userDp?item.userDp:'/static/images/defultphoto.png'" alt="">
+          <img :src="item.userDp?item.userDp:'/static/images/defultphoto.png'" alt=""  @click="goHomepage(item)">
         </div>
         <div class="praiseMe_box_true_right">
           <h5>{{item.laudName}}</h5>
@@ -86,6 +86,17 @@
       }
     },
     methods:{
+      goHomepage(){
+        if(v.orgId == '2'){// 人
+          if(v.vUser==false){//去吃瓜
+            this.$router.push({path:"/personalMelonPages",query:{id:v.laudUser}})
+          }else{
+            this.$router.push({path:"/homePage",query:{state:2,id:v.laudUser}})//1  true是大咖
+          }
+        }else {//企业
+          this.$router.push({path:"/homePage",query:{state:1,id:v.laudUser}})//1 是大咖
+        }
+      },
       goDetail(v){//去详情页
         if(v.type==1){ //去文章详情
           this.$router.push({path:"/homeDetail",query:{id:v.infoId}})

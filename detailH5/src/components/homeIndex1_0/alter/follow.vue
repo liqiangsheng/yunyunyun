@@ -32,7 +32,7 @@
         <ul class="follow_login_Follow_ul" v-if="followIsShow==false&&!!listData&&listData!=-1&&listData!=-2">
           <li class="follow_login_Follow_li" v-for="(item,index) in listData" @click="goDetail(item)">
             <div class="follow_login_Follow_li1">
-              <img :src="item.caredUserMap.ownerUrl" alt="">
+              <img :src="item.caredUserMap.ownerUrl?item.caredUserMap.ownerUrl:'/static/images/defultphoto.png'" alt="" @click.stop="headerClick(item)">
               <p>{{item.caredUserMap.name}}</p>
               <div v-if="!item.caredUserMap.caredStatus" @click="follow(item)"><img src="/static/images/已关注.png" alt="">关注</div>
               <div  v-else class="active" @click="cancelFollow(item)">取消关注</div>
@@ -237,6 +237,19 @@
 
     },
     methods:{
+      headerClick(v){//点击头像 去吃瓜页 或则设计师主页 或者企业
+        console.log(v)
+        if(v.caredUserMap.userType=="2"){ //个人
+          if(v.caredUserMap.vUser==0){ //去吃瓜
+            this.$router.push({path:"/personalMelonPages",query:{id:v.caredUserMap.id}})
+          }else{//去大咖
+            this.$router.push({path:"/homePage",query:{state:2,id:v.caredUserMap.id}})//1  true是大咖个人
+          }
+        }else{ //企业
+          this.$router.push({path:"/homePage",query:{state:1,id:v.caredUserMap.id}})//1 是大咖企业
+        }
+
+      },
       goDetail(v){ //去详情
         console.log(v,"go详情")
         if(v.type==1){//文章

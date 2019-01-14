@@ -7,7 +7,7 @@
         <div class="myfollow_box_header">已关注 <span>{{objList.length}}</span> 位设计师</div>
         <ul v-if="objList.length>0">
           <li v-for="(item,index) in objList">
-            <div class="myfollow_li1">
+            <div class="myfollow_li1" @click="goHomepage(item)">
               <img :src="item.url?item.url:'/static/images/defultphoto.png'" alt="">
             </div>
             <div class="myfollow_li2">
@@ -76,7 +76,19 @@
   },
 
   methods: {
+    goHomepage(v){//去个人或者大咖
+      console.log(v)
+      if(v.userType=="2"){ //个人
+        if(v.vuser==false){ //去吃瓜
+          this.$router.push({path:"/personalMelonPages",query:{id:v.userId}})
+        }else{//去大咖
+          this.$router.push({path:"/homePage",query:{state:2,id:v.userId}})//1  true是大咖个人
+        }
+      }else{ //企业
+        this.$router.push({path:"/homePage",query:{state:1,id:v.userId}})//1 是大咖企业
+      }
 
+    },
     followClick(v,i){//关注
       console.log(i)
       if(!this.userInfo){

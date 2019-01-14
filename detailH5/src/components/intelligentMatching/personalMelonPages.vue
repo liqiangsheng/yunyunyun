@@ -39,7 +39,7 @@
     </div>
 
     <div class="componentsBox" v-if="imgsArr.length>0">
-      <ul id="box">
+      <ul id="box" @scroll="boxScroll">
         <li v-for="(item,index) in imgsArr" @click="clickFn(item,index)" >
           <img :src="item.imageUrl1" alt="">
           <h5>{{item.title}}</h5>
@@ -50,9 +50,9 @@
             <li class="img-info_li4">{{item.laudedCount}}</li>
           </ul>
         </li>
-        <!--<li style="text-align: center;line-height: 1.0rem;color: #999999" v-if="!!message">-->
-          <!--{{message}}-->
-        <!--</li>-->
+        <li style="text-align: center;line-height: 1.0rem;color: #999999" v-show="!!message">
+          {{message}}
+        </li>
       </ul>
     </div>
 
@@ -92,7 +92,7 @@
     },
     created() {
       this.$nextTick(function () {
-        window.addEventListener('scroll',this.handleScroll,true) //监听高度
+//        window.addEventListener('scroll',this.handleScroll,true) //监听高度
       })
       this.userInfo = {data:{id:this.$router.history.current.query.id,access_token:this.$router.history.current.query.token}}
       console.log(this.$router.history.current.query.id)
@@ -110,6 +110,9 @@
       this.IndicatorData();
     },
     methods:{
+      boxScroll(e){ //滚动事件
+        this.handleScroll(e);
+      },
       IndicatorData(){ //初始数据
         customerPubContentList(this.$router.history.current.query.id,this.p,this.s).then(res=>{
           if(res.status == true){
@@ -168,13 +171,12 @@
 //          console.log(e.target.scrollHeight,"OffsetHeight")
 //          console.log(e.target.OffsetHeight,"OffsetHeight")
         if(e.target.scrollTop>=(e.target.scrollHeight-e.target.clientHeight-0.5)){
-
           this.p++
           let that = this;
           if(that.pages<that.p){
             that.p = that.pages;
             this.message = "这是我的底线...";
-            Toast("被你看光啦")
+//            Toast("被你看光啦")
             return;
           }else if(that.pages==that.p){
             customerPubContentList(this.$router.history.current.query.id,this.p,this.s).then(res=>{

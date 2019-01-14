@@ -7,7 +7,7 @@
     </div>
     <ul class="comment_on_my_true" v-else>
       <li class="comment_on_my_true_li" v-for="(item,index) in objList">
-        <div class="comment_on_my_true_li_left">
+        <div class="comment_on_my_true_li_left" @click="goHomepage(item)">
           <img :src="item.userDp?item.userDp:'/static/images/defultphoto.png'" alt="">
         </div>
         <div class="comment_on_my_true_li_right">
@@ -82,6 +82,17 @@
 
     },
     methods:{
+      goHomepage(v){ //去吃瓜或者大咖
+        if(v.orgId == '2'){// 人
+          if(v.vUser==false){//去吃瓜
+            this.$router.push({path:"/personalMelonPages",query:{id:v.dpUser}})
+          }else{
+            this.$router.push({path:"/homePage",query:{state:2,id:v.dpUser}})//1  true是大咖
+          }
+        }else {//企业
+          this.$router.push({path:"/homePage",query:{state:1,id:v.dpUser}})//1 是大咖
+        }
+      },
       goDetail(v){
         if(v.type==1){ //去文章详情
           this.$router.push({path:"/homeDetail",query:{id:v.infoId}})

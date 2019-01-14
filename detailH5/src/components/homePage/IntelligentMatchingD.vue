@@ -53,7 +53,7 @@
 
     <ul class="IntelligentMatchingDItem5" @click="giveClick" v-if="boxShow">
       <li v-for="(item,index) in commenArr" v-if="!!item.sysUserContentVo">
-        <div class="IntelligentMatchingDItemL">
+        <div class="IntelligentMatchingDItemL" @click.stop="commentGoHomepage(item)">
           <img :src="item.userDp" alt="">
         </div>
         <div class="IntelligentMatchingDItemR">
@@ -163,6 +163,20 @@
 
     },
     methods:{
+      commentGoHomepage(v){//点击评论的头像
+        console.log(v,"fsjk")
+        if(v.orgId=='2'){ //个人
+          if(v.vUser==false){ //去吃瓜
+            this.$router.push({path:"/personalMelonPages",query:{id:v.createdUser}})
+          }else{//去大咖
+            this.$router.push({path:"/homePage",query:{state:2,id:v.createdUser}})//1  true是大咖个人
+          }
+        }else if(v.orgId=='1'){ //企业
+          this.$router.push({path:"/homePage",query:{state:1,id:v.createdUser}})//1 是大咖企业
+        }else {
+          Toast("后台参数错误")
+        }
+      },
       IOS(){
         location.href="https://itunes.apple.com/cn/app/id1439775835"
       },
@@ -386,12 +400,12 @@
         border-bottom: 0.01rem solid rgba(220,220,220,1);
         display: flex;
         >.IntelligentMatchingDItemL{
-          width: 0.8rem;
-          height: 0.8rem;
+          width: 0.6rem;
+          height: 0.6rem;
           >img{
             display: block;
-            width: 0.8rem;
-            height: 0.8rem;
+            width: 0.6rem;
+            height: 0.6rem;
             border-radius: 50%;
           }
         }
