@@ -22,7 +22,7 @@
    </view>
   <view class='center'>
   
-      <view class='editingInformationBoxItem1'>
+      <view class='editingInformationBoxItem1' wx:if="{{userInfo.userType=='2'}}">
             <text>性别</text>
             <view class='editingInformationBoxRight'>
               <picker bindchange="sexChange" value="{{sexIndex}}" range="{{array}}">

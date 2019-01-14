@@ -1,5 +1,5 @@
 <!--pages/me/me.wxml-->
-<scroll-view class='meBox'>
+<scroll-view class='meBox' scroll-y >
   <view class="userinfo">
       <image class='bgImge' src='{{bgImge}}' bindtap='loginBnt'></image>
       <block>
@@ -53,7 +53,69 @@
     </view>
       <!--,//原创 草稿组件-->
     <view  class="Me_draft">
-        <Original class='Me_Original' prop-a="{{imgList}}" wx:if="{{meTabIndex==0}}"></Original>
+        <!-- <Original class='Me_Original' prop-a="{{imgList}}" wx:if="{{meTabIndex==0}}"></Original> -->
+        <view wx:if="{{meTabIndex==0}}">
+           <view class='componentsBox_Show' wx:if='{{listData.length<=0}}'>
+                <image src="../../images/yuanchuang.png"></image>
+                <view>你还没有进行任何创作哦～</view>
+              </view>
+              <view class='componentsBox' wx:else>
+                <view class='fall-container'>
+                  <!-- 左边一列 -->
+                  <view class='fall-left'>
+                    <block wx:for="{{leftList}}" wx:key="{{item.id}}">
+                      <!--瀑布流内容卡片-->
+                      <!-- <template is='goodsCard' data="{{data:item}}" /> -->
+                      <image 
+                        class='card-img' 
+                        mode='aspectFill' 
+                        style='width:{{item.itemWidth}}px;height:{{item.itemHeight}}px;margin-top:8px;' 
+                        src='{{item.cover.url}}' 
+                        bindtap='goDetail' data-id="{{item.id}}"
+                        lazy-load>
+                      </image>
+                        <view class='img-infoBox' bindtap='goDetail' data-id="{{item.id}}">
+                          <view class='img-infoBoxInfo'>{{item.title}}</view>
+                              <view class="img-info">
+                                <view class="img-info_li1"><image src="{{item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'../../images/defultphoto.png'}}" alt=""></image></view>
+                                <view class="img-info_li2">{{item.authorInfo.name}}</view>
+                                <view class="img-info_li3"><image src="../../images/dianzan1.png" alt=""></image></view>
+                                <view class="img-info_li4">{{item.laudedCount}}</view>
+                              </view>
+                      </view>
+                    </block>
+                  
+                  </view>
+                  <!--右边一列 -->
+                  <view class='fall-right'>
+                    <block wx:for="{{rightList}}" wx:key="{{item.id}}" bindtap='goDetail' data-id="{{item.id}}">
+                      <!--瀑布流内容卡片-->
+                      <!-- <template is='goodsCard' data="{{data:item}}" /> -->
+                      <image 
+                        class='card-img' 
+                        mode='aspectFill' 
+                        bindtap='goDetail' data-id="{{item.id}}"
+                        style='width:{{item.itemWidth}}px;height:{{item.itemHeight}}px;margin-top:8px;' 
+                        src='{{item.cover.url}}' 
+                        lazy-load>
+                      </image>
+                      <view class='img-infoBox' bindtap='goDetail' data-id="{{item.id}}">
+                          <view class='img-infoBoxInfo'>{{item.title}}</view>
+                              <view class="img-info">
+                                <view class="img-info_li1"><image src="{{item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'../../imgages/defultphoto.png'}}" alt=""></image></view>
+                                <view class="img-info_li2">{{item.authorInfo.name}}</view>
+                                <view class="img-info_li3"><image src="../../images/dianzan1.png" alt=""></image></view>
+                                <view class="img-info_li4">{{item.laudedCount}}</view>
+                              </view>
+                      </view>
+                    </block>
+                  </view>
+                </view>
+                <view bindtap='moreTap' class='more'>
+                      {{message}}
+                </view>
+              </view>
+        </view>
         <Draft wx:if="{{meTabIndex==1}}"></Draft>
     </view>
     

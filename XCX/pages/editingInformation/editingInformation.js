@@ -34,6 +34,7 @@ Page({
     regionId:"", //城市的Id
     areaArr: "深圳市",
     showPickerView: false,
+    userInfo:{}, //登录的数据
   },
   dateTime(e){  //选择的日期
     let clickDay = e.detail.day;
@@ -132,7 +133,10 @@ Page({
       title: '加载中...',
     })
     let data =  wx.getStorageSync("userInfo");
-    
+    that.setData({
+      userInfo:data
+    })
+    // console.log(that.data.userInfo.userType,"that.data.userInfo.userType")
     if(data){
       wx.request({ //请求七牛的token
         url: API.apiDomain + '/apis/system/' + API.systemEdition +'/sysAttachment/upPublicToken',
@@ -173,62 +177,123 @@ Page({
         })
       })
      setTimeout(()=>{
+       if(data.userType == '2'){
+         wx.request({ //设置的默认东西
 
-        wx.request({ //设置的默认东西
-
-          url: API.apiDomain + '/apis/operation/' + API.operationEdition+'/commonUser/findCommonUserById',
-         method: "GET",
-         data: {
-           userId: data.id
-         },
-         header: {
-           'Content-Type': 'application/json',
-           'Accept': 'application/json',
-           "Authorization": "Bearer " + data.access_token
-         },
-         success: function (res) {
-             console.log(res,"fdksfk")
-           if (res.data.status == true) {
-             wx.hideLoading();
-             that.setData({
-               areaArr: res.data.data.region_name ? res.data.data.region_name : "深圳市",
-               yearmonthday: res.data.data.birthday ? res.data.data.birthday:"19700101",
-               sexIndex: res.data.data.sex ? res.data.data.sex:"0",
-               regionId: res.data.data.region_id ? res.data.data.region_id : "2018042317050430c6a250e4044f94bb4cc074302b789a",
-               personal: res.data.data.introduce ? res.data.data.introduce:"",
-               userName: res.data.data.name ? res.data.data.name : that.data.name,
-               imgSrc: res.data.data.owner_url ? res.data.data.owner_url : "https://pub.qinius.butongtech.com/defult_photo@3x.png",
-             })
-
-
-           } else {
-             wx.hideLoading();
-             if (res.statusCode == 500) {
-               wx.showModal({
-                 showCancel: false,
-                 title: "网络异常，请重试",
-
+           url: API.apiDomain + '/apis/operation/' + API.operationEdition + '/commonUser/findCommonUserById',
+           method: "GET",
+           data: {
+             userId: data.id
+           },
+           header: {
+             'Content-Type': 'application/json',
+             'Accept': 'application/json',
+             "Authorization": "Bearer " + data.access_token
+           },
+           success: function (res) {
+            //  console.log(res, "fdksfk")
+             if (res.data.status == true) {
+               wx.hideLoading();
+               that.setData({
+                 areaArr: res.data.data.region_name ? res.data.data.region_name : "深圳市",
+                 yearmonthday: res.data.data.birthday ? res.data.data.birthday : "19700101",
+                 sexIndex: res.data.data.sex ? res.data.data.sex : "0",
+                 regionId: res.data.data.region_id ? res.data.data.region_id : "2018042317050430c6a250e4044f94bb4cc074302b789a",
+                 personal: res.data.data.introduce ? res.data.data.introduce : "",
+                 userName: res.data.data.name ? res.data.data.name : that.data.name,
+                 imgSrc: res.data.data.owner_url ? res.data.data.owner_url : "https://pub.qinius.butongtech.com/defult_photo@3x.png",
                })
-             } else if (res.statusCode == 401) {
-               wx.showModal({
-                 showCancel: false,
-                 title: "网络异常",
 
-               })
+
              } else {
-               wx.showModal({
-                 showCancel: false,
-                 title: res.data.message,
-                 icon: 'success',
-                 duration: 2000,
+               wx.hideLoading();
+               if (res.statusCode == 500) {
+                 wx.showModal({
+                   showCancel: false,
+                   title: "网络异常，请重试",
 
-               })
+                 })
+               } else if (res.statusCode == 401) {
+                 wx.showModal({
+                   showCancel: false,
+                   title: "网络异常",
+
+                 })
+               } else {
+                 wx.showModal({
+                   showCancel: false,
+                   title: res.data.message,
+                   icon: 'success',
+                   duration: 2000,
+
+                 })
+               }
+
              }
-
            }
-         }
-       })
+         })
 
+
+       }else if(data.userType == '1'){
+         wx.request({ //设置的默认东西
+
+           url: API.apiDomain + '/apis/operation/' + API.operationEdition + '/companyInfo/findCompanyInfoById',
+           method: "GET",
+           data: {
+             companyId: data.id
+           },
+           header: {
+             'Content-Type': 'application/json',
+             'Accept': 'application/json',
+             "Authorization": "Bearer " + data.access_token
+           },
+           success: function (res) {
+            //  console.log(res, "fdksfk")
+             if (res.data.status == true) {
+               wx.hideLoading();
+               that.setData({
+                 areaArr: res.data.data.region_name ? res.data.data.region_name : "深圳市",
+                 yearmonthday: res.data.data.birthday ? res.data.data.birthday : "19700101",
+                 sexIndex: res.data.data.sex ? res.data.data.sex : "0",
+                 regionId: res.data.data.region_id ? res.data.data.region_id : "2018042317050430c6a250e4044f94bb4cc074302b789a",
+                 personal: res.data.data.introduce ? res.data.data.introduce : "",
+                 userName: res.data.data.name ? res.data.data.name : that.data.name,
+                 imgSrc: res.data.data.owner_url ? res.data.data.owner_url : "https://pub.qinius.butongtech.com/defult_photo@3x.png",
+               })
+
+
+             } else {
+               wx.hideLoading();
+               if (res.statusCode == 500) {
+                 wx.showModal({
+                   showCancel: false,
+                   title: "网络异常，请重试",
+
+                 })
+               } else if (res.statusCode == 401) {
+                 wx.showModal({
+                   showCancel: false,
+                   title: "网络异常",
+
+                 })
+               } else {
+                 wx.showModal({
+                   showCancel: false,
+                   title: res.data.message,
+                   icon: 'success',
+                   duration: 2000,
+
+                 })
+               }
+
+             }
+           }
+         })
+
+         
+       }
+        
+      
        
 
      },1000)
@@ -432,7 +497,7 @@ Page({
     that.setData({
       birthdayShow: that.data.birthdayShow
     })
-    console.log(that.data.birthdayShow,"dakdjkasdkjas")
+    // console.log(that.data.birthdayShow,"dakdjkasdkjas")
     if(that.data.birthdayShow == true){
       that.data.yearmonthday = "确定"
       that.setData({
@@ -444,7 +509,7 @@ Page({
         yearmonthday: that.data.year + that.data.month + that.data.day,
       })
     }
-    console.log(that.data.yearmonthday)
+    // console.log(that.data.yearmonthday)
     
   },
 

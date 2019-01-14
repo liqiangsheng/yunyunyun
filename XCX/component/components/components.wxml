@@ -57,5 +57,5 @@
   </view>
   <view bindtap='moreTap' class='more'>
         {{message}}
-    </view>
+  </view>
 </view>
