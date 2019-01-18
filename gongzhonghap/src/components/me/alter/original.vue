@@ -50,6 +50,7 @@ export default {
       OffsetHeight:0,//屏幕高度
       userInfo:{},//用户数据
       gap : 5, //10px的像素差距
+      flag:false, //距离底部距离小于50
     }
   },
   created() {
@@ -67,7 +68,64 @@ export default {
   },
   methods:{
     boxScroll(e){ //滚动事件
-      this.handleScroll(e);
+      let scrollTop = e.target.scrollTop?e.target.scrollTop:0;
+      let scrollHeight = e.target.scrollHeight?e.target.scrollHeight:0;
+      let clientHeight = e.target.clientHeight?e.target.clientHeight:0;
+      if(scrollTop>=(scrollHeight-clientHeight-50)){
+        this.flag = true
+      }else {
+        this.flag = false
+      }
+      if(this.flag==true){
+        this.p++
+        let that = this;
+        if(that.pages<that.p){
+          that.p = that.pages;setTimeout(()=>{
+            this.message = "这是我的底线...";
+            return;
+          },1100)
+        }else if(that.pages==that.p){
+          customerPubContentListOwner(this.userInfo.data.id,true,this.p,this.s,this.userInfo.data.access_token).then(res=>{
+            if(res.status == true){
+              res.data.forEach((item,index)=>{
+                item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+              })
+              that.imgsArr = that.imgsArr.concat(res.data);
+              Indicator.open("加载中")
+              setTimeout(()=>{
+                this.$nextTick(function(){
+                  let  box = document.getElementById('box');
+                  let items = box?box.children:[];
+                  that.waterFull(items);
+                  Indicator.close()
+                })
+              },1000)
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }else if(that.pages>that.p){
+          customerPubContentListOwner(this.userInfo.data.id,true,this.p,this.s,this.userInfo.data.access_token).then(res=>{
+            if(res.status == true){
+              res.data.forEach((item,index)=>{
+                item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+              })
+              that.imgsArr = that.imgsArr.concat(res.data);
+              Indicator.open("加载中")
+              setTimeout(()=>{
+                this.$nextTick(function(){
+                  let  box = document.getElementById('box');
+                  let items = box?box.children:[];
+                  that.waterFull(items);
+                  Indicator.close()
+                })
+              },1000)
+            }else{
+              Toast("网络出错了，请重试")
+            }
+          })
+        }
+      }
     },
     waterFull(items){//瀑布流
       // 1- 确定列数  = 页面的宽度 / 图片的宽度
@@ -121,14 +179,15 @@ export default {
           })
           this.pages = Math.ceil(res.total/this.s);
           this.imgsArr = res.data;
+          Indicator.open('加载中')
           setTimeout(()=>{
             this.$nextTick(function(){
               let  box = document.getElementById('box');
-              let items = box.children;
+              let items = box?box.children:[];
               this.waterFull(items);
+              Indicator.close()
             })
-          },200)
-
+          },1000)
 
         }else{
           Indicator.close();
@@ -136,63 +195,7 @@ export default {
         }
       })
     },
-    handleScroll(e){  //回到顶部按钮出现
-//     console.log(e)
-      if(e.target.scrollTop>=(e.target.scrollHeight-this.OffsetHeight-0.5)){
-        this.p++
-        let that = this;
-        if(that.pages<that.p){
-          that.p = that.pages;
-//          Toast("被你看光啦")
-          this.message = "这是我的底线...";
-          return;
-        }else if(that.pages==that.p){
-          customerPubContentListOwner(this.userInfo.data.id,true,this.p,this.s,this.userInfo.data.access_token).then(res=>{
-            if(res.status == true){
-              res.data.forEach((item,index)=>{
-                item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
-              })
-              that.imgsArr = that.imgsArr.concat(res.data);
-              setTimeout(()=>{
-                this.$nextTick(function(){
-                  let  box = document.getElementById('box');
-                  let items = box.children;
-                  this.waterFull(items);
-                })
-              },200)
-            }else{
-              Indicator.close();
-              Toast("网络出错了，请重试")
-            }
-          })
-        }else if(that.pages>that.p){
-          customerPubContentListOwner(this.userInfo.data.id,true,this.p,this.s,this.userInfo.data.access_token).then(res=>{
-            if(res.status == true){
-              res.data.forEach((item,index)=>{
-                item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
-              })
-              that.imgsArr = that.imgsArr.concat(res.data);
-              setTimeout(()=>{
-                this.$nextTick(function(){
-                  let  box = document.getElementById('box');
-                  let items = box.children;
-                  this.waterFull(items);
-                })
-              },200)
-            }else{
-              Indicator.close();
-              Toast("网络出错了，请重试")
-            }
-          })
-        }
-      }
 
-
-    },
-    mounted() {
-//      window.addEventListener('scroll',this.handleScroll,true) //监听高度
-
-    },
   }
 }
 

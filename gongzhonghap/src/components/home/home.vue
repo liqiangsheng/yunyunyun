@@ -217,15 +217,15 @@ export default {
          if(data){
            let date = new Date();
            let nowTime = date.getTime();
-           if (nowTime > this.acivityArr.endTime||this.objData.endTime) { //判断活动结束或者正在进行中  上线放开
+           if (nowTime > this.acivityArr.endTime||nowTime > this.objData.endTime) { //判断活动结束或者正在进行中  上线放开
              Toast("该活动已结束");
              return;
            }
-           if (nowTime > this.acivityArr.signEndTime||this.objData.signEndTime) {
+           if (nowTime > this.acivityArr.signEndTime||nowTime > this.objData.signEndTime) {
              Toast("活动报名已结束");
              return;
            }
-           if (nowTime < this.acivityArr.signStartTime||this.objData.signStartTime) {
+           if (nowTime < this.acivityArr.signStartTime||nowTime < this.objData.signStartTime) {
              Toast("活动尚未开始报名，请选择其他活动！");
              return;
            }

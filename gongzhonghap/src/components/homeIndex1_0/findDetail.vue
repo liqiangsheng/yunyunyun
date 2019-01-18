@@ -33,8 +33,7 @@
                    <!---->
                  </div>
                  <div class="follow_login_Follow_li3">
-                   <p>{{item.message1}}</p>
-                   <div v-show="item.content&&item.content.length>69" @click="openClick(item,index)">{{item.value}}</div>
+                   <p>{{item.message1}}<b v-show="item.content&&item.content.length>35" @click.stop="openClick(item,index)">　{{item.value}}</b></p>
                  </div>
                  <div class="follow_login_Follow_li4">
                    <div>
@@ -155,7 +154,6 @@
 //    }
     if(this.$router.history.current.query.id){ //这个id请求数据 截取url的
       customerPubContentFindOne(this.$router.history.current.query.id).then(res=>{
-        console.log(res,"fdskjfgd")
         if(res.status == true){
 
           let arrdata = [res.data];
@@ -163,8 +161,8 @@
             item.messageShow = false;
             item.message1 = "";
             item.value = "展开";
-            if(item.content.length>69){
-              item.message1=item.content.substring(0,69)+"...";
+            if(item.content.length>35){
+              item.message1=item.content.substring(0,35)+"...";
               item.messageShow = true;
               item.value = "展开";
             }else{
@@ -497,7 +495,7 @@
         v.message1 = this.listData[i].content;
         v.value = "收起";
       }else{ //张开
-        v.message1=v.content.substring(0,69)+"...";
+        v.message1=v.content.substring(0,35)+"...";
         v.value = "展开";
       }
       this.listData[i] = v; //赋值给原来的小标值
@@ -709,19 +707,6 @@
               line-height: 0.28rem;
               color:rgba(5,5,9,1);
               word-wrap:break-word;
-            }
-            >div{
-              position: absolute;
-              right: 0.15rem;
-              bottom: -0.16rem;
-              width: 0.5rem;
-              height: 0.24rem;
-              text-align: center;
-              line-height: 0.24rem;
-              font-size:0.12rem;
-              font-family:PingFangSC-Medium;
-              font-weight:500;
-              color:#21CB61;
             }
           }
           .follow_login_Follow_li4{

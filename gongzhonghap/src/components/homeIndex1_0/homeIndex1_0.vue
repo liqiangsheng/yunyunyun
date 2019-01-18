@@ -3,9 +3,11 @@
   <div id="homeIndex1_0">
     <ul class="homeIndex1_ul">
       <li v-for="(item,index) in headerTab" @click="tabClick(index)">
-        <span :class="[{active:headerTabIndex==index},'homeIndex1_span'+index]">{{item}}</span>
+        <div class="homeIndex1_ul_li_div" :class="[{active:headerTabIndex==index},'homeIndex1_span'+index]">
+          <span>{{item.Chinese}}</span>
+          <p>{{item.English}}</p>
+        </div>
       </li>
-      <div class="homeIndex1_xian">/</div>
     </ul>
     <div class="homeIndex1_0_components">
       <Find v-if="headerTabIndex==0"></Find>
@@ -14,7 +16,6 @@
     <ul class="Indextab">
       <li v-for="(item,index) in tabbarAarr" class="indexTabLi" @click="tabarClick(index)">
         <img :src="tabbarAarrIndex==index?item.icon:item.icon1" alt="" class="indexTabImg" :class="{active:index==2}">
-        {{item.name}}
       </li>
     </ul>
   </div>
@@ -42,14 +43,14 @@
 //          bookId:"7",
 //        }, //测试
         imgsArr:[],
-        headerTab:["发现","关注"], //tab
+        headerTab:[{Chinese:"发现",English:"Find"},{Chinese:"关注",English:"Aattention"}], //tab
         headerTabIndex:0,//是关注还是发现
         tabbarAarr:[  //、、tab
-          {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
-          {name:"资讯",icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
+          {icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
+          {icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
           {icon:"./static/images/zhaio.png",icon1:"./static/images/zhaio.png",path:"/release"},
-          {name:"智慧活动",icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
-          {name:"我的",icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
+          {icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
+          {icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
         ],
         tabbarAarrIndex:0,  //点击tab的下标
 
@@ -107,43 +108,58 @@
       position: relative;
       li{
        flex: 1;
-        height: 0.39rem;
-        line-height: 0.39rem;
-        font-size:0.12rem;
+        height: 0.52rem;
         font-family:PingFangSC-Light;
         font-weight:300;
         color:rgba(102,102,102,1);
-        span.active{
-          font-size:0.15rem;
+        border-bottom: 0.01rem solid #e6e6e6;
+        .homeIndex1_ul_li_div{
+          width:0.7rem ;
+          height: 0.46rem;
+          text-align: center;
+          font-size: 0.14rem;
+          span{
+            display: inline-block;
+            line-height: 0.24rem;
+            margin-top: 0.04rem;
+          }
+          p{
+            line-height: 0.12rem;
+            color:rgba(102,102,102,1);
+            font-size: 0.1rem;
+          }
+        }
+        .homeIndex1_ul_li_div.active{
+          font-size:0.14rem;
           font-family:PingFangSC-Regular;
-          font-weight:400;
+          font-weight:600;
           color:rgba(5,5,9,1);
+          border-bottom:0.02rem solid rgba(5,5,9,1);
+
+          p{
+            color:rgba(102,102,102,1);
+            font-weight:100;
+            font-size: 0.1rem;
+          }
         }
         .homeIndex1_span0{
           display: block;
           float: right;
-          margin-right: 0.3rem;
+          margin-right:0.1rem ;
         }
         .homeIndex1_span1{
           display: block;
           float: left;
-          margin-left: 0.3rem;
+          margin-left:0.1rem ;
         }
       }
-      .homeIndex1_xian{
-        position: absolute;
-        left: 49.9%;
-        top: 0.07rem;
-        font-size:0.11rem;
-        font-family:PingFangSC-Regular;
-        font-weight:400;
-        color:rgba(102,102,102,1);
-      }
+
     }
     .homeIndex1_0_components{
+      width: 100%;
       position: absolute;
       left: 0;
-      top:0.4rem;
+      top:0.52rem;
       bottom:0.5rem;
       right: 0;
       overflow: hidden;
@@ -160,16 +176,18 @@
       .indexTabLi{
         flex: 1;
         text-align: center;
-        padding-top:0.05rem ;
+        padding-top:0.13rem ;
+        box-sizing: border-box;
         .indexTabImg{
-          width: 0.16rem;
-          height: 0.19rem;
+          width:  24px;
+          height:  24px;
           display:block;
           margin: 0 auto;
         }
         .indexTabImg.active{
-          width: 0.32rem;
-          height: 0.32rem;
+          width: 0.3rem;
+          transform: translateY(-0.05rem);
+          height: 0.3rem;
         }
       }
     }

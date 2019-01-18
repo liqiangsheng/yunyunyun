@@ -10,53 +10,59 @@
     <div class="follow_login_true" v-if="LoginShow==true">
       <ul class="homeIndex1_ul">
         <li v-for="(item,index) in headerTab" @click="tabClick(index)">
-          <span :class="[{active:headerTabIndex==index},'homeIndex1_span'+index]">{{item}}</span>
+          <div class="homeIndex1_ul_li_div" :class="[{active:headerTabIndex==index},'homeIndex1_span'+index]">
+            <span>{{item.Chinese}}</span>
+            <p>{{item.English}}</p>
+          </div>
         </li>
-        <div class="homeIndex1_xian">/</div>
       </ul>
       <!--您关注的达人还未发布作品，为您推荐更多设计达人～-->
-         <div class="follow_login_noFollow" v-if="followIsShow==true">
-           <p class="follow_login_noFollow_p">您关注的达人还未发布作品，为您推荐更多设计达人～</p>
-           <ul class="follow_login_noFollow_ul">
-             <li class="follow_login_noFollow_li" v-for="(item,index) in Recommend">
-                <div class="follow_login_noFollow_li1"><img :src="item.url" alt=""></div>
-                 <div class="follow_login_noFollow_li2">{{item.name}}</div>
-                 <div class="follow_login_noFollow_li3">
-                   <div><img :src="item.type==false?'/static/images/未关注.png':'/static/images/已关注.png'" alt="">{{item.value}}</div>
-                 </div>
-             </li>
-           </ul>
-         </div>
+         <!--<div class="follow_login_noFollow" v-if="followIsShow==true">-->
+           <!--<p class="follow_login_noFollow_p">您关注的达人还未发布作品，为您推荐更多设计达人～</p>-->
+           <!--<ul class="follow_login_noFollow_ul">-->
+             <!--<li class="follow_login_noFollow_li" v-for="(item,index) in Recommend">-->
+                <!--<div class="follow_login_noFollow_li1"><img :src="item.url" alt=""></div>-->
+                 <!--<div class="follow_login_noFollow_li2">{{item.name}}</div>-->
+                 <!--<div class="follow_login_noFollow_li3">-->
+                   <!--<div><img :src="item.type==false?'/static/images/未关注.png':'/static/images/已关注.png'" alt="">{{item.value}}</div>-->
+                 <!--</div>-->
+             <!--</li>-->
+           <!--</ul>-->
+         <!--</div>-->
       <!--您关注的达人发布了作品-->
-        <div class="follow_login_Follow" v-else>
+        <!--<div class="follow_login_Follow" v-else>-->
+        <div class="follow_login_Follow">
              <ul class="follow_login_Follow_ul" v-if="followIsShow==false&&!!listData&&listData!=-1&&listData!=-2">
-               <li class="follow_login_Follow_li" v-for="(item,index) in listData" @click="goDetail(item)">
+               <li class="follow_login_Follow_li" v-for="(item,index) in listData" @click="goDetail(item)" ref="windwosWH">
                  <div class="follow_login_Follow_li1">
                    <img :src="item.caredUserMap.ownerUrl?item.caredUserMap.ownerUrl:'/static/images/defultphoto.png'" alt="" @click.stop="headerClick(item)">
-                    <p>{{item.caredUserMap.name}}</p>
-                   <div v-if="item.caredUserMap.caredStatus==0&&userInfo.data.id!=item.caredUserMap.id" @click.stop="follow(item)"><img src="/static/images/已关注.png" alt="">关注</div>
-                   <div  v-if="item.caredUserMap.caredStatus==1&&userInfo.data.id!=item.caredUserMap.id" class="active" @click.stop="cancelFollow(item)">取消关注</div>
+                   <div class="follow_login_Follow_li1_title">
+                     <b>{{item.caredUserMap.name}}</b>
+                     <span>{{item.createdAt|formatTime2}}</span>
+                   </div>
+                   <div class="follow_login_Follow_li1_div" v-if="item.caredUserMap.caredStatus==0&&userInfo.data.id!=item.caredUserMap.id" @click.stop="follow(item)">关注</div>
+                   <div class="follow_login_Follow_li1_div active" v-if="item.caredUserMap.caredStatus==1&&userInfo.data.id!=item.caredUserMap.id" @click.stop="cancelFollow(item)">取消关注</div>
                  </div>
 
                  <!--作品-->
-                 <div class="follow_login_Follow_li2" ref="windwosWH" v-if="item.type==2">
+                 <v-touch class="follow_login_Follow_li2" v-if="item.type==2">
                    <!--轮播-->
                    <div :class="'swiper-container'+index">
                      <div class="swiper-wrapper">
                        <div class="swiper-slide" v-for="(item1,index1) in item.customerPubContentMap.attachments">
                          <div class="imgIs">
                            <img :src="item1.url" >
-                           <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*imgW+'px',top:item2.axesyRate*imgW+'px'}">
+                           <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*imgW+'px',top:item2.axesyRate*(item1.height/(item1.width/imgW))+'px'}">
                            <img src="/static/images/标签.png" alt=""><span>{{item2.title}}</span>
                            </div>
                          </div>
                        </div>
                      </div>
                      <!-- 如果需要分页器 -->
-                     <div :class="'swiper-pagination'+index" style="text-align: center"></div>
+                     <!--<div :class="'swiper-pagination'+index" style="text-align: center"></div>-->
                    </div>
                    <!---->
-                 </div>
+                 </v-touch>
 
                  <!--文章-->
                  <div class="follow_login_Follow_li2_2" v-else>
@@ -64,13 +70,11 @@
                  </div>
 
                  <div class="follow_login_Follow_li3">
-                   <p>{{item.message1}}</p>
-                   <div v-show="item.content&&item.content.length>69" @click.stop="openClick(item,index)">{{item.value}}</div>
+                   <p>{{item.message1}}<b v-show="item.content&&item.content.length>35" @click.stop="openClick(item,index)">　{{item.value}}</b></p>
+
                  </div>
                  <div class="follow_login_Follow_li4" v-if="item.type==2">
-                   <div>
-                     <img src="/static/images/关注阅读量.png" alt="">  {{item.customerPubContentMap.commentedCount<10000?item.customerPubContentMap.commentedCount:(item.customerPubContentMap.commentedCount/10000).toFixed(2)+'万'}}
-                   </div>
+
                    <div @click.stop="laudedStatus(item)">
                      <img src="/static/images/点赞2.png" alt="" v-if="item.customerPubContentMap.laudedStatus==true">
                      <img src="/static/images/点赞.png" alt="" v-else>
@@ -81,15 +85,15 @@
                      <img src="/static/images/收藏1.png" alt="" v-else>
                      {{item.customerPubContentMap.favoredCount<10000?item.customerPubContentMap.favoredCount:(item.customerPubContentMap.favoredCount/10000).toFixed(2)+'万'}}
                    </div>
+                   <div>
+                     <img src="/static/images/关注阅读量.png" alt="">  {{item.customerPubContentMap.commentedCount<10000?item.customerPubContentMap.commentedCount:(item.customerPubContentMap.commentedCount/10000).toFixed(2)+'万'}}
+                   </div>
                    <!--<div>-->
                      <!--<img src="/static/images/分享.png" alt="">1.25万-->
                    <!--</div>-->
 
                  </div>
                  <div class="follow_login_Follow_li4" v-else>
-                   <div>
-                     <img src="/static/images/关注阅读量.png" alt="">  {{item.commentedCount<10000?item.commentedCount:(item.commentedCount/10000).toFixed(2)+'万'}}
-                   </div>
                    <div @click="laudedStatus(item)">
                      <img src="/static/images/点赞2.png" alt="" v-if="item.laudedStatus==true">
                      <img src="/static/images/点赞.png" alt="" v-else>
@@ -100,6 +104,9 @@
                      <img src="/static/images/收藏1.png" alt="" v-else>
                      {{item.favoredCount<10000?item.favoredCount:(item.favoredCount/10000).toFixed(2)+'万'}}
                    </div>
+                   <div>
+                     <img src="/static/images/关注阅读量.png" alt="">  {{item.commentedCount<10000?item.commentedCount:(item.commentedCount/10000).toFixed(2)+'万'}}
+                   </div>
                    <!--<div>-->
                      <!--<img src="/static/images/look.png" alt="">-->
                      <!--{{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}-->
@@ -107,11 +114,11 @@
 
                  </div>
                </li>
-
+               <div class="messageFoot" @click="updataMore" v-if="listData.length>0">
+                 {{message}}
+               </div>
              </ul>
-          <div class="messageFoot" @click="updataMore" v-if="listData.length>0">
-            {{message}}
-          </div>
+
         </div>
       <div class="lengthSmall" v-if="followIsShow==false&&listData==-2">
         <img src="/static/images/原创.png" alt="">
@@ -160,9 +167,8 @@
       s:20,//每页多少
       pageNum:0, //总共多少页
       imgW:320,
-      imgH:175,
       message:"不同正在努力加载中...",//
-      headerTab:["发现","关注"], //tab
+      headerTab:[{Chinese:"发现",English:"Find"},{Chinese:"关注",English:"Aattention"}], //tab
       headerTabIndex:1,//是关注还是发现
       userInfo:"", //用户信息
       LoginShow:false, //登录没登录
@@ -195,6 +201,12 @@
 
   },
   methods:{
+    swiperleft(){
+//        Toast("zuo")
+    },
+    swiperright(){
+//        Toast("you")
+    },
     headerClick(v){//点击头像 去吃瓜页 或则设计师主页 或者企业
 //       console.log(v)
       if(v.caredUserMap.userType=="2"){ //个人
@@ -405,7 +417,7 @@
         v.message1 = this.listData[i].content;
         v.value = "收起";
       }else{ //张开
-        v.message1=v.content.substring(0,69)+"...";
+        v.message1=v.content.substring(0,35)+"...";
         v.value = "展开";
       }
       this.listData[i] = v; //赋值给原来的小标值
@@ -421,12 +433,12 @@
       this.$router.push({path:"/login"})
     },
     updataMore(){ //加载更多 分页
+      let that = this;
       this.p++;
       if(this.p>this.pageNum){
         this.message = "这是我的底线..."
         Toast("这是最后一页啦！")
       }else if(this.p==this.pageNum){
-//        allInformationAndPubFindMyCaredList("100","2",this.p,this.s,this.userInfo.data.access_token).then(res=>{
         allInformationAndPubFindMyCaredList(this.userInfo.data.id,this.userInfo.data.userType,this.p,this.s,this.userInfo.data.access_token).then(res=>{
           if(res.status == true){
             this.message = "这是我的底线..."
@@ -436,8 +448,8 @@
               item.value = "展开";
               if(item.type==2){
 
-                if(item.customerPubContentMap.content.length>69){
-                  item.message1=item.customerPubContentMap.content.substring(0,69)+"...";
+                if(item.customerPubContentMap.content&&item.customerPubContentMap.content.length>35){
+                  item.message1=item.customerPubContentMap.content.substring(0,35)+"...";
                   item.messageShow = true;
                   item.value = "展开";
                 }else{
@@ -445,8 +457,8 @@
                   item.message1 = item.customerPubContentMap.content?item.customerPubContentMap.content:"";
                 }
               }else{
-                if(item.content.length>69){
-                  item.message1=item.content.substring(0,69)+"...";
+                if(item.content&&item.content.length>35){
+                  item.message1=item.content.substring(0,35)+"...";
                   item.messageShow = true;
                   item.value = "展开";
                 }else{
@@ -457,6 +469,20 @@
 
             })
             this.listData = this.listData.concat(res.data.relData);
+            this.$nextTick(()=>{
+              //     滑动
+              for(var i = 0;i<that.listData.length;i++){
+                var mySwiper = new Swiper ('.swiper-container'+i, {
+                  autoplay:false,
+                  loop:true,
+                  // 如果需要分页器
+                  pagination: {
+                    el: '.swiper-pagination'+i,
+                  },
+                })
+              }
+
+            })
           }else{
             Toast("网络出错啦，请重试")
           }
@@ -472,8 +498,8 @@
               item.value = "展开";
               if(item.type==2){
 
-                if(item.customerPubContentMap.content.length>69){
-                  item.message1=item.customerPubContentMap.content.substring(0,69)+"...";
+                if(item.customerPubContentMap.content&&item.customerPubContentMap.content.length>35){
+                  item.message1=item.customerPubContentMap.content.substring(0,35)+"...";
                   item.messageShow = true;
                   item.value = "展开";
                 }else{
@@ -481,8 +507,8 @@
                   item.message1 = item.customerPubContentMap.content?item.customerPubContentMap.content:"";
                 }
               }else{
-                if(item.content.length>69){
-                  item.message1=item.content.substring(0,69)+"...";
+                if(item.content&&item.content.length>35){
+                  item.message1=item.content.substring(0,35)+"...";
                   item.messageShow = true;
                   item.value = "展开";
                 }else{
@@ -493,6 +519,21 @@
 
             })
             this.listData =  this.listData.concat(res.data.relData);
+            this.$nextTick(()=>{
+
+              //     滑动
+              for(var i = 0;i<that.listData.length;i++){
+                var mySwiper = new Swiper ('.swiper-container'+i, {
+                  autoplay:false,
+                  loop:true,
+                  // 如果需要分页器
+                  pagination: {
+                    el: '.swiper-pagination'+i,
+                  },
+                })
+              }
+
+            })
           }else{
             Toast("网络出错啦，请重试")
           }
@@ -512,8 +553,8 @@
               item.value = "展开";
               if(item.type==2){
 
-                if(item.customerPubContentMap.content&&item.customerPubContentMap.content.length>69){
-                  item.message1=item.customerPubContentMap.content.substring(0,69)+"...";
+                if(item.customerPubContentMap.content&&item.customerPubContentMap.content.length>35){
+                  item.message1=item.customerPubContentMap.content.substring(0,35)+"...";
                   item.messageShow = true;
                   item.value = "展开";
                 }else{
@@ -521,8 +562,8 @@
                   item.message1 = item.customerPubContentMap.content?item.customerPubContentMap.content:"";
                 }
               }else{
-                if(item.content&&item.content.length>69){
-                  item.message1=item.content.substring(0,69)+"...";
+                if(item.content&&item.content.length>35){
+                  item.message1=item.content.substring(0,35)+"...";
                   item.messageShow = true;
                   item.value = "展开";
                 }else{
@@ -540,10 +581,11 @@
             }
             this.listData = res.data.relData;
             this.$nextTick(()=>{
-              this.imgW = this.$refs.windwosWH[0].offsetWidth;
-              this.imgH = this.$refs.windwosWH[0].offsetHeight;
+              setTimeout(()=>{
+                this.imgW = this.$refs.windwosWH[0].offsetWidth;
+              },200)
               //     滑动
-              for(var i = 0;i<1000;i++){
+              for(var i = 0;i<this.listData.length;i++){
                 var mySwiper = new Swiper ('.swiper-container'+i, {
                   autoplay:false,
                   loop:true,
@@ -590,7 +632,7 @@
       margin: 0 auto;
     }
     p{
-      font-size:0.12rem;
+      font-size:0.14rem;
       font-family:PingFangSC-Regular;
       font-weight:400;
       color:rgba(153,153,153,1);
@@ -613,91 +655,121 @@
       position: relative;
       li{
         flex: 1;
-        height: 0.39rem;
-        line-height: 0.39rem;
-        font-size:0.12rem;
+        height: 0.52rem;
         font-family:PingFangSC-Light;
         font-weight:300;
         color:rgba(102,102,102,1);
-        span.active{
-          font-size:0.15rem;
+        border-bottom: 0.01rem solid #e6e6e6;
+        .homeIndex1_ul_li_div{
+          width:0.7rem ;
+          height: 0.42rem;
+          text-align: center;
+          font-size: 0.14rem;
+         span{
+            display: inline-block;
+            line-height: 0.24rem;
+            margin-top: 0.04rem;
+          }
+          p{
+            line-height: 0.12rem;
+            color:rgba(102,102,102,1);
+            font-size: 0.1rem;
+          }
+        }
+        .homeIndex1_ul_li_div.active{
+          font-size:0.14rem;
           font-family:PingFangSC-Regular;
-          font-weight:400;
+          font-weight:600;
           color:rgba(5,5,9,1);
+          border-bottom:0.02rem solid rgba(5,5,9,1);
+          p{
+            color:rgba(102,102,102,1);
+            font-weight:100;
+            font-size: 0.1rem;
+          }
         }
         .homeIndex1_span0{
           display: block;
           float: right;
-          margin-right: 0.3rem;
+          margin-right:0.1rem ;
         }
         .homeIndex1_span1{
           display: block;
           float: left;
-          margin-left: 0.3rem;
+          margin-left:0.1rem ;
         }
       }
-      .homeIndex1_xian{
-        position: absolute;
-        left: 49.9%;
-        top: 0.07rem;
-        font-size:0.11rem;
-        font-family:PingFangSC-Regular;
-        font-weight:400;
-        color:rgba(102,102,102,1);
-      }
+
     }
     .follow_login_Follow{
       position: absolute;
       left: 0;
       right: 0;
-      bottom: 0;
-      top: 0.4rem;
-      overflow-y: auto;
+      bottom: 0.5rem;
+      top: 0.52rem;
+      overflow: hidden;
       .follow_login_Follow_ul{
         width: 100%;
+        height: 100%;
+        padding:0.1rem;
         overflow-x: hidden;
+        overflow: scroll;
+        background: #eeeeee;
+        box-sizing: border-box;
         .follow_login_Follow_li{
           width: 100%;
           background: #ffffff;
           margin-bottom: 0.15rem;
           .follow_login_Follow_li1{
             width: 100%;
-            height: 0.62rem;
-            padding: 0.15rem;
+            height: 0.75rem;
+            padding: 0.22rem 0.11rem 0.15rem 0.11rem;
             box-sizing: border-box;
-            display: flex;
-            img{
+            >img{
               display: block;
-              width: 0.32rem;
-              height: 0.32rem;
+              width: 0.38rem;
+              height: 0.38rem;
               border-radius: 50%;
               margin-right: 0.05rem;
+              float: left;
             }
-            p{
-              width: 2.3rem;
-              height: 0.32rem;
-              font-size:0.13rem;
-              font-family:PingFangSC-Medium;
-              font-weight:500;
-              color:rgba(5,5,9,1);
-              margin-left: 0.05rem;
-              line-height: 0.32rem;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
+            >.follow_login_Follow_li1_title{
+              width: 2rem;
+              height: 0.38rem;
+              float: left;
+              >b{
+                display: block;
+                width: 100%;
+                height: 0.24rem;
+                font-size:0.15rem;
+                font-family:PingFangSC-Medium;
+                color:rgba(5,5,9,1);
+                line-height: 0.24rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+              }
+              >span{
+                display: block;
+                line-height: 0.14rem;
+                font-size: 0.1rem;
+                color: #676768;
+              }
             }
-            >div{
+
+            >.follow_login_Follow_li1_div{
               width: 0.8rem;
               height: 0.32rem;
-              background:rgba(5,5,9,1);
-              border-radius:0.05rem;
+              background: #ffffff;
+              border-radius:0.24rem;
               line-height: 0.32rem;
               text-align: center;
               float: right;
               font-size:0.1rem;
               font-family:PingFangSC-Regular;
               font-weight:400;
-              color:rgba(255,255,255,1);
+              color:#262626;
+              border:0.02rem solid #262626;
               img{
                 display: inline-block;
                 width: 0.1rem;
@@ -707,8 +779,8 @@
             }
             >div.active{
               background: #ffffff;
-              border:0.01rem solid #EEEEEE;
-              color: #666666;
+              border:0.02rem solid #c5c5c6;
+              color:#c5c5c6;
             }
           }
           .follow_login_Follow_li2_2{
@@ -721,6 +793,7 @@
           }
           .follow_login_Follow_li2{
             width: 100%;
+            overflow: hidden;
             margin-bottom: 0.1rem;
             >.swiper-container{
               width: 100%;
@@ -736,7 +809,7 @@
                 position: relative;
                 >img{
                   display: block;
-                  width: 100%;
+                  /*width: 100%;*/
                 }
                 >.biaoqian{
                   position: absolute;
@@ -773,42 +846,30 @@
            width: 100%;
             padding: 0 0.15rem;
             box-sizing: border-box;
-            position: relative;
             >p{
               font-size:0.12rem;
               font-family:PingFangSC-Regular;
               font-weight:400;
-              line-height: 0.24rem;
+              line-height: 0.18rem;
               color:rgba(5,5,9,1);
               letter-spacing:0.02rem;
               word-wrap:break-word;
             }
-            >div{
-              position: absolute;
-              right: 0.15rem;
-              bottom: -0.16rem;
-              width: 0.5rem;
-              height: 0.24rem;
-              text-align: center;
-              line-height: 0.24rem;
-              font-size:0.12rem;
-              font-family:PingFangSC-Medium;
-              font-weight:500;
-              color:#21CB61;
-            }
+
           }
           .follow_login_Follow_li4{
             width: 100%;
-            display: flex;
             padding: 0.15rem;
             box-sizing: border-box;
+            overflow: hidden;
             >div{
-              flex: 1;
+              float: left;
               font-size:0.14rem;
               font-family:PingFangSC-Semibold;
               font-weight:400;
               color:rgba(5,5,9,1);
               line-height: 0.18rem;
+              margin-right: 0.2rem;
               img{
                 display: inline-block;
                 width: 0.16rem;
@@ -910,7 +971,6 @@
   line-height: 0.3rem;
   color: rgba(5,5,5,0.3);
   text-align: center;
-  margin-bottom: 0.5rem;
 }
 .lengthSmall{
   width: 100%;

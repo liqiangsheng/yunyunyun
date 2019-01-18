@@ -47,7 +47,7 @@ const PersonalMelonPages = resolve => require(['@/components/intelligentMatching
 const Release = resolve => require(['@/components/release/release'], resolve); //发布
 // import Home from '@/components/home/home'
 // import HomeMap from '@/components/homeMap/homeMap' //详情地图
-// import Index from '@/components/index/index' //首页
+// import Index from '@/components/index/index' //智慧活动
 // import Me from '@/components/me/me' //我的
 // import Myfollow from '@/components/me/myfollow' //我的关注
 // import Fans from '@/components/me/fans' //我的粉丝

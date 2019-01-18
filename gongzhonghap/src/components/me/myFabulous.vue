@@ -95,8 +95,7 @@ export default {
 //    console.log(this.userInfo.data.access_token)
     if(this.userInfo){
       this.myfollow= true;
-//        customerLaudNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
-                    customerLaudNoteListFavoredContent("100", this.userInfo.data.access_token,this.p,this.s).then(res=>{
+        customerLaudNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{
         if(res.status ==true){
           this.pageNum = Math.ceil(res.total/this.s);
           if(this.pageNum>1){

@@ -48,7 +48,7 @@
               <li class="img-info_li4">{{item.laudedCount}}</li>
             </ul>
           </li>
-          <li style="text-align: center;line-height: 1.0rem;color: #999999" v-show="!!message">
+          <li style="text-align: center;line-height: 1.0rem;color: #999999" v-show="message!=''">
            {{message}}
           </li>
         </ul>
@@ -88,7 +88,7 @@
           userInfo:"", //用户信息
           offsetHeight:0, //头部高度
           gap : 5, //10px的像素差距
-//          BottomPx:{bottom:0},
+          flag:false, //距离底部距离小于50
         }
       },
       created() {
@@ -116,9 +116,66 @@
 
       },
       methods:{
-        boxScroll(e){ //滚动事件
-          this.handleScroll(e);
-        },
+          boxScroll(e){ //滚动事件
+            let scrollTop = e.target.scrollTop?e.target.scrollTop:0;
+            let scrollHeight = e.target.scrollHeight?e.target.scrollHeight:0;
+            let clientHeight = e.target.clientHeight?e.target.clientHeight:0;
+            if(scrollTop>=(scrollHeight-clientHeight-50)){
+              this.flag = true
+            }else {
+              this.flag = false
+            }
+            if(this.flag==true){
+              this.p++
+              let that = this;
+              if(that.pages<that.p){
+                that.p = that.pages;setTimeout(()=>{
+                  this.message = "这是我的底线...";
+                  return;
+                },1100)
+              }else if(that.pages==that.p){
+                customerPubContentList(this.$router.history.current.query.id,this.p,this.s,true).then(res=>{
+                  if(res.status == true){
+                    res.data.forEach((item,index)=>{
+                      item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+                    })
+                    that.imgsArr = that.imgsArr.concat(res.data);
+                    Indicator.open("加载中")
+                    setTimeout(()=>{
+                      this.$nextTick(function(){
+                        let  box = document.getElementById('box');
+                        let items = box?box.children:[];
+                        that.waterFull(items);
+                        Indicator.close()
+                      })
+                    },1000)
+                  }else{
+                    Toast("网络出错了，请重试")
+                  }
+                })
+              }else if(that.pages>that.p){
+                customerPubContentList(this.$router.history.current.query.id,this.p,this.s,true).then(res=>{
+                  if(res.status == true){
+                    res.data.forEach((item,index)=>{
+                      item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+                    })
+                    that.imgsArr = that.imgsArr.concat(res.data);
+                    Indicator.open("加载中")
+                    setTimeout(()=>{
+                      this.$nextTick(function(){
+                        let  box = document.getElementById('box');
+                        let items = box?box.children:[];
+                        that.waterFull(items);
+                        Indicator.close()
+                      })
+                    },1000)
+                  }else{
+                    Toast("网络出错了，请重试")
+                  }
+                })
+              }
+            }
+          },
         IndicatorData(){ //初始数据
           customerPubContentList(this.$router.history.current.query.id,this.p,this.s,true).then(res=>{
             if(res.status == true){
@@ -127,13 +184,15 @@
               })
               this.pages = Math.ceil(res.total/this.s);
               this.imgsArr = res.data;
+              Indicator.open("加载中")
               setTimeout(()=>{
                 this.$nextTick(function(){
                   let  box = document.getElementById('box');
-                  let items = box.children;
+                  let items = box?box.children:[];
                   this.waterFull(items);
+                  Indicator.close()
                 })
-              },200)
+              },1000)
 
             }else{
               Indicator.close();
@@ -190,66 +249,7 @@
 //          console.log(value)
           this.$router.push({path:"/findDetail",query:{id:value.id}}) //去发现的详情页面，记得带状态跟token
         },
-        handleScroll(e){  //回到顶部按钮出现
-//          console.log(e,"scrollTop")
-//          console.log(e.target.scrollTop,"scrollTop")
-//          console.log(e.target.scrollHeight,"OffsetHeight")
-//          console.log(e.target.clientHeight,"OffsetHeight")
-          let scrollTop = e.target.scrollTop?e.target.scrollTop:0;
-          let scrollHeight = e.target.scrollHeight?e.target.scrollHeight:0;
-          let clientHeight = e.target.clientHeight?e.target.clientHeight:0;
-          if(scrollTop>=(scrollHeight-clientHeight-0.5)){
-            this.p++
-            let that = this;
-            if(that.pages<that.p){
-              that.p = that.pages;
-              this.message = "这是我的底线...";
-//              Toast("被你看光啦")
-//              this.BottomPx = {bottom:'0.3rem'};
-              return
-            }else if(that.pages==that.p){
 
-              customerPubContentList(this.$router.history.current.query.id,this.p,this.s,true).then(res=>{
-                if(res.status == true){
-                  res.data.forEach((item,index)=>{
-                    item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
-                  })
-                  that.imgsArr = that.imgsArr.concat(res.data);
-                  setTimeout(()=>{
-                    this.$nextTick(function(){
-                      let  box = document.getElementById('box');
-                      let items = box.children;
-                      this.waterFull(items);
-                    })
-                  },200)
-
-                }else{
-                  Toast("网络出错了，请重试")
-                }
-              })
-            }else if(that.pages>that.p){
-              customerPubContentList(this.$router.history.current.query.id,this.p,this.s,true).then(res=>{
-                if(res.status == true){
-                  res.data.forEach((item,index)=>{
-                    item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
-                  })
-                  that.imgsArr = that.imgsArr.concat(res.data);
-
-                  setTimeout(()=>{
-                    this.$nextTick(function(){
-                      let  box = document.getElementById('box');
-                      let items = box.children;
-                      this.waterFull(items);
-                    })
-                  },200)
-                }else{
-                  Toast("网络出错了，请重试")
-                }
-              })
-            }
-          }
-
-        },
         waterFull(items){//瀑布流
           // 1- 确定列数  = 页面的宽度 / 图片的宽度
           let columns = 2; //2列

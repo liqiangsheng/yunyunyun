@@ -21,17 +21,19 @@
 .indexTabLi{
   flex: 1;
   text-align: center;
-  padding-top:0.05rem ;
+  padding-top:0.13rem ;
+  box-sizing: border-box;
 }
 .indexTabImg{
-  width: 0.16rem;
-  height: 0.19rem;
+  width: 24px;
+  height:  24px;
   display:block;
   margin: 0 auto;
 }
 .indexTabImg.active{
-  width: 0.32rem;
-  height: 0.32rem;
+  width: 0.3rem;
+  transform: translateY(-0.05rem);
+  height: 0.3rem;
 }
 
 .homeBottom{

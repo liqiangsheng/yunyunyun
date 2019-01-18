@@ -230,7 +230,7 @@ export default {
             height: 12px;
             left: 50px;
             top: 2px;
-            background:url(../../../../static/images/star2.jpg) ;
+            background:url(../../../../static/images/star2.png) ;
 
           }
           .ul2{
@@ -241,7 +241,7 @@ export default {
             left: 50px;
             z-index: 1;
             top: 2px;
-            background: url(../../../../static/images/star1.jpg);
+            background: url(../../../../static/images/star1.png);
           }
         }
         .caredCount{

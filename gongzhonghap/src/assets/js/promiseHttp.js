@@ -641,10 +641,13 @@ export function companyList(p,s){
     axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
       Indicator.close();
       resolve(res)
+    }).catch(function (error) {
+      Indicator.close();
+      Toast("网络错误工坊500，请重试")
     })
   })
 }
-// 设计咖
+// 匠星
 export function commonUserList(p,s){
   Indicator.open("加载中...")
   let obj = {"userCat":"2",p:p,s:s}
@@ -655,7 +658,7 @@ export function commonUserList(p,s){
         resolve(res)
     }).catch(function (error) {
       Indicator.close();
-      Toast(error)
+      Toast("网络错误匠星500，请重试")
     })
   })
 }
