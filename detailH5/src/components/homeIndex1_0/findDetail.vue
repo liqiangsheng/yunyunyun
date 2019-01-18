@@ -33,8 +33,7 @@
               <!---->
             </div>
             <div class="follow_login_Follow_li3">
-              <p>{{item.message1}}</p>
-              <div v-show="item.content&&item.content.length>69" @click="openClick(item,index)">{{item.value}}</div>
+              <p>{{item.message1}}<b v-show="item.content&&item.content.length>35" @click.stop="openClick(item,index)">　{{item.value}}</b></p>
             </div>
             <div class="follow_login_Follow_li4">
                 <div>
@@ -479,19 +478,6 @@
                 line-height: 0.28rem;
                 color:rgba(5,5,9,1);
                 word-wrap:break-word;
-              }
-              >div{
-                position: absolute;
-                right: 0.15rem;
-                bottom: -0.16rem;
-                width: 0.5rem;
-                height: 0.24rem;
-                text-align: center;
-                line-height: 0.24rem;
-                font-size:0.12rem;
-                font-family:PingFangSC-Medium;
-                font-weight:500;
-                color:#21CB61;
               }
             }
             .follow_login_Follow_li4{

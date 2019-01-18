@@ -39,6 +39,19 @@ export function tsconfigjson(){
     })
   })
 }
+//活动列表数据
+export function activityListData(p,s){
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain}/apis/activity/${activityEdition}/activityInfo/list`;
+    let data = {p:p,s:s}
+    axios.post(url,data,{header:{'Content-Type': 'application/json','Accept': '*/*'}}).then(res=>{
+      resolve(res)
+    }).catch(res=>{
+      Toast("500后台服务器错误！")
+    })
+  })
+}
 // 订单门票图片
 export function packagejson(){
   Indicator.open("加载中...")

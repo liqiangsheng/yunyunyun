@@ -81,7 +81,7 @@ export default {
           return
         }
         login(that.telValue,that.psdValue).then(res=>{
-               console.log(res.data)
+              Toast("fsdfsd")
            if(res.data.status==true){
              window.localStorage.setItem("userInfo",JSON.stringify(res.data))
              this.$router.go(-1);//返回上一层
