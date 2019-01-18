@@ -1,6 +1,7 @@
 {
   "pages": [
-      "pages/me/me",
+    "pages/home/home",
+    "pages/me/me",
     "pages/index/index",
     "pages/findDetail/findDetail",
     "pages/follow/follow",
@@ -18,7 +19,6 @@
     "pages/voice/voice",
     "pages/payment/payment",
     "pages/city/city",
-    "pages/home/home",
     "pages/login/login",
     "pages/register/register",
     "pages/editingInformation/editingInformation",

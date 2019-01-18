@@ -2,19 +2,20 @@ var apiDomian = require("../../js/api.js");
 let API = apiDomian.apidmain();
 // pages/me/me.js
 const app = getApp()
-var leftList = new Array();//左侧集合
-var rightList = new Array();//右侧集合
-var leftHight = 0, rightHight = 0, itemWidth = 0, maxHeight = 0;
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    message: "加载中...",
-    leftList: [],//左侧集合
-    rightList: [],//右侧集合
-    listData: [], //数据
+    styleWidth1:"522px",//草稿分页
+    p1: 1,  //草稿页
+    s1: 20, //草稿每页多少
+    pages1: 0, //草稿总共多少页
+    imgsArr1: [],//草稿原创数据
+    imgsArr: [],//原创数据
+    styleWidth: "522px",//原创分页
     pageNum: 0,
     data: {
       p: 1, // request param//
@@ -22,7 +23,6 @@ Page({
     },
     meTab: ["原创", "草稿"],//原创 草稿
     meTabIndex: 0,//原创 草稿
-    tabList: [{ name: "关注", num: "2000" }, { name: "粉丝", num: "1.5万" }, { name: "点赞", num: "5000" }, { name: "收藏", num: "100" }, { name: "评论", num: "265" },],
     tabListBool: false, //显示
     bgImge:"../../images/bg.png",
     userInfo: {
@@ -48,9 +48,128 @@ Page({
   onPageScroll(e){
  
   },
-  Me_tabClick(e) { ////原创 草稿
+  draft(){//草稿到底
+    this.data.p1++;
     this.setData({
-      meTabIndex: e.currentTarget.dataset.index
+      p1: this.data.p1
+    })
+    let that = this;
+    let data = wx.getStorageSync("userInfo")
+    wx.request({
+      url: API.apiDomain + '/apis/operation/' + API.operationEdition + '/customerPubContent/listOwner',
+      method: "POST",
+      header: {
+        "Authorization": "bearer " + data.access_token
+      },
+      data: {
+        p: this.data.p1,
+        s: this.data.s1,
+        userId: data.id,
+        // userId:"100",
+        pubStatus: false
+      },
+      complete() {  //请求结束后隐藏 loading 提示框
+        wx.hideLoading();
+      },
+
+      success: function (res) {
+        if (res.data.status == true) {
+          wx.hideLoading();
+          if (res.data.data.length>0){
+            res.data.data.forEach((item, index) => {
+              item.imageUrl1 = item.cover.url + "?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+            })
+
+            that.setData({
+              imgsArr1: that.data.imgsArr1.concat(res.data.data)
+            })
+          }else{
+            wx.showModal({
+              showCancel: false,
+              title: "没有更多草稿了",
+            })
+          }
+          if (that.data.imgsArr1.length > 1) {
+            that.setData({
+              styleWidth1: that.data.imgsArr1.length * 220 + 72 + "px"
+            })
+          } else {
+            that.setData({
+              styleWidth1: 440 + 72 + "px"
+            })
+          }
+        } else {
+          
+          wx.showModal({
+            showCancel: false,
+            title: "网络异常",
+
+          })
+        }
+
+
+      },
+
+    })
+  },
+  original(e){//原创 到底
+   
+    this.data.data.p++;
+    this.setData({
+      data: this.data.data
+    })
+    let that = this;
+    let data = wx.getStorageSync("userInfo")
+    wx.request({
+      url: API.apiDomain + '/apis/operation/' + API.operationEdition + '/customerPubContent/listOwner',
+      method: "POST",
+      header: {
+        "Authorization": "bearer " + data.access_token
+      },
+      data: {
+        p: that.data.data.p,
+        s: that.data.data.s,
+        userId: data.id,
+        pubStatus: true
+      },
+
+      success: function (res) {
+        if (res.data.status == true) {
+          res.data.data.forEach((item, index) => {
+            item.imageUrl1 = item.cover.url + "?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+          })
+            if (res.data.data.length > 0) {
+              that.setData({
+                imgsArr: that.data.imgsArr.concat(res.data.data)
+              })
+              
+            } else {
+              wx.showModal({
+                showCancel: false,
+                title: "没有更多原创了",
+
+              })
+            }
+          console.log(that.data.imgsArr,"that.data.imgsArr")
+          if (that.data.imgsArr.length > 1) {
+            that.setData({
+              styleWidth: that.data.imgsArr.length * 220 + 72 + "px"
+            })
+          } else {
+            that.setData({
+              styleWidth: 440 + 72 + "px"
+            })
+          }
+        } else {
+          wx.showModal({
+            showCancel: false,
+            title: "网络异常",
+
+          })
+        }
+
+
+      }
     })
   },
   myfollowBnt(e){
@@ -101,17 +220,9 @@ Page({
      let that = this;
     that.userInfoFun();
     let data = wx.getStorageSync("userInfo")
-    console.log(data)
+   
     if (data) {
-      wx.getSystemInfo({ //获取用户设备信息
-        success: (res) => {
-          let percentage = 750 / res.windowWidth; //750rpx/屏幕宽度
-          let margin = 20 / percentage; //计算瀑布流间距
-          itemWidth = (res.windowWidth - margin) / 2; //计算 瀑布流展示的宽度
-          maxHeight = itemWidth / 0.8  //计算瀑布流的最大高度，防止长图霸屏
-        }
-      });
-      let that = this;
+    
       wx.showLoading({ //显示消息提示框  此处是提升用户体验的作用
         title: '数据加载中',
         icon: 'loading',
@@ -136,30 +247,73 @@ Page({
         success: function (res) {
           if (res.data.status == true) {
             wx.hideLoading();
+            res.data.data.forEach((item, index) => {
+              item.imageUrl1 = item.cover.url + "?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+            })
             that.setData({
-              pageNum: Math.ceil(res.data.total / that.data.data.s)
+              pageNum: Math.ceil(res.data.total / that.data.data.s),
+                imgsArr: res.data.data 
             })
-            // if (that.data.pageNum > 1) {
-            //   that.setData({
-            //     message: '加载中...'
-            //   })
-            // } else {
-            //   that.setData({
-            //     message: '这是我的底线...'
-            //   })
-            // }
-            res.data.data.map((item, index) => {
-              item.height = parseInt(item.cover.height);
-              item.width = parseInt(item.cover.width);
-            })
-
-            setTimeout(() => {
-
+            if (that.data.imgsArr.length>1){
               that.setData({
-                listData: res.data.data
+                styleWidth: that.data.imgsArr.length * 220+72 + "px" 
               })
-              that.fillData(false, res.data.data);
-            }, 100)
+            }else{
+              that.setData({
+                styleWidth:  440+72+ "px" 
+              })
+            }
+      
+          } else {
+            wx.showModal({
+              showCancel: false,
+              title: "网络异常",
+
+            })
+          }
+
+
+        },
+
+      })
+      // 草稿
+      wx.request({
+        url: API.apiDomain + '/apis/operation/' + API.operationEdition + '/customerPubContent/listOwner',
+        method: "POST",
+        header: {
+          "Authorization": "bearer " + data.access_token
+        },
+        data: {
+          p: this.data.p1,
+          s: this.data.s1,
+          userId: data.id,
+          // userId:"100",
+          pubStatus: false
+        },
+        complete() {  //请求结束后隐藏 loading 提示框
+          wx.hideLoading();
+        },
+
+        success: function (res) {
+          if (res.data.status == true) {
+            wx.hideLoading();
+            res.data.data.forEach((item, index) => {
+              item.imageUrl1 = item.cover.url + "?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+            })
+            that.setData({
+              pages1: Math.ceil(res.data.total / that.data.s),
+              imgsArr1: res.data.data
+            })
+            if (that.data.imgsArr1.length > 1) {
+              that.setData({
+                styleWidth1: that.data.imgsArr1.length * 220 +72+ "px"
+              })
+            } else {
+              that.setData({
+                styleWidth1: 440 +72+ "px"
+              })
+            }
+
           } else {
             wx.showModal({
               showCancel: false,
@@ -218,9 +372,7 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    if (this.data.meTabIndex==0){
-      this.moreTap();
-    }
+  
    
   },
 
@@ -250,7 +402,7 @@ Page({
    userInfoFun(){ //登录本地拿
      var that = this
      let data = wx.getStorageSync('userInfo')//获取本地存储信息
-     console.log(data.userType,"data.userType")
+    //  console.log(data.userType,"data.userType")
      if (data){
        that.setData({
          tabListBool:true
@@ -395,6 +547,9 @@ Page({
        
        
      }else{
+       wx.navigateTo({
+         url: '../../pages/login/login',
+       })
     
        that.setData({
          tabListBool: false,
@@ -409,110 +564,12 @@ Page({
   
    },
   goDetail(e) {
+    console.log(e.currentTarget.dataset.id)
     wx.navigateTo({
       url: '../../pages/findDetail/findDetail?id=' + e.currentTarget.dataset.id,
     })
   },
-  moreTap() {
-    let data = wx.getStorageSync("userInfo")
-    this.data.data.p++;
-    this.setData({
-      data: this.data.data
-    })
-    let that = this;
-    wx.request({
-      url: API.apiDomain + '/apis/operation/' + API.operationEdition + '/customerPubContent/listOwner',
-      method: "POST",
-      header: {
-        "Authorization": "bearer " + data.access_token
-      },
-      data: {
-        p: this.data.data.p,
-        s: this.data.data.s,
-        userId: data.id,
-        // userId: "100",
-        pubStatus: true
-      },
-
-      success: function (res) {
-        if (res.data.status == true) {
-          that.setData({
-            pageNum: Math.ceil(res.data.total / that.data.data.s)
-          })
-          res.data.data.map((item, index) => {
-            item.height = parseInt(item.cover.height);
-            item.width = parseInt(item.cover.width);
-
-          })
 
 
-          setTimeout(() => {
-            if (res.data.data.length > 0) {
-              that.setData({
-                listData: that.data.listData.concat(res.data.data)
-              })
 
-              that.fillData(true, that.data.listData);
-            } else {
-              that.setData({
-                message:"这是我的底线..."
-              })
-            }
-
-          }, 100)
-        } else {
-          wx.showModal({
-            showCancel: false,
-            title: "网络异常",
-
-          })
-        }
-
-
-      }
-    })
-  },
-  /**
-   * 填充数据
-   */
-  fillData: function (isPull, listData) {
-    if (isPull) { //是否下拉刷新，是的话清除之前的数据
-      leftList.length = 0;
-      rightList.length = 0;
-      leftHight = 0;
-      rightHight = 0;
-    }
-    for (let i = 0, len = listData.length; i < len; i++) {
-      let tmp = listData[i];
-      tmp.width = parseInt(tmp.width); //宽度
-      tmp.height = parseInt(tmp.height);//
-      tmp.itemWidth = itemWidth
-      let per = tmp.width / tmp.itemWidth;
-      tmp.itemHeight = tmp.height / per;
-      if (tmp.itemHeight > maxHeight) {
-        tmp.itemHeight = maxHeight;
-      }
-
-      if (leftHight == rightHight) {
-        leftList.push(tmp);
-        leftHight = leftHight + tmp.itemHeight;
-      } else if (leftHight < rightHight) {
-        leftList.push(tmp);
-        leftHight = leftHight + tmp.itemHeight;
-      } else {
-        rightList.push(tmp);
-        rightHight = rightHight + tmp.itemHeight;
-      }
-    }
-
-    this.setData({
-      leftList: leftList,
-      rightList: rightList,
-    });
-
-    leftList = [];
-    rightList = [];
-    leftHight = 0;
-    rightHight = 0;
-  },
 })

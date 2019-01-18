@@ -21,6 +21,7 @@ Page({
     titleText:"与设计相处，使彼此感动",
     hidden:true,
     nocancel: false,
+    homeIndex1_0Type:"",
   },
 
   /**
@@ -28,10 +29,18 @@ Page({
    */
   onLoad: function (options) {
   
-   
+    console.log(options)
     let data = wx.getStorage({ key: 'userInfo'})
     let that = this;
-  
+    if (options && options.type){
+         that.setData({
+           homeIndex1_0Type: options.type
+         })
+    }else{
+      that.setData({
+        homeIndex1_0Type: ""
+      })
+    }
 
   },
 
@@ -201,9 +210,28 @@ Page({
 
               wx.setStorageSync("userInfo", res.data.data) 
               setTimeout(() => {  //登录成功保存到本地，还回上一级
-                wx.navigateBack({
-                  delta: 1
-                })
+                if (that.data.homeIndex1_0Type =='homeIndex1_0'){
+                  var pages = getCurrentPages();//当前页面栈
+
+                  if (pages.length > 1) {
+
+                    var beforePage = pages[pages.length - 2];//获取上一个页面实例对象
+
+                    beforePage.changeData();//触发父页面中的方法
+
+                  }
+
+                  wx.switchTab({
+
+                    url: '../../pages/index/index'
+                  })
+
+                }else{
+                  wx.navigateBack({
+                    delta: 1
+                  })
+                }
+               
               }, 1000)
 
             } else {

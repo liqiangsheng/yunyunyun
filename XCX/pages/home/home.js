@@ -17,6 +17,7 @@ Page({
     banner:[],
     page:1,
     row:20,
+    url:"",//webview地址
    
   },
   //事件处理函数
@@ -26,35 +27,39 @@ Page({
     })
   },
   onLoad: function () {
-    this.dictionaries();
-    
     var that = this;
-    wx.request({ //轮播数据
-      url: 'https://dcloud.butongtech.com' +"/tsconfigjson",
-      method:"GET",
-      success(res){
+    this.dictionaries();//字典缓存
+    that.data.url = API.url + "/index"; //跳转到webview页面
+    that.setData({
+      url: that.data.url,
+    })
+   
+    // wx.request({ //轮播数据
+    //   url: 'https://dcloud.butongtech.com' +"/tsconfigjson",
+    //   method:"GET",
+    //   success(res){
        
-        if (res.statusCode == 200){
-          console.log(res)
-          that.setData({
-            banner1: res.data.img
-          })
+    //     if (res.statusCode == 200){
+    //       console.log(res)
+    //       that.setData({
+    //         banner1: res.data.img
+    //       })
 
-        }else{
+    //     }else{
           
-          wx.showModal({
-            title: '提示',
-            content: '轮播数据出错了'
-          })
-        }
-      }
-    })
-    wx.showLoading({
-      title: '加载中...',
-    })
-    setTimeout(()=>{
-       that.pageData();
-    },1000)
+    //       wx.showModal({
+    //         title: '提示',
+    //         content: '轮播数据出错了'
+    //       })
+    //     }
+    //   }
+    // })
+    // wx.showLoading({
+    //   title: '加载中...',
+    // })
+    // setTimeout(()=>{
+    //    that.pageData();
+    // },1000)
     // //请求首页数据
    
   },

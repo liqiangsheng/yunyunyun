@@ -15,21 +15,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(data, "4444")
     let data = wx.getStorageSync("userInfo"), that = this;
-    console.log(data, "111")
+    // console.log(data, "111")
     if (data) {
       that.data.url = API.url + "/follow?token=" + data.access_token + "&id=" + data.id + "&userType=" + data.userType;
       that.setData({
         url: that.data.url,
       })
-      console.log(that.data.url)
+      // console.log(that.data.url)
     } else {
       wx.showModal({
         showCancel: false,
         title: "你还未登录，请登录",
       })
       setTimeout(()=>{
-        wx.navigateTo({ //去我的个人资料
+        wx.navigateTo({ //去登录
           url: "../../pages/login/login"
         })
       },1000)
@@ -42,21 +43,40 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+ 
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    let data = wx.getStorageSync("userInfo"), that = this;
+    console.log(data, "222222222")
+    if (data) {
+      that.data.url = API.url + "/follow?token=" + data.access_token + "&id=" + data.id + "&userType=" + data.userType;
+      that.setData({
+        url: that.data.url,
+      })
+      // console.log(that.data.url)
+    } else {
+      wx.showModal({
+        showCancel: false,
+        title: "你还未登录，请登录",
+      })
+      setTimeout(() => {
+        wx.navigateTo({ //去我的个人资料
+          url: "../../pages/login/login"
+        })
+      }, 1000)
 
+    }
   },
 
   /**
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-
+    console.log(data, "3333")
   },
 
   /**

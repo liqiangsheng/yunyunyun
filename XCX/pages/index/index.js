@@ -2,6 +2,8 @@
 var apiDomian = require("../../js/api.js");  //数据请求api
 var formatTime = require("../../js/formatTime.js"); // 时间戳转时间
 let API = apiDomian.apidmain();
+var app = getApp();    
+// app.globalData.followUrl
 Page({
 
   /**
@@ -9,27 +11,41 @@ Page({
    */
   data: {
     url: "https://dcloud.butongtech.com/#",
+    url1: '',
+    state: 1,
   },
+  changeData: function () {
+    let that = this;
 
+    let data = wx.getStorageSync("userInfo");
+      that.data.url1 = API.url + "/homeIndex1_0?token=" + data.access_token + "&id=" + data.id + "&userType=" + data.userType;
+      that.setData({
+        url1: that.data.url1,
+        state: 2
+      })
+  
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     let that = this;
- 
+    console.log(options,"options")
     let data = wx.getStorageSync("userInfo");
     if(data){
-      that.data.url = API.url + "/homeIndex1_0?token=" + data.access_token + + "&id=" + data.id
+      that.data.url = API.url + "/homeIndex1_0?token=" + data.access_token + "&id=" + data.id + "&userType=" + data.userType;
       that.setData({
         url: that.data.url,
+        state:1
       })
+      console.log(that.data.url)
     }else{
       that.data.url = API.url + "/homeIndex1_0"
       that.setData({
         url: that.data.url,
+        state: 1
       })
     }
-    console.log(that.data.url)
       
 
   },
@@ -45,7 +61,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    this.onLoad();
   },
 
   /**

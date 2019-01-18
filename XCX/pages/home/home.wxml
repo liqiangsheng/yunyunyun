@@ -1,6 +1,6 @@
 <!--index.wxml-->
 <!-- 轮播 -->
-<view>
+<!-- <view>
       <swiper indicator-dots="true" autoplay="true" interval="3000" duration="500" circular="true">
         <block wx:for="{{banner1}}" wx:key='{{index}}'>
           <swiper-item>
@@ -8,13 +8,13 @@
           </swiper-item>
         </block>
      </swiper>
-</view>
+</view> -->
 
 <!-- 列表 -->
-<view wx:for="{{banner}}" wx:key='index'>
+<!-- <view wx:for="{{banner}}" wx:key='index'> -->
 
  <!-- 滑动 -->
-    <view class='homeBox' bindtap='goDetail' data-multiActivity='{{item}}' wx:if='{{item.multiActivity == true}}'>
+    <!-- <view class='homeBox' bindtap='goDetail' data-multiActivity='{{item}}' wx:if='{{item.multiActivity == true}}'>
         <image src='../../images/bg1.png' class='homeBj' />
         <view class='homeCentent'>
         
@@ -50,7 +50,7 @@
     </view>
 
     <!-- 活动列表 -->
-    <view class='homeBottom' bindtap='goDetail' data-multiActivity="{{item}}" wx:else>
+    <!-- <view class='homeBottom' bindtap='goDetail' data-multiActivity="{{item}}" wx:else>
       
         <view class='homeBottomContent'>
           <image src="{{item.bannerUrl}}"></image>
@@ -92,4 +92,6 @@
 </view>
 <view class='scrollTop' wx:if="{{scrollTopShow}}" bindtap='goTop'>
  <image src="../../images/scrollTop.png"></image>
-</view>
+</view> -->
+<web-view src='{{url}}'>
+</web-view>

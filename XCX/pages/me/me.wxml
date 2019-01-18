@@ -1,125 +1,120 @@
 <!--pages/me/me.wxml-->
 <scroll-view class='meBox' scroll-y >
-  <view class="userinfo">
-      <image class='bgImge' src='{{bgImge}}' bindtap='loginBnt'></image>
-      <block>
-        <image class="userinfoImage" src="{{userInfo.header}}" mode="cover" bindtap='loginBnt'></image>
-        <text class="userinfo-nickname">{{userInfo.name}}</text>
-      </block> 
-    </view>
+    <view class='userinfo'>
+      <view class='userinfo_top'>
+        <view class='userinfo_top_top'>
+              <view class='setting'  bindtap='setClick'>
+                <image src='../../images/setting.png'></image>
+              </view>
+               <text>我</text>
+              <view class='Profile'>Profile</view>
+        </view>
+         <view class="userinfo_top_bottom">
+               <!-- <image  src='{{bgImge}}' bindtap='loginBnt'></image> -->
+               <view class="userinfo_top_bottom_img" bindtap='loginBnt'>
+                  <image src="{{userInfo.header}}"></image>
+               </view>
+                <view  class="userinfo_top_bottom_fans" bindtap='myfollowBnt' data-item='2' wx:if="{{tabListBool}}">
+                    粉丝
+                    <view>
+                        {{objList.cared_count>10000?objList.cared_count/10000+'万':objList.cared_count}}
+                    </view>
+                </view>
+          </view>
 
-     <view class='userinfo_set' bindtap='setClick'>
-            消息 <image src="../../images/goBack.png" alt=""></image>
-     </view>
-
-     <view class="me_ul" wx:if="{{tabListBool}}">
-        <view class='me_li' bindtap='myfollowBnt' data-item='1'>
+      </view>
+      <view class="userinfo_bottom" wx:if="{{tabListBool}}">
+          <view class='me_li' bindtap='myfollowBnt' data-item='1'>
             <view class='me_span'>
               {{objList.care_count>10000?objList.care_count/10000+'万':objList.care_count}}
             </view>
             关注
-       </view>
-         <view class='me_li' bindtap='myfollowBnt' data-item='2'>
-            <view class='me_span'>
-               {{objList.cared_count>10000?objList.cared_count/10000+'万':objList.cared_count}}
-            </view>
-            粉丝
-       </view>
+         </view>
+      
          <view class='me_li' bindtap='myfollowBnt' data-item='3'>
             <view class='me_span'>
                 {{objList.laud_count>10000?objList.laud_count/10000+'万':objList.laud_count}}
             </view>
             点赞
-       </view>
-         <view class='me_li' bindtap='myfollowBnt' data-item='4'>
-            <view class='me_span'>
-               {{objList.favorite_count>10000?objList.favorite_count/10000+'万':objList.favorite_count}}
-            </view>
-           收藏
-       </view>
-         <view class='me_li' bindtap='myfollowBnt' data-item='5'>
-            <view class='me_span'>
-               {{objList.comment_count>10000?objList.comment_count/10000+'万':objList.comment_count}}
-            </view>
-            评论
-       </view>
-     
-   </view>
-    <!-- 原创，草稿 -->
-     <view class='Me_tab'>
-        <view wx:for="{{meTab}}" class='Me_li' bindtap='Me_tabClick' data-index='{{index}}' wx:key=''>
-           <text class='{{"Me_span"+index}} {{meTabIndex==index?"active":""}}'>{{item}}</text>
-        </view>
-    </view>
-      <!--,//原创 草稿组件-->
-    <view  class="Me_draft">
-        <!-- <Original class='Me_Original' prop-a="{{imgList}}" wx:if="{{meTabIndex==0}}"></Original> -->
-        <view wx:if="{{meTabIndex==0}}">
-           <view class='componentsBox_Show' wx:if='{{listData.length<=0}}'>
-                <image src="../../images/yuanchuang.png"></image>
-                <view>你还没有进行任何创作哦～</view>
+          </view>
+          <view class='me_li' bindtap='myfollowBnt' data-item='4'>
+              <view class='me_span'>
+                {{objList.favorite_count>10000?objList.favorite_count/10000+'万':objList.favorite_count}}
               </view>
-              <view class='componentsBox' wx:else>
-                <view class='fall-container'>
-                  <!-- 左边一列 -->
-                  <view class='fall-left'>
-                    <block wx:for="{{leftList}}" wx:key="{{item.id}}">
-                      <!--瀑布流内容卡片-->
-                      <!-- <template is='goodsCard' data="{{data:item}}" /> -->
-                      <image 
-                        class='card-img' 
-                        mode='aspectFill' 
-                        style='width:{{item.itemWidth}}px;height:{{item.itemHeight}}px;margin-top:8px;' 
-                        src='{{item.cover.url}}' 
-                        bindtap='goDetail' data-id="{{item.id}}"
-                        lazy-load>
-                      </image>
-                        <view class='img-infoBox' bindtap='goDetail' data-id="{{item.id}}">
-                          <view class='img-infoBoxInfo'>{{item.title}}</view>
-                              <view class="img-info">
-                                <view class="img-info_li1"><image src="{{item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'../../images/defultphoto.png'}}" alt=""></image></view>
-                                <view class="img-info_li2">{{item.authorInfo.name}}</view>
-                                <view class="img-info_li3"><image src="../../images/dianzan1.png" alt=""></image></view>
-                                <view class="img-info_li4">{{item.laudedCount}}</view>
-                              </view>
-                      </view>
-                    </block>
-                  
-                  </view>
-                  <!--右边一列 -->
-                  <view class='fall-right'>
-                    <block wx:for="{{rightList}}" wx:key="{{item.id}}" bindtap='goDetail' data-id="{{item.id}}">
-                      <!--瀑布流内容卡片-->
-                      <!-- <template is='goodsCard' data="{{data:item}}" /> -->
-                      <image 
-                        class='card-img' 
-                        mode='aspectFill' 
-                        bindtap='goDetail' data-id="{{item.id}}"
-                        style='width:{{item.itemWidth}}px;height:{{item.itemHeight}}px;margin-top:8px;' 
-                        src='{{item.cover.url}}' 
-                        lazy-load>
-                      </image>
-                      <view class='img-infoBox' bindtap='goDetail' data-id="{{item.id}}">
-                          <view class='img-infoBoxInfo'>{{item.title}}</view>
-                              <view class="img-info">
-                                <view class="img-info_li1"><image src="{{item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'../../imgages/defultphoto.png'}}" alt=""></image></view>
-                                <view class="img-info_li2">{{item.authorInfo.name}}</view>
-                                <view class="img-info_li3"><image src="../../images/dianzan1.png" alt=""></image></view>
-                                <view class="img-info_li4">{{item.laudedCount}}</view>
-                              </view>
-                      </view>
-                    </block>
-                  </view>
-                </view>
-                <view bindtap='moreTap' class='more'>
-                      {{message}}
-                </view>
+            收藏
+          </view>
+          <view class='me_li' bindtap='myfollowBnt' data-item='5'>
+              <view class='me_span'>
+                {{objList.comment_count>10000?objList.comment_count/10000+'万':objList.comment_count}}
               </view>
-        </view>
-        <Draft wx:if="{{meTabIndex==1}}"></Draft>
+              评论
+         </view>
+      </view>
+
     </view>
-    
-  
+    <!-- 原创草稿 -->
+    <view class='Me_tab'>
+      <view class='Me_tab_li'>
+           <scroll-view class="Me_tab_li1"  scroll-x="{{true}}" bindscrolltolower='original'>
+               <view class="Me_tab_li1_img" style='width:{{styleWidth}}'>
+                    <view class="Me_tab_li1_img_box" wx:for='{{imgsArr}}' wx:key='' wx:if="{{imgsArr.length>1}}" bindtap='goDetail' data-id='{{item.id}}'>
+                      <image src="{{item.imageUrl1}}"></image>
+                    </view>
+
+                     <view class="Me_tab_li1_img_box" wx:if="{{imgsArr.length==1}}" bindtap='goDetail' data-id='{{item.id}}'>
+                      <image src="{{imgsArr[0].imageUrl1}}"></image>
+                    </view>
+
+                     <view class="Me_tab_li1_img_box1" wx:if="{{imgsArr.length==1}}">
+                        <view>暂无更多原创</view>
+                      </view>
+
+                     <view class="Me_tab_li1_img_box1" wx:for="{{2}}" wx:key='' wx:if="{{imgsArr.length<=0}}">
+                        <view class="{{index==1?'active':''}}">暂无更多原创</view>
+                      </view>
+                        <view class="Me_tab_li3">
+                          <image src='../../images/bg0.png'></image>
+                        </view>
+               </view>
+           </scroll-view>
+          <view class="Me_tab_li2">
+            <view>原</view>
+            <view>／</view>
+            <view>创</view>
+          </view>
+         
+      </view>
+      <!-- 草稿 -->
+      <view class='Me_tab_li'>
+          <scroll-view class="Me_tab_li1"  scroll-x="{{true}}" bindscrolltolower='draft'>
+               <view class="Me_tab_li1_img" style='width:{{styleWidth1}}'>
+                      <view class="Me_tab_li1_img_box" wx:for='{{imgsArr1}}' wx:key='' wx:if="{{imgsArr1.length>1}}">
+                          <image src="{{item.imageUrl1}}"></image>
+                      </view>
+
+                       <view class="Me_tab_li1_img_box" wx:if="{{imgsArr1.length==1}}">
+                          <image src="{{imgsArr1[0].imageUrl1}}"></image>
+                      </view>
+
+                      <view class="Me_tab_li1_img_box1" wx:if="{{imgsArr1.length==1}}">
+                        <view class="active">暂无更多草稿</view>
+                      </view>
+
+                       <view class="Me_tab_li1_img_box1" wx:for="{{2}}" wx:key='' wx:if="{{imgsArr1.length<=0}}">
+                        <view class="{{index==0?'active':''}}">暂无更多草稿</view>
+                      </view>
+                       <view class="Me_tab_li3"></view>
+               </view>
+          </scroll-view>
+          <view class="Me_tab_li2">
+            <view>草</view>
+            <view>／</view>
+            <view>稿</view>
+          </view>
+         
+      </view>
+    </view>
+
 
 </scroll-view>
 

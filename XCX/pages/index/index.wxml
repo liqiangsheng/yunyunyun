@@ -1,4 +1,7 @@
 <!--pages/index/index.wxml-->
-<web-view src="{{url}}">
+<web-view src="{{url}}" wx:if='{{state==1}}'>
+
+</web-view>
+<web-view src="{{url1}}" wx:if='{{state==2}}'>
 
 </web-view>
