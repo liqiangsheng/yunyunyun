@@ -7,9 +7,9 @@
                  <img class="homePageAItemIndex1Img" :src="item.bannerUrl" alt="" @click="goDetail(item.id)">
                  <div class="homePageAItemIndex1Title">{{item.title}}</div>
                  <ul class="homePageAItemIndex1Ul">
-                   <li><img src="/static/images/look.png" alt="">{{item.viewCount}}</li>
-                   <li><img src="/static/images/like.png" alt="">{{item.laudedCount}}</li>
-                   <li><img src="/static/images/comment.png" alt="">{{item.commentCount}}</li>
+                   <li><img src="/static/images/浏览数.svg" alt="">{{item.viewCount>10000?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}</li>
+                   <li><img src="/static/images/喜欢数.svg" alt="">{{item.laudedCount>10000?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}}</li>
+                   <li><img src="/static/images/评论数.svg" alt="">{{item.commentCount?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</li>
                  </ul>
            </div>
       </div>
@@ -20,9 +20,9 @@
         <img class="homePageAItemIndex1Img" :src="item.bannerUrl" alt="" @click="goDetail(item.id)">
         <div class="homePageAItemIndex1Title">{{item.title}}</div>
         <ul class="homePageAItemIndex1Ul">
-          <li><img src="/static/images/look.png" alt="">{{item.viewCount}}</li>
-          <li><img src="/static/images/like.png" alt="">{{item.laudedCount}}</li>
-          <li><img src="/static/images/comment.png" alt="">{{item.commentCount}}</li>
+          <li><img src="/static/images/浏览数.svg" alt="">{{item.viewCount?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}</li>
+          <li><img src="/static/images/喜欢数.svg" alt="">{{item.laudedCount?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}}</li>
+          <li><img src="/static/images/评论数.svg" alt="">{{item.commentCount?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</li>
         </ul>
       </div>
     </div>

@@ -12,11 +12,11 @@
        </ul>
        <div class="praiseMe_box_false" v-if="tabIndex==0&&ListData.length<=0">
          <img src="/static/images/缺省图.png" alt="">
-         <p>你的收藏作品区目前空空也～</p>
+         <p>你的点赞区作品区目前空空也～</p>
        </div>
        <div class="praiseMe_box_false" v-if="tabIndex==1&&articleData.length<=0">
          <img src="/static/images/缺省图.png" alt="">
-         <p>你的收藏文章区目前空空也～</p>
+         <p>你的点赞区文章区目前空空也～</p>
        </div>
        <ul class="myFabulous_ul" v-show="tabIndex==0&&ListData.length>0">
        <li v-for="(item,index) in ListData" @click="goDetail(item)">
@@ -45,9 +45,9 @@
               <div class="myFabulous_left">
                 <h5>{{item.title}}</h5>
                 <div style="color: #AAAAAA">
-                  <img src="/static/images/查看.png" alt=""> {{item.viewCount}}
+                  <img src="/static/images/浏览数.svg" alt=""> {{item.viewCount?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}
                 </div>
-                <div><img src="/static/images/收藏.png" alt=""> {{item.laudedCount}} <img src="/static/images/评论.png"  alt="" style="margin-left: 0.3rem"> {{item.commentCount}}</div>
+                <div><img src="/static/images/喜欢数.svg" alt=""> {{item.laudedCount?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}} <img src="/static/images/评论数.svg"  alt="" style="margin-left: 0.3rem"> {{item.commentCount?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</div>
               </div>
               <div class="myFabulous_right">
                 <img :src="item.bannerUrl" alt="">

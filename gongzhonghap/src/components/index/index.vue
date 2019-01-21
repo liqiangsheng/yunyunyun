@@ -13,15 +13,16 @@
       </div>
       <!---->
       <!-- 列表 -->
-      <ul class="activityContent" :style="'top:'+positionTop+'px'" @scroll="updataMore">
+      <ul class="activityContent" :style="'top:'+positionTop/100+'rem'" @scroll="updataMore">
         <li v-for="(item,index) in objList" @click="goDetail(item)" v-if="item.multiActivity==false">
               <img :src="item.bannerUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" class="homeImg"/>
+              <div class="letGo" >进入火图</div>
               <h5 class='homeBottomTitle'>
                {{item.name}}
               </h5>
               <div class='homeBottomPrice'>
                 <span v-if="item.expenses !=0&&item.expenses >0">¥{{item.expenses}}</span>
-                <span v-else>免费</span>
+                <span v-else style='color:#7ade81'>免费</span>
               </div>
               <div class='homeBottomdata'>
                 <span>{{item.startTime |formatTime}}</span> | <span>{{item.regionName}}</span>
@@ -243,19 +244,30 @@ export default {
         li{
           background: #ffffff;
           position: relative;
-          margin-bottom: 10px;
-          padding-bottom: 21px;
+          margin-bottom: 0.1rem;
+          padding-bottom: 0.21rem;
           .homeImg{
             width: 100%;
             /*height: 155px;*/
           }
+          .letGo{
+            position: absolute;
+            right: 0;
+            top:0;
+            background: rgba(5,5,9,0.3);
+            width: 0.8rem;
+            height: 0.4rem;
+            line-height: 0.4rem;
+            text-align: center;
+            font-size: 0.12rem;
+            color: #ffffff;
+          }
           .homeBottomTitle{
             width: 90%;
             margin: 0 auto;
-            margin-top: 15px;
-            font-size: 17px;
-            line-height: 22px;
-            height: 44px;
+            margin-top: 0.15rem;
+            font-size: 0.16rem;
+            line-height: 0.2rem;
             color: #262626;
             overflow : hidden;
             text-overflow: ellipsis;
@@ -263,43 +275,46 @@ export default {
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             word-break:break-all;
+            letter-spacing: 0.01rem;
           }
           .homeBottomPrice{
             width: 90%;
             margin: 0 auto;
-            margin-top: 10px;
-            height:28px;
-            font-size:20px;
+            margin-top: 0.05rem;
+            height:0.28rem;
+            font-size:0.2rem;
             font-family:PingFangSC-Medium;
             font-weight:500;
-            color:rgba(208,2,27,1);
-            line-height:28px
+            color:#ff8e74;
+            line-height:0.28rem;
           }
           .homeBottomdata{
             width: 90%;
             margin: 0 auto;
-            margin-top: 10px;
-            height:20px;
-            font-size:12px;
+            margin-top: 0.02rem;
+            height:0.2rem;
+            font-size:0.12rem;
             font-family:PingFangSC-Light;
-            font-weight:300;
+            font-weight:500;
             color:rgba(103,103,104,1);
-            line-height:20px;
+            line-height:0.2rem;
           }
           .homeBottomstate{
-            width: 80px;
-            height: 36px;
-            border: 2px solid #262626;
+            width: 0.8rem;
+            height: 0.36rem;
+            border: 0.2rem solid #262626;
             text-align: center;
-            line-height: 36px;
+            line-height: 0.36rem;
+            font-size: 0.14rem;
+            font-weight: 600;
             color: #262626;
-            border-radius: 20px;
+            border-radius:0.2rem;
             position: absolute;
-            right: 10%;
-            bottom: 20px;
+            right: 0.2rem;
+            bottom: 0.2rem;
           }
           .end{
-            border: 2px solid #c5c5c6;
+            border: 0.02rem solid #c5c5c6;
             color: #c5c5c6;
           }
         }
@@ -320,8 +335,8 @@ export default {
         padding-top:0.13rem ;
         box-sizing: border-box;
         .indexTabImg{
-          width: 24px;
-          height:  24px;
+          width: 0.24rem;
+          height:  0.24rem;
           display:block;
           margin: 0 auto;
         }

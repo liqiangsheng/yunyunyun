@@ -6,23 +6,26 @@
         </div>
         <div class="centent">
            <ul @scroll="updataMore">
-             <div style="height: 100px">
+             <div style="height: 1rem">
 
            </div>
              <li v-for="(item,index) in objList" @click="goToHomeDetail(item)">
-               <h5>{{item.title}}</h5>
-               <p v-if="item.content">
-                 {{item.content}}
-               </p>
-               <p v-else>
-                 无
-               </p>
-               <div class="centent_look">
-                 <span><img src="/static/images/查看.png" alt="">{{item.viewCount>10000?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}</span>
-                 <span><img src="/static/images/收藏.png" alt="">{{item.laudedCount>10000?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}}</span>
-                 <span><img src="/static/images/评论.png" alt="">{{item.commentCount>10000?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</span>
+               <div>
+                 <h5>{{item.title}}</h5>
+                 <p v-if="item.content">
+                   {{item.content}}
+                 </p>
+                 <p v-else>
+                   无
+                 </p>
+                 <div class="centent_look">
+                   <span><img src="/static/images/浏览数.svg" alt="">{{item.viewCount>10000?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}</span>
+                   <span><img src="/static/images/喜欢数.svg" alt="">{{item.laudedCount>10000?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}}</span>
+                   <span><img src="/static/images/评论数.svg" alt="">{{item.commentCount>10000?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</span>
+                 </div>
+                 <img class="jiantouRight" src="/static/images/箭头方块.png" alt="">
                </div>
-               <img class="jiantouRight" src="/static/images/箭头方块.png" alt="">
+
              </li>
              <div class="messageFoot" v-if="!!message">
                {{message}}
@@ -110,14 +113,14 @@
        overflow: hidden;
        .header{
          width: 100%;
-         height: 139px;
+         height: 1.39rem;
          overflow-x: scroll;
          position: relative;
          .img{
            position: absolute;
-           left: -100px;
-           width: 1000px;
-           height: 139px;
+           left: -1rem;
+           width: 10rem;
+           height: 1.39rem;
            animation: leftBox 25s infinite;
            background: url(../../../../static/images/波浪1.png);
            background-size: 100% 100%;
@@ -127,72 +130,79 @@
           position: absolute;
           left: 0;
           bottom: 0;
-          top: 130px;
+          top: 1.3rem;
           right: 0;
-          background: #EEEEEE;
+          background: url(../../../../static/images/zixunBg.png);
+          background-size: 100% 100%;
           ul{
             width: 90%;
             position: absolute;
             /*z-index: 2;*/
             right: 0;
-            top:-130px;
+            top:-1.3rem;
            bottom: 0;
             overflow-y: scroll;
             li{
-              position: relative;
               width: 100%;
-              height: 153px;
-              background: #ffffff;
-              margin-bottom: 19px;
-              padding: 22px 0 22px 29px;
-              box-sizing: border-box;
-              box-shadow: 20px 20px 20px rgba(5,5,9,0.05) ;
-              h5{
-               width: 100%;
-                font-size: 17px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                color: #262626;
-              }
-              p{
-                width: 90%;
-                height: 36px;
-                margin-top: 13px;
-                color: #676768;
-                overflow : hidden;
-                text-overflow: ellipsis;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                word-break:break-all;
-                line-height: 18px;
-                font-size: 0.13rem;
-              }
-              .centent_look{
-                width: 80%;
-                height: 12px;
-                margin-top: 20px;
-                span{
-                  font-size: 0.12rem;
-                  font-weight: 500;
-                  margin-right: 0.1rem;
-                  img{
-                    display: inline-block;
-                    width: 0.14rem;
-                    height: 0.12rem;
-                    margin-right: 0.07rem;
+              height: 1.6rem;
+              background: url(../../../../static/images/zixunBying.png);
+              >div{
+                position: relative;
+                width: 100%;
+                height: 1.4rem;
+                background: #ffffff;
+                margin-bottom: 0.19rem;
+                padding: 0.2rem 0 0.2rem 0.29rem;
+                box-sizing: border-box;
+                h5{
+                  width: 93%;
+                  font-size: 0.16rem;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: nowrap;
+                  color: #262626;
+                }
+                p{
+                  width: 90%;
+                  height: 0.36rem;
+                  margin-top: 0.03rem;
+                  color: #676768;
+                  overflow : hidden;
+                  text-overflow: ellipsis;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 2;
+                  -webkit-box-orient: vertical;
+                  word-break:break-all;
+                  line-height: 0.18rem;
+                  font-size: 0.1rem;
+                  letter-spacing: 0.005rem;
+                }
+                .centent_look{
+                  width: 80%;
+                  height: 0.12rem;
+                  margin-top:0.2rem;
+                  span{
+                    font-size: 0.12rem;
+                    font-weight: 900;
+                    margin-right: 0.18rem;
+                    img{
+                      display: inline-block;
+                      width: 0.14rem;
+                      height: 0.12rem;
+                      margin-right: 0.07rem;
+                    }
                   }
                 }
+                .jiantouRight{
+                  width: 0.5rem;
+                  height: 0.5rem;
+                  display: inline-block;
+                  position: absolute;
+                  right: 0;
+                  bottom: 0;
+                }
               }
-              .jiantouRight{
-                width: 0.5rem;
-                height: 0.5rem;
-                display: inline-block;
-                position: absolute;
-                right: 0;
-                bottom: 0;
-              }
+
             }
           }
         }
@@ -206,9 +216,8 @@
         }
       }
         @keyframes  leftBox{
-          to {left: -100px}
-          from {left: -450px}
-
+          to {left: -1rem}
+          from {left: -4.5rem}
       }
 
     </style>

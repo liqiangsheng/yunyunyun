@@ -11,8 +11,9 @@
 
         <div class="verificatioCode">
           <div class='verificatioCodeImage'><img src='/static/images/code.png'></div>
-          <div class="xian"></div>
+
           <input  @blur='codePsd' oninput="if(value.length>6)value=value.slice(0,6)" type="number" placeholder="请输入验证码" v-model='psdValue'/>
+          <div class="xian1"></div>
           <button class="ObtainCode"  @click="ObtainCode" v-if='isShow'>{{code}}</button>
           <button class="ObtainCode"  disabled v-if='!isShow'>{{codeNum}}秒后重新发送</button>
         </div>
@@ -22,7 +23,7 @@
         </div>
 
         <div class='loginBnt' @click='loginBnt'>
-           <button>登录</button>
+           <button>登　录</button>
         </div>
   </div>
 </template>
@@ -210,6 +211,10 @@ export default {
         padding: 0.1rem;
         box-sizing: border-box;
         line-height: 0.3rem;
+        .add86{
+          font-size: 0.14rem;
+          margin-left: 0.1rem;
+        }
         img{
           display: inline-block;
           width:.18rem;
@@ -217,6 +222,7 @@ export default {
           margin-right: 0.1rem;
           transform: translateY(0.03rem);
         }
+
       }
 
         input{
@@ -229,7 +235,7 @@ export default {
           top:0;
           display: block;
            outline: none;
-          font-size: 0.12rem;
+          font-size: 0.14rem;
           text-indent: 0.1rem;
           border: none;
       }
@@ -244,6 +250,7 @@ export default {
         float: left;
         height:0.5rem;
         padding: 0.1rem;
+        font-size: 0.14rem;
         box-sizing: border-box;
         img{
           display: inline-block;
@@ -253,14 +260,13 @@ export default {
         }
       }
         input{
-          width: 35%;
+          width: 45%;
           float: left;
           height: 0.5rem;
           display: block;
           line-height: 0.5rem;
-          font-size: 0.12rem;
+          font-size: 0.14rem;
           outline: none;
-          text-indent: 0.1rem;
           border: none;
         }
 
@@ -268,11 +274,12 @@ export default {
         width: 39%;
         height: 100%;
         float: right;
-        font-size:.12rem;
+        font-size: 0.14rem;
         line-height:.5rem;
         padding:0 0.05rem;
         border:none;
         outline: none;
+        background: #ffffff;
       }
     }
     .loginDetail{
@@ -295,6 +302,7 @@ export default {
       margin-top: 0.25rem;
 
       button{
+        font-size: 0.16rem;
         border-radius: 0.04rem;
         background-color: #050509;
         color: #fff;
@@ -309,8 +317,15 @@ export default {
   .xian{
     width: 0.01rem;
     float: left;
-    height: 0.3rem;
-    margin-top: 0.1rem;
-    background: rgba(5,5,9,0.3);
+    height: 0.2rem;
+    margin-top: 0.15rem;
+    background: #dcdcdc;
+  }
+  .xian1{
+    width: 0.01rem;
+    float: left;
+    height: 0.2rem;
+    margin-top: 0.15rem;
+    background: #dcdcdc;
   }
 </style>

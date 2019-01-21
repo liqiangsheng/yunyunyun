@@ -50,7 +50,7 @@
                      {{item.favoredCount<10000?item.favoredCount:(item.favoredCount/10000).toFixed(2)+'万'}}
                    </div>
                    <div>
-                     <img src="/static/images/look.png" alt="">
+                     <img src="/static/images/浏览数.svg" alt="">
                      {{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}
                    </div>
 
@@ -158,6 +158,10 @@
 
           let arrdata = [res.data];
           arrdata.forEach((item,index)=>{
+            item.laudedCount = !!item.laudedCount?item.laudedCount:0;
+            item.favoredCount = !!item.favoredCount?item.favoredCount:0;
+            item.readCount = !!item.readCount?item.readCount:0;
+            item.commentedCount = !!item.commentedCount?item.commentedCount:0;
             item.messageShow = false;
             item.message1 = "";
             item.value = "展开";
@@ -932,7 +936,7 @@
     border-top:0.01rem solid #DFDFDF;
     background:rgba(254,252,252,1);
     box-shadow:0px -1px 0.07rem 0px rgba(223,223,223,1);
-
+    z-index:1;
     .footer{
       width: 90%;
       height: 0.35rem;

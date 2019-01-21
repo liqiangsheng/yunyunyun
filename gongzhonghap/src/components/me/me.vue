@@ -1,21 +1,21 @@
 <template>
   <div id="Me">
      <div class="Me_box">
-        <div class="userinfo" @click="loginBnt">
-          <div class="userinfo_top">
+        <div class="userinfo">
+          <div class="userinfo_top" @click="loginBnt">
             <div class="userinfo_top_top">
               <div @click.stop="setClick">
                 <img src="/static/images/设置.png" alt="">
               </div>
-              <b>我</b>
-              <p>Profile</p>
+              <!--<b>我</b>-->
+              <!--<p>Profile</p>-->
             </div>
             <div class="userinfo_top_bottom">
               <!--<img :src='bgImge' alt="">-->
                <div  class="userinfo_top_bottom_img">
                  <img :src="userInfo.header" alt="">
                </div>
-              <div  class="userinfo_top_bottom_fans" @click='myfollowBnt(2)' v-if="tabListBool">
+              <div  class="userinfo_top_bottom_fans" @click.stop='myfollowBnt(2)' v-if="tabListBool">
                    粉丝 <b>
                     {{userInfo.care_count>10000?userInfo.care_count/10000+'万':userInfo.care_count}}
                   </b>
@@ -43,7 +43,7 @@
                  </li>
                  <li @click='myfollowBnt(5)'>
                  <b>
-                        {{userInfo.comment_count>10000?userInfo.comment_count/10000+'万':userInfo.comment_count}}
+                        {{userInfo.comment_count>10000?userInfo.comment_count/10000+'万':userInfo.comment_count}},000
                  </b><br>
                    评论
                  </li>
@@ -81,7 +81,7 @@
             </li>
           <!--草稿-->
             <li>
-             <div class="Me_tab_li1" @scroll="draft">
+             <div class="Me_tab_li1 Me_tab_li1draft" @scroll="draft">
                <div class="Me_tab_li1_img" :style="styleWidth1">
                    <div class="Me_tab_li1_img_box" v-for="(item,index) in imgsArr1" v-if="imgsArr1.length>1">
                      <img :src="item.cover.url" alt="">
@@ -217,6 +217,7 @@ export default {
                  this.styleWidth ={width: this.imgsArr.length*220+72+"px"}
                }else{
                  this.styleWidth ={width: 440+72+"px"}
+                 document.querySelector(".Me_tab_li1").scrollLeft=document.querySelector(".Me_tab_li1").scrollWidth-document.querySelector(".Me_tab_li1").offsetWidth-1;
                }
              })
 
@@ -234,6 +235,7 @@ export default {
                  this.styleWidth1 ={width: this.imgsArr1.length*220+72+"px"}
                }else{
                  this.styleWidth1 ={width: 440+72+"px"}
+                 document.querySelector(".Me_tab_li1draft").scrollLeft=document.querySelector(".Me_tab_li1draft").scrollWidth-document.querySelector(".Me_tab_li1draft").offsetWidth-1;
                }
 
              })
@@ -259,6 +261,7 @@ export default {
       this.$router.push({path:"/findDetail",query:{id:value.id}}) //去发现的详情页面，记得带状态跟token
     },
     original(e){//原创的滚动
+//      console.log(e.target.scrollLeft,"e.target.scrollLeft")
       let data = JSON.parse(window.localStorage.getItem("userInfo"))
       if(e.target.scrollWidth==(e.target.scrollLeft+e.target.offsetWidth)){
         this.p++
@@ -412,7 +415,8 @@ export default {
       .userinfo_top{
         width: 100%;
         height: 131px;
-        background: #4caf50;
+        background: url(../../../static/images/meBg.png);
+        background-size: 100% 100%;
         .userinfo_top_top{
           width: 100%;
           height: 52px;
@@ -421,7 +425,7 @@ export default {
             width: 21px;
             height: 21px;
             position: absolute;
-            left: 20px;
+            left: 41px;
             top:18px;
             img{
               display: block;
@@ -465,7 +469,6 @@ export default {
             padding: 0;
             border-radius: 50%;
             border: 2px solid #ffffff;
-            position: relative;
             img{
               border-radius: 50%;
               display: block;
@@ -480,14 +483,14 @@ export default {
             padding: 0 15px;
             height: 36px;
             position: absolute;
-            right: 46px;
+            right: 29px;
             bottom: -18px;
-            background: #ff8e74;
+            background: #ff7f61;
             text-align: center;
             line-height: 36px;
             font-size: 12px;
             color: #ffffff;
-            border-radius: 20px;
+            border-radius: 25px;
             b{
               font-size: 17px;
             }
@@ -498,16 +501,16 @@ export default {
         width: 100%;
         height: 150px;
         background: #ffffff;
-        padding: 68px 47px 0 41px;
+        padding: 68px 0 0 41px;
         box-sizing: border-box;
         display: flex;
         li{
           flex: 1;
           text-align: left;
-          font-size: 12px;
+          font-size:0.12rem;
           color: #c5c5c6;
           b{
-            font-size: 17px;
+            font-size: 0.18rem;
             color: #262626;
           }
         }
@@ -587,6 +590,12 @@ export default {
               width: 12px;
               color: #262626;
               margin: 0 auto;
+              font-weight: 500;
+              transform:rotate(90deg);
+              -ms-transform:rotate(90deg); 	/* IE 9 */
+              -moz-transform:rotate(90deg); 	/* Firefox */
+              -webkit-transform:rotate(90deg); /* Safari 和 Chrome */
+              -o-transform:rotate(90deg);
             }
           }
 

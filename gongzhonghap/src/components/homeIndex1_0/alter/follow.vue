@@ -108,7 +108,7 @@
                      <img src="/static/images/关注阅读量.png" alt="">  {{item.commentedCount<10000?item.commentedCount:(item.commentedCount/10000).toFixed(2)+'万'}}
                    </div>
                    <!--<div>-->
-                     <!--<img src="/static/images/look.png" alt="">-->
+                     <!--<img src="/static/images/浏览数.svg" alt="">-->
                      <!--{{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}-->
                    <!--</div>-->
 
@@ -122,11 +122,11 @@
         </div>
       <div class="lengthSmall" v-if="followIsShow==false&&listData==-2">
         <img src="/static/images/原创.png" alt="">
-        <p>你关注的人还未发布作品哦~</p>
+        <p>你关注的人还未发布作品哦</p>
       </div>
       <div class="lengthSmall" v-if="followIsShow==false&&listData==-1">
         <img src="/static/images/原创.png" alt="">
-        <p>你还没有关注任何人哦~</p>
+        <p>你还没有关注任何人哦</p>
       </div>
     </div>
     <ul class="Indextab">
@@ -156,11 +156,11 @@
   data(){
     return{
       tabbarArr:[  //、、tab
-        {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
-        {name:"资讯",icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
+        {icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
+        {icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
         {icon:"./static/images/zhaio.png",icon1:"./static/images/zhaio.png",path:"/release"},
-        {name:"智慧活动",icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
-        {name:"我的",icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
+        {icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
+        {icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
       ],
       tabbarAarrIndex:0,  //点击tab的下标
       p:1, //第几页
@@ -976,44 +976,45 @@
   width: 100%;
   height: 100%;
   background: #F7F7F7;
-  padding-top: 0.5rem;
+  padding-top: 0.7rem;
   img{
-    width: 1rem;
-    height: 0.94rem;
+    width: 1.2rem;
+    height: 1.14rem;
     display: block;
     margin: 0 auto;
   }
   p{
     width: 100%;
     line-height: 0.5rem;
-    margin-top: 0.2rem;
+    font-size: 0.14rem;
     text-align: center;
     color:rgba(153,153,153,1);
   }
 }
 .Indextab{
-  position: fixed;
+  position: absolute;
   width: 100%;
   height: 0.49rem;
   bottom: 0rem;
   left: 0;
   background: #ffffff;
   border-top: 0.01rem solid #EEEEEE;
-  z-index: 2;
   display: flex;
   .indexTabLi{
     flex: 1;
     text-align: center;
-    padding-top:0.05rem ;
+    padding-top:0.13rem ;
+    box-sizing: border-box;
     .indexTabImg{
-      width: 0.16rem;
-      height: 0.19rem;
+      width:  24px;
+      height:  24px;
       display:block;
       margin: 0 auto;
     }
     .indexTabImg.active{
-      width: 0.32rem;
-      height: 0.32rem;
+      width: 0.3rem;
+      transform: translateY(-0.05rem);
+      height: 0.3rem;
     }
   }
 }

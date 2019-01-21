@@ -41,9 +41,9 @@
               <div class="myFabulous_left">
                 <h5>{{item.title}}</h5>
                 <div style="color: #AAAAAA">
-                  <img src="/static/images/查看.png" alt=""> {{item.viewCount}}
+                  <img src="/static/images/浏览数.svg" alt=""> {{item.viewCoun?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}
                 </div>
-                <div><img src="/static/images/收藏.png" alt=""> {{item.laudedCount}} <img src="/static/images/评论.png"  alt="" style="margin-left: 0.3rem"> {{item.commentCount}}</div>
+                <div><img src="/static/images/喜欢数.svg" alt=""> {{item.laudedCount?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}} <img src="/static/images/评论数.svg"  alt="" style="margin-left: 0.3rem"> {{item.commentCount?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</div>
               </div>
               <div class="myFabulous_right">
                 <img :src="item.bannerUrl" alt="">

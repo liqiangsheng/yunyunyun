@@ -1244,7 +1244,7 @@ export function customerPubContentList(id,p,s,pubStatus) { // 用户id，
 }
 // POST /customerPubContent/list 发现
 export function customerPubContentListHomePage(p,s) { // pubStatus 固定参数true
-  Indicator.open("加载中...")
+  // Indicator.open("加载中...")
   let data = {p:p,s:s,pubStatus:true}
   return new Promise(function (resolve,reject) {
     // var data =data
@@ -1254,12 +1254,12 @@ export function customerPubContentListHomePage(p,s) { // pubStatus 固定参数t
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
       if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+        // Indicator.close();
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
       if(ajax.status==500){
-        Indicator.close()
+        // Indicator.close()
         Toast("500后台服务器错误！")
       }
     }
