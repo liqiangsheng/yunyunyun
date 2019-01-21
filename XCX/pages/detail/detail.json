@@ -1,1 +1,7 @@
-{}
+{
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#000000",
+  "navigationBarTitleText": "活动详情",
+  "backgroundColor": "#eeeeee",
+  "navigationBarTextStyle": "#fff"
+}

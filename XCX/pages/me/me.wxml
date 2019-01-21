@@ -2,15 +2,15 @@
 <scroll-view class='meBox' scroll-y >
     <view class='userinfo'>
       <view class='userinfo_top'>
+        <image  src='../../images/meBg.png' bindtap='loginBnt' class='meBg'></image>
         <view class='userinfo_top_top'>
+          
               <view class='setting'  bindtap='setClick'>
                 <image src='../../images/setting.png'></image>
               </view>
-               <text>我</text>
-              <view class='Profile'>Profile</view>
         </view>
          <view class="userinfo_top_bottom">
-               <!-- <image  src='{{bgImge}}' bindtap='loginBnt'></image> -->
+               
                <view class="userinfo_top_bottom_img" bindtap='loginBnt'>
                   <image src="{{userInfo.header}}"></image>
                </view>
@@ -52,15 +52,23 @@
       </view>
 
     </view>
-    <!-- 原创草稿 -->
+    <!-- 原创 -->
     <view class='Me_tab'>
       <view class='Me_tab_li'>
-           <scroll-view class="Me_tab_li1"  scroll-x="{{true}}" bindscrolltolower='original'>
+           <scroll-view class="Me_tab_li1"  scroll-x="{{true}}" bindscrolltolower='original' wx:if="{{imgsArr.length>1}}">
                <view class="Me_tab_li1_img" style='width:{{styleWidth}}'>
                     <view class="Me_tab_li1_img_box" wx:for='{{imgsArr}}' wx:key='' wx:if="{{imgsArr.length>1}}" bindtap='goDetail' data-id='{{item.id}}'>
                       <image src="{{item.imageUrl1}}"></image>
                     </view>
 
+                        <view class="Me_tab_li3">
+                          <image src='../../images/bg0.png'></image>
+                        </view>
+               </view>
+           </scroll-view>
+            <scroll-view class="Me_tab_li1"  scroll-x="{{true}}" bindscrolltolower='original' scroll-left='{{imageWidth-210}}' wx:if="{{imgsArr.length<=1}}">
+               <view class="Me_tab_li1_img" style='width:{{styleWidth}}'>
+                
                      <view class="Me_tab_li1_img_box" wx:if="{{imgsArr.length==1}}" bindtap='goDetail' data-id='{{item.id}}'>
                       <image src="{{imgsArr[0].imageUrl1}}"></image>
                     </view>
@@ -86,12 +94,18 @@
       </view>
       <!-- 草稿 -->
       <view class='Me_tab_li'>
-          <scroll-view class="Me_tab_li1"  scroll-x="{{true}}" bindscrolltolower='draft'>
+          <scroll-view class="Me_tab_li1"  scroll-x="{{true}}" bindscrolltolower='draft' wx:if="{{imgsArr1.length>1}}">
                <view class="Me_tab_li1_img" style='width:{{styleWidth1}}'>
-                      <view class="Me_tab_li1_img_box" wx:for='{{imgsArr1}}' wx:key='' wx:if="{{imgsArr1.length>1}}">
+                      <view class="Me_tab_li1_img_box" wx:for='{{imgsArr1}}' wx:key=''>
                           <image src="{{item.imageUrl1}}"></image>
                       </view>
 
+                       <view class="Me_tab_li3"></view>
+               </view>
+          </scroll-view>
+
+              <scroll-view class="Me_tab_li1"  scroll-x bindscrolltolower='draft' scroll-left='{{imageWidth-210}}' bindscroll='bindscroll1' wx:if="{{imgsArr1.length<=1}}">
+               <view class="Me_tab_li1_img" style='width:{{styleWidth1}}'>
                        <view class="Me_tab_li1_img_box" wx:if="{{imgsArr1.length==1}}">
                           <image src="{{imgsArr1[0].imageUrl1}}"></image>
                       </view>

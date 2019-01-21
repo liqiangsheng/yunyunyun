@@ -17,6 +17,7 @@ Page({
     imgsArr: [],//原创数据
     styleWidth: "522px",//原创分页
     pageNum: 0,
+    imageWidth:320,//屏幕宽度
     data: {
       p: 1, // request param//
       s: 20, // request param//
@@ -83,12 +84,13 @@ Page({
             that.setData({
               imgsArr1: that.data.imgsArr1.concat(res.data.data)
             })
-          }else{
-            wx.showModal({
-              showCancel: false,
-              title: "没有更多草稿了",
-            })
           }
+          // else{
+          //   wx.showModal({
+          //     showCancel: false,
+          //     title: "没有更多草稿了",
+          //   })
+          // }
           if (that.data.imgsArr1.length > 1) {
             that.setData({
               styleWidth1: that.data.imgsArr1.length * 220 + 72 + "px"
@@ -143,14 +145,15 @@ Page({
                 imgsArr: that.data.imgsArr.concat(res.data.data)
               })
               
-            } else {
-              wx.showModal({
-                showCancel: false,
-                title: "没有更多原创了",
-
-              })
             }
-          console.log(that.data.imgsArr,"that.data.imgsArr")
+            //  else {
+            //   wx.showModal({
+            //     showCancel: false,
+            //     title: "没有更多原创了",
+
+            //   })
+            // }
+    
           if (that.data.imgsArr.length > 1) {
             that.setData({
               styleWidth: that.data.imgsArr.length * 220 + 72 + "px"
@@ -218,115 +221,11 @@ Page({
 
   onLoad: function () {
      let that = this;
-    that.userInfoFun();
-    let data = wx.getStorageSync("userInfo")
-   
-    if (data) {
-    
-      wx.showLoading({ //显示消息提示框  此处是提升用户体验的作用
-        title: '数据加载中',
-        icon: 'loading',
-      });
-      wx.request({
-        url: API.apiDomain + '/apis/operation/' + API.operationEdition + '/customerPubContent/listOwner',
-        method: "POST",
-        header: {
-          "Authorization": "bearer " + data.access_token
-        },
-        data: {
-          p: this.data.data.p,
-          s: this.data.data.s,
-          userId: data.id,
-          // userId:"100",
-          pubStatus: true
-        },
-        complete() {  //请求结束后隐藏 loading 提示框
-          wx.hideLoading();
-        },
-
-        success: function (res) {
-          if (res.data.status == true) {
-            wx.hideLoading();
-            res.data.data.forEach((item, index) => {
-              item.imageUrl1 = item.cover.url + "?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
-            })
-            that.setData({
-              pageNum: Math.ceil(res.data.total / that.data.data.s),
-                imgsArr: res.data.data 
-            })
-            if (that.data.imgsArr.length>1){
-              that.setData({
-                styleWidth: that.data.imgsArr.length * 220+72 + "px" 
-              })
-            }else{
-              that.setData({
-                styleWidth:  440+72+ "px" 
-              })
-            }
-      
-          } else {
-            wx.showModal({
-              showCancel: false,
-              title: "网络异常",
-
-            })
-          }
-
-
-        },
-
-      })
-      // 草稿
-      wx.request({
-        url: API.apiDomain + '/apis/operation/' + API.operationEdition + '/customerPubContent/listOwner',
-        method: "POST",
-        header: {
-          "Authorization": "bearer " + data.access_token
-        },
-        data: {
-          p: this.data.p1,
-          s: this.data.s1,
-          userId: data.id,
-          // userId:"100",
-          pubStatus: false
-        },
-        complete() {  //请求结束后隐藏 loading 提示框
-          wx.hideLoading();
-        },
-
-        success: function (res) {
-          if (res.data.status == true) {
-            wx.hideLoading();
-            res.data.data.forEach((item, index) => {
-              item.imageUrl1 = item.cover.url + "?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
-            })
-            that.setData({
-              pages1: Math.ceil(res.data.total / that.data.s),
-              imgsArr1: res.data.data
-            })
-            if (that.data.imgsArr1.length > 1) {
-              that.setData({
-                styleWidth1: that.data.imgsArr1.length * 220 +72+ "px"
-              })
-            } else {
-              that.setData({
-                styleWidth1: 440 +72+ "px"
-              })
-            }
-
-          } else {
-            wx.showModal({
-              showCancel: false,
-              title: "网络异常",
-
-            })
-          }
-
-
-        },
-
-      })
-    }
+     that.setData({ //获取屏幕宽度
+       imageWidth: wx.getSystemInfoSync().windowWidth
+     })
+    that.userInfoFun(); //初始化数据
+  
     
   },
 
@@ -544,6 +443,109 @@ Page({
            }
          })
        }
+       wx.showLoading({ //显示消息提示框  此处是提升用户体验的作用
+         title: '数据加载中',
+         icon: 'loading',
+       });
+       wx.request({
+         url: API.apiDomain + '/apis/operation/' + API.operationEdition + '/customerPubContent/listOwner',
+         method: "POST",
+         header: {
+           "Authorization": "bearer " + data.access_token
+         },
+         data: {
+           p: this.data.data.p,
+           s: this.data.data.s,
+           userId: data.id,
+           // userId:"100",
+           pubStatus: true
+         },
+         complete() {  //请求结束后隐藏 loading 提示框
+           wx.hideLoading();
+         },
+
+         success: function (res) {
+           if (res.data.status == true) {
+             wx.hideLoading();
+             res.data.data.forEach((item, index) => {
+               item.imageUrl1 = item.cover.url + "?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+             })
+             that.setData({
+               pageNum: Math.ceil(res.data.total / that.data.data.s),
+               imgsArr: res.data.data
+             })
+             if (that.data.imgsArr.length > 1) {
+               that.setData({
+                 styleWidth: that.data.imgsArr.length * 220 + 72 + "px"
+               })
+             } else {
+               that.setData({
+                 styleWidth: 440 + 72 + "px"
+               })
+             }
+
+           } else {
+             wx.showModal({
+               showCancel: false,
+               title: "网络异常",
+
+             })
+           }
+
+
+         },
+
+       })
+       // 草稿
+       wx.request({
+         url: API.apiDomain + '/apis/operation/' + API.operationEdition + '/customerPubContent/listOwner',
+         method: "POST",
+         header: {
+           "Authorization": "bearer " + data.access_token
+         },
+         data: {
+           p: this.data.p1,
+           s: this.data.s1,
+           userId: data.id,
+           // userId:"100",
+           pubStatus: false
+         },
+         complete() {  //请求结束后隐藏 loading 提示框
+           wx.hideLoading();
+         },
+
+         success: function (res) {
+           if (res.data.status == true) {
+             wx.hideLoading();
+             res.data.data.forEach((item, index) => {
+               item.imageUrl1 = item.cover.url + "?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+             })
+             that.setData({
+               pages1: Math.ceil(res.data.total / that.data.s),
+               imgsArr1: res.data.data
+             })
+             if (that.data.imgsArr1.length > 1) {
+               that.setData({
+                 styleWidth1: that.data.imgsArr1.length * 220 + 72 + "px"
+               })
+             } else {
+               that.setData({
+                 styleWidth1: 440 + 72 + "px"
+               })
+             }
+
+           } else {
+             wx.showModal({
+               showCancel: false,
+               title: "网络异常",
+
+             })
+           }
+
+
+         },
+
+       })
        
        
      }else{

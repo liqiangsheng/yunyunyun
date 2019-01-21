@@ -1,8 +1,8 @@
 {
   "pages": [
-    "pages/home/home",
+     "pages/index/index",
     "pages/me/me",
-    "pages/index/index",
+    "pages/home/home",
     "pages/findDetail/findDetail",
     "pages/follow/follow",
     "pages/homeIndex1_0/homeIndex1_0",
@@ -58,26 +58,26 @@
       {
         "iconPath": "./images/homesmall1.png",
         "selectedIconPath": "./images/homesmall.png",
-        "pagePath": "pages/index/index",
-        "text": "首页"
+        "pagePath": "pages/index/index"
+
       },
       {
         "iconPath": "./images/zixun1.png",
         "selectedIconPath": "./images/zixun2.png",
-        "pagePath": "pages/homeIndex1_0/homeIndex1_0",
-        "text": "资讯"
+        "pagePath": "pages/homeIndex1_0/homeIndex1_0"
+    
       },
       {
         "iconPath": "./images/zhihui1.png",
         "selectedIconPath": "./images/zhihui2.png",
-        "pagePath": "pages/home/home",
-        "text": "智慧活动"
+        "pagePath": "pages/home/home"
+    
       },
       {
         "iconPath": "./images/mesmall1.png",
         "selectedIconPath": "./images/mesmall.png",
-        "pagePath": "pages/me/me",
-        "text": "我的"
+        "pagePath": "pages/me/me"
+  
       }
     ]
   }

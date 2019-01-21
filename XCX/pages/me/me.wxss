@@ -12,18 +12,25 @@
  .userinfo_top{
   width: 100%;
   height: 131px;
-  background: #ECE2A3
+  position: relative
+ }
+ .meBg{
+   width: 100%;
+   height: 131px;
  }
 .userinfo_top_top{
   width: 100%;
   height: 52px;
-  position: relative;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0
  }
 .setting{
   width: 21px;
   height: 21px;
   position: absolute;
-  left: 20px;
+  left: 41px;
   top:18px;
 }
 
@@ -52,7 +59,9 @@
 .userinfo_top_bottom{
   width: 100%;
   height: 79px;
-  position: relative;
+  position:absolute;
+  left: 0;
+  top: 52px;
 }
 .userinfo_top_bottom>image{
   display: inline-block;
@@ -62,16 +71,23 @@
  .userinfo_top_bottom_img{
   position: absolute;
   left: 40px;
-  bottom: -32px;
-  width: 70px;
-  height: 70px;
- }
- .userinfo_top_bottom_img>image{
-  display: block;
+  bottom: -40px;
   width: 66px;
   height: 66px;
-  border: 2px solid #ffffff;
+  margin: 0;
+  padding: 0;
   border-radius: 50%;
+  border: 2px solid #ffffff;
+
+ }
+ .userinfo_top_bottom_img>image{
+  border-radius: 50%;
+  display: block;
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  top: -2.1px;
+  left: -2.2px;
  }
  .userinfo_top_bottom_fans{
   padding: 0 15px;
@@ -79,7 +95,7 @@
   position: absolute;
   right: 46px;
   bottom: -18px;
-  background: #ff8e74;
+  background: #ff7f61;
   text-align: center;
   line-height: 36px;
   font-size: 12px;
@@ -95,7 +111,7 @@
   width: 100%;
   height: 150px;
   background: #ffffff;
-  padding: 68px 47px 0 41px;
+  padding: 68px 0 0 41px;
   box-sizing: border-box;
   display: flex;
  }
@@ -125,7 +141,7 @@
     width: 100%;
   overflow-x: scroll;
   height: 210px;
- } 
+ }
  .Me_tab_li1_img{
   height: 210px;
  }
@@ -173,6 +189,12 @@
   width: 12px;
   color: #262626;
   margin: 0 auto;
+  font-weight: 500;
+  transform:rotate(90deg);
+  -ms-transform:rotate(90deg); 	/* IE 9 */
+  -moz-transform:rotate(90deg); 	/* Firefox */
+  -webkit-transform:rotate(90deg); /* Safari 和 Chrome */
+  -o-transform:rotate(90deg);
 }
 .Me_tab_li3{
   width: 62px;
