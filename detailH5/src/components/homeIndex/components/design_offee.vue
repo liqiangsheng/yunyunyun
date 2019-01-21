@@ -5,7 +5,8 @@
       <li v-for="(item1,index1) in objList"  @click="goToHomePage(item1)" ref="swiperScroll">
         <div class="design_offee_top">
           <div class="design_offee_top_img">
-            <img :src="item1.designerUser.designerHonorList[0].imageUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" alt="">
+            <img :src="item1.coverHonor.imageUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" alt="" v-if="item1.coverHonor">
+            <img :src="item1.designerUser.designerHonorList[0].imageUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" alt="" v-else>
           </div>
           <div class="design_offee_top_centent">
             <div class="powerIndex">
@@ -59,7 +60,7 @@ export default {
     }
   },
   created() {
-    document.title = "匠星"
+    document.title = "社区"
     commonUserList(this.p,this.s).then(res=>{
       if(res.data.status == true){
         console.log(res,"fhsdfjk")
@@ -251,11 +252,12 @@ export default {
         }
         .design_offee_bottom{
           width: 100%;
-          height: 120px;
+          height: 150px;
           position: absolute;
           left: 0;
-          bottom: 30px;
-          /*background: url(../../../../static/images/投影bg.png);*/
+          bottom: 0;
+          background: url(../../../../static/images/投影bg.png);
+          background-size: 100% 100%;
           .design_offee_bottom_content{
             width: 100%;
             height: 90px;
@@ -266,7 +268,6 @@ export default {
             padding: 25px 20px;
             box-sizing: border-box;
             overflow: hidden;
-            box-shadow: 0px 30px 30px 30px rgba(5,5,9,0.05);
             .img3{
               width: 40px;
               height:  40px;

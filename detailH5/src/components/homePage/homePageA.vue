@@ -7,7 +7,7 @@
         <img class="homePageAItemIndex1Img" :src="item.bannerUrl" alt="" @click="goDetail(item.id)">
         <div class="homePageAItemIndex1Title">{{item.title}}</div>
         <ul class="homePageAItemIndex1Ul">
-          <li><img src="/static/images/look.png" alt="">{{item.viewCount}}</li>
+          <li><img src="/static/images/浏览数.svg" alt="">{{item.viewCount}}</li>
           <li><img src="/static/images/like.png" alt="">{{item.laudedCount}}</li>
           <li><img src="/static/images/comment.png" alt="">{{item.commentCount}}</li>
         </ul>
@@ -20,7 +20,7 @@
         <img class="homePageAItemIndex1Img" :src="item.bannerUrl" alt="" @click="goDetail(item.id)">
         <div class="homePageAItemIndex1Title">{{item.title}}</div>
         <ul class="homePageAItemIndex1Ul">
-          <li><img src="/static/images/look.png" alt="">{{item.viewCount}}</li>
+          <li><img src="/static/images/浏览数.svg" alt="">{{item.viewCount}}</li>
           <li><img src="/static/images/like.png" alt="">{{item.laudedCount}}</li>
           <li><img src="/static/images/comment.png" alt="">{{item.commentCount}}</li>
         </ul>

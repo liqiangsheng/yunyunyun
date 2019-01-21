@@ -710,17 +710,17 @@
     width: 100%;
     height: 100%;
     background: #F7F7F7;
-    padding-top: 0.5rem;
+    padding-top: 1rem;
     img{
-      width: 1rem;
-      height: 0.94rem;
+      width: 1.2rem;
+      height: 1.14rem;
       display: block;
       margin: 0 auto;
     }
     p{
       width: 100%;
       line-height: 0.5rem;
-      margin-top: 0.2rem;
+      font-size: 0.14rem;
       text-align: center;
       color:rgba(153,153,153,1);
     }

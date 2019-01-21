@@ -1,10 +1,11 @@
 <template>
-  <div id="fireMap" @scroll="moreUpdata">
+  <div id="fireMap" @scroll="moreUpdata" ref="screenWidh">
     <ul class="fireMapBox" :style="styleWidth">
       <li style="width: 20px;float: left;height: 100%">
         <!--占位u-->
       </li>
-      <li v-for="(item,index) in objData" class="fireMapList" :style="'background:url('+item.advertiseImage.imageUrl+');background-size:100% 100%'">
+      <li v-for="(item,index) in objData" class="fireMapList" :style="'background:url('+item.advertiseImage.imageUrl+');background-size:100% 100%;width:'+310/375*screenWidh/100+'rem'">
+        <!--<li v-for="(item,index) in objData" class="fireMapList" :style="'background:url(../../../static/images/bg0.png);background-size:100% 100%'">-->
         <div class="fireMapBox_box">
           <h5>{{item.activityTitle}}</h5>
           <p>{{item.activitySummary}}</p>
@@ -32,12 +33,14 @@
           s:20,// 、、一页多少
         },
         stateXCX:"", //是不是小程序
-        styleWidth:{width:"340px"}
+        styleWidth:{width:"340px"},
+        screenWidh:375
       }
     },
     created() {
       this.$nextTick(function () {
-        document.title = "火图直播平台";
+        document.title = "图播平台";
+        this.screenWidh = this.$refs.screenWidh.offsetWidth;
       })
       activityImagesBookList(this.page).then(res=>{
         if(res.data.status == true){
@@ -51,10 +54,10 @@
           if(res.data.data.length>0){
             this.objData = res.data.data;
             this.$nextTick(function(){
-              this.styleWidth ={width: this.objData.length*320+20+"px"}
+              this.styleWidth ={width: this.objData.length*(310/375*this.screenWidh)/100+0.5+"rem"}
             })
           }else {
-            this.styleWidth ={width: 340+"px"}
+            this.styleWidth ={width: 3.4+"rem"}
           }
         }else{
           Tost("网络异常，请重试")
@@ -82,7 +85,7 @@
                 })
                 that.objData = that.objData.concat(res.data);
                 this.$nextTick(function(){
-                  this.styleWidth ={width: this.objData.length*320+20+"px"}
+                  this.styleWidth ={width: this.objData.length*(310/375*this.screenWidh)/100+0.5+"rem"}
                 })
               }else{
                 Indicator.close();
@@ -99,7 +102,7 @@
                 })
                 that.objData = that.objData.concat(res.data);
                 this.$nextTick(function(){
-                  this.styleWidth ={width: this.objData.length*320+20+"px"}
+                  this.styleWidth ={width: this.objData.length*(310/375*this.screenWidh)/100+0.5+"rem"}
                 })
               }else{
                 Indicator.close();
@@ -125,64 +128,76 @@
     top: 0;
     right: 0;
     overflow-x: scroll;
-    background: #eeeeee;
+
     .fireMapBox{
       position: absolute;
-      top:0.1rem;
-      bottom: 0.31rem;
+      top:0.2rem;
+      bottom: 0.21rem;
       overflow-y: hidden;
       .fireMapList{
-        width: 310px;
+        width: 3.1rem;
         height: 100%;
         margin-right: 0.1rem;
         float: left;
         position: relative;
         .fireMapBox_box{
-          width: 80%;
-          height: 237px;
+          padding: 0 0.35rem 0 0.4rem;
+          box-sizing: border-box;
+          height: 1.92rem;
           position: absolute;
-          left: 10%;
+          width: 100%;
+          left: 0;
           bottom: 0;
           h5{
-            font-size: 17px;
+            font-size: 0.17rem;
+            height: 0.44rem;
+            line-height: 0.22rem;
             width: 100%;
-            overflow: hidden;
+            overflow : hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
+            display: -webkit-box;
+            -webkit-line-clamp:2;
+            -webkit-box-orient: vertical;
+            word-break:break-all;
             color: #ffffff;
+            letter-spacing: 0.01rem;
           }
           p{
-            margin-top: 16px;
+            margin-top: 0.12rem;
             width: 100%;
-            height: 57px;
-            line-height: 19px;
-            font-size: 13px;
+            height: 0.38rem;
+            line-height: 0.19rem;
+            font-size: 0.13rem;
             color: #ffffff;
             overflow : hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
-            -webkit-line-clamp: 3;
+            -webkit-line-clamp:2;
             -webkit-box-orient: vertical;
             word-break:break-all;
+            letter-spacing: 0.01rem;
           }
           span{
             display: block;
-            margin-top: 52px;
-            font-size: 12px;
+            margin-top: 0.37rem;
+            font-weight: 400;
+            font-size: 0.13rem;
             color: #ffffff;
+            letter-spacing: 0.01rem;;
           }
           div{
-            width: 96px;
-            height: 44px;
-            border: 2px solid #ffffff;
+            width: 0.96rem;
+            height:0.42rem;
+            border: 0.02rem solid #ffffff;
             text-align: center;
-            line-height: 44px;
-            border-radius: 30px;
-            font-size: 17px;
+            line-height: 0.42rem;
+            border-radius: 0.3rem;
+            font-size: 0.14rem;
+            font-weight: 900;
             color: #ffffff;
             position: absolute;
-            right: 0;
-            bottom: 60px;
+            right: 0.35rem;
+            bottom: 0.26rem;
           }
         }
       }

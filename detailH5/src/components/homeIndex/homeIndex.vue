@@ -10,10 +10,18 @@
      </li>
    </ul>
    <div class="homeIndex_content">
-     <DesignOffee v-if="headerIndex==0"></DesignOffee>
-     <ResourcePool v-if="headerIndex==1"></ResourcePool>
-     <Weathervane v-if="headerIndex==2"></Weathervane>
-     <FireMap v-if="headerIndex==3"></FireMap>
+     <keep-alive>
+       <DesignOffee v-if="headerIndex==0"></DesignOffee>
+     </keep-alive>
+     <keep-alive>
+       <ResourcePool v-if="headerIndex==1"></ResourcePool>
+     </keep-alive>
+     <keep-alive>
+       <Weathervane v-if="headerIndex==2"></Weathervane>
+     </keep-alive>
+     <keep-alive>
+       <FireMap v-if="headerIndex==3"></FireMap>
+     </keep-alive>
    </div>
 
   </div>
@@ -41,7 +49,7 @@ export default {
     }
   },
   created() {
-    document.title = "资讯"
+    document.title = "社区"
     this.headerIndex = this.$store.state.headerIndex; //点击还回回到原来的页面
   },
   methods:{
@@ -87,24 +95,24 @@ export default {
       li{
         flex: 1;
         height: 0.52rem;
-        font-size:0.15rem;
         font-family:PingFangSC-Medium;
-        font-weight:500;
+        font-weight:100;
         color:rgba(102,102,102,1);
         text-align: center;
         .homeIndex_header_div{
           width: 90%;
           height: 0.44rem;
           text-align: center;
-          font-size: 0.14rem;
           span{
             display: inline-block;
             line-height: 0.24rem;
             margin-top: 0.04rem;
+            font-size: 0.14rem;
           }
           p{
             line-height: 0.12rem;
             color:rgba(102,102,102,1);
+            font-weight:100;
             font-size: 0.1rem;
           }
         }
@@ -126,7 +134,7 @@ export default {
     .homeIndex_content{
       position: absolute;
       left: 0;
-      top:0.5rem;
+      top:0.53rem;
       right: 0;
       bottom: 0;
     }

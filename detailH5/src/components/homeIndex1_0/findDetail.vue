@@ -51,7 +51,7 @@
                   {{item.favoredCount<10000?item.favoredCount:(item.favoredCount/10000).toFixed(2)+'万'}}
                 </div>
               <div>
-                <img src="/static/images/look.png" alt="">
+                <img src="/static/images/浏览数.svg" alt="">
                 {{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}
               </div>
 
@@ -154,6 +154,10 @@
           if(res.status == true){
             let arrdata = [res.data];
             arrdata.forEach((item,index)=>{
+              item.laudedCount = !!item.laudedCount?item.laudedCount:0;
+              item.favoredCount = !!item.favoredCount?item.favoredCount:0;
+              item.readCount = !!item.readCount?item.readCount:0;
+              item.commentedCount = !!item.commentedCount?item.commentedCount:0;
               item.messageShow = false;
               item.message1 = "";
               item.value = "展开";
@@ -166,6 +170,7 @@
                 item.message1 = item.content;
               }
             })
+//            console.log(arrdata)
             this.listData = arrdata;
             this.$nextTick(()=>{
               setTimeout(()=>{

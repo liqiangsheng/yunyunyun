@@ -1,7 +1,17 @@
 <template>
-  <!--发现-->
-
-      <ul id="box" @scroll="boxScroll">
+  <!--首页-->
+  <div id="homeIndex1_0">
+    <ul class="homeIndex1_ul">
+      <li v-for="(item,index) in headerTab" @click="tabClick(index)">
+        <div class="homeIndex1_ul_li_div" :class="[{active:headerTabIndex==index},'homeIndex1_span'+index]">
+          <span>{{item.Chinese}}</span>
+          <p>{{item.English}}</p>
+        </div>
+      </li>
+    </ul>
+    <div class="homeIndex1_0_components">
+      <!--<Find v-if="headerTabIndex==0"></Find>-->
+      <ul id="box" @scroll="boxScroll" v-if="headerTabIndex==0">
         <li v-for="(item,index) in imgsArr" @click.stop="clickFn(item,index)" >
           <img :src="item.imageUrl1" alt="">
           <div class="img-info_bottom">
@@ -12,31 +22,44 @@
               </div>
               <b>{{item.authorInfo.name}}</b>
             </div>
-            <p>{{item.title}}</p>
+            <h5>{{item.title}}</h5>
             <!--<div class="img-info_li3">-->
-              <!--<img src="/static/images/点赞.png" alt="" v-if="item.laudedStatus==false">-->
-              <!--<img src="/static/images/点赞2.png" alt="" v-if="item.laudedStatus==true">-->
+            <!--<img src="/static/images/点赞.png" alt="" v-if="item.laudedStatus==false">-->
+            <!--<img src="/static/images/点赞2.png" alt="" v-if="item.laudedStatus==true">-->
             <!--</div>-->
           </div>
         </li>
-        <li style="text-align: center;line-height: 1.0rem;color: #999999" v-show="!!message">
-          {{message}}
-        </li>
+        <!--<li style="text-align: center;line-height: 1.0rem;color: #999999" v-show="!!message">-->
+        <!--{{message}}-->
+        <!--</li>-->
       </ul>
+      <Follow v-if="headerTabIndex==1" :userToken="token" :userId="id" :userType="userType"></Follow>
+    </div>
+
+  </div>
 </template>
 
 <script>
-  //  import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
+  import Find from './alter/find.vue';
+  import Follow from './alter/follow.vue';
   import { Toast } from 'mint-ui';  //弹框
+  import { Actionsheet } from 'mint-ui';
   import { Indicator } from 'mint-ui';
-  import {customerPubContentListHomePage} from "../../../assets/js/promiseHttp.js"
+  import {customerPubContentListHomePage} from "../../assets/js/promiseHttp.js"
+  import Vue from 'vue';
+  Vue.component(Actionsheet.name, Actionsheet);
   export default {
     name: 'find',
-    components: {
-//      vueWaterfallEasy
+    components:{
+      Find,Follow
     },
     data(){
       return{
+        headerTab:[{Chinese:"发现",English:"Find"},{Chinese:"关注",English:"Aattention"}], //tab
+        headerTabIndex:0,//是关注还是发现
+        token:"",
+        id:"",
+        userType:"",
         refshash:"下拉刷新",
         p:1,  //页
         s:10, //每页多少
@@ -53,14 +76,13 @@
         flag:false, //距离底部距离小于50
       }
     },
+    watch:{
+    },
     created() {
-
-      this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):"";
-      this.$nextTick(function(){
-//        this.OffsetHeight = this.$refs.findBox.offsetHeight;
-        document.title = "发现"
-      })
-      customerPubContentListHomePage(this.p,6).then(res=>{
+      this.token = this.$router.history.current.query.token
+      this.id = this.$router.history.current.query.id
+      this.userType = this.$router.history.current.query.userType
+      customerPubContentListHomePage(this.p,this.s).then(res=>{
         console.log(res,"fdjsfgd")
         if(res.status==true){
           res.data.forEach((item,index)=>{
@@ -77,73 +99,102 @@
               that.waterFull(items);
               Indicator.close()
             })
-          },250)
+          },1000)
         }else{
           Toast("网络出错了，请重试")
         }
       })
     },
     methods:{
-      boxScroll(e){ //滚动事件
-        if(e.target.scrollTop>=(e.target.scrollHeight-e.target.clientHeight-3)){
-            this.flag = true
+      tabClick(i){//头部切换
+        if(i==1){
+          if(!this.token){
+              Toast('你还未登录，请登录');
+              setTimeout(()=>{
+                if(window.__wxjs_environment === 'miniprogram'){
+//                wx.miniProgram.switchTab({url: '../../pages/me/me'})   //跳回小程序需要显示的页面路劲
+                  wx.miniProgram.navigateTo({url: '../../pages/login/login?type=homeIndex1_0'})   //跳回小程序需要显示的页面路劲
+                }else{
+                  Toast("请在微信浏览器里打开");
+                }
+              },500)
+
           }else {
-            this.flag = false
+            this.headerTabIndex =1;
           }
-          if(this.flag==true){
-            this.p++
-            let that = this;
-            if(that.pages<that.p){
-              that.p = that.pages;setTimeout(()=>{
-                this.message = "这是我的底线...";
-                return;
-              },2100)
-            }else if(that.pages==that.p){
-              customerPubContentListHomePage(this.p,this.s).then(res=>{
-                if(res.status == true){
-                  res.data.forEach((item,index)=>{
-                    item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+
+        }else {
+          this.headerTabIndex =0;
+        }
+      },
+      boxScroll(e){ //滚动事件
+        let scrollTop = e.target.scrollTop?e.target.scrollTop:0;
+        let scrollHeight = e.target.scrollHeight?e.target.scrollHeight:0;
+        let clientHeight = e.target.clientHeight?e.target.clientHeight:0;
+        if(scrollTop==(scrollHeight-clientHeight)){
+//          this.flag = true
+//        }else {
+//          this.flag = false
+//        }
+//        if(this.flag==true){
+          this.p++
+          let that = this;
+          if(that.pages<that.p){
+//            that.p = that.pages;
+            setTimeout(()=>{
+              this.message = "这是我的底线...";
+              Toast("被你看光啦！");
+              return;
+            },1100)
+          }else if(that.pages==that.p){
+            customerPubContentListHomePage(this.p,this.s).then(res=>{
+              if(res.status == true){
+                res.data.forEach((item,index)=>{
+                  item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+                })
+                that.imgsArr = that.imgsArr.concat(res.data);
+                Indicator.open("加载中")
+                setTimeout(()=>{
+                  this.$nextTick(function(){
+                    let  box = document.getElementById('box');
+                    let items = box?box.children:[];
+                    that.waterFull(items);
+                    Indicator.close()
                   })
-                  that.imgsArr = that.imgsArr.concat(res.data);
-                  Indicator.open("加载中")
-                  setTimeout(()=>{
-                    this.$nextTick(function(){
-                      let  box = document.getElementById('box');
-                      let items = box?box.children:[];
-                      that.waterFull(items);
-                      Indicator.close()
-                    })
-                  },2000)
-                }else{
-                  Toast("网络出错了，请重试")
-                }
-              })
-            }else if(that.pages>that.p){
-              customerPubContentListHomePage(this.p,this.s).then(res=>{
-                if(res.status == true){
-                  res.data.forEach((item,index)=>{
-                    item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+                },1000)
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+          }else if(that.pages>that.p){
+            customerPubContentListHomePage(this.p,this.s).then(res=>{
+              if(res.status == true){
+                res.data.forEach((item,index)=>{
+                  item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+                })
+                that.imgsArr = that.imgsArr.concat(res.data);
+                Indicator.open("加载中")
+                setTimeout(()=>{
+                  this.$nextTick(function(){
+                    let  box = document.getElementById('box');
+                    let items = box?box.children:[];
+                    that.waterFull(items);
+                    Indicator.close()
                   })
-                  that.imgsArr = that.imgsArr.concat(res.data);
-                  Indicator.open("加载中")
-                  setTimeout(()=>{
-                    this.$nextTick(function(){
-                      let  box = document.getElementById('box');
-                      let items = box?box.children:[];
-                      that.waterFull(items);
-                      Indicator.close()
-                    })
-                  },2000)
-                }else{
-                  Toast("网络出错了，请重试")
-                }
-              })
-            }
+                },1000)
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
           }
-        },
+        }
+      },
+
       clickFn(value,index){ //进入详情页
         this.$router.push({path:"/findDetail",query:{id:value.id}}) //去发现的详情页面，记得带状态跟token
       },
+
+
       waterFull(items){//瀑布流
         // 1- 确定列数  = 页面的宽度 / 图片的宽度
         let columns = 2; //2列
@@ -185,21 +236,85 @@
           height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
         }
       },
-    },
-    mounted() {
-//      window.addEventListener('scroll',this.handleScroll,true) //监听高度
-    },
+    }
   }
 
 </script>
 
 <style scoped lang="less">
-      #box{
+  #homeIndex1_0 {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    top:0;
+    right: 0;
+    overflow: hidden;
+    .homeIndex1_ul{
+      width: 100%;
+      display: flex;
+      background: #ffffff;
+      position: relative;
+      li{
+        flex: 1;
+        height: 0.52rem;
+        font-family:PingFangSC-Light;
+        font-weight:300;
+        color:rgba(102,102,102,1);
+        border-bottom: 0.01rem solid #e6e6e6;
+        .homeIndex1_ul_li_div{
+          width:0.7rem ;
+          height: 0.42rem;
+          text-align: center;
+          font-size: 0.14rem;
+          span{
+            display: inline-block;
+            line-height: 0.24rem;
+            margin-top: 0.04rem;
+          }
+          p{
+            line-height: 0.12rem;
+            color:rgba(102,102,102,1);
+            font-size: 0.1rem;
+          }
+        }
+        .homeIndex1_ul_li_div.active{
+          font-size:0.14rem;
+          font-family:PingFangSC-Regular;
+          font-weight:600;
+          color:rgba(5,5,9,1);
+          border-bottom:0.02rem solid rgba(5,5,9,1);
+          p{
+            color:rgba(102,102,102,1);
+            font-weight:100;
+            font-size: 0.1rem;
+          }
+        }
+        .homeIndex1_span0{
+          display: block;
+          float: right;
+          margin-right:0.1rem ;
+        }
+        .homeIndex1_span1{
+          display: block;
+          float: left;
+          margin-left:0.1rem ;
+        }
+      }
+
+    }
+    .homeIndex1_0_components{
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      top:0.52rem;
+      right: 0;
+      overflow: hidden;
+      >ul{
         width: 100%;
         height: 100%;
-        overflow: scroll;
         position: relative;
         box-sizing: border-box;
+        overflow-y:scroll ;
         >li{
           width: 48.5%;
           position: absolute;
@@ -208,7 +323,6 @@
           >img{
             display: block;
             width: 100%;
-
           }
           >.img-info_bottom{
             width: 100%;
@@ -266,7 +380,7 @@
                 height: 0.17rem;
               }
             }
-            >p{
+            >h5{
               width: 100%;
               font-size:0.12rem;
               font-family:PingFangSC-Regular;
@@ -282,20 +396,11 @@
               padding: 0 0.1rem;
               box-sizing: border-box;
               margin-top: 0.04rem;
-              letter-spacing:0.01rem;
+              letter-spacing:0.02rem;
             }
           }
-
         }
       }
-
-  .messageFoot{
-    width: 100%;
-    height: 0.3rem;
-    line-height: 0.3rem;
-    color: rgba(5,5,5,0.3);
-    text-align: center;
-    margin-top: 0.2rem;
+    }
   }
 </style>
-

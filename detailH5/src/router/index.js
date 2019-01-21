@@ -40,7 +40,7 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/index',
+      redirect: '/homeIndex1_0',
     },
     {
       path: '/message',

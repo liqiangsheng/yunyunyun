@@ -10,7 +10,9 @@
       </li>
     </ul>
     <div class="homeIndex1_0_components">
-      <Find v-if="headerTabIndex==0"></Find>
+      <keep-alive>
+         <Find v-if="headerTabIndex==0"></Find>
+      </keep-alive>
       <Follow v-if="headerTabIndex==1" :userToken="token" :userId="id" :userType="userType"></Follow>
     </div>
 
@@ -40,7 +42,9 @@
     },
     watch:{
     },
+
     created() {
+      document.title = "首页"
       this.token = this.$router.history.current.query.token
       this.id = this.$router.history.current.query.id
       this.userType = this.$router.history.current.query.userType
