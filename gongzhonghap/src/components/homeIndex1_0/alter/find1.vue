@@ -5,7 +5,7 @@
         <li v-for="(item,index) in imgsArr" @click.stop="clickFn(item,index)" >
           <img :src="item.imageUrl1" alt="">
           <div class="img-info_bottom">
-            <img class="jiao" src="/static/images/小角.png" alt="">
+            <img class="jiao" src="/static/images/xiaojiao.png" alt="">
             <div  class="img-info_li1">
               <div class="img-info_li1_img">
                 <img :src="item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt="">
@@ -14,8 +14,8 @@
             </div>
             <p>{{item.title}}</p>
             <!--<div class="img-info_li3">-->
-              <!--<img src="/static/images/点赞.png" alt="" v-if="item.laudedStatus==false">-->
-              <!--<img src="/static/images/点赞2.png" alt="" v-if="item.laudedStatus==true">-->
+              <!--<img src="/static/images/dianzan.png" alt="" v-if="item.laudedStatus==false">-->
+              <!--<img src="/static/images/dianzan2.png" alt="" v-if="item.laudedStatus==true">-->
             <!--</div>-->
           </div>
         </li>

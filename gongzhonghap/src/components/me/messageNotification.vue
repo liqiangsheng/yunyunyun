@@ -1,7 +1,7 @@
 <template>
   <div id="messageNotification">
     <div class="messageNotification_falseBox" v-if="objList.length<=0">
-      <img src="/static/images/缺省图.png" alt="">
+      <img src="/static/images/queshengtu.png" alt="">
       你的消息区目前空空也～
     </div>
     <div class="messageNotification_box" v-else>
@@ -10,9 +10,9 @@
         <li v-for="(item,index) in objList" @click="activityClick(item)">
           <!--<mt-cell-swipe :right="[{content: '删除',style: { background: 'red', color: '#fff',width:'100%'},handler:()=>handler(item)}]">-->
              <div class="messageNotification_img">
-               <img src="/static/images/系统.png" alt="" v-if="item.notifyType=='1'">
-               <img src="/static/images/审核.png" alt="" v-if="item.notifyType=='2'">
-               <img src="/static/images/活动.png" alt="" v-if="item.notifyType=='3'">
+               <img src="/static/images/xitong.png" alt="" v-if="item.notifyType=='1'">
+               <img src="/static/images/shenhe.png" alt="" v-if="item.notifyType=='2'">
+               <img src="/static/images/huodong.png" alt="" v-if="item.notifyType=='3'">
                <img src="/static/images/xialian.png" alt=""  v-if="item.notifyType=='4'">
              </div>
             <div class="messageNotification_right">

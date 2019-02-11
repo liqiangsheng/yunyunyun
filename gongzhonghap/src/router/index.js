@@ -22,8 +22,10 @@ const EditingInformation = resolve => require(['@/components/editingInformation/
 const MeActivity = resolve => require(['@/components/meActivity/meActivity'], resolve); //我的活动
 const MultiActivity = resolve => require(['@/components/multiActivity/multiActivity'], resolve); //购票列表
 const RegistrationInformation = resolve => require(['@/components/registrationInformation/registrationInformation'], resolve); //填写报名信息
-const HomePage = resolve => require(['@/components/homePage/homePage'], resolve); //个人企业首页
+const EnterprisePage = resolve => require(['@/components/homePage/enterprisePage'], resolve); //企业主页
+const BigShotPage = resolve => require(['@/components/homePage/bigShotPage'], resolve); //大咖主页
 const LookMore = resolve => require(['@/components/homePage/lookMore'], resolve); //查看更多
+const MoreStories = resolve => require(['@/components/homePage/moreStories'], resolve); //更多故事
 const IntelligentMatching = resolve => require(['@/components/intelligentMatching/IntelligentMatching'], resolve); //智能匹配
 const IntelligentMatchingA = resolve => require(['@/components/intelligentMatching/IntelligentMatchingA'], resolve); //智能匹配
 const IntelligentMatchingB = resolve => require(['@/components/intelligentMatching/IntelligentMatchingB'], resolve); //智能匹配
@@ -68,8 +70,8 @@ const Release = resolve => require(['@/components/release/release'], resolve); /
 // import MeActivity from '@/components/meActivity/meActivity' //我的活动
 // import MultiActivity from '@/components/multiActivity/multiActivity' //购票列表
 // import RegistrationInformation from '@/components/registrationInformation/registrationInformation' //填写报名信息
-// import HomePage from '@/components/homePage/homePage' //首页
 // import LookMore from '@/components/homePage/lookMore' //查看更多
+// import MoreStories from '@/components/homePage/moreStories' //更多故事
 // import IntelligentMatching from '@/components/intelligentMatching/IntelligentMatching' //智能匹配
 // import IntelligentMatchingA from '@/components/intelligentMatching/IntelligentMatchingA' //智能匹配
 // import IntelligentMatchingB from '@/components/intelligentMatching/IntelligentMatchingB' //智能匹配
@@ -95,6 +97,8 @@ const Release = resolve => require(['@/components/release/release'], resolve); /
 Vue.use(Router)
 
 export default new Router({
+  // mode:'history',
+  mode:'hash',
   routes: [
     {
       path: '/',
@@ -104,210 +108,360 @@ export default new Router({
       path: '/homeIndex1_0',
       name: 'homeIndex1_0',
       component: HomeIndex1_0,
+      meta:{
+        isTrue:true,
+      }
     },
     {
       path: '/follow',
       name: 'follow',
       component: Follow,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/findDetail',
       name: 'findDetail',
       component: FindDetail,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/homeIndex',
       name: 'homeIndex',
       component: homeIndex,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/index',
       name: 'index',
       component: Index,
+      meta:{
+        isTrue:true,
+      }
     },
     {
       path: '/release',
       name: 'release',
       component: Release,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/contact',
       name: 'contact',
       component: Contact,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/fireMap',
       name: 'fireMap',
       component: FireMap,
+      meta:{
+        isTrue:true,
+      }
     },
     {
       path: '/payH5',
       name: 'payH5',
       component: PayH5,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/PictureLiveBroadcast',
       name: 'PictureLiveBroadcast',
       component: PictureLiveBroadcast,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/loading',
       name: 'loading',
       component: Loading,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/admission',
       name: 'admission',
       component: Admission,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/Photograph',
       name: 'Photograph',
       component: Photograph,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/acknowledgementOfOrder',
       name: 'acknowledgementOfOrder',
       component: AcknowledgementOfOrder,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/face',
       name: 'face',
       component: Face,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/IntelligentMatching',
       name: 'IntelligentMatching',
       component: IntelligentMatching,
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/lookMore',
       component: LookMore,
-      name: 'lookMore'
+      name: 'lookMore',
+      meta:{
+        isTrue:false,
+      }
+    },
+    { path: '/moreStories',
+      component: MoreStories,
+      name: 'moreStories',
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/IntelligentMatchingA',
       name: 'IntelligentMatchingA',
       component: IntelligentMatchingA,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/IntelligentMatchingB',
       name: 'IntelligentMatchingB',
       component: IntelligentMatchingB,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/IntelligentMatchingC',
       name: 'IntelligentMatchingC',
       component: IntelligentMatchingC,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/IntelligentComment',
       name: 'IntelligentComment',
       component: IntelligentComment,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/personalMelonPages',
       name: 'personalMelonPages',
       component: PersonalMelonPages,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/homeDetail',
       name: 'HomeDetail',
       component: HomeDetail,
+      meta:{
+        isTrue:false,
+      }
     },
     {
-      path: '/homePage',
-      name: 'homePage',
-      component: HomePage,
+      path: '/enterprisePage',
+      name: 'enterprisePage',
+      component: EnterprisePage,
+      meta:{
+        isTrue:false,
+      }
+    },
+    {
+      path: '/bigShotPage',
+      name: 'bigShotPage',
+      component: BigShotPage,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/registrationInformation',
       name: 'registrationInformation',
       component: RegistrationInformation,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/multiActivity',
       name: 'multiActivity',
       component: MultiActivity,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/meActivity',
       name: 'meActivity',
       component: MeActivity,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/editingInformation',
       name: 'EditingInformation',
       component: EditingInformation,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/message',
       name: 'Message',
       component: Message,
+      meta:{
+        isTrue:false,
+      }
     },
     {
       path: '/home',
       name: 'home',
       component: Home,
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/homeMap',
       component: HomeMap,
-      name: 'map'
+      name: 'map',
+      meta:{
+        isTrue:false,
+      }
     },
       { path: '/me',
       component: Me,
-      name: 'me'
+      name: 'me',
+        meta:{
+          isTrue:false,
+        }
     },
     { path: '/personalSettings',
       component: PersonalSettings,
-      name: 'personalSettings'
+      name: 'personalSettings',
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/praiseMe',
       component: PraiseMe,
-      name: 'praiseMe'
+      name: 'praiseMe',
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/collect_my',
       component: CollectMy,
-      name: 'collect_my'
+      name: 'collect_my',
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/comment_on_my',
       component: CommentOnMy,
-      name: 'comment_on_my'
+      name: 'comment_on_my',
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/userFeedback',
       component: UserFeedback,
-      name: 'userFeedback'
+      name: 'userFeedback',
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/messageNotification',
       component: MessageNotification,
-      name: 'messageNotification'
+      name: 'messageNotification',
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/myfollow',
       component: Myfollow,
-      name: 'myfollow'
+      name: 'myfollow',
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/myComment',
       component: MyComment,
-      name: 'myComment'
+      name: 'myComment',
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/myCollection',
       component: MyCollection,
-      name: 'myCollection'
+      name: 'myCollection',
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/fans',
       component: Fans,
-      name: 'fans'
+      name: 'fans',
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/myFabulous',
       component: MyFabulous,
-      name: 'myFabulous'
+      name: 'myFabulous',
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/login1',
       component: Login1,
-      name: 'login1'
+      name: 'login1',
+      meta:{
+        isTrue:false,
+      }
     },
     { path: '/login',
       component: Login,
-      name: 'login'
+      name: 'login',
+      meta:{
+        isTrue:false,
+      }
     },
   ]
 })

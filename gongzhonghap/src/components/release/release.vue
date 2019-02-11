@@ -25,9 +25,9 @@ export default {
       actions:[{ name:"请下载不同Tech App进行发布" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
       tabbarAarr:[  //、、tab
         {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
-        {name:"资讯",icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
+        {name:"资讯",icon:"./static/images/zixun2.png",icon1:"./static/images/zixun1.png",path:"/homeIndex"},
         {icon:"./static/images/zhaio.png",icon1:"./static/images/zhaio.png",path:"/release"},
-        {name:"智慧活动",icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
+        {name:"智慧活动",icon:"./static/images/zhihuihuodong2.png",icon1:"./static/images/zhihuihuodong1.png",path:"/index"},
         {name:"我的",icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
       ],
       tabbarAarrIndex:2,  //点击tab的下标

@@ -3,7 +3,7 @@
   <div id="follow">
     <!--未登录-->
     <div class="follow_login_false" v-if="LoginShow==false">
-      <img src="/static/images/未登录.png" alt="">
+      <img src="/static/images/weidenglu.png" alt="">
       <p @click="goLogin">你还没有登录，请点此“<b>登录</b>”获取关注内容</p>
     </div>
     <!--已登录-->
@@ -24,7 +24,7 @@
                 <!--<div class="follow_login_noFollow_li1"><img :src="item.url" alt=""></div>-->
                  <!--<div class="follow_login_noFollow_li2">{{item.name}}</div>-->
                  <!--<div class="follow_login_noFollow_li3">-->
-                   <!--<div><img :src="item.type==false?'/static/images/未关注.png':'/static/images/已关注.png'" alt="">{{item.value}}</div>-->
+                   <!--<div><img :src="item.type==false?'/static/images/weiguanzhu.png':'/static/images/yiguanzhu.png'" alt="">{{item.value}}</div>-->
                  <!--</div>-->
              <!--</li>-->
            <!--</ul>-->
@@ -53,7 +53,7 @@
                          <div class="imgIs">
                            <img :src="item1.url" >
                            <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*imgW+'px',top:item2.axesyRate*(item1.height/(item1.width/imgW))+'px'}">
-                           <img src="/static/images/标签.png" alt=""><span>{{item2.title}}</span>
+                           <img src="/static/images/biaoqian.png" alt=""><span>{{item2.title}}</span>
                            </div>
                          </div>
                        </div>
@@ -76,39 +76,39 @@
                  <div class="follow_login_Follow_li4" v-if="item.type==2">
 
                    <div @click.stop="laudedStatus(item)">
-                     <img src="/static/images/点赞2.png" alt="" v-if="item.customerPubContentMap.laudedStatus==true">
-                     <img src="/static/images/点赞.png" alt="" v-else>
+                     <img src="/static/images/dianzan2.png" alt="" v-if="item.customerPubContentMap.laudedStatus==true">
+                     <img src="/static/images/dianzan.png" alt="" v-else>
                      {{item.customerPubContentMap.laudedCount<10000?item.customerPubContentMap.laudedCount:(item.customerPubContentMap.laudedCount/10000).toFixed(2)+'万'}}
                    </div>
                    <div @click.stop="favoredStatus(item)">
-                     <img src="/static/images/收藏2.png" alt="" v-if="item.customerPubContentMap.favoredStatus==true">
-                     <img src="/static/images/收藏1.png" alt="" v-else>
+                     <img src="/static/images/shoucang2.png" alt="" v-if="item.customerPubContentMap.favoredStatus==true">
+                     <img src="/static/images/shoucang1.png" alt="" v-else>
                      {{item.customerPubContentMap.favoredCount<10000?item.customerPubContentMap.favoredCount:(item.customerPubContentMap.favoredCount/10000).toFixed(2)+'万'}}
                    </div>
                    <div>
-                     <img src="/static/images/关注阅读量.png" alt="">  {{item.customerPubContentMap.commentedCount<10000?item.customerPubContentMap.commentedCount:(item.customerPubContentMap.commentedCount/10000).toFixed(2)+'万'}}
+                     <img src="/static/images/guanzhuyueduliang.png" alt="">  {{item.customerPubContentMap.commentedCount<10000?item.customerPubContentMap.commentedCount:(item.customerPubContentMap.commentedCount/10000).toFixed(2)+'万'}}
                    </div>
                    <!--<div>-->
-                     <!--<img src="/static/images/分享.png" alt="">1.25万-->
+                     <!--<img src="/static/images/fenxiang.png" alt="">1.25万-->
                    <!--</div>-->
 
                  </div>
                  <div class="follow_login_Follow_li4" v-else>
                    <div @click="laudedStatus(item)">
-                     <img src="/static/images/点赞2.png" alt="" v-if="item.laudedStatus==true">
-                     <img src="/static/images/点赞.png" alt="" v-else>
+                     <img src="/static/images/dianzan2.png" alt="" v-if="item.laudedStatus==true">
+                     <img src="/static/images/dianzan.png" alt="" v-else>
                      {{item.laudedCount<10000?item.laudedCount:(item.laudedCount/10000).toFixed(2)+'万'}}
                    </div>
                    <div @click="favoredStatus(item)">
-                     <img src="/static/images/收藏2.png" alt="" v-if="item.favoredStatus==true">
-                     <img src="/static/images/收藏1.png" alt="" v-else>
+                     <img src="/static/images/shoucang2.png" alt="" v-if="item.favoredStatus==true">
+                     <img src="/static/images/shoucang1.png" alt="" v-else>
                      {{item.favoredCount<10000?item.favoredCount:(item.favoredCount/10000).toFixed(2)+'万'}}
                    </div>
                    <div>
-                     <img src="/static/images/关注阅读量.png" alt="">  {{item.commentedCount<10000?item.commentedCount:(item.commentedCount/10000).toFixed(2)+'万'}}
+                     <img src="/static/images/guanzhuyueduliang.png" alt="">  {{item.commentedCount<10000?item.commentedCount:(item.commentedCount/10000).toFixed(2)+'万'}}
                    </div>
                    <!--<div>-->
-                     <!--<img src="/static/images/浏览数.svg" alt="">-->
+                     <!--<img src="/static/images/liulangshu.svg" alt="">-->
                      <!--{{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}-->
                    <!--</div>-->
 
@@ -121,11 +121,11 @@
 
         </div>
       <div class="lengthSmall" v-if="followIsShow==false&&listData==-2">
-        <img src="/static/images/原创.png" alt="">
+        <img src="/static/images/yuanchuan.png" alt="">
         <p>你关注的人还未发布作品哦</p>
       </div>
       <div class="lengthSmall" v-if="followIsShow==false&&listData==-1">
-        <img src="/static/images/原创.png" alt="">
+        <img src="/static/images/yuanchuan.png" alt="">
         <p>你还没有关注任何人哦</p>
       </div>
     </div>
@@ -157,9 +157,9 @@
     return{
       tabbarArr:[  //、、tab
         {icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
-        {icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
+        {icon:"./static/images/zixun2.png",icon1:"./static/images/zixun1.png",path:"/homeIndex"},
         {icon:"./static/images/zhaio.png",icon1:"./static/images/zhaio.png",path:"/release"},
-        {icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
+        {icon:"./static/images/zhihuihuodong2.png",icon1:"./static/images/zhihuihuodong1.png",path:"/index"},
         {icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
       ],
       tabbarAarrIndex:0,  //点击tab的下标
@@ -213,10 +213,10 @@
         if(v.caredUserMap.vUser==0){ //去吃瓜
           this.$router.push({path:"/personalMelonPages",query:{id:v.caredUserMap.id}})
         }else{//去大咖
-          this.$router.push({path:"/homePage",query:{state:2,id:v.caredUserMap.id}})//1  true是大咖个人
+          this.$router.push({path:"/bigShotPage",query:{id:v.caredUserMap.id}})//1  true是大咖个人
         }
       }else{ //企业
-        this.$router.push({path:"/homePage",query:{state:1,id:v.caredUserMap.id}})//1 是大咖企业
+        this.$router.push({path:"/enterprisePage",query:{id:v.caredUserMap.id}})//1 是大咖企业
       }
 
     },
@@ -241,8 +241,8 @@
           this.$router.push({path:"/login"})
         },1000)
       }else{
-        if(v.userType == "1"){ //企业
-          companyInfoCancelCareCompany(v.caredUserMap.id,data.data.id,v.userType).then(res=>{
+        if(v.caredUserMap.userType == "1"){ //企业
+          companyInfoCancelCareCompany(v.caredUserMap.id,data.data.id,v.userType,data.data.access_token).then(res=>{
             if(res.data.status==true){
               v.caredUserMap.caredStatus = 0;
               Toast('关注已取消')
@@ -254,8 +254,8 @@
               Toast("网络出错了，请重试")
             }
           })
-        }else if(v.userType == "2"){  //个人
-          commonUserCancelCareUser(v.caredUserMap.id,data.data.id,v.userType).then(res=>{
+        }else if(v.caredUserMap.userType == "2"){  //个人
+          commonUserCancelCareUser(v.caredUserMap.id,data.data.id,v.caredUserMap.userType,data.data.access_token).then(res=>{
             if(res.data.status==true){
               v.caredUserMap.caredStatus = 0;
               Toast('关注已取消')
@@ -270,7 +270,6 @@
       }
     },
     follow(v){ //关注
-      console.log(v)
       let data = JSON.parse(localStorage.getItem("userInfo"));
       if(!data){
         Toast("您还未登录，请登录！");
@@ -278,8 +277,8 @@
           this.$router.push({path:"/login"})
         },1000)
       }else{
-        if(v.userType == "1"){ //企业
-          companyInfoCareCompany(v.caredUserMap.id,data.data.id,v.userType).then(res=>{
+        if(v.caredUserMap.userType == "1"){ //企业
+          companyInfoCareCompany(v.caredUserMap.id,data.data.id,v.caredUserMap.userType,data.data.access_token).then(res=>{
             if(res.data.status==true){
               v.caredUserMap.caredStatus = 1;
               Toast('关注成功')
@@ -287,8 +286,8 @@
               Toast("网络出错了，请重试")
             }
           })
-        }else if(v.userType == "2"){  //个人
-          commonUserCareUser(v.caredUserMap.id,data.data.id,v.userType).then(res=>{
+        }else if(v.caredUserMap.userType == "2"){  //个人
+          commonUserCareUser(v.caredUserMap.id,data.data.id,v.caredUserMap.userType,data.data.access_token).then(res=>{
             if(res.data.status==true){
               Toast('关注成功')
               v.caredUserMap.caredStatus = 1;
@@ -424,7 +423,7 @@
       this.listData = this.listData.splice(0,this.listData.length); //更新素组
     },
     tabClick(i){//头部切换
-      this.headerTabIndex =i;
+//      this.headerTabIndex =i;
       if(i==0){
         this.$router.push({path:"/homeIndex1_0"})
       }
@@ -705,7 +704,7 @@
       position: absolute;
       left: 0;
       right: 0;
-      bottom: 0.5rem;
+      bottom: 0.55rem;
       top: 0.52rem;
       overflow: hidden;
       .follow_login_Follow_ul{
@@ -994,7 +993,7 @@
 .Indextab{
   position: absolute;
   width: 100%;
-  height: 0.49rem;
+  height: 0.55rem;
   bottom: 0rem;
   left: 0;
   background: #ffffff;

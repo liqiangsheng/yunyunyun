@@ -77,7 +77,7 @@ export function activityListData(p,s){
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityInfo/list`;
     let data = {p:p,s:s}
-    axios.post(url,data,{header:{'Content-Type': 'application/json','Accept': '*/*'}}).then(res=>{
+    axios.post(url,data,{headers:{'Content-Type': 'application/json','Accept': '*/*'}}).then(res=>{
       resolve(res)
     }).catch(res=>{
       Toast("500后台服务器错误！")
@@ -90,7 +90,7 @@ export function IntallData(item){
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/findCommonUserById?userId=${item.data.id}`;
     // let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/findCommonUserById?userId=200`;
-    axios.get(url,{header:{'Content-Type': 'application/json','Accept': '*/*','Authorization':'Bearer '+item.data.access_token}}).then(res=>{
+    axios.get(url,{headers:{'Content-Type': 'application/json','Accept': '*/*','Authorization':'Bearer '+item.data.access_token}}).then(res=>{
       resolve(res)
     }).catch(res=>{
       Toast("500后台服务器错误！")
@@ -101,7 +101,7 @@ export function IntallData(item){
 export function companyInfofindCompanyInfoById(item){
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/findCompanyInfoById?companyId=${item.data.id}`;
-    axios.get(url,{header:{'Content-Type': 'application/json','Accept': '*/*','Authorization':'Bearer '+item.data.access_token}}).then(res=>{
+    axios.get(url,{headers:{'Content-Type': 'application/json','Accept': '*/*','Authorization':'Bearer '+item.data.access_token}}).then(res=>{
       resolve(res)
     }).catch(res=>{
       Toast("500后台服务器错误！")
@@ -128,8 +128,19 @@ export function login(tel,psd){
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/sysUserOperation/bindMobile`;
     let data = {mobile:tel,mobileType:"XCX",verifyCode:psd}
-    axios.post(url,data,{ header: {'Content-Type': 'application/json','Accept': 'application/json'}}).then(res=>{
+    axios.post(url,data,{ headers: {'Content-Type': 'application/json','Accept': 'application/json'}}).then(res=>{
       Indicator.close();
+      resolve(res)
+    }).catch(res=>{
+      Toast("500后台服务器错误！")
+    })
+  })
+}
+//退出登录
+export function loginout(){
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/logout`;
+    axios.post(url,{ headers: {'Content-Type': 'application/json','Accept': 'application/json'}}).then(res=>{
       resolve(res)
     }).catch(res=>{
       Toast("500后台服务器错误！")
@@ -165,7 +176,7 @@ export function  EditingInformationIntall(userId,token){
   Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/findCommonUserById?userId=${userId}`;
-    axios.get(url, {header: {
+    axios.get(url, {headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       "Authorization": "Bearer " + token
@@ -183,7 +194,7 @@ export function  EditingInformationIntall1(userId,token){
   Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/findCompanyInfoById?companyId=${userId}`;
-    axios.get(url, {header: {
+    axios.get(url, {headers: {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
       "Authorization": "Bearer " + token
@@ -246,6 +257,7 @@ export function qiniuToken(token) { //请求数据
 }
 // 上传图片到7牛
 export function upImgQiniu(event,qiniuToken){
+
   var file = event.target.files[0];
   var formData = new FormData();
   formData.append('file', file);
@@ -254,7 +266,7 @@ export function upImgQiniu(event,qiniuToken){
   let url1="https://pub.qinius.butongtech.com";
   Indicator.open("上传中...")
   return new Promise(function (resolve,reject) {
-    axios.post(url,formData,{header:{ "Content-Type": "multipart/form-data"}}).then(res=>{
+    axios.post(url,formData,{headers:{ "Content-Type": "multipart/form-data"}}).then(res=>{
       if(res.status ==200){
         resolve(url1+ "/" + res.data.key)
         Indicator.close()
@@ -450,12 +462,12 @@ export function informationId(id,userId,userType) { //请求数据 资讯id user
   })
 }
 //  个人企业页面
-export function companyInfoFindOne(id) { //请求数据
+export function companyInfoFindOne(id,userId,userType) { //请求数据
   Indicator.open("加载中...")
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/companyInfo/findOne?id="+id);
+    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/companyInfo/findOne?id="+id+"&userId="+userId+"&userType="+userType);
     ajax.setRequestHeader("Content-Type","application/json");
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -473,12 +485,12 @@ export function companyInfoFindOne(id) { //请求数据
   })
 }
 //  个人主页页面
-export function commonUserFindOne(id) { //请求数据
+export function commonUserFindOne(id,userId,userType) { //请求数据
   Indicator.open("加载中...")
   return new Promise(function (resolve,reject) {
     // var data =data
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/commonUser/findOne?id="+id);
+    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/commonUser/findOne?id="+id+"&userId="+userId+"&userType="+userType);
     ajax.setRequestHeader("Content-Type","application/json");
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
@@ -546,7 +558,7 @@ export function proposalContactTrack(obj) { //请求数据
   Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/proposalContactTrack`;
-    axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+    axios.post(url,obj,{headers:{"Content-Type":"application/json"}}).then(res=>{
       Indicator.close();
       resolve(res)
     }).catch(res=>{
@@ -623,7 +635,7 @@ export function operationTeamInfos(p,s){
   Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/teamInfos?p=${p}&s=${s}`;
-    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+    axios.get(url,{headers:{"Content-Type":"application/json"}}).then(res=>{
       Indicator.close();
       resolve(res)
     }).catch(function (error) {
@@ -635,10 +647,10 @@ export function operationTeamInfos(p,s){
 // 资源池
 export function companyList(p,s){
   Indicator.open("加载中...")
-  let obj = {companyCat:"2",p:p,s:s};
+  let obj = {companyCat:"2",p:p,s:s,userType:"",currentUser:""};
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/list`;
-    axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+    axios.post(url,obj,{headers:{"Content-Type":"application/json"}}).then(res=>{
       Indicator.close();
       resolve(res)
     }).catch(function (error) {
@@ -653,7 +665,7 @@ export function commonUserList(p,s){
   let obj = {"userCat":"2",p:p,s:s}
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/list`;
-    axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+    axios.post(url,obj,{headers:{"Content-Type":"application/json"}}).then(res=>{
       Indicator.close();
         resolve(res)
     }).catch(function (error) {
@@ -668,7 +680,7 @@ export function specialSubjectFindSubjectInfoByCategory(state,p,s){
   let obj = {"subjectCategory":state,p:p,s:s}
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/content/${contentEdition}/specialSubject/findSubjectInfoByCategory`;
-    axios.post(url,obj,{header:{"Content-Type":"application/json"}}).then(res=>{
+    axios.post(url,obj,{headers:{"Content-Type":"application/json"}}).then(res=>{
       Indicator.close();
       resolve(res)
     }).catch(function (error) {
@@ -678,11 +690,10 @@ export function specialSubjectFindSubjectInfoByCategory(state,p,s){
   })
 }
 //详情里面的关注个人
-export function commonUserCareUser(userId,currentUser,userType){ //userId关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
-
+export function commonUserCareUser(userId,currentUser,userType,token){ //userId关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/careUser?userId=${userId}&currentUser=${currentUser}&userType=${userType}`;
-    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+    axios.get(url,{headers:{"Content-Type":"application/json","Authorization":"bearer "+token}}).then(res=>{
       resolve(res)
     }).catch(function (error) {
       Toast("点赞500后台出错啦")
@@ -690,10 +701,10 @@ export function commonUserCareUser(userId,currentUser,userType){ //userId关注�
   })
 }
 //详情里面的取消关注个人
-export function commonUserCancelCareUser(userId,currentUser,userType){ //userId取消关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
+export function commonUserCancelCareUser(userId,currentUser,userType,token){ //userId取消关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/cancelCareUser?userId=${userId}&currentUser=${currentUser}&userType=${userType}`;
-    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+    axios.get(url,{headers:{"Content-Type":"application/json","Authorization":"bearer "+token}}).then(res=>{
       resolve(res)
     }).catch(function (error) {
       Toast("取消点赞500后台出错啦")
@@ -701,11 +712,11 @@ export function commonUserCancelCareUser(userId,currentUser,userType){ //userId�
   })
 }
 //详情里面的关注企业
-export function companyInfoCareCompany(companyId,currentUser,userType){ //companyId关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
+export function companyInfoCareCompany(companyId,currentUser,userType,token){ //companyId关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
 
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/careCompany?companyId=${companyId}&currentUser=${currentUser}&userType=${userType}`;
-    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+    axios.get(url,{headers:{"Content-Type":"application/json","Authorization":"bearer "+token}}).then(res=>{
       resolve(res)
     }).catch(function (error) {
 
@@ -714,11 +725,11 @@ export function companyInfoCareCompany(companyId,currentUser,userType){ //compan
   })
 }
 //详情里面的取消关注企业
-export function companyInfoCancelCareCompany(companyId,currentUser,userType){ //companyId取消关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
+export function companyInfoCancelCareCompany(companyId,currentUser,userType,token){ //companyId取消关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
 
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/cancelCareCompany?companyId=${companyId}&currentUser=${currentUser}&userType=${userType}`;
-    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+    axios.get(url,{headers:{"Content-Type":"application/json","Authorization":"bearer "+token}}).then(res=>{
 
       resolve(res)
     }).catch(function (error) {
@@ -1185,7 +1196,7 @@ export function commentFindCommentsByPubId(id,p,s){ //pubId 作品id
   Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/content/${contentEdition}/comment/findCommentsByPubId?pubId=${id}&p=${p}&s=${s}`;
-    axios.get(url,{header:{"Content-Type":"application/json"}}).then(res=>{
+    axios.get(url,{headers:{"Content-Type":"application/json"}}).then(res=>{
       Indicator.close();
       resolve(res)
     }).catch(function (error) {
@@ -1267,11 +1278,11 @@ export function customerPubContentListHomePage(p,s) { // pubStatus 固定参数t
 }
 //作品详情
 // GET /customerPubContent/findOne
-export function customerPubContentFindOne(id) { // 作品id
+export function customerPubContentFindOne(id,userId,userType) { // 作品id
   Indicator.open("加载中...")
   return new Promise(function (resolve,reject) {
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/findOne?id="+id);
+    ajax.open('get',window.common.apiDomain20020+"/apis/operation/"+operationEdition+"/customerPubContent/findOne?id="+id+"&userId="+userId+"&userType="+userType);
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.send();
     ajax.onreadystatechange = function () {

@@ -2,7 +2,7 @@
   <!--评论我的-->
   <div id="comment_on_my">
     <div class="comment_on_my_false" v-if="objList.length<=0">
-      <img src="/static/images/缺省图.png" alt="">
+      <img src="/static/images/queshengtu.png" alt="">
       <p>你的评论区目前空空也～</p>
     </div>
     <ul class="comment_on_my_true" v-else>
@@ -91,10 +91,10 @@
               if(v.vUser==false){//去吃瓜
                 this.$router.push({path:"/personalMelonPages",query:{id:v.dpUser}})
               }else{
-                this.$router.push({path:"/homePage",query:{state:2,id:v.dpUser}})//1  true是大咖
+                this.$router.push({path:"/bigShotPage",query:{id:v.dpUser}})//1  true是大咖
               }
         }else {//企业
-              this.$router.push({path:"/homePage",query:{state:1,id:v.dpUser}})//1 是大咖
+              this.$router.push({path:"/enterprisePage",query:{id:v.dpUser}})//1 是大咖
         }
       },
       goDetail(v){

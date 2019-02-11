@@ -18,9 +18,7 @@
      <keep-alive>
        <ResourcePool v-if="headerIndex==1"></ResourcePool>
      </keep-alive>
-     <keep-alive>
        <Weathervane v-if="headerIndex==2"></Weathervane>
-   </keep-alive>
      <keep-alive>
        <FireMap v-if="headerIndex==3"></FireMap>
    </keep-alive>
@@ -37,7 +35,6 @@
 <script>
   import Creativity from "./components/creativity.vue"
   import DesignOffee from "./components/design_offee1.vue" //设计咖 匠星
-//  import DesignOffee from "./components/design_offee.vue" //设计咖 匠星
   import ResourcePool from "./components/resource_pool.vue" //资源池
   import IntelligenceOrps from "./components/Intelligence_orps.vue" //智慧团
   import Weathervane from "./components/WEATHERVANE.vue" //风向标  //资讯
@@ -55,9 +52,9 @@ export default {
       headerIndex:0,//头部按钮下标
       tabbarAarr:[  //、、tab
         {icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
-        {icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
+        {icon:"./static/images/zixun2.png",icon1:"./static/images/zixun1.png",path:"/homeIndex"},
         {icon:"./static/images/zhaio.png",icon1:"./static/images/zhaio.png",path:"/release"},
-        {icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
+        {icon:"./static/images/zhihuihuodong2.png",icon1:"./static/images/zhihuihuodong1.png",path:"/index"},
         {icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
       ],
       tabbarAarrIndex:1,  //点击tab的下标
@@ -155,12 +152,12 @@ export default {
       left: 0;
       top:0.53rem;
       right: 0;
-      bottom: 0.49rem;
+      bottom: 0.55rem;
     }
     .Indextab{
       position: absolute;
       width: 100%;
-      height: 0.49rem;
+      height: 0.55rem;
       bottom: 0rem;
       left: 0;
       background: #ffffff;

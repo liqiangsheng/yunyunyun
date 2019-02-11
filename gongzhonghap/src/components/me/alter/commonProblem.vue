@@ -3,7 +3,7 @@
     <div class="commonProblem_box" ref="scrollBox" v-if="lisrData.length>0">
       <ul class="commonProblem_ul">
         <li v-for="(item,index) in lisrData">
-          <div class="commonProblem_title">{{item.trackTime|formatTime1}}</div>
+          <div class="commonProblem_title">{{$moment(item.trackTime).format('YYYY/MM/DD HH:mm:ss')}}</div>
           <div class="commonProblem_message" :class="{avtive:item.senderId==userInfo.data.id}">
             <img class="commonProblem_you_img" v-if="item.senderId!=userInfo.data.id" :src="item.senderUrl?item.senderUrl:'/static/images/defultphoto.png'" alt="">
             <div class="commonProblem_you" v-if="item.senderId!=userInfo.data.id"><p v-if="item.content">{{item.content}}</p><img :src="item.url" alt="" v-if="item.url"></div>
@@ -18,7 +18,7 @@
 
     </div>
     <div v-else class="lengthFalse">
-      <img src="/static/images/缺省图.png" alt="">
+      <img src="/static/images/queshengtu.png" alt="">
       <p>你的个人意见区目前空空也～</p>
     </div>
 
@@ -69,6 +69,7 @@
       }
     })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  console.log(this.userInfo,"this.userInfo")
     suggestionTrackListOwner(this.userInfo.data.access_token,this.p,this.s).then(res=>{
       if(res.status ==true){
         this.pageNum = Math.ceil(res.total/this.s);

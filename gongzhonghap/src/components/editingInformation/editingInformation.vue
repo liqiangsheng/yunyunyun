@@ -1,12 +1,13 @@
 <template>
   <div id='editingInformationBox'>
       <ul class="editingInformationBoxItem">
-        <li>
+        <li v-if="headShow">
           <div class="first">头像</div>
           <div class="last">
             <img class='right' src="/static/images/right.png" alt="">
             <img class="firstimg" :src="headerImg" alt="">
-            <input id="upload_file" type="file" class="file-input" accept="image/png,image/jpeg,image/jpg" @change="inputChange($event)"/>
+            <!--<input id="upload_file" type="file" class="file-input" accept="image/png,image/jpeg,image/jpg" @change="inputChange"/>-->
+            <input class="file-input" id="upload_file" type="file" name="image" accept=“image/*” @change="inputChange"/>
           </div>
         </li>
         <li @click="goName('用户名')">
@@ -43,7 +44,7 @@
       <button @click="okEditClick">确定编辑</button>
       <nameValue v-if="sexShow" :sexShow="sexShow" @sex="sex"></nameValue>
       <City v-if="cityShow" @cityObj="cityObj"></City>
-      <InputValue v-if="valueShow" :value="value" @nameValue1="nameValue1" @introductionValue1="introductionValue1"></InputValue>
+      <InputValue v-if="valueShow" :messageValueInput="messageValueInput" :value="value" @nameValue1="nameValue1" @introductionValue1="introductionValue1"></InputValue>
     <mt-datetime-picker
       type="date"
       ref="picker"
@@ -60,12 +61,15 @@
 
 <script>
   import {EditingInformationIntall1, EditingInformationIntall,qiniuToken,upImgQiniu,OkEditingInformation} from '../../assets/js/promiseHttp'; //数据
+  import {MobileDetect1} from '../../assets/js/Fun'; //数据
   import { Toast } from 'mint-ui';  //弹框
   import nameValue from "./nameValue.vue"
   import City from "./city.vue"
   import InputValue from "./alter/input.vue"
   import { DatetimePicker,Picker } from 'mint-ui';
   import Vue from "vue";
+  import * as qiniu from 'qiniu-js'
+  import { Indicator } from 'mint-ui';
   Vue.component(DatetimePicker.name, DatetimePicker,Picker.name, Picker);
 export default {
   components:{
@@ -74,6 +78,8 @@ export default {
   name: 'EditingInformation',
   data(){
     return{
+      messageValueInput:"", //传个组件的文字
+      headShow:true,// 头像显示
       value:"",
       valueShow:false, //文字框显示
       startDate: new Date(1900), //开始时间
@@ -96,8 +102,17 @@ export default {
     }
   },
   created(){
+//    console.log(MobileDetect1(),"MobileDetect1")
+//    console.log(MobileDetect1().version,"version")
+//    console.log(MobileDetect1().version.indexOf('R16NW'),"version")
     this.$nextTick(function () {
       document.title = "编辑资料";
+//      判断是不是三星的某些手机做兼容
+//      if(MobileDetect1().version.indexOf('R16NW')==0||MobileDetect1().version.indexOf('LMY47X')==0||MobileDetect1().version.indexOf('NRD90M')==0){
+//        this.headShow = false
+//      }else{
+//        this.headShow = true
+//      }
     })
     let data = JSON.parse(localStorage.getItem("userInfo"));
     console.log(data)
@@ -173,18 +188,53 @@ export default {
       console.log(v)
       if(v==='用户名'){
         this.value = v;
+        this.messageValueInput = this.nameValue;
       }else if(v==='个人简介'){
         this.value = v;
+        this.messageValueInput = this.introductionValue;
+
       }
       this.valueShow = true;
     },
     inputChange(event){ //图片上传的事件
-      upImgQiniu(event,this.qiniuToken).then(res=>{
-        this.headerImg = res;
-      })
+//      upImgQiniu(event,this.qiniuToken).then(res=>{
+//        this.headerImg = res;
+//      })
+     //七牛云上传图片
+      let mydate = new Date()
+      var uuid = "btkjLQS"+mydate.getDay()+ mydate.getHours()+ mydate.getMinutes()+mydate.getSeconds()+mydate.getMilliseconds();
+      var file = event.target.files[0];
+      var formData = new FormData();
+      let url1="https://pub.qinius.butongtech.com";
+      let observable  = qiniu.upload(file, uuid+'.jpg', this.qiniuToken)
+      let observer= {
+        next(res){
+//          console.log(res,"上传")
+          // ...
+        },
+        error(err){
+//          console.log(res,"错误")
+          // ...
+        },
+        complete(res){
+//          console.log(res,"完成")
+           return this.headerImg = url1+'/'+res.key;
+          // ...
+        }
+      }
+      var subscription = observable.subscribe(observer)
+      Indicator.open("头像上传中")
+      setTimeout(()=>{
+        this.headerImg =subscription.observer.headerImg;
+        console.log( this.headerImg," this.headerImg")
+        Indicator.close();
+      },1000)
+
+
     },
+
     okEditClick(){ //确定编辑
-//      console.log(this.token,"dsakdkasdk")
+//      console.log(this.headerImg,"dsakdkasdk")
       if(!this.nameValue){
         Toast("姓名不能为空")
         return

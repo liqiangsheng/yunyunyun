@@ -5,7 +5,7 @@
           <div class="userinfo_top" @click="loginBnt">
             <div class="userinfo_top_top">
               <div @click.stop="setClick">
-                <img src="/static/images/设置.png" alt="">
+                <img src="/static/images/shezhi.png" alt="">
               </div>
               <!--<b>我</b>-->
               <!--<p>Profile</p>-->
@@ -17,7 +17,7 @@
                </div>
               <div  class="userinfo_top_bottom_fans" @click.stop='myfollowBnt(2)' v-if="tabListBool">
                    粉丝 <b>
-                    {{userInfo.care_count>10000?userInfo.care_count/10000+'万':userInfo.care_count}}
+                    {{userInfo.cared_count>10000?userInfo.cared_count/10000+'万':userInfo.cared_count}}
                   </b>
               </div>
             </div>
@@ -43,7 +43,7 @@
                  </li>
                  <li @click='myfollowBnt(5)'>
                  <b>
-                        {{userInfo.comment_count>10000?userInfo.comment_count/10000+'万':userInfo.comment_count}},000
+                   {{userInfo.comment_count>10000?userInfo.comment_count/10000+'万':userInfo.comment_count}}
                  </b><br>
                    评论
                  </li>
@@ -156,9 +156,9 @@ export default {
         imgsArr1:[],//草稿原创数据
         tabbarArr:[  //、、tab
           {icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
-          {icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
+          {icon:"./static/images/zixun2.png",icon1:"./static/images/zixun1.png",path:"/homeIndex"},
           {icon:"./static/images/zhaio.png",icon1:"./static/images/zhaio.png",path:"/release"},
-          {icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
+          {icon:"./static/images/zhihuihuodong2.png",icon1:"./static/images/zhihuihuodong1.png",path:"/index"},
           {icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
         ],
         tabbarAarrIndex:4,  //点击tab的下标
@@ -268,7 +268,6 @@ export default {
         let that = this;
         if(that.pages<that.p){
           that.p = that.pages;
-          Toast("没有更多原创了");
           return;
         }else if(that.pages==that.p){
 
@@ -312,7 +311,6 @@ export default {
         let that = this;
         if(that.pages1<that.p1){
           that.p1 = that.pages1;
-          Toast("没有更多草稿了");
           return;
         }else if(that.pages1==that.p1){
 
@@ -405,7 +403,7 @@ export default {
       position: absolute;
       left: 0;
       top:0;
-      bottom: 0.5rem;
+      bottom: 0.55rem;
       right: 0;
       overflow: hidden;
       overflow-y: scroll;
@@ -609,7 +607,7 @@ export default {
 .Indextab{
   position: fixed;
   width: 100%;
-  height: 0.49rem;
+  height: 0.55rem;
   bottom: 0;
   left: 0;
   background: #ffffff;

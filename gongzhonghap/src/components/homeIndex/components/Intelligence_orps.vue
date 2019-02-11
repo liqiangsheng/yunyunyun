@@ -14,7 +14,7 @@
             </div>
          </div>
          <div class="telBuTong" @click="butong(item.teamName)">
-           联系不同，共享设计生态 <img src="/static/images/返回icon.png" alt="">
+           联系不同，共享设计生态 <img src="/static/images/huanhui.png" alt="">
          </div>
        </li>
      </ul>
@@ -84,7 +84,7 @@ export default {
       }
     },
     goToHomePage(v){ //去个人主页
-      this.$router.push({path: "/homePage", query: {state: 2,id:v.user.id,source:"XCX"}}) //去企业主页 1是企业 2是个人
+      this.$router.push({path:"/bigShotPage", query: {id:v.user.id}}) //去企业主页 1是企业 2是个人
     }
   },
 }

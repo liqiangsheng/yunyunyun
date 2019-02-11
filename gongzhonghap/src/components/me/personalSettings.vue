@@ -46,7 +46,7 @@
 <script>
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
-   import { IntallData } from '../../assets/js/promiseHttp';
+   import { IntallData,loginout} from '../../assets/js/promiseHttp';
 export default {
   name: 'personalSettings',
   data(){
@@ -111,10 +111,14 @@ export default {
         if(data){
           this.tabListBool = false;
           localStorage.removeItem("userInfo"); //清楚登录信息
-          Toast("退出成功！")
-          setTimeout(()=>{
-            this.$router.push({path:"/me"}); //去首页
-          },1000)
+          loginout().then(res=>{
+            console.log(res)
+            Toast("退出成功")
+            setTimeout(()=>{
+              this.$router.push({path:"/me"}); //去首页
+            },1000)
+          })
+
 
         }else{
           Toast("您未登录，请登录")

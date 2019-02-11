@@ -15,7 +15,7 @@
 </template>
 
 <script>
-  import DesignOffee from "./design_offee.vue" //设计咖
+  import DesignOffee from "./design_offee1.vue" //设计咖
   import IntelligenceOrps from "./Intelligence_orps.vue" //智慧团
   import ResourcePool from "./resource_pool.vue" //资源池
 export default {

@@ -99,7 +99,7 @@ export default {
 
     },
     goToHomePage(v){ //去企业主页
-      this.$router.push({path: "/homePage", query: {state:1,id:v.id,source:"XCX"}}) //去企业主页 1是企业 2是个人
+      this.$router.push({path: "/enterprisePage", query: {id:v.id}}) //去企业主页 1是企业 2是个人
     }
   },
 }
@@ -173,7 +173,7 @@ export default {
           z-index: 2;
           width: 100%;
           height: 2.3rem;
-          box-shadow: 0 4px 30px rgba(5,5,9,0.5);
+          box-shadow: 0 2px 30px rgba(5,5,9,0.3);
           display: flex;
           .resource_pool_li2_left{
             width: 2.3rem;

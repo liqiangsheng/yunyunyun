@@ -1,6 +1,6 @@
 <template>
   <div id="indexBox">
-    <div class="IndexHeader">
+    <div class="IndexHeader" @scroll="updataMore">
       <!--轮播-->
       <div class="swiper-container" ref="bannerHeight">
         <div class="swiper-wrapper">
@@ -13,15 +13,17 @@
       </div>
       <!---->
       <!-- 列表 -->
-      <ul class="activityContent" :style="'top:'+positionTop/100+'rem'" @scroll="updataMore">
+      <ul class="activityContent">
         <li v-for="(item,index) in objList" @click="goDetail(item)" v-if="item.multiActivity==false">
               <img :src="item.bannerUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" class="homeImg"/>
-              <div class="letGo" >进入火图</div>
+              <div class="letGo" @click.stop="goToPicture(item)">进入图播</div>
               <h5 class='homeBottomTitle'>
                {{item.name}}
               </h5>
               <div class='homeBottomPrice'>
                 <span v-if="item.expenses !=0&&item.expenses >0">¥{{item.expenses}}</span>
+                <span v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime >item.endTime" style='color:#c5c5c6'>免费</span>
+                <span v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'>免费</span>
                 <span v-else style='color:#7ade81'>免费</span>
               </div>
               <div class='homeBottomdata'>
@@ -31,7 +33,7 @@
                 立即报名
               </div>
               <div class='homeBottomstate' v-if="nowTime < item.signStartTime">
-                报名即将开始
+                即将开始
               </div>
               <div class='homeBottomstate' v-if="nowTime <= item.sendTime && nowTime >= item.sstartTime">
                 正在进行
@@ -73,9 +75,9 @@ export default {
           banner:[],//轮播
           tabbarAarr:[  //、、tab
             {icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
-            {icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
+            {icon:"./static/images/zixun2.png",icon1:"./static/images/zixun1.png",path:"/homeIndex"},
             {icon:"./static/images/zhaio.png",icon1:"./static/images/zhaio.png",path:"/release"},
-            {icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
+            {icon:"./static/images/zhihuihuodong2.png",icon1:"./static/images/zhihuihuodong1.png",path:"/index"},
             {icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
           ],
           tabbarAarrIndex:3,  //点击tab的下标
@@ -86,7 +88,6 @@ export default {
           pageNum:"",//每页数据
           nowTime: date, //现在的时间
           objList:[],//数据
-          positionTop:0,//位置的距离顶部距离
       }
 
   },
@@ -103,9 +104,6 @@ export default {
             autoplay:true,
             loop:true
           })
-          setTimeout(()=>{
-            this.positionTop = this.$refs.bannerHeight.offsetHeight+10;
-          },200)
         })
       }else{
         Tost("网络异常，请重试")
@@ -152,6 +150,9 @@ export default {
 
   },
   methods:{
+    goToPicture(item){//去火图直播页面
+      this.$router.push({path:"/pictureLiveBroadcast",query:{id:item.id,isBool:false,bookId:item.id}})
+    },
     updataMore(e){ //加载更多 分页
       if(e.target.scrollHeight==(e.target.scrollTop+e.target.offsetHeight)){
              this.p++;
@@ -230,17 +231,14 @@ export default {
       position: absolute;
       left: 0;
       top:0;
-      bottom: 0.5rem;
+      bottom: 0.55rem;
       right: 0;
-      overflow: hidden;
+      overflow-y:scroll ;
       background: #eeeeee;
       .activityContent{
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        right: 0;
+        margin-top: 0.1rem;
         padding: 0 0.1rem;
-        overflow-y:scroll ;
+
         li{
           background: #ffffff;
           position: relative;
@@ -302,7 +300,7 @@ export default {
           .homeBottomstate{
             width: 0.8rem;
             height: 0.36rem;
-            border: 0.2rem solid #262626;
+            border: 0.02rem solid #262626;
             text-align: center;
             line-height: 0.36rem;
             font-size: 0.14rem;
@@ -323,7 +321,7 @@ export default {
     .Indextab{
       position: absolute;
       width: 100%;
-      height: 0.49rem;
+      height: 0.55rem;
       bottom: 0;
       left: 0;
       background: #ffffff;

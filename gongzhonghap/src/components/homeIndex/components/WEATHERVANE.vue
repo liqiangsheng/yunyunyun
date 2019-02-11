@@ -19,11 +19,11 @@
                    无
                  </p>
                  <div class="centent_look">
-                   <span><img src="/static/images/浏览数.svg" alt="">{{item.viewCount>10000?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}</span>
-                   <span><img src="/static/images/喜欢数.svg" alt="">{{item.laudedCount>10000?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}}</span>
-                   <span><img src="/static/images/评论数.svg" alt="">{{item.commentCount>10000?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</span>
+                   <span><img src="/static/images/liulangshu.svg" alt="">{{item.viewCount>10000?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}</span>
+                   <span><img src="/static/images/xihuanshu.svg" alt="">{{item.laudedCount>10000?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}}</span>
+                   <span><img src="/static/images/pinlunshu.svg" alt="">{{item.commentCount>10000?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</span>
                  </div>
-                 <img class="jiantouRight" src="/static/images/箭头方块.png" alt="">
+                 <img class="jiantouRight" src="/static/images/jiantoufangkuai.png" alt="">
                </div>
 
              </li>
@@ -55,7 +55,7 @@
         },
         created() {
           document.title = "资讯"
-          specialSubjectFindSubjectInfoByCategory("3",this.p,this.s).then(res=>{
+          specialSubjectFindSubjectInfoByCategory("4",this.p,this.s).then(res=>{
             if(res.data.status == true){
               this.pageNum = Math.ceil(res.data.data.totalAll/this.s);
               if(this.pageNum >1){
@@ -82,7 +82,7 @@
                 return
               }else if(this.p==this.pageNum){
                 this.message = "这是我的底线..."
-                specialSubjectFindSubjectInfoByCategory("3",this.p,this.s).then(res=>{
+                specialSubjectFindSubjectInfoByCategory("4",this.p,this.s).then(res=>{
                   if(res.data.status == true){
                     this.objList = this.objList.concat(res.data.data.informationVoList);
                   }else{
@@ -91,7 +91,7 @@
                 })
               }else if(this.p<this.pageNum){
                 this.message = ""
-                specialSubjectFindSubjectInfoByCategory("3",this.p,this.s).then(res=>{
+                specialSubjectFindSubjectInfoByCategory("4",this.p,this.s).then(res=>{
                   if(res.data.status == true){
                     this.objList =  this.objList.concat(res.data.data.informationVoList);
                   }else{
@@ -122,7 +122,7 @@
            width: 10rem;
            height: 1.39rem;
            animation: leftBox 25s infinite;
-           background: url(../../../../static/images/波浪1.png);
+           background: url(../../../../static/images/bolang1.png);
            background-size: 100% 100%;
          }
        }

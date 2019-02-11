@@ -7,6 +7,10 @@ import Vuex from "vuex"
 import $ from 'jquery'
 import './assets/rem'
 import "mint-ui/lib/style.min.css"
+//上线记得注释掉 调试用
+// import VConsole from 'vconsole/dist/vconsole.min.js' //import vconsole
+// let vConsole = new VConsole() // 初始化
+// Vue.use(vConsole)
 import mintui from 'mint-ui'
 import VueTouch from 'vue-touch';
 Vue.use(VueTouch, {name: 'v-touch'})

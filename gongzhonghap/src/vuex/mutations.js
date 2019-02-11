@@ -21,4 +21,7 @@ export let mutations = {
   loadingFalse(state,data){
     state.loadingFalse=data;
   },
+  FollowScrollTop(state,data){
+    state.FollowScrollTop=data;
+  },
 }

@@ -1,113 +1,92 @@
 <template>
   <!--关注-->
   <div id="followDetail">
-    <!--已登录-->
-    <div class="follow_login_true">
-
-      <!--您关注的达人发布了作品-->
-        <div class="follow_login_Follow">
-             <ul class="follow_login_Follow_ul">
-               <li class="follow_login_Follow_li" v-for="(item,index) in listData">
-                 <div class="follow_login_Follow_li1">
-                   <img :src="item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt="" @click="headerClick(item)">
-                    <p>{{item.authorInfo.name}}</p>
-                   <div v-if="item.authorInfo.caredStatus==0&&userInfo.data.id!=item.authorInfo.id" @click="follow(item)"><img src="/static/images/已关注.png" alt="">关注</div>
-                   <div v-if="item.authorInfo.caredStatus==1&&userInfo.data.id!=item.authorInfo.id" class="active" @click="cancelFollow(item)">取消关注</div>
-                 </div>
-                 <div class="follow_login_Follow_li2" ref="windwosWH">
-                   <!--轮播-->
-                   <div class="swiper-container">
-                     <div class="swiper-wrapper">
-                       <div class="swiper-slide" v-for="(item1,index1) in item.attachments">
-                         <div class="imgIs">
-                           <img :src="item1.url" />
-                           <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*imgW+'px',top:item2.axesyRate*imgH+'px'}">
-                           <img src="/static/images/标签.png" alt=""><span>{{item2.title}}</span>
-                           </div>
-                         </div>
-                       </div>
+    <div v-for="(item,index) in listData">
+       <div class="followDetail_top">
+              <img :src="item.authorInfo?item.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt="" @click="headerClick(item)">
+              <p>{{item.authorInfo?item.authorInfo.name:"null"}}</p>
+              <div v-if="item.authorInfo&&item.authorInfo.caredStatus==0&&userInfo.data.id!=item.authorInfo.id" @click="follow(item)">关注</div>
+              <div v-if="item.authorInfo&&item.authorInfo.caredStatus==1&&userInfo.data.id!=item.authorInfo.id" class="active" @click="cancelFollow(item)">取消关注</div>
+       </div>
+        <v-touch class="followDetail_bottom" @scroll="updataMore">
+             <div class="followDetail_bottom_img" >
+                 <ul ref="windwosWH" :style="{width:styleWidth}" v-if="item.attachments.length>1" class="followDetail_bottom_ul">
+                   <li v-for="(item1,index1) in item.attachments" style="margin-right: 0.2rem">
+                      <img :src="item1.url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" :style="{height:item.attachments[0].height/2/100+'rem'}" />
+                     <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*335/100+'rem',top:item2.axesyRate*imgH/100+'rem'}">
+                       <img src="/static/images/biaoqian.png" alt=""><span>{{item2.title}}</span>
                      </div>
-                     <!-- 如果需要分页器 -->
-                     <div class="swiper-pagination"></div>
+                   </li>
+                 </ul>
+               <!--leng==1-->
+               <ul ref="windwosWH" :style="{width:styleWidth,margin:'0 auto','box-sizing':'border-box'}" v-if="item.attachments.length<=1">
+                 <li v-for="(item1,index1) in item.attachments">
+                   <img :src="item1.url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" />
+                   <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*335/100+'rem',top:item2.axesyRate*imgH/100+'rem'}">
+                     <img src="/static/images/biaoqian.png" alt=""><span>{{item2.title}}</span>
                    </div>
-                   <!---->
-                 </div>
-                 <div class="follow_login_Follow_li3">
-                   <p>{{item.message1}}<b v-show="item.content&&item.content.length>35" @click.stop="openClick(item,index)">　{{item.value}}</b></p>
-                 </div>
-                 <div class="follow_login_Follow_li4">
-                   <div>
-                     <img src="/static/images/关注阅读量.png" alt="">  {{item.commentedCount<10000?item.commentedCount:(item.commentedCount/10000).toFixed(2)+'万'}}
-                   </div>
-                   <div @click="laudedStatus(item)">
-                     <img src="/static/images/点赞2.png" alt="" v-if="item.laudedStatus==true">
-                     <img src="/static/images/点赞.png" alt="" v-else>
-                     {{item.laudedCount<10000?item.laudedCount:(item.laudedCount/10000).toFixed(2)+'万'}}
-                   </div>
-                   <div @click="favoredStatus(item)">
-                     <img src="/static/images/收藏2.png" alt="" v-if="item.favoredStatus==true">
-                     <img src="/static/images/收藏1.png" alt="" v-else>
-                     {{item.favoredCount<10000?item.favoredCount:(item.favoredCount/10000).toFixed(2)+'万'}}
-                   </div>
-                   <div>
-                     <img src="/static/images/浏览数.svg" alt="">
-                     {{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}
-                   </div>
-
-                 </div>
-               </li>
-             </ul>
-        </div>
-        <ul class="IntelligentMatchingDItem5">
-          <li v-for="(item,index) in commenArr" v-if="!!item.sysUserContentVo">
-            <div class="IntelligentMatchingDItemL">
-              <img :src="item.userDp" alt="" @click="commentGoHomepage(item)">
-            </div>
-            <div class="IntelligentMatchingDItemR">
-              <h5>{{item.name}}</h5>
-              <div class="time">{{item.createdAt|formatTime1}}</div>
-              <div class="commen">
-                {{item.commentContent}}
-                <div class="zan1" @click="commentariesClick(item)"><img src="/static/images/zan1.png" alt="">{{item.laudedCount}}</div>
+                 </li>
+               </ul>
+             </div>
+             <div class="followDetail_bottom_concent">
+                   {{item.content}}
+             </div>
+            <div class="follow_login_Follow_li4">
+              <div @click="giveClick">
+                   <img src="/static/images/guanzhuyueduliang.png" alt="">  {{item.commentedCount<10000?item.commentedCount:(item.commentedCount/10000).toFixed(2)+'万'}}
               </div>
-              <ul class="ReplyUl" v-if="item.replyVoList.length>0">
-                <li v-for="(item1,index1) in item.replyVoList"  class="ReplyLi">
-                  <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div @click="commentariesClickTwo(item1)"><img src="/static/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
-                </li>
-                <span style="width: 100%;display: inline-block;text-align: center" v-if="item.replyListTotal>2" @click="nextPageClick(item)">共有{{item.replyListTotal}}条评论</span>
-              </ul>
-            </div>
-          </li>
-        </ul>
-      <div class="messageFoot" @click="updataMore">
-        {{message}}
-      </div>
-    </div>
-    <div class="findDetailFoot" @click="giveClick" v-if="state!='XCX'">
-      <div class="footer">
-        <ul>
-          <li class="footerLi1">
-            <img src="/static/images/xialian.png" alt="">
-          </li>
-          <li class="footerLi2">
-            <img src="/static/images/xingxing.png" alt="">
-          </li>
-          <li class="footerLi2">
-            <img src="/static/images/bianji.png" alt="">
-          </li>
-          <li class="footerLi2">
-            <img src="/static/images/bianxie.png" alt="">
-          </li>
-        </ul>
-        <div>
+              <div @click="laudedStatus(item)">
+                   <img src="/static/images/dianzan2.png" alt="" v-if="item.laudedStatus==true">
+                  <img src="/static/images/dianzan.png" alt="" v-else>
+                  {{item.laudedCount<10000?item.laudedCount:(item.laudedCount/10000).toFixed(2)+'万'}}
+              </div>
+              <div @click="favoredStatus(item)">
+                  <img src="/static/images/shoucang2.png" alt="" v-if="item.favoredStatus==true">
+                  <img src="/static/images/shoucang1.png" alt="" v-else>
+                  {{item.favoredCount<10000?item.favoredCount:(item.favoredCount/10000).toFixed(2)+'万'}}
+              </div>
+              <div>
+                  <img src="/static/images/liulangshu.svg" alt="">
+                  {{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}
+              </div>
 
-        </div>
-      </div>
+            </div>
+          <!--评论-->
+          <ul class="IntelligentMatchingDItem5">
+              <li v-if="commenArr.length<=0" class="commentNo">
+                <img src="/static/images/yuanchuan.png" alt="">
+                <p>暂无评论</p>
+              </li>
+              <li v-for="(item,index) in commenArr" v-if="commenArr.length>0" class="commentYes">
+                  <div class="IntelligentMatchingDItemL">
+                     <img :src="item.userDp" alt="" @click="commentGoHomepage(item)">
+                  </div>
+                  <div class="IntelligentMatchingDItemR">
+                     <h5>{{item.name}}</h5>
+                  <div class="time">{{item.createdAt|formatTime1}}</div>
+                  <div class="commen">
+                      {{item.commentContent}}
+                      <div class="zan1" @click="commentariesClick(item)"><img src="/static/images/zan1.png" alt="">{{item.laudedCount}}</div>
+                  </div>
+                  <ul class="ReplyUl" v-if="item.replyVoList.length>0">
+                      <li v-for="(item1,index1) in item.replyVoList"  class="ReplyLi">
+                        <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div @click="commentariesClickTwo(item1)"><img src="/static/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
+                      </li>
+                       <span style="width: 100%;display: inline-block;text-align: center" v-if="item.replyListTotal>2" @click="nextPageClick(item)">共有{{item.replyListTotal}}条评论</span>
+                  </ul>
+                  </div>
+              </li>
+          </ul>
+           <div class="messageFoot" v-if="!!message&&commenArr.length>0">
+             {{message}}
+           </div>
+        </v-touch>
+      <mt-actionsheet
+        :actions="actions"
+        v-model="sheetVisible">
+      </mt-actionsheet>
     </div>
-    <mt-actionsheet
-      :actions="actions"
-      v-model="sheetVisible">
-    </mt-actionsheet>
+
   </div>
 </template>
 
@@ -123,11 +102,11 @@
   name: 'follow',
   data(){
     return{
+      styleWidth:"3.35rem",
       commenArr:[], //评论的数据
       p:1,  //页
       s:20, //每页多少
-      message:"不同努力加载中...", //触底提示
-      messageOne:"不同努力加载中...", //触底提示
+      message:"", //触底提示
       pageNum:"",//每页数据
       state:"", //是不是小程序 是的话就不显示
       actions:[{ name:"请下载不同Tech App" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
@@ -139,21 +118,22 @@
       followIsShow:false, //关注的人未发布作品
       listData:[],//数据
       imgW:320,
-      imgH:175,
+      imgH:350,
     }
   },
   created() {
     this.$nextTick(function () {
       document.title = "作品详情"
     })
-    this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):{data:{id:"",userType:""}};
+    this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):{data:{user_id:"",userType:""}};
 //    this.userInfo = {data:{currentUser:this.$router.history.current.query.currentUser,id:this.$router.history.current.query.id,access_token:this.$router.history.current.query.token,userType:this.$router.history.current.query.userType,}}
 //    if(this.userInfo){ //登录的情况  //
 //    }else{//没有登录的情况
 //
 //    }
+
     if(this.$router.history.current.query.id){ //这个id请求数据 截取url的
-      customerPubContentFindOne(this.$router.history.current.query.id).then(res=>{
+      customerPubContentFindOne(this.$router.history.current.query.id,this.userInfo.data.user_id,this.userInfo.data.userType).then(res=>{
         if(res.status == true){
 
           let arrdata = [res.data];
@@ -162,41 +142,33 @@
             item.favoredCount = !!item.favoredCount?item.favoredCount:0;
             item.readCount = !!item.readCount?item.readCount:0;
             item.commentedCount = !!item.commentedCount?item.commentedCount:0;
-            item.messageShow = false;
-            item.message1 = "";
-            item.value = "展开";
-            if(item.content.length>35){
-              item.message1=item.content.substring(0,35)+"...";
-              item.messageShow = true;
-              item.value = "展开";
-            }else{
-              item.messageShow = false;
-              item.message1 = item.content;
-            }
+            setTimeout(()=>{
+              if(item.attachments.length>1){
+                this.$nextTick(()=>{
+                this.styleWidth =(335+20)*item.attachments.length/100+"rem";
+                })
+              }else{
+                this.$nextTick(()=>{
+                this.styleWidth =335*item.attachments.length/100+"rem"
+                })
+              }
+
+            },10)
           })
           this.listData = arrdata;
-          this.$nextTick(()=>{
-            setTimeout(()=>{
-              this.imgW = this.$refs.windwosWH[0].offsetWidth;
-              this.imgH = this.$refs.windwosWH[0].offsetHeight;
-            },200)
-
-            //     滑动
-            var mySwiper = new Swiper ('.swiper-container', {
-              autoplay:false,
-              loop:true,
-              // 如果需要分页器
-              pagination: {
-                el: '.swiper-pagination',
-              },
+          console.log(this.listData,"this.listData")
+              this.$nextTick(()=>{
+                console.log(this.$refs)
+                setTimeout(()=>{
+                  this.imgW = this.$refs.windwosWH?this.$refs.windwosWH[0].offsetWidth:"375";
+                  this.imgH =  this.$refs.windwosWH?this.$refs.windwosWH[0].offsetHeight:"350";
+                },200)
             })
-          })
-
         }else{
           Toast("网络出错了，请重试")
         }
       })
-      commentFindCommentsByPubId(this.$router.history.current.query.id,this.p,this.s).then(res=>{
+      commentFindCommentsByPubId(this.$router.history.current.query.id,this.p,this.s).then(res=>{ //评论
 //        console.log(res)
         if(res.data.status==true){
           if(res.data.data.length>0){
@@ -217,18 +189,16 @@
                 item.name = "游客";
               }
 
-
             })
             this.pageNum = Math.ceil(res.data.total/this.s);
             if(this.pageNum >1){
-              this.message = "点击加载更多..."
+              this.message = ""
             }else{
               this.message = "这是我的底线..."
             }
             this.commenArr = res.data.data;
           }else{
             this.commenArr = res.data.data;
-            this.message = "暂无更多评论..."
           }
 
         }else{
@@ -249,28 +219,30 @@
 
   methods:{
     commentGoHomepage(v){//点击评论的头像
-      console.log(v,"fsjk")
       if(v.orgId=='2'){ //个人
         if(v.vUser==false){ //去吃瓜
           this.$router.push({path:"/personalMelonPages",query:{id:v.createdUser}})
         }else{//去大咖
-          this.$router.push({path:"/homePage",query:{state:2,id:v.createdUser}})//1  true是大咖个人
+          this.$router.push({path:"/bigShotPage",query:{id:v.createdUser}})//1  true是大咖个人
         }
       }else if(v.orgId=='1'){ //企业
-        this.$router.push({path:"/homePage",query:{state:1,id:v.createdUser}})//1 是大咖企业
+        this.$router.push({path:"/enterprisePage",query:{id:v.createdUser}})//1 是大咖企业
       }else {
         Toast("后台参数错误")
       }
     },
 
     share(){//分享
-      shareInfoShareUrl(window.location.href.split('#')[0]).then(res=>{
+
+      let url = "http://account.butongtech.com/"
+      shareInfoShareUrl(url).then(res=>{
+        console.log(res,"分享")
          if(res.status==true){
            let obj = {
-             title:this.listData[0].authorInfo.title,
-             desc:this.listData[0].message1,
-             url:location.href,
-             imgUrl:this.listData[0].authorInfo.ownerUrl,
+             title:this.listData[0].title,
+             desc:this.listData[0].content,
+             url:"http://account.butongtech.com/index.html#/findDetail?id="+this.$router.history.current.query.id,
+             imgUrl:this.listData[0].authorInfo?this.listData[0].authorInfo.ownerUrl:'https://pub.qinius.butongtech.com/ios1024x1024%E6%A1%8C%E9%9D%A2%E5%9B%BE%E6%A0%87.png',
            }
            wxShare.wxShare(res.data,obj)
          }else{
@@ -287,20 +259,20 @@
           this.$router.push({path:"/login"})
         },1000)
       }else{
-        if(v.userType == "1"){ //企业
-          companyInfoCancelCareCompany(v.authorInfo.id,data.data.id,v.userType).then(res=>{
+        if(v.authorInfo.userType== "1"){ //企业
+          companyInfoCancelCareCompany(v.authorInfo.id,data.data.id,v.authorInfo.userType,data.data.access_token).then(res=>{
             if(res.data.status==true){
               Toast("关注已取消")
-              v.authorInfo.caredStatus = false;
+              v.authorInfo.caredStatus =0;
             }else{
               Toast("网络出错了，请重试")
             }
           })
-        }else if(v.userType == "2"){  //个人
-          commonUserCancelCareUser(v.authorInfo.id,data.data.id,v.userType).then(res=>{
+        }else if(v.authorInfo.userType == "2"){  //个人
+          commonUserCancelCareUser(v.authorInfo.id,data.data.id,v.authorInfo.userType,data.data.access_token).then(res=>{
             if(res.data.status==true){
               Toast("关注已取消")
-              v.authorInfo.caredStatus = false;
+              v.authorInfo.caredStatus =0;
             }else{
               Toast("网络出错了，请重试")
             }
@@ -309,7 +281,7 @@
       }
     },
    follow(v){ //关注
-     console.log(v)
+//     console.log(v)
      let data = JSON.parse(localStorage.getItem("userInfo"));
      if(!data){
        Toast("您还未登录，请登录！");
@@ -317,20 +289,20 @@
          this.$router.push({path:"/login"})
        },1000)
      }else{
-       if(v.userType == "1"){ //企业
-         companyInfoCareCompany(v.authorInfo.id,data.data.id,v.userType).then(res=>{
+       if(v.authorInfo.userType== "1"){ //企业
+         companyInfoCareCompany(v.authorInfo.id,data.data.id,v.authorInfo.userType,data.data.access_token).then(res=>{
            if(res.data.status==true){
              Toast("关注成功")
-             v.authorInfo.caredStatus = true;
+             v.authorInfo.caredStatus = 1;
            }else{
              Toast("网络出错了，请重试")
            }
          })
-       }else if(v.userType == "2"){  //个人
-         commonUserCareUser(v.authorInfo.id,data.data.id,v.userType).then(res=>{
+       }else if(v.authorInfo.userType == "2"){  //个人
+         commonUserCareUser(v.authorInfo.id,data.data.id,v.authorInfo.userType,data.data.access_token).then(res=>{
            if(res.data.status==true){
              Toast("关注成功")
-             v.authorInfo.caredStatus = true;
+             v.authorInfo.caredStatus = 1;
            }else{
              Toast("网络出错了，请重试")
            }
@@ -487,24 +459,13 @@
              if(v.authorInfo.vUser==0){ //去吃瓜
                this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
              }else{//去大咖
-               this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//1  true是大咖个人
+               this.$router.push({path:"/bigShotPage",query:{id:v.authorInfo.id}})//1  true是大咖个人
              }
          }else{ //企业
-           this.$router.push({path:"/homePage",query:{state:1,id:v.authorInfo.id}})//1 是大咖企业
+           this.$router.push({path:"/enterprisePage",query:{id:v.authorInfo.id}})//1 是大咖企业
         }
     },
-    openClick(v,i){ //展开收起
-      v.messageShow = !v.messageShow;
-      if(v.messageShow==false){
-        v.message1 = this.listData[i].content;
-        v.value = "收起";
-      }else{ //张开
-        v.message1=v.content.substring(0,35)+"...";
-        v.value = "展开";
-      }
-      this.listData[i] = v; //赋值给原来的小标值
-      this.listData = this.listData.splice(0,this.listData.length); //更新素组
-    },
+
     giveClick(){ //下载IOS 或则安卓
       this.sheetVisible =true;
     },
@@ -514,14 +475,15 @@
     Android(){//安卓下载
       location.href="https://www.pgyer.com/designcloud"
     },
-    updataMore(){ //加载更多 分页
-      this.p++;
-      if(this.p>this.pageNum){
-        this.message = "这是我的底线..."
-        Toast("这是最后一页啦！")
-      }else if(this.p==this.pageNum){
-        this.message = "这是我的底线..."
-        commentFindCommentsByPubId(this.$router.history.current.query.id,this.p,this.s).then(res=>{
+    updataMore(e){ //加载更多 分页
+      if(e.target.scrollTop>=(e.target.scrollHeight-e.target.clientHeight)){
+        this.p++;
+        if(this.p>this.pageNum){
+          this.message = "这是我的底线..."
+          return;
+        }else if(this.p==this.pageNum){
+          this.message = "这是我的底线..."
+          commentFindCommentsByPubId(this.$router.history.current.query.id,this.p,this.s).then(res=>{
           if(res.data.status == true){
             res.data.data.forEach((item,index)=>{
               if(item.sysUserContentVo){
@@ -548,7 +510,7 @@
           }
         })
       }else if(this.p<this.pageNum){
-        this.message = "点击加载更多..."
+        this.message = ""
         commentFindCommentsByPubId(this.$router.history.current.query.id,this.p,this.s).then(res=>{
           if(res.data.status == true){
             res.data.data.forEach((item,index)=>{
@@ -576,6 +538,7 @@
           }
         })
       }
+      }
     },
   }
 }
@@ -585,246 +548,188 @@
 <style scoped lang="less">
 #followDetail {
  width: 100%;
-  position: relative;
-  .follow_login_true{
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  top:0;
+  background: #ffffff;
+  >div{
+   height: 100%;
     width: 100%;
-    .follow_login_Follow{
-     width: 100%;
+    position: relative;
+    .followDetail_top{
+      width: 100%;
+      height: 1.2rem;
+      background: #FCE76C;
+      overflow:hidden;
+      padding-top: 0.25rem;
+      >img{
+        display: block;
+        float: left;
+        width: 0.4rem;
+        height: 0.4rem;
+        border-radius: 50%;
+        margin-left: 0.4rem;
+      }
+      >p{
+        display: block;
+        float: left;
+        width: 1.79rem;
+        height: 0.4rem;
+        padding-left: 0.11rem;
+        line-height: 0.4rem;
+        letter-spacing:0.01rem;
+        font-size:0.12rem;
+        font-family:Roboto-Bold;
+        font-weight:bold;
+        color:rgba(38,38,40,1);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      >div{
+        width: 0.76rem;
+        height: 0.32rem;
+        border: 0.02rem solid #262626;
+        border-radius:0.24rem;
+        float: right;
+        margin-right: 0.21rem;
+        text-align: center;
+        line-height: 0.36rem;
+        font-size:0.14rem;
+        font-family:PingFangSC-Semibold;
+        font-weight:600;
+        color:rgba(38,38,40,1)
+      }
+      >div.active{
 
-      .follow_login_Follow_ul{
-        width: 100%;
-        margin-top: 0.01rem;
-        .follow_login_Follow_li{
-          width: 100%;
-          background: #ffffff;
-          margin-bottom: 0.02rem;
-          .follow_login_Follow_li1{
-            width: 100%;
-            height: 0.62rem;
-            padding: 0.15rem;
-            box-sizing: border-box;
-            display: flex;
-            img{
-              display: block;
-              width: 0.32rem;
-              height: 0.32rem;
-              border-radius: 50%;
-              margin-right: 0.05rem;
-            }
-            p{
-              width: 2.3rem;
-              height: 0.32rem;
-              font-size:0.13rem;
-              font-family:PingFangSC-Medium;
-              font-weight:500;
-              color:rgba(5,5,9,1);
-              margin-left: 0.05rem;
-              line-height: 0.32rem;
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-            }
-            >div{
-              width: 0.8rem;
-              height: 0.32rem;
-              background:rgba(5,5,9,1);
-              border-radius:0.05rem;
-              line-height: 0.32rem;
-              text-align: center;
-              float: right;
-              font-size:0.1rem;
-              font-family:PingFangSC-Regular;
-              font-weight:400;
-              color:rgba(255,255,255,1);
-              img{
-                display: inline-block;
-                width: 0.1rem;
-                height: 0.11rem;
-                margin-right: 0.05rem;
-              }
-            }
-            >div.active{
-              background: #ffffff;
-              border:0.01rem solid #EEEEEE;
-              color: #666666;
-            }
-          }
-          .follow_login_Follow_li2{
-            width: 100%;
-            margin-bottom: 0.1rem;
-            >.swiper-container{
-              width: 100%;
-            }
-            .swiper-slide{
-              width: 100%;
-              background: #fff;
-              box-sizing: border-box;
-              position: relative;
-
-              .imgIs{
-                width: 100%;
-                position: relative;
-                >img{
-                  display: block;
-                  width: 100%;
-                }
-                >.biaoqian{
-                  position: absolute;
-                  left: 0;
-                  top:0;
-                  height: 0.2rem;
-                  img{
-                    width: 0.13rem;
-                    height: 0.2rem;
-                    display: inline-block;
-                    float: left;
-                    margin: 0;
-                  }
-                  span{
-                    display: inline-block;
-                    float: left;
-                    line-height: 0.2rem;
-                    padding: 0 0.05rem;
-                    background: rgba(5,5,9,0.4);
-                    color: #ffffff;
-                    border-radius: 0.2rem;
-                    border: 0.01rem solid #ffffff;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                    font-size: 0.1rem;
-                  }
-                }
-              }
-
-            }
-          }
-          .follow_login_Follow_li3{
-           width: 100%;
-            padding: 0 0.15rem;
-            box-sizing: border-box;
-            position: relative;
-            >p{
-              font-size:0.12rem;
-              font-family:PingFangSC-Regular;
-              font-weight:400;
-              line-height: 0.28rem;
-              color:rgba(5,5,9,1);
-              word-wrap:break-word;
-            }
-          }
-          .follow_login_Follow_li4{
-            width: 100%;
-            display: flex;
-            padding: 0.15rem;
-            box-sizing: border-box;
-            >div{
-              flex: 1;
-              font-size:0.14rem;
-              font-family:PingFangSC-Semibold;
-              font-weight:400;
-              color:rgba(5,5,9,1);
-              line-height: 0.18rem;
-              img{
-                display: inline-block;
-                width: 0.16rem;
-                height: 0.16rem;
-                margin-right: 0.05rem;transform: translateY(0.02rem);
-
-              }
-            }
-          }
-        }
+        border: 0.02rem solid #c5c5c6;
+        color:#c5c5c6;
       }
     }
-    .follow_login_noFollow{
+    .followDetail_bottom{
       position: absolute;
       left: 0;
-      right: 0;
       bottom: 0;
-      top: 0.4rem;
-      overflow-y: auto;
-      .follow_login_noFollow_p{
+      top: 0.83rem;
+      right: 0;
+      overflow: hidden;
+      overflow-y: scroll;
+      .followDetail_bottom_img{
         width: 100%;
-        height: 0.5rem;
-        line-height: 0.5rem;
-        padding: 0 0.15rem;
-        box-sizing: border-box;
-        font-size:0.12rem;
-        font-family:PingFangSC-Regular;
-        font-weight:400;
-        color:rgba(102,102,102,1);
-      }
-      .follow_login_noFollow_ul{
-        width: 100%;
-        background: #ffffff;
-        padding: 0 0.15rem;
-        box-sizing: border-box;
-        li{
-          width: 100%;
-          height: 0.65rem;
-          padding: 0.15rem 0;
-          display: flex;
-          box-sizing: border-box;
-          border-bottom: 0.01rem solid #eeeeee;
-          .follow_login_noFollow_li1{
-            width: 0.36rem;
-            height: 0.36rem;
-            img{
-              display: block;
-              width: 0.36rem;
-              height: 0.36rem;
-              border-radius: 50%;
-            }
-          }
-          .follow_login_noFollow_li2{
-            width: 2.3rem;
-            height: 0.36rem;
-            font-size:0.13rem;
-            font-family:PingFangSC-Medium;
-            font-weight:500;
-            color:rgba(5,5,9,1);
-            margin-left: 0.05rem;
-            line-height: 0.36rem;
+        overflow-x: scroll;
+        box-shadow:0px 0.4rem 0.4rem 0px rgba(0,0,0,0.05);
+        ul{
+          height: 100%;
+          overflow-x: scroll;
+          li{
+            float: left;
+            background: #ffffff;
+            position: relative;
             overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            >img{
+              display: block;
+              width: 3.35rem;
+            }
+             >.biaoqian{
+              position: absolute;
+              left: 0;
+              top:0;
+              height: 0.2rem;
+              img{
+                width: 0.13rem;
+                height: 0.2rem;
+                display: inline-block;
+                float: left;
+                margin: 0;
+              }
+              span{
+                display: inline-block;
+                float: left;
+                line-height: 0.2rem;
+                /*padding: 0 0.05rem;*/
+                background: rgba(5,5,9,0.4);
+                color: #ffffff;
+                border-radius: 0.2rem;
+                border: 0.01rem solid #ffffff;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                font-size: 0.1rem;
+                font-weight: 100;
+              }
+            }
           }
         }
-        .follow_login_noFollow_li3{
-          flex: 1;
-          height: 0.36rem;
-          >div{
-            width: 0.8rem;
-            height: 0.36rem;
-            background:rgba(5,5,9,1);
-            border-radius:0.05rem;
-            line-height: 0.36rem;
-            text-align: center;
-            float: right;
-            font-size:0.1rem;
-            font-family:PingFangSC-Regular;
-            font-weight:400;
-            color:rgba(255,255,255,1);
-            img{
-              display: inline-block;
-              width: 0.1rem;
-              height: 0.11rem;
-              margin-right: 0.05rem;
-            }
-          }
+      }
+      .messageFoot{
+        width: 100%;
+        height: 0.4rem;
+        line-height: 0.4rem;
+        color: rgba(5,5,5,0.3);
+        text-align: center;
+      }
+    }
+    .followDetail_bottom_concent{
+      width: 3.02rem;
+      margin: 0 auto;
+      font-size:0.14rem;
+      font-family:PingFangSC-Regular;
+      font-weight:400;
+      color:rgba(38,38,40,1);
+      line-height: 0.24rem;
+      margin-top: 0.47rem;
+      word-break: break-all;
+    }
+     .follow_login_Follow_li4{
+      width: 100%;
+      display: flex;
+      padding: 0.2rem;
+       height: 0.7rem;
+      box-sizing: border-box;
+      >div{
+        flex: 1;
+        font-size:0.14rem;
+        font-family:PingFangSC-Semibold;
+        font-weight:600;
+        color:rgba(5,5,9,1);
+        line-height: 0.18rem;
+        img{
+          display: inline-block;
+          width: 0.16rem;
+          height: 0.16rem;
+          margin-right: 0.05rem;transform: translateY(0.02rem);
         }
       }
     }
-    >.IntelligentMatchingDItem5{
-      padding: 0.1rem;
+    .IntelligentMatchingDItem5{
+      padding: 0.1rem 0.2rem 0.2rem 0.2rem;
       box-sizing: border-box;
       width: 100%;
       background: #ffffff;
-      >li{
+      >.commentNo{
         width: 100%;
         padding: 0.15rem 0;
-        border-bottom: 0.01rem solid rgba(220,220,220,1);
+        border-top: 0.01rem solid rgba(220,220,220,1);
+        img{
+          width: 1.2rem;
+          height: 1.14rem;
+          margin: 0 auto;
+        }
+        p{
+          width: 100%;
+          font-size: 0.14rem;
+          color: #c5c5c6;
+          text-align: center;
+          margin-top: 0.1rem;
+          line-height: 0.28rem;
+        }
+      }
+      >.commentYes{
+        width: 100%;
+        padding: 0.15rem 0;
+        border-top: 0.01rem solid rgba(220,220,220,1);
         display: flex;
         >.IntelligentMatchingDItemL{
           width: 0.6rem;
@@ -927,62 +832,7 @@
       }
     }
   }
-  .findDetailFoot{
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 0.49rem;
-    border-top:0.01rem solid #DFDFDF;
-    background:rgba(254,252,252,1);
-    box-shadow:0px -1px 0.07rem 0px rgba(223,223,223,1);
-    z-index:1;
-    .footer{
-      width: 90%;
-      height: 0.35rem;
-      margin: 0 auto;
-      margin-top: 0.05rem;
 
-      ul{
-        display: flex;
-        .footerLi1{
-          width: 1.5rem;
-          height: 0.35rem;
-          background:rgba(255,255,255,1);
-          border:1px solid rgba(223, 223, 223, 1);
-          border-radius: 0.2rem;
-          position: relative;
-          img{
-            display: inline-block;
-            width: 0.2rem;
-            height: 0.2rem;
-            position: absolute;
-            right: 0.1rem;
-            top:0.08rem;
-          }
-        }
-        .footerLi2{
-          flex: 1;
-          text-align: center;
-          img{
-            margin-top: 10%;
-            display: inline-block;
-            width: 0.23rem;
-            height: 0.22rem;
-          }
-        }
-      }
 
-    }
-  }
-  .messageFoot{
-    width: 100%;
-    height: 0.4rem;
-    line-height: 0.4rem;
-    background: #F7F7F7;
-    color: rgba(5,5,5,0.3);
-    text-align: center;
-    margin-bottom: 0.5rem;
-  }
 }
 </style>

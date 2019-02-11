@@ -2,7 +2,7 @@
   <!--收藏我的-->
   <div id="collect_my">
     <div class="collect_my_false" v-if="objList.length<=0">
-      <img src="/static/images/缺省图.png" alt="">
+      <img src="/static/images/queshengtu.png" alt="">
       <p>你的收藏区目前空空也～</p>
     </div>
     <div class="collect_my_true" v-else>

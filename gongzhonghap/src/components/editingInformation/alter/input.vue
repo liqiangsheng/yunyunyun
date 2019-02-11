@@ -9,7 +9,7 @@
 <script>
   import { Toast } from 'mint-ui';
 export default {
-  props:['value'],
+  props:['value',"messageValueInput"],
   name: 'nameValue',
   data(){
     return{
@@ -35,10 +35,11 @@ export default {
   },
   created(){
      document.title=this.value;
+     this.inputValue =this.messageValueInput;
     if(this.value=='用户名'){
-      this.lengthN = 50
+      this.lengthN = 50 -this.messageValueInput.length;
     }else {
-      this.lengthN = 200
+      this.lengthN = 200 -this.messageValueInput.length;
     }
   },
   methods:{

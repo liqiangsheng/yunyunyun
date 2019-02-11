@@ -1,6 +1,7 @@
 <template>
   <!--设计咖-->
-  <v-touch id="design_offee" @swipeup="swipeup" @swipedown="swipedown">
+  <!--<v-touch @swipeup="swipeup" @swipedown="swipedown">-->
+  <div id="design_offee" @scroll="updataMore">
     <ul>
         <li v-for="(item1,index1) in objList"  @click="goToHomePage(item1)" ref="swiperScroll">
           <div class="design_offee_top">
@@ -38,7 +39,7 @@
     <div class="messageFoot" @click="updataMore" v-if="!!message">
       {{message}}
     </div>
-  </v-touch>
+  </div>
 </template>
 
 <script>
@@ -49,7 +50,7 @@ export default {
   data(){
     return{
       p:1,  //页
-      s:50, //每页多少
+      s:20, //每页多少
       message:"", //触底提示
       pageNum:"",//每页数据
       objList:[], // 智慧团数据
@@ -80,48 +81,48 @@ export default {
     })
   },
   methods:{
-    swipeup(){ //上滑
-     this.swiperIndex++;
-      console.log(this.swiperIndex)
-     if( this.swiperIndex == this.objList.length){
-       this.updataMore()
-     }else {
-       if(this.swiperIndex<this.objList.length-1){
-         this.scrollHeight = this.scrollHeight+410;
-         let box = document.getElementById('design_offee')
-         box.pageYOffset= this.scrollHeight ;
-         box.scrollTop = this.scrollHeight ;
-         box.scrollTop = this.scrollHeight ;
-       }else {
-         this.swiperIndex = this.objList.length-1;
-         let box = document.getElementById('design_offee')
-         box.pageYOffset= (this.objList.length)*410 ;
-         box.scrollTop = (this.objList.length)*410 ;
-         box.scrollTop = (this.objList.length)*410 ;
-       }
-
-     }
-    },
-    swipedown(){//下滑
-      console.log("xia")
-      this.swiperIndex--;
-      if( this.swiperIndex<=0){
-        Toast('到顶了');
-        this.swiperIndex = 0;
-        let box = document.getElementById('design_offee')
-        box.pageYOffset=0 ;
-        box.scrollTop = 0 ;
-        box.scrollTop = 0 ;
-        return
-      }else {
-        this.scrollHeight = this.scrollHeight-410;
-        let box = document.getElementById('design_offee')
-        box.pageYOffset= this.scrollHeight ;
-        box.scrollTop = this.scrollHeight ;
-        box.scrollTop = this.scrollHeight ;
-      }
-
-    },
+//    swipeup(){ //上滑
+//     this.swiperIndex++;
+//      console.log(this.swiperIndex)
+//     if( this.swiperIndex == this.objList.length){
+//       this.updataMore()
+//     }else {
+//       if(this.swiperIndex<this.objList.length-1){
+//         this.scrollHeight = this.scrollHeight+410;
+//         let box = document.getElementById('design_offee')
+//         box.pageYOffset= this.scrollHeight ;
+//         box.scrollTop = this.scrollHeight ;
+//         box.scrollTop = this.scrollHeight ;
+//       }else {
+//         this.swiperIndex = this.objList.length-1;
+//         let box = document.getElementById('design_offee')
+//         box.pageYOffset= (this.objList.length)*410 ;
+//         box.scrollTop = (this.objList.length)*410 ;
+//         box.scrollTop = (this.objList.length)*410 ;
+//       }
+//
+//     }
+//    },
+//    swipedown(){//下滑
+//      console.log("xia")
+//      this.swiperIndex--;
+//      if( this.swiperIndex<=0){
+//        Toast('到顶了');
+//        this.swiperIndex = 0;
+//        let box = document.getElementById('design_offee')
+//        box.pageYOffset=0 ;
+//        box.scrollTop = 0 ;
+//        box.scrollTop = 0 ;
+//        return
+//      }else {
+//        this.scrollHeight = this.scrollHeight-410;
+//        let box = document.getElementById('design_offee')
+//        box.pageYOffset= this.scrollHeight ;
+//        box.scrollTop = this.scrollHeight ;
+//        box.scrollTop = this.scrollHeight ;
+//      }
+//
+//    },
     cancelFollow(v){ //取消关注
       let data = JSON.parse(localStorage.getItem("userInfo"));
       if(!data){
@@ -131,7 +132,7 @@ export default {
         },1000)
       }else{
 
-          commonUserCancelCareUser(v.id,data.data.id,2).then(res=>{
+          commonUserCancelCareUser(v.id,data.data.id,2,data.data.access_token).then(res=>{
             if(res.data.status==true){
               Toast('关注已取消')
               v.cared = false;
@@ -149,7 +150,7 @@ export default {
           this.$router.push({path:"/login"})
         },1000)
       }else{
-          commonUserCareUser(v.id,data.data.id,2).then(res=>{
+          commonUserCareUser(v.id,data.data.id,2,data.data.access_token).then(res=>{
             if(res.data.status==true){
               Toast('关注成功')
               v.cared = true;
@@ -160,46 +161,42 @@ export default {
         }
     },
     goToHomePage(v){ //去个人主页
-      this.$router.push({path: "/homePage", query: {state: 2,id:v.id,source:"XCX"}}) //去企业主页 1是企业 2是个人
+      this.$router.push({path: "/bigShotPage", query: {id:v.id}}) //去企业主页 1是企业 2是个人
     },
-    updataMore(){ //加载更多 分页
-      this.p++;
-      if(this.p>this.pageNum){
-//        this.swiperIndex = this.objList.length;
-//        this.scrollHeight = this.scrollHeight-410;
-//        let box = document.getElementById('design_offee')
-//        box.pageYOffset= this.scrollHeight ;
-//        box.scrollTop = this.scrollHeight ;
-//        box.scrollTop = this.scrollHeight ;
-        this.p =this.pageNum;
-        this.message = "这是我的底线..."
+    updataMore(e){ //加载更多 分页
+      if(e.target.scrollTop>=(e.target.scrollHeight-e.target.clientHeight)){
+        this.p++;
+        if(this.p>this.pageNum){
+          this.p =this.pageNum;
+          this.message = "这是我的底线..."
 //        Toast("这是最后一页啦！")
-        return;
-      }else if(this.p==this.pageNum){
-        this.p =this.pageNum;
-        this.message = "这是我的底线..."
-        commonUserList(this.p,this.s).then(res=>{
-          if(res.data.status == true){
+          return;
+        }else if(this.p==this.pageNum){
+          this.p =this.pageNum;
+          this.message = "这是我的底线..."
+          commonUserList(this.p,this.s).then(res=>{
+            if(res.data.status == true){
+              res.data.data.forEach((item,index)=>{
+                item.designerUser.style =  (item.designerUser.powerIndex*10)*0.7+"px";
+              })
+              this.objList = this.objList.concat(res.data.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
+          })
+        }else if(this.p<this.pageNum){
+//        this.message = "点击加载更多..."
+          commonUserList(this.p,this.s).then(res=>{
             res.data.data.forEach((item,index)=>{
               item.designerUser.style =  (item.designerUser.powerIndex*10)*0.7+"px";
             })
-            this.objList = this.objList.concat(res.data.data);
-          }else{
-            Toast("网络出错啦，请重试")
-          }
-        })
-      }else if(this.p<this.pageNum){
-//        this.message = "点击加载更多..."
-        commonUserList(this.p,this.s).then(res=>{
-          res.data.data.forEach((item,index)=>{
-            item.designerUser.style =  (item.designerUser.powerIndex*10)*0.7+"px";
+            if(res.data.status == true){
+              this.objList =  this.objList.concat(res.data.data);
+            }else{
+              Toast("网络出错啦，请重试")
+            }
           })
-          if(res.data.status == true){
-            this.objList =  this.objList.concat(res.data.data);
-          }else{
-            Toast("网络出错啦，请重试")
-          }
-        })
+        }
       }
     },
   },
@@ -217,6 +214,7 @@ export default {
     ul{
       width: 100%;
       box-sizing: border-box;
+      margin-top: 0.1rem;
       li{
        width: 100%;
         height: 410px;
@@ -300,7 +298,7 @@ export default {
           position: absolute;
           left: 0;
           bottom: 0;
-          background: url(../../../../static/images/投影bg.png);
+          background: url(../../../../static/images/touyingbg.png);
           background-size: 100% 100%;
           .design_offee_bottom_content{
             width: 100%;

@@ -2,7 +2,7 @@
   <!--原创-->
   <div id="original" ref="findBox" @scroll="boxScroll">
        <div v-if="imgsArr.length<=0" class="original_NolistData">
-         <img src="/static/images/原创.png" alt="">
+         <img src="/static/images/yuanchuan.png" alt="">
          <p>你还没有进行任何创作哦～</p>
        </div>
 

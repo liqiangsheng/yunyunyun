@@ -1,12 +1,16 @@
 <template>
   <div id="myOpinion">
-      <ul class="myOpinion_ul">
+      <ul class="myOpinion_ul" v-if="lisrData.length>0">
         <li v-for="(item,index) in lisrData" class="myOpinion_li">
           <p class="myOpinion_wen">问： {{item.question}}</p>
           <p class="myOpinion_da"><b>答：</b>{{item.answer}}</p>
         </li>
       </ul>
-    <div class="messageFoot" @click="updataMore">
+    <div  v-if="lisrData.length<=0" class="lengthFalse">
+      <img src="/static/images/queshengtu.png" alt="">
+      <p>常见区目前空空如也～</p>
+    </div>
+    <div class="messageFoot" @click="updataMore" v-if="lisrData.length>0">
       {{message}}
     </div>
   </div>
@@ -113,6 +117,24 @@
         color:rgba(5,5,9,1);
         line-height:0.28rem;
       }
+    }
+  }
+  .lengthFalse{
+    width: 100%;
+    padding-top: 1rem;
+    img{
+      display: block;
+      margin: 0 auto;
+      width: 1rem;
+      height: 0.94rem;
+    }
+    p{
+      width: 100%;
+      text-align: center;
+      line-height: 0.5rem;
+      font-weight:400;
+      color:rgba(153,153,153,1);
+      margin-top: 0.2rem;
     }
   }
   .messageFoot{

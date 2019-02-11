@@ -72,7 +72,6 @@ export default {
         let that = this;
         if(that.pages<that.page.p){
           that.page.p = that.pages;
-          Toast("没有更多活动了");
           return;
         }else if(that.pages==that.page.p){
 

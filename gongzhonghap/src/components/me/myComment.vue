@@ -2,7 +2,7 @@
   <!--评论-->
   <div id="myComment">
     <div class="praiseMe_box_false" v-if="objList.length<=0">
-      <img src="/static/images/缺省图.png" alt="">
+      <img src="/static/images/queshengtu.png" alt="">
       <p>我的评论区目前空空也～</p>
     </div>
      <div class="myComment_box">

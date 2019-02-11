@@ -2,7 +2,7 @@
   <!--点赞我的-->
   <div id="praiseMe">
       <div class="praiseMe_box_false" v-if="objList.length<=0">
-        <img src="/static/images/缺省图.png" alt="">
+        <img src="/static/images/queshengtu.png" alt="">
         <p>你的点赞区目前空空也～</p>
       </div>
     <ul class="praiseMe_box_true" v-else>
@@ -92,10 +92,10 @@ export default {
         if(v.vUser==false){//去吃瓜
           this.$router.push({path:"/personalMelonPages",query:{id:v.laudUser}})
         }else{
-          this.$router.push({path:"/homePage",query:{state:2,id:v.laudUser}})//1  true是大咖
+          this.$router.push({path:"/bigShotPage",query:{id:v.laudUser}})//1  true是大咖
         }
       }else {//企业
-        this.$router.push({path:"/homePage",query:{state:1,id:v.laudUser}})//1 是大咖
+        this.$router.push({path:"/enterprisePage",query:{id:v.laudUser}})//1 是大咖
       }
     },
     goDetail(v){//去详情页

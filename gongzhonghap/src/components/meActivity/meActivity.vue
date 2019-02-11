@@ -27,7 +27,7 @@
         </ul>
      </div>
       <div class="lengthFalse" v-if="listData.length<=0">
-        <img src="/static/images/缺省图.png" alt="">
+        <img src="/static/images/queshengtu.png" alt="">
         <p>你{{name}}活动区目前空空也～</p>
       </div>
      <div class="moreClick" v-show="listData.length>0" @click="moreClick(obj.s)">{{message}}</div>

@@ -16,8 +16,8 @@
               <p><span class="pSpan1">作品: </span><span class="pSpan2">{{item.titleCount}} </span><span class="pSpan3">粉丝：</span><span class="pSpan2">{{item.caredCount}}</span></p>
             </div>
             <div class="myfollow_li3" @click="followClick(item,index)">
-              <img v-if="item.mutual==false" src="/static/images/已关注.png" alt="">
-              <img v-if="item.mutual==true" src="/static/images/互关注.png" alt="">
+              <img v-if="item.mutual==false" src="/static/images/yiguanzhu.png" alt="">
+              <img v-if="item.mutual==true" src="/static/images/huguanzhu.png" alt="">
               <span v-if="item.mutual==false">已关注</span>
               <span v-if="item.mutual==true">互关注</span>
             </div>
@@ -79,24 +79,22 @@ export default {
 
   methods: {
     goHomepage(v){//点击头像 去吃瓜页 或则设计师主页 或者企业
-      console.log(v)
       if(v.userType=="2"){ //个人
         if(v.vuser==false){ //去吃瓜
           this.$router.push({path:"/personalMelonPages",query:{id:v.userId}})
         }else{//去大咖
-          this.$router.push({path:"/homePage",query:{state:2,id:v.userId}})//1  true是大咖个人
+          this.$router.push({path:"/bigShotPage",query:{id:v.userId}})//1  true是大咖个人
         }
       }else if(v.userType=='1'){ //企业
-        this.$router.push({path:"/homePage",query:{state:1,id:v.userId}})//1 是大咖企业
+        this.$router.push({path:"/enterprisePage",query:{state:1,id:v.userId}})//1 是大咖企业
       }else {
         Toast("后台参数错误")
       }
 
     },
     followClick(v,i){//关注
-      console.log(v)
+
       let data = JSON.parse(localStorage.getItem("userInfo"));
-      console.log(data.data.id)
       if(!data){
         Toast("您还未登录，请登录！");
         setTimeout(()=>{
@@ -105,7 +103,7 @@ export default {
       }else{
      ///你关注的人，别人没关注你
           if(v.userType == "1"){ //企业
-            companyInfoCancelCareCompany(v.userId,data.data.id,v.userType).then(res=>{
+            companyInfoCancelCareCompany(v.userId,data.data.id,v.userType,this.userInfo.data.access_token).then(res=>{
               if(res.data.status==true){
                 Toast("关注已取消");
                this.objList.splice(i,1)
@@ -114,7 +112,7 @@ export default {
               }
             })
           }else{  //个人
-            commonUserCancelCareUser(v.userId,data.data.id,v.userType).then(res=>{
+            commonUserCancelCareUser(v.userId,data.data.id,v.userType,this.userInfo.data.access_token).then(res=>{
               if(res.data.status==true){
                 Toast("关注已取消");
                 this.objList.splice(i,1)

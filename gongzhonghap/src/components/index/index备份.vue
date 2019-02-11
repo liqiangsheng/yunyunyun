@@ -111,9 +111,9 @@ export default {
       banner:[],//轮播
       tabbarAarr:[  //、、tab
         {icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
-        {icon:"./static/images/资讯2.png",icon1:"./static/images/资讯1.png",path:"/homeIndex"},
+        {icon:"./static/images/zixun2.png",icon1:"./static/images/zixun1.png",path:"/homeIndex"},
         {icon:"./static/images/zhaio.png",icon1:"./static/images/zhaio.png",path:"/release"},
-        {icon:"./static/images/智慧活动2.png",icon1:"./static/images/智慧活动1.png",path:"/index"},
+        {icon:"./static/images/zhihuihuodong2.png",icon1:"./static/images/zhihuihuodong1.png",path:"/index"},
         {icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
       ],
       tabbarAarrIndex:3,  //点击tab的下标
@@ -222,9 +222,7 @@ export default {
 
     },
     goToPicture(item){//去火图直播页面
-       console.log(item)
       this.$router.push({path:"/pictureLiveBroadcast",query:{id:item.id,isBool:false,bookId:item.id}})
-
     },
       bannerCLICK(i){
 

@@ -20,4 +20,7 @@ export let actions={ //异步处理VUEX
   loadingFalse(store,data){
     store.commit("loadingFalse",data)
   },
+  FollowScrollTop(store,data){
+    store.commit("FollowScrollTop",data)
+  },
 };

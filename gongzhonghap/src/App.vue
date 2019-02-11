@@ -1,17 +1,69 @@
 <template>
   <div id="app">
-    <router-view/>
+    <keep-alive>
+      <router-view v-if="!!$route.meta.isTrue"/>
+    </keep-alive>
+    <router-view   v-if="!$route.meta.isTrue"/>
+    <!--<router-view />-->
   </div>
 </template>
 
 <script>
-export default {
+  import MobileDetect from 'mobile-detect'
+  export default {
   name: 'App',
   data(){
     return{
+      Preservation:false,//路由是不是更新每次
+    }
+  },
+  watch:{
+    "$route":function (newl,oldl) {
+//   console.log(newl,"dsfs")
+
     }
   },
   created() {
+//    //判断数组中是否包含某字符串
+//    Array.prototype.contains = function(needle) {
+//      for (i in this) {
+//        if (this[i].indexOf(needle) > 0)
+//          return i;
+//      }
+//      return -1;
+//    }
+//    var ua =window.navigator.userAgent;
+//    console.log(ua)
+//    var md = new MobileDetect(ua)
+//    var model = "";
+////    console.log(ua,"手机版本")
+//    var md = new MobileDetect(ua);//初始化mobile-detect
+//    var os = md.os();//获取系统
+//    var model = "";
+//    if (os == "iOS") {//ios系统的处理
+//      os = md.os() + md.version("iPhone");
+//      model = md.mobile();
+//    } else if (os == "AndroidOS") {//Android系统的处理
+//      os = md.os() + md.version("Android");
+//      var sss = ua.split(";");
+//      var i = sss.contains("Build/");
+//      if (i > -1) {
+//        console.log( md.mobile() );          // 'Sony'
+//        console.log( md.phone() );           // 'Sony'
+//        console.log( md.tablet() );          // null
+//        console.log( md.userAgent() );       // 'Safari'
+//        console.log( md.os() );              // 'AndroidOS'
+//        console.log( md.is('iPhone') );      // false
+//        console.log( md.is('bot') );         // false
+//        console.log( md.version('Webkit') );         // 534.3
+//        console.log( md.versionStr('Build') );       // '4.1.A.0.562'
+//        console.log( md.match('playstation|xbox') ); // false
+//        model = sss[i].substring(0, sss[i].indexOf("Build/"));
+//      }
+//    }
+//    console.log(model,"model")
+//    console.log( os,"model")
+
     //            ?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim         7牛的缩略图
 
 
@@ -27,6 +79,9 @@ export default {
 //      jti:"85114bc2-7f46-42e6-a196-027b3d96f776",
 //      header:"http://pub.qiniu.butongtech.com/defult_photo@3x.png"
 //    }
+  },
+  methods:{
+
   }
 }
 

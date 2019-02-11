@@ -145,9 +145,10 @@ export default {
         }
       })
       activityImagesBookFindOne(this.$router.history.current.query.bookId).then(res=>{  //头部接口
+        console.log(res,"res")
         if(res.data.status == true){
-          this.objDataTitle = res.data.data;
-          this.banner = res.data.data.bannerImageList;
+          this.objDataTitle = res.data.data?res.data.data:{name:"热门活动",viewCount:"9999",bookTime:1544176800000,regionName:"深圳市"};
+          this.banner = res.data.data?res.data.data.bannerImageList:[];
           this.$nextTick(() => {
             //     滑动
             var mySwiper = new Swiper('.swiper-container', {
@@ -219,12 +220,13 @@ export default {
   },
   methods: {
     share(){//分享
-      shareInfoShareUrl(window.location.href.split('#')[0]).then(res=>{
+      let url = "http://account.butongtech.com/"
+      shareInfoShareUrl(url).then(res=>{
         if(res.status==true){
           let obj = {
             title:this.objDataTitle.name,
             desc:this.objDataTitle.remark,
-            url:location.href,
+            url:"http://account.butongtech.com/index.html#/pictureLiveBroadcast?isBool=false&bookId="+this.$router.history.current.query.bookId+"&id="+this.$router.history.current.query.id,//id=20190101000004BUTONG00001&isBool=false&bookId=20190101000004BUTONG00001
             imgUrl:this.objDataTitle.bannerImageList[0].imageUrl,
           }
           wxShare.wxShare(res.data,obj)
@@ -262,9 +264,11 @@ export default {
         }
       })
       activityImagesBookFindOne(v.bookId).then(res=>{  //头部接口
+        console.log(res,"res")
         if(res.data.status == true){
-          this.objDataTitle = res.data.data;
-          this.banner = res.data.data.bannerImageList;
+          console.log(res,"res")
+          this.objDataTitle = res.data.data?res.data.data:{name:"热门活动",viewCount:"9999",bookTime:1544176800000,regionName:"深圳市"};
+          this.banner = res.data.data?res.data.data.bannerImageList:[];
           this.$nextTick(() => {
             //     滑动
             var mySwiper = new Swiper('.swiper-container', {
@@ -278,10 +282,19 @@ export default {
       })
     },
     goToImg(v,v1,i){ //进入图片
-      this.imgenlargeShow = true;
-      this.imgenlargedata = 0;//传给图片的数据
-      this.imgenlargedata1 = v1;//传给图片的数据
-      this.imgenlargedata1Index = i;
+
+//      this.imgenlargeShow = true;
+//      this.imgenlargedata = 0;//传给图片的数据
+//      this.imgenlargedata1 = v1;//传给图片的数据
+//      this.imgenlargedata1Index = i;
+      let list = [];
+      this.imgsArr1.forEach((item,index)=>{
+        list.push(item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/85/imageslim ")
+      })
+      wx.previewImage({
+        current: v.imageUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/85/imageslim ', // 当前显示图片的http链接
+        urls: list // 需要预览的图片http链接列表
+      });
     },
     goBackTop(){//回到头部
       window.pageYOffset= 0;
@@ -290,19 +303,29 @@ export default {
     },
     stateClick(i){//tab切换
       this.tabState = i;
+      this.imgenlargeShow = false;
     },
     ishowItem(v){ //子组件传来的false
       this.imgenlargeShow = v;
     },
     clickFn(event, { index, value }) { //点击每个图片放大
+
       // 阻止a标签跳转
       event.preventDefault()
-      // 只有当点击到图片时才进行操作
-      if (event.target.tagName.toLowerCase() == 'img') { //判断是不是img
-        this.imgenlargeShow = true;
-        this.imgenlargedata = 1;//传给图片的数据
-        this.imgenlargedata1Index = index;
-      }
+//      // 只有当点击到图片时才进行操作
+//      if (event.target.tagName.toLowerCase() == 'img') { //判断是不是img
+//        this.imgenlargeShow = true;
+//        this.imgenlargedata = 1;//传给图片的数据
+//        this.imgenlargedata1Index = index;
+//      }
+      let list = [];
+      this.imgsArr.forEach((item,index)=>{
+        list.push(item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/85/imageslim ")
+      })
+      wx.previewImage({
+        current: value.imageUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/85/imageslim ', // 当前显示图片的http链接
+        urls: list // 需要预览的图片http链接列表
+      });
     },
     getData() {
 

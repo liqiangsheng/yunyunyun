@@ -2,7 +2,7 @@
   <!--草稿-->
   <div id="draft">
         <div v-if="listData.length<=0" class="draft_NolistData">
-          <img src="/static/images/原创.png" alt="">
+          <img src="/static/images/yuanchuan.png" alt="">
           <p>你还没有任何草稿哦～</p>
         </div>
         <ul  class="draft_ul" v-else>

@@ -9,11 +9,11 @@
          </li>
        </ul>
        <div class="praiseMe_box_false" v-if="tabIndex==0&&ListData.length<=0">
-         <img src="/static/images/缺省图.png" alt="">
+         <img src="/static/images/queshengtu.png" alt="">
          <p>你的收藏作品区目前空空也～</p>
        </div>
        <div class="praiseMe_box_false" v-if="tabIndex==1&&articleData.length<=0">
-         <img src="/static/images/缺省图.png" alt="">
+         <img src="/static/images/queshengtu.png" alt="">
          <p>你的收藏文章区目前空空也～</p>
        </div>
        <ul class="myFabulous_ul" v-show="tabIndex==0&&ListData.length>0">
@@ -41,12 +41,12 @@
               <div class="myFabulous_left">
                 <h5>{{item.title}}</h5>
                 <div style="color: #AAAAAA">
-                  <img src="/static/images/浏览数.svg" alt=""> {{item.viewCoun?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}
+                  <img src="/static/images/liulangshu.svg" alt=""> {{item.viewCoun>10000?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}
                 </div>
-                <div><img src="/static/images/喜欢数.svg" alt=""> {{item.laudedCount?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}} <img src="/static/images/评论数.svg"  alt="" style="margin-left: 0.3rem"> {{item.commentCount?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</div>
+                <div><img src="/static/images/xihuanshu.svg" alt=""> {{item.laudedCount>10000?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}} <img src="/static/images/评论数.svg"  alt="" style="margin-left: 0.3rem"> {{item.commentCount>10000?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</div>
               </div>
               <div class="myFabulous_right">
-                <img :src="item.bannerUrl" alt="">
+                <img :src="item.bannerUrl?item.bannerUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim ':'/static/images/缺省图.png'" alt="">
               </div>
          </li>
        </ul>
@@ -122,10 +122,10 @@ export default {
         if(v.authorInfo.vUser==false){//去吃瓜
           this.$router.push({path:"/personalMelonPages",query:{id:v.authorInfo.id}})
         }else{
-          this.$router.push({path:"/homePage",query:{state:2,id:v.authorInfo.id}})//1  true是大咖
+          this.$router.push({path:"/bigShotPage",query:{id:v.authorInfo.id}})//1  true是大咖
         }
       }else {//企业
-        this.$router.push({path:"/homePage",query:{state:1,id:v.authorInfo.id}})//1 是大咖
+        this.$router.push({path:"/enterprisePage",query:{id:v.authorInfo.id}})//1 是大咖
       }
     },
     tabClick(i){//tab的下标
@@ -333,7 +333,7 @@ export default {
         box-sizing: border-box;
         display: flex;
         .myFabulous_left{
-          width: 60%;
+          flex: 1;
            padding-right: 0.05rem;
           h5{
             font-size:0.15rem;
@@ -360,11 +360,13 @@ export default {
           }
         }
         .myFabulous_right{
-         flex: 1;
+         width: 1.3rem;
+          height: 0.8rem;
           img{
             display: block;
-            width: 100%;
-            border-radius: 0.05rem;
+            width: 1.3rem;
+            height: 0.8rem;
+            border-radius: 0.1rem;
           }
         }
       }

@@ -9,9 +9,9 @@
           </div>
           <div class="new_horizons_centent_look">
             <h5>{{item.title}}</h5>
-            <span><img src="/static/images/浏览数.svg" alt="">{{item.viewCount?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}</span><br>
-            <span><img src="/static/images/喜欢数.svg" alt="">{{item.laudedCount?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}}</span>
-            <span><img src="/static/images/评论数.svg" alt="">{{item.commentCount?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</span>
+            <span><img src="/static/images/liulangshu.svg" alt="">{{item.viewCount?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}</span><br>
+            <span><img src="/static/images/xihuanshu.svg" alt="">{{item.laudedCount?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}}</span>
+            <span><img src="/static/images/pinlunshu.svg" alt="">{{item.commentCount?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</span>
           </div>
         </li>
       </ul>
@@ -48,7 +48,7 @@
             this.message = "这是我的底线..."
           }
           res.data.data.informationVoList.forEach((item,index)=>{
-            item.bannerUrl1 = "/static/images/默认轮播.png"
+            item.bannerUrl1 = "/static/images/morenlunbo.png"
           })
           this.objList = res.data.data.informationVoList;
             this.$nextTick(()=>{
@@ -77,7 +77,7 @@
           specialSubjectFindSubjectInfoByCategory("5",this.p,this.s).then(res=>{
             if(res.data.status == true){
               res.data.data.informationVoList.forEach((item,index)=>{
-                item.bannerUrl1 = "/static/images/默认轮播.png"
+                item.bannerUrl1 = "/static/images/morenlunbo.png"
               })
               this.objList = this.objList.concat(res.data.data.informationVoList);
             }else{
@@ -88,7 +88,7 @@
           this.message = "点击加载更多..."
           specialSubjectFindSubjectInfoByCategory("5",this.p,this.s).then(res=>{
             res.data.data.informationVoList.forEach((item,index)=>{
-              item.bannerUrl1 = "/static/images/默认轮播.png"
+              item.bannerUrl1 = "/static/images/morenlunbo.png"
             })
             if(res.data.status == true){
               this.objList =  this.objList.concat(res.data.data.informationVoList);

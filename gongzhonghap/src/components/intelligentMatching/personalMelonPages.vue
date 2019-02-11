@@ -14,7 +14,7 @@
              </li>
              <li class="personalMelonPages_header_li3">
                <div>
-                 <div v-if="listData.cared==false" @click="followClick('关注',listData)"><img src="/static/images/关注.png" alt="">关注</div>
+                 <div v-if="listData.cared==false" @click="followClick('关注',listData)"><img src="/static/images/guanzhu.png" alt="">关注</div>
                  <div class="active" v-if="listData.cared==true" @click="followClick('已关注',listData)"><img src="/static/images/gou.png" alt="">已关注</div>
                </div>
              </li>
@@ -55,7 +55,7 @@
       </div>
 
       <div class="lengthSmall" v-else>
-        <img src="/static/images/原创.png" alt="">
+        <img src="/static/images/yuanchuan.png" alt="">
          <p>{{listData.name}}还没有进行任何创作哦～</p>
       </div>
     </div>
@@ -97,9 +97,8 @@
 //          box.addEventListener('scroll',this.handleScroll) //监听高度
         })
         this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):"";
-
-        commonUserFindOne(this.$router.history.current.query.id).then(res=>{
-
+        let data = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):{data:{user_id:"",userType:""}};
+        commonUserFindOne(this.$router.history.current.query.id,data.data.user_id,data.data.userType).then(res=>{
           if(res.status == true){
              this.listData =res.data;
             this.$nextTick(function () {
@@ -201,12 +200,13 @@
           })
         },
         share(){//分享
-          shareInfoShareUrl(window.location.href.split('#')[0]).then(res=>{
+          let url = "http://account.butongtech.com/"
+          shareInfoShareUrl(url).then(res=>{
             if(res.status==true){
               let obj = {
                 title:this.listData.regionName,
                 desc:this.listData.introduce,
-                url:location.href,
+                url:"http://account.butongtech.com/index.html#/personalMelonPages?id="+this.$router.history.current.query.id,
                 imgUrl:this.listData.ownerUrl,
               }
               wxShare.wxShare(res.data,obj)
@@ -219,7 +219,7 @@
           let data = JSON.parse(localStorage.getItem("userInfo"))
           if(data){
             if(v=='关注'){ //关注
-              commonUserCareUser(v1.id,data.data.id,"2").then(res=>{
+              commonUserCareUser(v1.id,data.data.id,"2",data.data.access_token).then(res=>{
                 if(res.data.status==true){
                   Toast("关注成功")
                   v1.cared =true
@@ -228,7 +228,7 @@
                 }
               })
             }else if(v=='已关注'){//取消关注
-              commonUserCancelCareUser(v1.id,data.data.id,"2").then(res=>{
+              commonUserCancelCareUser(v1.id,data.data.id,"2",data.data.access_token).then(res=>{
                 if(res.data.status==true){
                   Toast("关注已取消")
                   v1.cared =false
