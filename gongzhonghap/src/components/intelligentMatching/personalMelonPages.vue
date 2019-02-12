@@ -1,62 +1,59 @@
 <template>
   <!--个人吃瓜页-->
     <div id="personalMelonPages">
-      <div class="personalMelonPages_header" ref="offsetHeight">
-        <img :src="listData.ownerUrl?listData.ownerUrl:'/static/images/defultphoto.png'" alt="" class="personalMelonPages_header_img">
-        <div class="personalMelonPages_header_box">
-            <ul class="personalMelonPages_header_ul">
-             <li class="personalMelonPages_header_li1">
-                 <img :src="listData.ownerUrl?listData.ownerUrl:'/static/images/defultphoto.png'" alt="">
-             </li>
-             <li class="personalMelonPages_header_li2">
-               <b>{{listData.name}}</b>
-               <div>{{listData.regionName}}</div>
-             </li>
-             <li class="personalMelonPages_header_li3">
-               <div>
-                 <div v-if="listData.cared==false" @click="followClick('关注',listData)"><img src="/static/images/guanzhu.png" alt="">关注</div>
-                 <div class="active" v-if="listData.cared==true" @click="followClick('已关注',listData)"><img src="/static/images/gou.png" alt="">已关注</div>
-               </div>
-             </li>
-            </ul>
-          <ul class="personalMelonPages_header_ul1">
+      <!--背景头像-->
+       <div class="personalMelonPages_bg">
+         <div class="personalMelonPages_header">
+           <img src="/static/images/writeRight.png" alt="" @click="$router.go(-1)">
+            <div v-if="listData.cared==false"  @click="followClick('关注',listData)">关注</div>
+            <div v-if="listData.cared==true"  @click="followClick('已关注',listData)">已关注</div>
+         </div>
+         <div class="personalMelonPages_bannerUrl">
+           <img :src="listData.ownerUrl?listData.ownerUrl:'/static/images/defultphoto.png'" alt="">
+         </div>
+       </div>
+      <!--关注，喜爱，收藏-->
+      <div class="personalMelonPages_name">
+        <div>
+          <h5>{{listData.name}}</h5>
+          <p>{{listData.regionName}}</p>
+        </div>
+
+          <ul>
             <li>
-               <b>{{listData.careCount?listData.careCount:0}}</b>
-               <p>关注</p>
+              <b>{{listData.careCount>10000?(listData.careCount/10000).toFixed(2)+'万':listData.careCount}}</b>
+              <p>关注</p>
             </li>
             <li>
-              <b>{{listData.caredCount?listData.caredCount:0}}</b>
-              <p>粉丝</p>
-            </li>
-            <li>
-              <b>{{listData.laudCount?listData.laudCount:0}}</b>
+              <b>{{listData.laudCount>10000?(listData.laudCount/10000).toFixed(2)+'万':listData.laudCount}}</b>
               <p>点赞</p>
             </li>
+            <li>
+              <b>{{listData.caredCount>10000?(listData.caredCount/10000).toFixed(2)+'万':listData.caredCount}}</b>
+              <p>粉丝</p>
+            </li>
           </ul>
-        </div>
       </div>
-
-      <div class="componentsBox" v-if="imgsArr.length>0">
-        <ul id="box" @scroll="boxScroll">
-          <li v-for="(item,index) in imgsArr" @click.stop="clickFn(item,index)" >
+      <!--主要内容-->
+      <div class="personalMelonPages_content" @scroll="boxScroll">
+        <ul  class="personalMelonPages_content_Data" v-if="imgsArr.length>0&&imgsArr.length%2==0">
+          <li v-for="(item,index) in imgsArr" :class="[{active1:(index+1-1)%4==0},{active2:(index+1-2)%4==0},{active3:(index+1-3)%4==0},{active4:(index+1-4)%4==0}]" @click="goToDetail(item,index)" >
             <img :src="item.imageUrl1" alt="">
-            <h5>{{item.title}}</h5>
-            <ul class="img-info_ul">
-              <li  class="img-info_li1"><img :src="item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt=""></li>
-              <li class="img-info_li2">{{item.authorInfo.name}}</li>
-              <li class="img-info_li3"><img src="/static/images/点赞1.png" alt=""></li>
-              <li class="img-info_li4">{{item.laudedCount}}</li>
-            </ul>
-          </li>
-          <li style="text-align: center;line-height: 1.0rem;color: #999999" v-show="message!=''">
-           {{message}}
           </li>
         </ul>
-      </div>
-
-      <div class="lengthSmall" v-else>
-        <img src="/static/images/yuanchuan.png" alt="">
-         <p>{{listData.name}}还没有进行任何创作哦～</p>
+        <ul  class="personalMelonPages_content_Data1" v-if="imgsArr.length>0&&imgsArr.length%2==1">
+          <li v-for="(item,index) in imgsArr" :class="[{active1:(index+1-1)%4==0},{active2:(index+1-2)%4==0},{active3:(index+1-3)%4==0},{active4:(index+1-4)%4==0}]" @click="goToDetail(item,index)" >
+            <img :src="item.imageUrl1" alt="">
+          </li>
+        </ul>
+        <div class="personalMelonPages_content_noData" v-if="imgsArr.length<=0">
+          <img src="/static/images/weidenglu.png" alt="">
+          <p>他还没留下痕迹呢</p>
+        </div>
+        <!---->
+        <div class="messageFoot" v-if="!!message&&imgsArr.length>0">
+          {{message}}
+        </div>
       </div>
     </div>
   </template>
@@ -74,8 +71,6 @@
       },
       data(){
         return{
-          reachBottomDistance:150,
-          BjImg:"/static/images/5.png", //高斯模糊的背景
           listData:{}, //头部数据
           message:"",
            p: 1, // request param//
@@ -86,26 +81,22 @@
           openPullDown:true,//下拉刷新
           imgsArr:[], //数据
           userInfo:"", //用户信息
-          offsetHeight:0, //头部高度
-          gap : 5, //10px的像素差距
-          flag:false, //距离底部距离小于50
         }
       },
       created() {
-        this.$nextTick(function () {
-          let box = document.getElementById('box')
-//          box.addEventListener('scroll',this.handleScroll) //监听高度
-        })
+
         this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):"";
         let data = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):{data:{user_id:"",userType:""}};
         commonUserFindOne(this.$router.history.current.query.id,data.data.user_id,data.data.userType).then(res=>{
           if(res.status == true){
+            res.data.careCount = res.data.careCount?res.data.careCount:0;
+            res.data.caredCount = res.data.caredCount?res.data.caredCount:0;
+            res.data.laudCount = res.data.laudCount?res.data.laudCount:0;
              this.listData =res.data;
             this.$nextTick(function () {
               document.title = res.data.name +"的主页"
             })
 
-//            console.log(this.listData)
           }else{
             Toast("网络出错了，请重试")
           }
@@ -119,35 +110,21 @@
             let scrollTop = e.target.scrollTop?e.target.scrollTop:0;
             let scrollHeight = e.target.scrollHeight?e.target.scrollHeight:0;
             let clientHeight = e.target.clientHeight?e.target.clientHeight:0;
-            if(scrollTop>=(scrollHeight-clientHeight-50)){
-              this.flag = true
-            }else {
-              this.flag = false
-            }
-            if(this.flag==true){
+            if(scrollTop==scrollHeight-clientHeight){
               this.p++
               let that = this;
               if(that.pages<that.p){
-                that.p = that.pages;setTimeout(()=>{
+                that.p = that.pages;
                   this.message = "这是我的底线...";
                   return;
-                },1100)
               }else if(that.pages==that.p){
                 customerPubContentList(this.$router.history.current.query.id,this.p,this.s,true).then(res=>{
                   if(res.status == true){
                     res.data.forEach((item,index)=>{
-                      item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+                      item.imageUrl1 =item.cover.url+'?imageView2/1/w/205/h/230/q/75|imageslim'
                     })
                     that.imgsArr = that.imgsArr.concat(res.data);
-                    Indicator.open("加载中")
-                    setTimeout(()=>{
-                      this.$nextTick(function(){
-                        let  box = document.getElementById('box');
-                        let items = box?box.children:[];
-                        that.waterFull(items);
-                        Indicator.close()
-                      })
-                    },1000)
+                    this.message = "这是我的底线...";
                   }else{
                     Toast("网络出错了，请重试")
                   }
@@ -156,18 +133,10 @@
                 customerPubContentList(this.$router.history.current.query.id,this.p,this.s,true).then(res=>{
                   if(res.status == true){
                     res.data.forEach((item,index)=>{
-                      item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+                      item.imageUrl1 =item.cover.url+'?imageView2/1/w/205/h/230/q/75|imageslim'
                     })
+                    this.message = "加载中...";
                     that.imgsArr = that.imgsArr.concat(res.data);
-                    Indicator.open("加载中")
-                    setTimeout(()=>{
-                      this.$nextTick(function(){
-                        let  box = document.getElementById('box');
-                        let items = box?box.children:[];
-                        that.waterFull(items);
-                        Indicator.close()
-                      })
-                    },1000)
                   }else{
                     Toast("网络出错了，请重试")
                   }
@@ -179,22 +148,16 @@
           customerPubContentList(this.$router.history.current.query.id,this.p,this.s,true).then(res=>{
             if(res.status == true){
               res.data.forEach((item,index)=>{
-                item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+                item.imageUrl1 =item.cover.url+'?imageView2/1/w/205/h/230/q/75|imageslim'
               })
               this.pages = Math.ceil(res.total/this.s);
               this.imgsArr = res.data;
-              Indicator.open("加载中")
-              setTimeout(()=>{
-                this.$nextTick(function(){
-                  let  box = document.getElementById('box');
-                  let items = box?box.children:[];
-                  this.waterFull(items);
-                  Indicator.close()
-                })
-              },1000)
-
+              if(this.pages>1){
+                this.message = '';
+              }else{
+                this.message = '这是我的底线';
+              }
             }else{
-              Indicator.close();
               Toast("网络出错了，请重试")
             }
           })
@@ -245,52 +208,10 @@
           }
 
         },
-        clickFn(event,{index,value}){ //进入详情页
-//          console.log(value)
+        goToDetail(value,index){ //进入详情页
           this.$router.push({path:"/findDetail",query:{id:value.id}}) //去发现的详情页面，记得带状态跟token
         },
 
-        waterFull(items){//瀑布流
-          // 1- 确定列数  = 页面的宽度 / 图片的宽度
-          let columns = 2; //2列
-          let itemWidth= (this.sizeWidth().width - this.gap) /2; //2列每列的宽度
-          var arr = [];
-          for(var i= 0 ;i<items.length;i++){
-//        console.log(items[i].offsetHeight,"items")
-            if(i<columns){
-              // 2- 确定第一行
-              items[i].style.top = 0;
-              items[i].style.left = (itemWidth + this.gap) * i + 'px';
-              arr.push(items[i].offsetHeight);
-            }else{
-// 其他行
-              // 3- 找到数组中最小高度  和 它的索引
-              var minHeight = arr[0];
-              var index = 0;
-              for (var j = 0; j < arr.length; j++) {
-                if (minHeight > arr[j]) {
-                  minHeight = arr[j];
-                  index = j;
-                }
-              }
-              // 4- 设置下一行的第一个盒子位置
-              // top值就是最小列的高度 + gap
-              items[i].style.top = arr[index] + this.gap + 'px';
-              // left值就是最小列距离左边的距离
-              items[i].style.left = items[index].offsetLeft + 'px';
-
-              // 5- 修改最小列的高度
-              // 最小列的高度 = 当前自己的高度 + 拼接过来的高度 + 间隙的高度
-              arr[index] = arr[index] + items[i].offsetHeight + this.gap;
-            }
-          }
-        },
-        sizeWidth() {//宽，高
-          return {
-            width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
-            height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
-          }
-        },
       },
       mounted() {
         if(window.common.apiDomain20020=='https://dcloud.butongtech.com:20020'){
@@ -304,254 +225,256 @@
   </script>
 
   <style scoped lang="less">
-    .componentsBox{
-      width: 100%;
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      top:1.8rem;
-      right: 0;
-      overflow: hidden;
-      >ul{
-        width: 100%;
-        height: 100%;
-        overflow: scroll;
-        position: relative;
-        >li{
-          width: 49.2vw;
-          position: absolute;
-          background: #ffffff;
-          >img{
-            display: block;
-            width: 100%;
+     #personalMelonPages{
+       position: absolute;
+       left: 0;
+       top: 0;
+       bottom: 0;
+       right: 0;
+       overflow: hidden;
+       background: #F5F5F5;
+       .personalMelonPages_bg{
+         width: 100%;
+         height: 1.5rem;
+         background: url(../../../static/images/meBg.png);
+         background-size: 100% 100%;
+         padding-top: 0.27rem;
+         box-sizing: border-box;
+         position: relative;
+         .personalMelonPages_header{
+           width: 100%;
+           height: 0.36rem;
+           padding: 0 0.51rem 0 0.2rem;
+           box-sizing: border-box;
+           >img{
+             display: inline-block;
+             width: 0.18rem;
+             height: 0.15rem;
+             margin-top: 0.1rem;
+           }
+           >div{
+             float: right;
+             width: 0.76rem;
+             height: 0.32rem;
+             border:0.02rem solid #ffffff;
+             border-radius:0.48rem;
+             line-height: 0.32rem;
+             font-size:0.14rem;
+             text-align: center;
+             font-family:PingFangSC-Semibold;
+             font-weight:600;
+             color:rgba(255,255,255,1);
+           }
+         }
+         .personalMelonPages_bannerUrl{
+           width: 0.68rem;
+           height: 0.68rem;
+           border: 0.02rem solid #ffffff;
+           border-radius: 50%;
+           overflow: hidden;
+           position: absolute;
+           bottom: -0.35rem;
+          left: 40.6%;
+           img{
+             display: block;
+             width: 0.7rem;
+             height: 0.7rem;
+           }
+         }
+       }
+       .personalMelonPages_name{
+         width: 100%;
+         height: 2.62rem;
+         background: #ffffff;
+         padding: 0.64rem 0.2rem 0.48rem 0.2rem;
+         box-sizing: border-box;
+         >div{
+           width: 100%;
+           height: 1.01rem;
+           >h5{
+             width: 100%;
+             text-align: center;
+             font-size:0.18rem;
+             font-family:Roboto-Medium;
+             font-weight:500;
+             color:rgba(38,38,40,1);
+             line-height:0.21rem;
+           }
+           >p{
+             width: 100%;
+             text-align: center;
+             margin-top: 0.13rem;
+             font-size:0.11rem;
+             font-family:Roboto-Regular;
+             font-weight:400;
+             color:rgba(38,38,40,1);
+             line-height:0.13rem;
+           }
+         }
 
-          }
-          >h5{
-            width: 100%;
-            font-size:0.12rem;
-            font-family:PingFangSC-Regular;
-            font-weight:400;
-            color:rgba(5,5,9,1);
-            line-height:0.2rem;
-            overflow : hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            word-break:break-all;
-            padding: 0 0.05rem;
-            box-sizing: border-box;
-          }
-          >.img-info_ul{
-            width: 100%;
-            overflow: hidden;
-            margin-top: 0.05rem;
-            padding: 0.05rem;
-            box-sizing: border-box;
-            .img-info_li1{
-              width: 0.16rem;
-              height: 0.16rem;
-              float: left;
-              img{
-                display: block;
-                width: 0.16rem;
-                height: 0.16rem;
-              }
-            }
-            .img-info_li2{
-              float: left;
-              width: 0.9rem;
-              line-height: 0.16rem;
-              margin-left: 0.05rem;
-              font-size:0.1rem;
-              font-family:PingFangSC-Regular;
-              font-weight:400;
-              color:rgba(102,102,102,1);
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-            }
-            .img-info_li3{
-              float: left;
-              width: 0.14rem;
-              height: 0.13rem;
-              margin-right: 0.04rem;
-              img{
-                display: inline-block;
-                width: 0.14rem;
-                height: 0.13rem;
-              }
-            }
-            .img-info_li4{
-              float: left;
-              font-size:0.1rem;
-              line-height: 0.16rem;
-            }
-
-          }
-        }
-      }
-    }
-
-    #personalMelonPages {
-      width: 100%;
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      .personalMelonPages_box{
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        top:1.8rem;
-        box-sizing: border-box;
-      }
-      .personalMelonPages_header{
-        width: 100%;
-        height: 1.7rem;
-        .personalMelonPages_header_img{
-          display: inline-block;
-          height: 100%;
-          width: 100%;
-          filter: blur(15px);
-          opacity:0.3;
-        }
-        .personalMelonPages_header_box{
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          left: 0;
-          top:0;
-          padding-top: 0.32rem ;
-          box-sizing: border-box;
-          .personalMelonPages_header_ul{
-            width: 100%;
-            padding: 0 0.16rem;
-            box-sizing: border-box;
-            .personalMelonPages_header_li1{
-              width: 0.6rem;
-              height: 0.6rem;
-              float: left;
-              margin: 0;
-              padding: 0;
-              img{
-                display: block;
-                width: 0.6rem;
-                padding: 0;
-                height: 0.6rem;
-                margin: 0;
-                border-radius: 50%;
-              }
-            }
-            .personalMelonPages_header_li2{
-              width: 1.9rem;
-              float: left;
-              margin-left: 0.1rem;
-              height: 0.6rem;
-              b{
-                width: 100%;
-                display: block;
-                font-size:0.12rem;
-                font-family:PingFangSC-Medium;
-                font-weight:500;
-                color:rgba(5,5,9,1);
-                max-height: 0.4rem;
-                line-height: 0.2rem;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-              }
-              >div{
-                line-height: 0.2rem;
-                font-size:0.12rem;
-                font-family:PingFangSC-Regular;
-                font-weight:400;
-                color:rgba(51,51,51,1);
-              }
-            }
-            .personalMelonPages_header_li3{
-              float: right;
-              margin-top: 0.15rem;
-             >div{
-               width: 0.7rem;
-               height: 0.3rem;
-               text-align: center;
-               line-height: 0.32rem;
-               border-radius: 0.03rem;
-               border: 0.01rem solid #000000;
-               float: right;
-               div{
-                 width: 100%;
-                 >img{
-                   width: 0.1rem;
-                   height: 0.11rem;
-                   display: inline-block;
-                   margin-right: 0.05rem;
-                 }
-               }
-               div.active{
-                 background: rgba(5,5,9,0.9);
-                 color: #ffffff;
-               }
-
-             }
-
-            }
-
-          }
-          .personalMelonPages_header_ul1{
-            position: absolute;
-            left: 0;
-            top: 1.2rem;
-            width: 100%;
-            height: 0.5rem;
-            display: flex;
-            /*margin-top:0.28rem ;*/
-            background:rgba(255,255,255,0.3);
-            li{
+         >ul{
+           width: 2.5rem;
+           margin: 0 auto;
+           display: flex;
+           li{
              flex: 1;
-              text-align: center;
-              padding-top: 0.05rem;
-              b{
-                font-size:0.15rem;
-                font-family:PingFangSC-Regular;
-                font-weight:400;
-                color:rgba(5,5,9,1);
-              }
-             p{
-               font-size:0.12rem;
-               font-family:PingFangSC-Regular;
-               font-weight:400;
-               color:rgba(102,102,102,1);
-               line-height: 0.16rem;
+             b{
+               display: block;
+               width: 100%;
+               text-align: center;
+               font-size:0.2rem;
+               font-family:Roboto-Medium;
+               font-weight:500;
+               color:rgba(38,38,40,1);
+               line-height:0.24rem;
              }
-            }
-          }
-        }
-      }
-    }
-
-    .lengthSmall{
-      width: 100%;
-      height: 100%;
-      background: #F7F7F7;
-      padding-top: 0.5rem;
-      img{
-        width: 1rem;
-        height: 0.94rem;
-        display: block;
-        margin: 0 auto;
-      }
-      p{
-        width: 100%;
-        line-height: 0.5rem;
-        margin-top: 0.2rem;
-        text-align: center;
-        color:rgba(153,153,153,1);
-      }
-    }
+             p{
+               width: 100%;
+               text-align: center;
+               font-size:0.12rem;
+               font-family:PingFangSC-Light;
+               font-weight:300;
+               color:rgba(103,103,104,1);
+               line-height:0.17rem;
+               margin-top: 0.08rem;
+             }
+           }
+         }
+       }
+       .personalMelonPages_content{
+         position: absolute;
+         left: 0;
+         bottom: 0;
+         right: 0;
+         top:4.121rem;
+         overflow: hidden;
+         overflow-y: scroll;
+         >.personalMelonPages_content_Data{
+           overflow: hidden;
+           width: 100%;
+           padding: 0 0.1rem;
+           box-sizing: border-box;
+           /*flex-wrap: wrap;*/
+           li{
+             float: left;
+             margin-bottom: 0.1rem;
+           }
+           li.active1{
+             width: 2.05rem;
+             height: 2.3rem;
+             margin-right: 0.1rem;
+             img{
+               width: 2.05rem;
+               height: 2.3rem;
+             }
+           }
+           li.active2{
+             width: 1.4rem;
+             height: 2.3rem;
+             img{
+               width: 1.4rem;
+               height: 2.3rem;
+             }
+           }
+           li.active3{
+             width: 1.4rem;
+             height: 2.3rem;
+             margin-right: 0.1rem;
+             img{
+               width: 1.4rem;
+               height: 2.3rem;
+             }
+           }
+          li.active4{
+             width: 2.05rem;
+             height: 2.3rem;
+             img{
+               width: 2.05rem;
+               height: 2.3rem;
+             }
+           }
+         }
+         >.personalMelonPages_content_Data1{
+           width: 100%;
+           padding: 0 0.1rem;
+           box-sizing: border-box;
+          overflow: hidden;
+           li{
+             float: left;
+             margin-bottom: 0.1rem;
+           }
+           li.active1{
+             width: 2.05rem;
+             height: 2.3rem;
+             margin-right: 0.1rem;
+             img{
+               width: 2.05rem;
+               height: 2.3rem;
+             }
+           }
+           li.active2{
+             width: 1.4rem;
+             height: 2.3rem;
+             img{
+               width: 1.4rem;
+               height: 2.3rem;
+             }
+           }
+           li.active3{
+             width: 1.4rem;
+             height: 2.3rem;
+             margin-right: 0.1rem;
+             img{
+               width: 1.4rem;
+               height: 2.3rem;
+             }
+           }
+           li.active4{
+             width: 2.05rem;
+             height: 2.3rem;
+             img{
+               width: 2.05rem;
+               height: 2.3rem;
+             }
+           }
+           li:nth-last-of-type(1){
+             width: 3.55rem;
+             height: 2.3rem;
+             img{
+               width: 3.55rem;
+               height: 2.3rem;
+             }
+           }
+         }
+         >.personalMelonPages_content_noData{
+           width: 100%;
+           padding-top: 0.59rem;
+           overflow: hidden;
+           >img{
+             display: block;
+             width: 1rem;
+             height: 0.94rem;
+             margin: 0 auto;
+           }
+           >p{
+             width: 100%;
+             text-align: center;
+             margin-top: 0.14rem;
+             font-size:0.14rem;
+             font-family:PingFangSC-Light;
+             font-weight:300;
+             color:rgba(103,103,104,1);
+             line-height:0.3rem;
+           }
+         }
+       }
+     }
+     .messageFoot{
+       width: 100%;
+       height: 0.3rem;
+       line-height: 0.3rem;
+       margin-bottom: 0.1rem;
+       color: rgba(5,5,5,0.3);
+       text-align: center;
+     }
   </style>

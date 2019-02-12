@@ -64,12 +64,12 @@
       }
     },
     created() {
-
       this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):"";
       this.$nextTick(function(){
-        document.title = "发现"
+        document.title = "发现";
+        this.query(this.p,this.s);
       })
-//      this.query(this.p,this.s);
+
     },
     methods:{//初始数据
       query(p,s){//初始数据
@@ -81,6 +81,11 @@
               item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
             })
             this.pages = Math.ceil(res.total/this.s)
+            if(this.pages>1){
+              this.message = '加载中...'
+            }else{
+              this.message = '这是我的底线...'
+            }
             this.imgsArr = res.data;
             let that = this;
 //            this.p++;
@@ -97,33 +102,54 @@
           }
         })
       },
-      boxScroll(e){ //滚动事件
+      boxScroll(){ //滚动事件
         let that = this;
-        customerPubContentListHomePage(this.p,this.s).then(res=>{
+//        if(e.target.scrollHeight==(e.target.scrollTop+e.target.offsetHeight)){
+          this.p++;
+          if (this.p > this.pages) {
+            this.message = "这是我的底线..."
+            return
+          } else if (this.p == this.pages) {
+            customerPubContentListHomePage(this.p,this.s).then(res=>{
               if(res.status == true){
-                if(res.data.length>0){
                   res.data.forEach((item,index)=>{
                     item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
                   })
-                  this.p++;
                   that.imgsArr = that.imgsArr.concat(res.data);
                   setTimeout(()=>{
                     this.$nextTick(function(){
                       let  box = document.getElementById('box');
                       let items = box?box.children:[];
                       that.waterFull(items);
-                      this.message = "加载中...";
+                      this.message = "这是我的底线...";
                     })
                   },1400)
-                }else{
-                  this.message = "这是我的底线...";
-                }
-
               }else{
                 Toast("网络出错了，请重试")
               }
             })
 
+          }else if(this.p < this.pages){
+            customerPubContentListHomePage(this.p,this.s).then(res=>{
+              if(res.status == true){
+                res.data.forEach((item,index)=>{
+                  item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
+                })
+                that.imgsArr = that.imgsArr.concat(res.data);
+                setTimeout(()=>{
+                  this.$nextTick(function(){
+                    let  box = document.getElementById('box');
+                    let items = box?box.children:[];
+                    that.waterFull(items);
+                    this.message = "加载中...";
+                  })
+                },1400)
+              }else{
+                Toast("网络出错了，请重试")
+              }
+            })
+//          }
+        }
       },
       clickFn(value,index){ //进入详情页
 //        console.log(document.querySelector("#box").scrollTop,"(document.querySelector(\"#box\").scrollTop")
@@ -172,7 +198,7 @@
       },
     },
     mounted() {
-      this.query(this.p,this.s);
+//      this.query(this.p,this.s);
       let that = this;
       document.querySelector("#box").addEventListener('scroll',function (e) {
         that.$store.dispatch("FollowScrollTop",e.target.scrollTop)
