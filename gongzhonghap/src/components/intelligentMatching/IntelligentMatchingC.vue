@@ -1,6 +1,6 @@
 <template>
   <div id="IntelligentMatchingC">
-    <img src="/static/images/jindu.png" alt="" class="jindu">
+    <img src="../../assets/images/jindu.png" alt="" class="jindu">
      <div>
        加载中...
      </div>
@@ -42,7 +42,7 @@ export default {
    right: 0;
    bottom: 0;
    overflow-y: auto;
-   background: url(../../../static/images/bj2.png);
+   background: url(../../assets/images/bj2.png);
     background-size: 100% 100%;
    .jindu{
      display: block;

@@ -5,7 +5,7 @@
        <li v-for="(item,index) in objList" @click="goToHomePage(item)">
          <div class="resource_pool_li1">
            <div class="resource_pool_li1_header">
-             <img :src="item.logoUrl?item.logoUrl:'/static/images/moren1.png'" alt="">
+             <img :src="item.logoUrl?item.logoUrl:'/static/images/defultphoto.png'" alt="">
              <h5>{{item.name}}</h5>
              <p>{{item.brief}}</p>
            </div>

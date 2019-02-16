@@ -84,7 +84,8 @@ export default {
       valueShow:false, //文字框显示
       startDate: new Date(1900), //开始时间
       endDate: new Date(), //开始时间
-      headerImg:"https://pub.qinius.butongtech.com/defult_photo@3x.png", //头像
+//      headerImg:"https://pub.qinius.butongtech.com/defult_photo@3x.png", //头像
+      headerImg:"/static/images/defultphoto.png", //头像
       introductionValue:"", //简介
       nameValue:"", //名字
       sexMessage:"请选择", //性别
@@ -126,7 +127,7 @@ export default {
             this.birthday = !!res.data.data.birthday?res.data.data.birthday:"19700101";
             this.region = !!res.data.data.region_name?res.data.data.region_name:"深圳市";
             this.regionId = !!res.data.data.region_id?res.data.data.region_id:"2018042317050430c6a250e4044f94bb4cc074302b789a";
-            this.headerImg = !!res.data.data.owner_url?res.data.data.owner_url:"https://pub.qinius.butongtech.com/defult_photo@3x.png";
+            this.headerImg = !!res.data.data.owner_url?res.data.data.owner_url:"/static/images/defultphoto.png";
             this.nameValue = res.data.data.name;
             this.introductionValue = res.data.data.introduce;
             this.sexNum = !!res.data.data.sex?res.data.data.sex:"0";
@@ -145,7 +146,7 @@ export default {
             this.birthday = !!res.data.data.birthday?res.data.data.birthday:"19700101";
             this.region = !!res.data.data.region_name?res.data.data.region_name:"深圳市";
             this.regionId = !!res.data.data.region_id?res.data.data.region_id:"2018042317050430c6a250e4044f94bb4cc074302b789a";
-            this.headerImg = !!res.data.data.owner_url?res.data.data.owner_url:"https://pub.qinius.butongtech.com/defult_photo@3x.png";
+            this.headerImg = !!res.data.data.owner_url?res.data.data.owner_url:"/static/images/defultphoto.png";
             this.nameValue = res.data.data.name;
             this.introductionValue = res.data.data.introduce;
             this.sexNum = !!res.data.data.sex?res.data.data.sex:"0";

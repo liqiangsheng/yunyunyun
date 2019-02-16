@@ -17,7 +17,7 @@
         </div>
         <!--<div class='voice' @click='voiceClick'>-->
           <!--<span>明星产品语音导览</span>-->
-          <!--<img class='imgae1' src='/static/images/video.gif'/>-->
+          <!--<img class='imgae1' src='../../assets/images/video.gif'/>-->
           <!--<img class='imgae' src='/static/images/right.png'/>-->
         <!--</div>-->
       </div>

@@ -2,7 +2,7 @@
 
   <div class='loadingBox'>
     <div class='loadingBoxItem'>
-      <img src='/static/images/loding.png'/>
+      <img src='../../assets/images/loding.png'/>
     </div>
     <div class='loadingBoxItem2'>莫着急，正拼命加载中...</div>
   </div>

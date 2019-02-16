@@ -98,7 +98,7 @@
           <img class="img" src="/static/images/gengduozhuanli.png" alt="" @click="lookmoreClick(companyExtendType1)">
         </div>
 
-        <div class="enterprisePage_brand" :style="{height:patentHeight/100+'rem'}">
+        <div class="enterprisePage_brand" :style="{height:patentHeight/100+'rem'}" v-if="companyCooperationBrandsList.length>0">
              <div class="enterprisePage_brand_bg" :style="{bottom:bottomPosition,height:(patentHeight-40)/100+'rem'}"></div>
              <div class="enterprisePage_brand_content" ref="patentHeight">
                   <p>品　/　牌　/　合　/　作</p>

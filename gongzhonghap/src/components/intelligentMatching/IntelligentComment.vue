@@ -14,11 +14,11 @@
         <div class="time">{{objData.createdAt|formatTime1}}</div>
         <div class="commen">
           {{objData.commentContent}}
-          <div class="zan1" @click="commentariesClick(objData)"><img src="/static/images/zan1.png" alt="">{{objData.laudedCount}}</div>
+          <div class="zan1" @click="commentariesClick(objData)"><img src="../../assets/images/zan1.png" alt="">{{objData.laudedCount}}</div>
         </div>
         <ul class="ReplyUl" v-if="listData.length>0">
           <li v-for="(item1,index1) in listData"  class="ReplyLi">
-            <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div @click="commentariesClickTwo(item1)"><img src="/static/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
+            <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div @click="commentariesClickTwo(item1)"><img src="../../assets/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
           </li>
         </ul>
       </div>

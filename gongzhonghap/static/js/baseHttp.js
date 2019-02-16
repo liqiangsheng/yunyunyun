@@ -23,7 +23,7 @@
 //   /** 测试
 // * ***/
 window.common = {
-  apiDomain120020: "http://dcloud.butongtech.com:20019",  //登录数据请求url
+  apiDomain120020: "https://dcloud.butongtech.com:20019",  //登录数据请求url
   // apiDomain20020: "http://172.16.0.12:10020", //ajax数据请求url
   // apiDomain20020: "http://172.16.0.22:10020", //ajax数据请求url
   // apiDomain20020: "http://172.16.0.32:10020", //ajax数据请求url

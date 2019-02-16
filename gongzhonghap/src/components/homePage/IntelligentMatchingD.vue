@@ -24,9 +24,9 @@
            </div>
          <!--摘要-->
           <div class="IntelligentMatchingDHeaderIndex3" v-if="messageArr.summary">
-           <img src="/static/images/shuangying1.png" alt="" style="margin: 0 0.1rem">
+           <img src="../../assets/images/shuangying1.png" alt="" style="margin: 0 0.1rem">
            {{messageArr.summary}}
-           <img src="/static/images/shuangying.png" alt="" style="margin: 0 0.1rem">
+           <img src="../../assets/images/shuangying.png" alt="" style="margin: 0 0.1rem">
          </div>
        </div>
        <!--内容-->
@@ -39,7 +39,7 @@
        </div>
        <!--点赞-->
        <div class="IntelligentMatchingDItem1" @click="fabulousClick">
-         <img src="/static/images/zan1.png" alt="">{{fabulousNum}} {{fabulousMessage}}
+         <img src="../../assets//images/zan1.png" alt="">{{fabulousNum}} {{fabulousMessage}}
        </div>
        <!--版权-->
        <div class="IntelligentMatchingDItem2">
@@ -61,11 +61,11 @@
              <div class="time">{{item.createdAt|formatTime1}}</div>
              <div class="commen">
                {{item.commentContent}}
-               <div class="zan1" @click="commentariesClick(item)"><img src="/static/images/zan1.png" alt="">{{item.laudedCount}}</div>
+               <div class="zan1" @click="commentariesClick(item)"><img src="../../assets/images/zan1.png" alt="">{{item.laudedCount}}</div>
              </div>
              <ul class="ReplyUl" v-if="item.replyVoList.length>0">
                <li v-for="(item1,index1) in item.replyVoList"  class="ReplyLi">
-                 <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div @click="commentariesClickTwo(item1)"><img src="/static/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
+                 <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div @click="commentariesClickTwo(item1)"><img src="../../assets/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
                </li>
                <span style="width: 100%;display: inline-block;text-align: center" v-if="item.replyListTotal>2" @click="nextPageClick(item)">共有{{item.replyListTotal}}条评论</span>
              </ul>
@@ -84,13 +84,13 @@
            </div>
           <ul>
             <li class="footerLi2">
-              <img src="/static/images/xingxing.png" alt="">
+              <img src="../../assets/images/xingxing.png" alt="">
             </li>
             <li class="footerLi2">
-              <img src="/static/images/bianji.png" alt="">
+              <img src="../../assets/images/bianji.png" alt="">
             </li>
             <li class="footerLi2">
-              <img src="/static/images/bianxie.png" alt="">
+              <img src="../../assets/images/bianxie.png" alt="">
             </li>
           </ul>
       </div>

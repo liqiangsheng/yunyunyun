@@ -29,6 +29,10 @@
         用户反馈
         <img src='/static/images/right.png'/>
       </li>
+      <li @click='setPassword'>
+        密码设置
+        <img src='/static/images/right.png'/>
+      </li>
         <li @click='aboutBnt(1," 关于不同")'>
         关于不同
           <img src='/static/images/right.png'/>
@@ -60,6 +64,14 @@ export default {
   },
 
   methods:{
+    setPassword(){//密码设置
+      let data = JSON.parse(localStorage.getItem("userInfo"))
+      if (data) {
+        this.$router.push({path:"/setPassword"})
+      } else {
+        Toast("您未登录，请登录！")
+      }
+    },
     comment_my(){ //评论我的
       let data = JSON.parse(localStorage.getItem("userInfo"))
       if (data) {
@@ -113,12 +125,11 @@ export default {
           localStorage.removeItem("userInfo"); //清楚登录信息
           loginout().then(res=>{
             console.log(res)
-            Toast("退出成功")
-            setTimeout(()=>{
-              this.$router.push({path:"/me"}); //去首页
-            },1000)
           })
-
+          setTimeout(()=>{
+            Toast("退出成功")
+            this.$router.push({path:"/me"}); //去首页
+          },1000)
 
         }else{
           Toast("您未登录，请登录")

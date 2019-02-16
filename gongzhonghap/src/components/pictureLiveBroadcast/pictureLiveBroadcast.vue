@@ -56,16 +56,13 @@
       <welcomePage v-if="pageShow" @temp="temp"  :activityId="activityId"></welcomePage>
     </transition>
     <!--查看图片-->
-    <transition name="fade">
-      <imgenlarge :imgenlargedata="imgenlargedata" :imgenlargedata1="imgenlargedata1" :imgenlargedata1Index="imgenlargedata1Index" :imgsArr="imgsArr"  v-if="imgenlargeShow" @ishowItem="ishowItem"></imgenlarge>
-    </transition>
+
 
   </div>
 </template>
 
 <script>
   import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
-  import imgenlarge from './imgenlarge.vue'
   import welcomePage from './welcomePage.vue'
   import wxShare from "../../assets/js/wxShare"
   import {activityImagesList,activityImagesBookFindOne,activityImageslistHot,shareInfoShareUrl} from "../../assets/js/promiseHttp.js"
@@ -79,10 +76,6 @@ export default {
       objDataTitle:{}, //头部数据
       titleData:{},//头部数据
       pageShow:false,
-      imgenlargedata:"",//传给图片的数据
-      imgenlargedata1:[],//传给图片的数据
-      imgenlargedata1Index:0,//传给图片的数据
-      imgenlargeShow:false,
       tabAtt:["图片直播","热门照片"],
       tabState:0,
       titleArr:{
@@ -109,7 +102,7 @@ export default {
        }
   },
   components: {
-    vueWaterfallEasy,imgenlarge,welcomePage
+    vueWaterfallEasy,welcomePage
   },
   created(){
     this.$nextTick(function () {
@@ -283,10 +276,6 @@ export default {
     },
     goToImg(v,v1,i){ //进入图片
 
-//      this.imgenlargeShow = true;
-//      this.imgenlargedata = 0;//传给图片的数据
-//      this.imgenlargedata1 = v1;//传给图片的数据
-//      this.imgenlargedata1Index = i;
       let list = [];
       this.imgsArr1.forEach((item,index)=>{
         list.push(item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/85/imageslim ")
@@ -303,21 +292,15 @@ export default {
     },
     stateClick(i){//tab切换
       this.tabState = i;
-      this.imgenlargeShow = false;
     },
     ishowItem(v){ //子组件传来的false
-      this.imgenlargeShow = v;
     },
     clickFn(event, { index, value }) { //点击每个图片放大
 
       // 阻止a标签跳转
       event.preventDefault()
 //      // 只有当点击到图片时才进行操作
-//      if (event.target.tagName.toLowerCase() == 'img') { //判断是不是img
-//        this.imgenlargeShow = true;
-//        this.imgenlargedata = 1;//传给图片的数据
-//        this.imgenlargedata1Index = index;
-//      }
+
       let list = [];
       this.imgsArr.forEach((item,index)=>{
         list.push(item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/85/imageslim ")

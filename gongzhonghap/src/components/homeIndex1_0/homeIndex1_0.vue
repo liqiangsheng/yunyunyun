@@ -11,13 +11,17 @@
     </ul>
     <div class="homeIndex1_0_components">
       <div class="absolute" :style="displayBlock1">
-        <img src="/static/images/loding.gif" alt="">
+        <img src="../../assets/images/loding.gif" alt="">
         <p>加载中...</p>
       </div>
         <Find  @displayBlock="displayBlock" ref="child"></Find>
            <div @click="refresh" class="refresh">
              刷新
            </div>
+    </div>
+<!--绑定弹框-->
+    <div class="bangding" v-if="bangdingShow">
+      <setPassword @isshow="isshow" :wechatUserInfo="wechatUserInfo"></setPassword>
     </div>
 
     <ul class="Indextab">
@@ -30,15 +34,18 @@
 
 <script>
 //  import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
+//  import Find from './alter/find1.vue';
   import Find from './alter/find.vue';
   import Follow from './alter/follow.vue';
+  import setPassword from './alter/setPassword.vue';
 import { Toast } from 'mint-ui';  //弹框
 import { Indicator } from 'mint-ui';
-import {customerPubContentListHomePage} from "../../assets/js/promiseHttp.js"
+import {customerPubContentListHomePage,wxOpenOpenInfo,sysUserOperationVerifyBindStatus} from "../../assets/js/promiseHttp.js"
+//import {UrlSearch} from "../../assets/js/Fun.js"
   export default {
     name: 'find',
     components:{
-      Find,Follow
+      Find,Follow,setPassword
     },
     data(){
       return{
@@ -76,12 +83,63 @@ import {customerPubContentListHomePage} from "../../assets/js/promiseHttp.js"
         pullDownDistance:0,//下拉的距离
         gap : 10, //10px的像素差距
         flag:false, //距离底部距离小于50
+        wechatUserInfo:{},//微信登陆的信息
+        bangdingShow:false,//微信绑定手机号码显示
       }
     },
     created() {
+      console.log(this.$Request,"UrlSearch")
+      let  data = JSON.parse(localStorage.getItem('userInfo'));
+      if(!data){
+         if(!!this.$Request.code){ //是不是微信登陆
+           wxOpenOpenInfo(this.$Request.code).then(res=>{
+//             console.log(res,'code')
+             if(res.data.status==true){
 
+               sysUserOperationVerifyBindStatus(res.data.data.openid).then(res1=>{
+//                 console.log(res1,"openidres1")
+                 if(res1.data.status==true){
+                      if(!res1.data.data||res1.data.data ==0){ //未绑定
+                        let wetachUserInfo = JSON.parse(localStorage.getItem('wetachUserInfo'));
+                        if(!wetachUserInfo){
+                          this.wechatUserInfo = res.data.data
+                          localStorage.setItem('wetachUserInfo',JSON.stringify(res.data.data));
+                          this.bangdingShow = true;
+                        }else{
+                          if(res.data.data.openid == wetachUserInfo.openid){
+                            this.bangdingShow = false;
+                            Toast("您的微信已经绑定，请勿重复绑定,即将为你跳到登陆页面")
+                             setTimeout(()=>{
+                               this.$router.push({path:"/login"})
+                             },1000)
+                          }else {
+                            this.wechatUserInfo = res.data.data
+                            localStorage.setItem('wetachUserInfo',JSON.stringify(res.data.data));
+                            this.bangdingShow = true;
+                          }
+                        }
+                      }else{ //已绑定
+                         this.$router.push({path:"/login"})
+                      }
+                 }else{
+                   if(res1.data.code == 200){ //绑定了其他账号
+                     Toast('你的微信已绑定['+Object.keys(res1.data.data)[0]+']')
+                   }else{
+                     Toast("查看绑定出错了，请重试")
+                   }
+                 }
+               })
+             }else{
+               Toast("微信登陆出错了，请重试")
+             }
+           })
+         }
+      }
     },
     methods:{
+      isshow(v){
+        this.bangdingShow = v;
+      },
       refresh(){//父组件调子组件的方法
 //        this.$refs.child.query(1,10);
         this.$refs.child.p = 1;
@@ -102,6 +160,9 @@ import {customerPubContentListHomePage} from "../../assets/js/promiseHttp.js"
           this.$router.push({path:"/follow"})
         }
       },
+
+    },
+    mouthed(){
 
     }
   }
@@ -170,6 +231,17 @@ import {customerPubContentListHomePage} from "../../assets/js/promiseHttp.js"
         }
       }
 
+    }
+    .bangding{
+      width: 100%;
+      position: absolute;
+      left: 0;
+      top:0.52rem;
+      bottom:0.55rem;
+      right: 0;
+      overflow: hidden;
+      background: rgba(5,5,9,0.3);
+      z-index: 2;
     }
     .homeIndex1_0_components{
       width: 100%;

@@ -236,7 +236,7 @@
        .personalMelonPages_bg{
          width: 100%;
          height: 1.5rem;
-         background: url(../../../static/images/meBg.png);
+         background: url(../../assets/images/meBg.png);
          background-size: 100% 100%;
          padding-top: 0.27rem;
          box-sizing: border-box;

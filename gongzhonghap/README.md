@@ -19,3 +19,7 @@ npm run build --report
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+//    "vue-waterfall-easy": "^2.4.3", devDependencies
+//    "qiniu-js": "^2.5.3",   devDependencies
+//    "jquery": "^3.3.1",     devDependencies
+//    "mobile-detect": "^1.4.3",   dependencies

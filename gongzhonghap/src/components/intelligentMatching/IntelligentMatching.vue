@@ -48,7 +48,7 @@ export default {
    right: 0;
    bottom: 0;
    overflow-y: auto;
-   background: url(../../../static/images/bj2.png);
+   background: url(../../assets/images/bj2.png);
     background-size: 100% 100%;
  }
   .IntelligentMatchingItem{

@@ -2,33 +2,33 @@
   <div class='PhotographBox'>
     <div class='PhotographBoxItem1'>
       <div class='PhotographBoxItem2'>注意事项</div>
-      <div class='PhotographBoxItem3'><img src='/static/images/ok1.png'/></div>
+      <div class='PhotographBoxItem3'><img src='../../assets/images/ok1.png'/></div>
       <div class='PhotographBoxItem4'>正确案例</div>
       <div class='PhotographBoxItem5'>
         <div>
-          <img src='/static/images/6.png'/>
+          <img src='../../assets/images/6.png'/>
           不可多人
         </div>
         <div>
-          <img src='/static/images/5.png'/>
+          <img src='../../assets/images/5.png'/>
           不能挡脸
         </div>
         <div>
-          <img src='/static/images/4.png'/>
+          <img src='../../assets/images/4.png'/>
           不能模糊
         </div>
       </div>
       <div class='PhotographBoxItem5'>
         <div>
-          <img src='/static/images/3.png'/>
+          <img src='../../assets/images/3.png'/>
           人脸姿态端正
         </div>
         <div>
-          <img src='/static/images/4.png'/>
+          <img src='../../assets/images/4.png'/>
           不能带墨镜
         </div>
         <div>
-          <img src='/static/images/1.png'/>
+          <img src='../../assets/images/1.png'/>
           不可侧脸过大
         </div>
       </div>

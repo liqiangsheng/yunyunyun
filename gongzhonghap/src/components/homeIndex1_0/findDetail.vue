@@ -66,11 +66,11 @@
                   <div class="time">{{item.createdAt|formatTime1}}</div>
                   <div class="commen">
                       {{item.commentContent}}
-                      <div class="zan1" @click="commentariesClick(item)"><img src="/static/images/zan1.png" alt="">{{item.laudedCount}}</div>
+                      <div class="zan1" @click="commentariesClick(item)"><img src="../../assets/images/zan1.png" alt="">{{item.laudedCount}}</div>
                   </div>
                   <ul class="ReplyUl" v-if="item.replyVoList.length>0">
                       <li v-for="(item1,index1) in item.replyVoList"  class="ReplyLi">
-                        <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div @click="commentariesClickTwo(item1)"><img src="/static/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
+                        <span><span v-if="item1.sysUserContentVo.name">{{item1.sysUserContentVo.name}}@</span>{{item1.replyCommentName}}:</span>{{item1.replyContent}} <div @click="commentariesClickTwo(item1)"><img src="../../assets/images/zan1.png" alt=""> {{item1.laudedCount}}</div>
                       </li>
                        <span style="width: 100%;display: inline-block;text-align: center" v-if="item.replyListTotal>2" @click="nextPageClick(item)">共有{{item.replyListTotal}}条评论</span>
                   </ul>

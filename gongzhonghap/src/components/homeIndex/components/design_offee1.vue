@@ -11,9 +11,12 @@
              </div>
             <div class="design_offee_top_centent">
                <div class="powerIndex">
-                 <b>影响力</b>
-                 <div class="ul1"> </div>
-                 <div class="ul2" :style="{width:item1.designerUser.style}"></div>
+                 <!--<b>影响力</b>-->
+                 <b></b>
+                 <!--<div class="ul1"> </div>-->
+                 <!--<div class="ul1"> </div>-->
+                 <!--<div class="ul2" :style="{width:item1.designerUser.style}"></div>-->
+                 <!--<div class="ul2" :style="{width:item1.designerUser.style}"></div>-->
                </div>
               <div class="caredCount">
                 <span>{{item1.caredCount?item1.caredCount:0}}</span> 粉丝 <span style="margin-left: 0.3rem">{{item1.laudedCount?item1.laudedCount:0}}</span> 次获赞

@@ -262,7 +262,7 @@ export default {
 .swiperBox{
   width: 100%;
   height: 5.74rem;
-  background: url(../../../static/images/bg1.png);
+  background: url(../../assets/images/bg1.png);
   background-size: 100% 100%;
   background-size: cover;
   margin-top: 0.15rem;

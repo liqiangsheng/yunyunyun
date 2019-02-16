@@ -1,11 +1,10 @@
-import MobileDetect from 'mobile-detect'
+// import MobileDetect from 'mobile-detect'
 import * as qiniu from 'qiniu-js'
 import { Indicator } from 'mint-ui';
 export function UrlSearch(){
   let name,value,str=location.href,num=str.indexOf("?"); //取得整个地址栏
   str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
   let arr=str.split("&"); //各个参数放到数组里
-  console.log(arr)
   for(let i=0;i < arr.length;i++){
     num=arr[i].indexOf("=");
     if(num>0){
@@ -14,6 +13,7 @@ export function UrlSearch(){
       this[name]=value;
     }
   }
+  console.log(arr)
 }
 
   /*
@@ -70,37 +70,37 @@ export function UrlSearch(){
     let reg  = /^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|166|198|199|(147))\\d{8}$/
 
   }
-export function MobileDetect1(){ //判断手机型号
-    //判断数组中是否包含某字符串
-    Array.prototype.contains = function(needle) {
-      for (i in this) {
-        if (this[i].indexOf(needle) > 0)
-          return i;
-      }
-      return -1;
-    }
-    let obj= {}
-    var ua =window.navigator.userAgent;
-    console.log(ua)
-    var md = new MobileDetect(ua)
-    var model = "";
-//    console.log(ua,"手机版本")
-    var md = new MobileDetect(ua);//初始化mobile-detect
-    var os = md.os();//获取系统
-    var model = "";
-    if (os == "iOS") {//ios系统的处理
-      os = md.os() + md.version("iPhone");
-      model = md.mobile();
-    } else if (os == "AndroidOS") {//Android系统的处理
-      os = md.os() + md.version("Android");
-      var sss = ua.split(";");
-      var i = sss.contains("Build/");
-      if (i > -1) {
-        model = sss[i].substring(0, sss[i].indexOf("Build/"));
-      }
-    }
-    return obj={model,version:md.versionStr('Build')}
-  }
+// export function MobileDetect1(){ //判断手机型号
+//     //判断数组中是否包含某字符串
+//     Array.prototype.contains = function(needle) {
+//       for (i in this) {
+//         if (this[i].indexOf(needle) > 0)
+//           return i;
+//       }
+//       return -1;
+//     }
+//     let obj= {}
+//     var ua =window.navigator.userAgent;
+//     console.log(ua)
+//     var md = new MobileDetect(ua)
+//     var model = "";
+// //    console.log(ua,"手机版本")
+//     var md = new MobileDetect(ua);//初始化mobile-detect
+//     var os = md.os();//获取系统
+//     var model = "";
+//     if (os == "iOS") {//ios系统的处理
+//       os = md.os() + md.version("iPhone");
+//       model = md.mobile();
+//     } else if (os == "AndroidOS") {//Android系统的处理
+//       os = md.os() + md.version("Android");
+//       var sss = ua.split(";");
+//       var i = sss.contains("Build/");
+//       if (i > -1) {
+//         model = sss[i].substring(0, sss[i].indexOf("Build/"));
+//       }
+//     }
+//     return obj={model,version:md.versionStr('Build')}
+//   }
 export function QINIUUpdata(event,qiniuToken){ //七牛云上传
    let headerImg = '';
      let mydate = new Date()

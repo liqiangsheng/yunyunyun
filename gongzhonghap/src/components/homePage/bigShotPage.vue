@@ -42,11 +42,12 @@
 
        <div class="bigShotPage_num_box" style="background: #ffffff;width: 100%">
          <div class="bigShotPage_num">
-           <div class="powerIndex">
-             <b>影响力</b>
-             <div class="ul1"> </div>
-             <div class="ul2" :style="{width:listData.starWidth}"></div>
-           </div>
+           <!--<div class="powerIndex">-->
+             <!--<b>影响力</b>-->
+             <!--<b></b>-->
+             <!--<div class="ul1"> </div>-->
+             <!--<div class="ul2" :style="{width:listData.starWidth}"></div>-->
+           <!--</div>-->
            <ul>
              <li>
                <b>{{listData.caredCount>10000?listData.caredCount/10000+'万':listData.caredCount}}</b>
@@ -569,11 +570,11 @@
         left: 0;
         bottom: 0;
         animation: leftBox 55s infinite;
-        background: url(../../../static/images/bolang2.png);
+        background: url(../../assets/images/bolang2.png);
         .bigShotPage_bolang1{
           width: 10.39rem;
           height: 0.41rem;
-          background: url(../../../static/images/bolang3.png);
+          background: url(../../assets/images/bolang3.png);
           position: absolute;
           left: 0;
           bottom: 0;

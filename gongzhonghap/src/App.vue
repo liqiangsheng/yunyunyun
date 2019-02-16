@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import MobileDetect from 'mobile-detect'
+//  import MobileDetect from 'mobile-detect'
   export default {
   name: 'App',
   data(){
@@ -24,6 +24,8 @@
     }
   },
   created() {
+//    https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect](https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
+
 //    //判断数组中是否包含某字符串
 //    Array.prototype.contains = function(needle) {
 //      for (i in this) {

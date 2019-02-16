@@ -2,8 +2,8 @@
 
     <div class='faceBox'>
       <div class='faceBoxItem1'>
-        <img src='/static/images/face1.png'/>
-        <img src='/static/images/hengtiao1.png'/>
+        <img src='../../assets/images/face1.png'/>
+        <img src='../../assets/images/hengtiao1.png'/>
 
       </div>
       <div class='faceBoxItem2'>体验人脸识别快速入场</div>

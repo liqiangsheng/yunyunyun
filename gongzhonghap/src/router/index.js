@@ -4,6 +4,7 @@ const Home = resolve => require(['@/components/home/home'], resolve); //详情
 const HomeMap = resolve => require(['@/components/homeMap/homeMap'], resolve); //详情地图
 const Index = resolve => require(['@/components/index/index'], resolve); //智慧活动
 const Me = resolve => require(['@/components/me/me'], resolve); //我的
+const SetPassword = resolve => require(['@/components/me/setPassword'], resolve); //密码设置
 const Myfollow = resolve => require(['@/components/me/myfollow'], resolve); //我的关注
 const Fans = resolve => require(['@/components/me/fans'], resolve); //我的粉丝
 const MyFabulous = resolve => require(['@/components/me/myFabulous'], resolve); //我的赞
@@ -166,6 +167,14 @@ export default new Router({
       component: FireMap,
       meta:{
         isTrue:true,
+      }
+    },
+    {
+      path: '/setPassword',
+      name: 'setPassword',
+      component: SetPassword,
+      meta:{
+        isTrue:false,
       }
     },
     {

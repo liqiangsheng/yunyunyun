@@ -122,6 +122,47 @@ export function telCode(tel){
     })
   })
 }
+//判断有没有绑定过手机
+export function sysUserOperationVerifyBindStatus(openId){
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/sysUserOperation/verifyBindStatus`;
+    let data = {wechat:openId}
+    axios.post(url,data).then(res=>{
+      Indicator.close();
+      resolve(res)
+    }).catch(res=>{
+      Toast("500后台服务器错误！")
+    })
+  })
+}
+//获取微信的OpenId
+export function wxOpenOpenInfo(code){
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/wxOpen/openInfo?code=${code}`;
+    axios.get(url).then(res=>{
+      Indicator.close();
+      resolve(res)
+    }).catch(res=>{
+      Toast("500后台服务器错误！")
+    })
+  })
+}
+//修改手机密码
+export function sysUserOperationUpdateUserPassword(tel,psd,setPsd,token){
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/sysUserOperation/updateUserPassword`;
+    let data = {mobile:tel,verifyCode:psd,password:setPsd,mobileType:"XCX"}
+    axios.post(url,data,{ headers: {'Content-Type': 'application/json','Accept': 'application/json',"Authorization": "Bearer " + token}}).then(res=>{
+      Indicator.close();
+      resolve(res)
+    }).catch(res=>{
+      Toast("500后台服务器错误！")
+    })
+  })
+}
 // //获取手机认证码登录
 export function login(tel,psd){
   Indicator.open("加载中...")
@@ -136,14 +177,26 @@ export function login(tel,psd){
     })
   })
 }
+// //微信绑定自动登陆
+export function bangdingLogin(tel,psd,password,wechat){
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/sysUserOperation/bindMobile`;
+    let data = {mobile:tel,verifyCode:psd,password:password,wechat:wechat,mobileType:"XCX",}
+    axios.post(url,data,{ headers: {'Content-Type': 'application/json','Accept': 'application/json'}}).then(res=>{
+      Indicator.close();
+      resolve(res)
+    }).catch(res=>{
+      Toast("500后台服务器错误！")
+    })
+  })
+}
 //退出登录
 export function loginout(){
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/logout`;
     axios.post(url,{ headers: {'Content-Type': 'application/json','Accept': 'application/json'}}).then(res=>{
       resolve(res)
-    }).catch(res=>{
-      Toast("500后台服务器错误！")
     })
   })
 }

@@ -1,7 +1,7 @@
 <template>
   <!--发现-->
-
-  <ul id="box"
+<!--<div class="box_BOX">-->
+  <ul id="box" ref="box"
       v-infinite-scroll="boxScroll"
       infinite-scroll-disabled="loading"
       infinite-scroll-distance="1000">
@@ -23,26 +23,27 @@
     </li>
 
   </ul>
+<!--</div>-->
 </template>
 
 <script>
-  //  import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
+//    import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
   import { InfiniteScroll } from 'mint-ui';
   import {customerPubContentListHomePage} from "../../../assets/js/promiseHttp.js"
   export default {
     name: 'find',
-    components: {
+//    components: {
 //      vueWaterfallEasy
-    },
+//    },
     data(){
       return{
         refshash:"下拉刷新",
         p:1,  //页
         s:10, //每页多少
         message:"", //触底提示
-        pages:0,//每页数据
+        pages:2,//每页数据
         isFirstLoad:true, //第一次加载
         maxCols:2,  //瀑布流显示最大的列数
         openPullDown:true,//下拉刷新
@@ -58,6 +59,7 @@
       "$route":function(newl,old1){ //滚动定位到实际地方 点击图片的位置
         if(newl.path=='/homeIndex1_0'){
           this.$nextTick(function(){
+//            document.querySelector(".box_BOX").scrollTop = this.$store.state.FollowScrollTop;
             document.querySelector("#box").scrollTop = this.$store.state.FollowScrollTop;
           })
         }
@@ -80,23 +82,27 @@
             res.data.forEach((item,index)=>{
               item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
             })
-            this.pages = Math.ceil(res.total/this.s)
-            if(this.pages>1){
-              this.message = '加载中...'
-            }else{
-              this.message = '这是我的底线...'
-            }
+            this.pages = Math.ceil(res.total/this.s);
+            this.message = '加载中...'
+//            if(this.pages>1){
+//              this.message = '加载中...'
+//            }else{
+//              this.message = '加载中...'
+//            }
             this.imgsArr = res.data;
             let that = this;
-//            this.p++;
-            setTimeout(()=>{
-//              this.$nextTick(function(){
-                let  box = document.getElementById('box');
-                let items = box?box.children:[];
-                that.waterFull(items);
-                this.$emit("displayBlock","none")
-//              })
-            },800)
+              this.$nextTick(function(){
+                //                    document.querySelector("#box").scrollTop = 0;
+                setTimeout(()=>{
+//                  let  box = document.getElementById('box');
+//                  let items = box?box.children:[];
+                    let items = that.$refs.box.children;
+                  that.waterFull(items);
+                  that.$emit("displayBlock","none")
+                },300)
+
+              })
+
           }else{
             Toast("网络出错了，请重试")
           }
@@ -107,8 +113,10 @@
 //        if(e.target.scrollHeight==(e.target.scrollTop+e.target.offsetHeight)){
           this.p++;
           if (this.p > this.pages) {
-            this.message = "这是我的底线..."
-            return
+            setTimeout(()=>{
+              this.message = "这是我的底线..."
+              return
+            },300)
           } else if (this.p == this.pages) {
             customerPubContentListHomePage(this.p,this.s).then(res=>{
               if(res.status == true){
@@ -116,14 +124,16 @@
                     item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
                   })
                   that.imgsArr = that.imgsArr.concat(res.data);
+                this.$nextTick(function(){
                   setTimeout(()=>{
-                    this.$nextTick(function(){
-                      let  box = document.getElementById('box');
-                      let items = box?box.children:[];
-                      that.waterFull(items);
-                      this.message = "这是我的底线...";
-                    })
-                  },1400)
+//                    let  box = document.getElementById('box');
+//                    let items = box?box.children:[];
+                    let items = that.$refs.box.children;
+                    that.waterFull(items);
+                    this.message = "加载中...";
+                  },300)
+
+                })
               }else{
                 Toast("网络出错了，请重试")
               }
@@ -136,14 +146,15 @@
                   item.imageUrl1 =item.cover.url+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
                 })
                 that.imgsArr = that.imgsArr.concat(res.data);
-                setTimeout(()=>{
-                  this.$nextTick(function(){
-                    let  box = document.getElementById('box');
-                    let items = box?box.children:[];
+                this.$nextTick(function(){
+                  setTimeout(()=>{
+//                    let  box = document.getElementById('box');
+//                    let items = box?box.children:[];
+                    let items = that.$refs.box.children;
                     that.waterFull(items);
-                    this.message = "加载中...";
-                  })
-                },1400)
+                    this.message = '加载中...'
+                  },200)
+                })
               }else{
                 Toast("网络出错了，请重试")
               }
@@ -162,6 +173,7 @@
         var arr = [];
         for(var i= 0 ;i<items.length;i++){
 //        console.log(items[i].offsetHeight,"items")
+          items[i].style.position = 'absolute';
           if(i<columns){
             // 2- 确定第一行
             items[i].style.top = 0;
@@ -198,8 +210,9 @@
       },
     },
     mounted() {
-//      this.query(this.p,this.s);
+      this.query(this.p,this.s);
       let that = this;
+//      document.querySelector(".box_BOX").addEventListener('scroll',function (e) {
       document.querySelector("#box").addEventListener('scroll',function (e) {
         that.$store.dispatch("FollowScrollTop",e.target.scrollTop)
       }) //监听高度
@@ -209,17 +222,24 @@
 </script>
 
 <style scoped lang="less">
+  /*.box_BOX{*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*overflow: scroll;*/
+  /*}*/
   #box{
     width: 100%;
     height: 100%;
     overflow: scroll;
     position: relative;
-    box-sizing: border-box;
+    /*column-count: 2;*/
+    /*column-gap: 1;*/
     >li{
       width: 48.5%;
-      position: absolute;
       background: #ffffff;
+      break-inside: avoid; box-sizing: border-box;
       padding-bottom: 0.15rem;
+       /*margin-bottom: 0.12rem;*/
       >img{
         display: block;
         width: 100%;

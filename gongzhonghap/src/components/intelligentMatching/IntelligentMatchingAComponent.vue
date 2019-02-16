@@ -82,7 +82,7 @@ export default {
    bottom:0;
    z-index: 1;
    overflow-y: auto;
-   background: url(../../../static/images/bj2.png);
+   background: url(../../assets/images/bj2.png);
    background-size: 100% 100%;
    .IntelligentMatchingAComponentHeader{
      width: 90%;

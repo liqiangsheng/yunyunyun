@@ -10,10 +10,10 @@
         <li v-for="(item,index) in objList" @click="activityClick(item)">
           <!--<mt-cell-swipe :right="[{content: '删除',style: { background: 'red', color: '#fff',width:'100%'},handler:()=>handler(item)}]">-->
              <div class="messageNotification_img">
-               <img src="/static/images/xitong.png" alt="" v-if="item.notifyType=='1'">
-               <img src="/static/images/shenhe.png" alt="" v-if="item.notifyType=='2'">
-               <img src="/static/images/huodong.png" alt="" v-if="item.notifyType=='3'">
-               <img src="/static/images/xialian.png" alt=""  v-if="item.notifyType=='4'">
+               <img src="../../assets/images/xitong.png" alt="" v-if="item.notifyType=='1'">
+               <img src="../../assets/images/shenhe.png" alt="" v-if="item.notifyType=='2'">
+               <img src="../../assets/images/huodong.png" alt="" v-if="item.notifyType=='3'">
+               <img src="../../assets/images/xialian.png" alt=""  v-if="item.notifyType=='4'">
              </div>
             <div class="messageNotification_right">
               <h5 v-if="item.notifyType=='1'">{{item.title}} <span>{{item.notifyTime|formatTime}}</span></h5>

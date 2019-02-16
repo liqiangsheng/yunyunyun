@@ -131,7 +131,7 @@ export default {
   top:0;
   right:0;
   bottom:0;
-  background: url(../../../static/images/bg1.png);
+  background: url(../../assets/images/bg1.png);
   background-size: 100% 100%;
   background-size: cover;
   padding: 0.2rem;

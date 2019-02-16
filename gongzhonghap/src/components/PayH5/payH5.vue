@@ -5,7 +5,7 @@
                请选择支付方式 :
               </div>
              <div class="pay" v-for="(item,index) in payArray" @click="payClick(index)">
-               <img class="imgShow" src="/static/images/successPay.png" alt="选中" v-show="item.isShow">
+               <img class="imgShow" src="../../assets/images/successPay.png" alt="选中" v-show="item.isShow">
                <img class="img" :src="item.img" :alt="item.alt">
                {{item.alt}}
              </div>
@@ -104,7 +104,7 @@ export default {
   #PayH5{
     background: #ffffff;
     position:absolute;
-    background: url(../../../static/images/bj2.png);
+    background: url(../../assets/images/bj2.png);
     background-size: cover;
     background-size: 100% 100%;
     left: 0;

@@ -122,7 +122,7 @@
            width: 10rem;
            height: 1.39rem;
            animation: leftBox 25s infinite;
-           background: url(../../../../static/images/bolang1.png);
+           background: url(../../../assets/images/bolang1.png);
            background-size: 100% 100%;
          }
        }
@@ -132,7 +132,7 @@
           bottom: 0;
           top: 1.3rem;
           right: 0;
-          background: url(../../../../static/images/zixunBg.png);
+          background: url(../../../assets/images/zixunBg.png);
           background-size: 100% 100%;
           ul{
             width: 90%;
@@ -145,7 +145,7 @@
             li{
               width: 100%;
               height: 1.6rem;
-              background: url(../../../../static/images/zixunBying.png);
+              background: url(../../../assets/images/zixunBying.png);
               >div{
                 position: relative;
                 width: 100%;
