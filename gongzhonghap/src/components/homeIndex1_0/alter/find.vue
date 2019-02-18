@@ -93,13 +93,13 @@
             let that = this;
               this.$nextTick(function(){
                 //                    document.querySelector("#box").scrollTop = 0;
-                setTimeout(()=>{
+//                setTimeout(()=>{
 //                  let  box = document.getElementById('box');
 //                  let items = box?box.children:[];
                     let items = that.$refs.box.children;
                   that.waterFull(items);
                   that.$emit("displayBlock","none")
-                },300)
+//                },100)
 
               })
 

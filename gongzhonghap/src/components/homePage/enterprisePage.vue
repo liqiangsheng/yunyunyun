@@ -146,7 +146,7 @@ export default {
   },
   methods:{
     goDetail(id){//去文章详情
-      this.$router.push({path:"/homeDetail" ,query: {id:id}})
+      this.$router.push({path:"/homeDetail",query: {id:id}})
     },
     goToMore(){//更多故事
       this.$router.push({path:"/moreStories",query:{id:this.$router.history.current.query.id}})
@@ -229,34 +229,39 @@ export default {
     })
     let data = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):{data:{user_id:"",userType:""}};
     companyInfoFindOne(this.$router.history.current.query.id,data.data.user_id,data.data.userType).then(res=>{
-//      console.log(res,"djalsdl;")
+//        console.log(res,"djalsdl;")
       if(res.status == true){
         this.companyCooperationBrandsList = res.data.companyCooperationBrandsList?res.data.companyCooperationBrandsList:[];
         this.honordItems =res.data.honordItems?res.data.honordItems.split(","):[];
         this.majorScope =res.data.majorScope?res.data.majorScope.split(","):[];
         res.data.companyExtendType1= [];
         res.data.companyExtendType2= [];
-        res.data.companyExtendItemsList.forEach((item,index)=>{
-          if(item.companyExtendType == "1"){//知识产权
-            res.data.companyExtendType1.push(item)
-          }else if(item.companyExtendType == "2"){//作品
-            res.data.companyExtendType2.push(item)
-          }
-        })
+        if(res.data.companyExtendItemsList.length >0){
+          res.data.companyExtendItemsList.forEach((item,index)=>{
+            if(item.companyExtendType == "1"){//知识产权
+              res.data.companyExtendType1.push(item)
+            }else if(item.companyExtendType == "2"){//作品
+              res.data.companyExtendType2.push(item)
+            }
+          })
+        }
         this.companyExtendType2 =  res.data.companyExtendType2;
         this.companyExtendType1=  res.data.companyExtendType1;
-        this.designerHonorListName = res.data.companyExtendType2[0].name;
+        this.designerHonorListName = res.data.companyExtendType2.length>0?res.data.companyExtendType2[0].name:"无";
         this.listData = res.data;
-        this.$nextTick(()=>{
-          this.patentHeight = this.$refs.patentHeight.offsetHeight+80;
-          this.bottomPosition= 0;
-        })
+        if(res.data.companyCooperationBrandsList.length>0){
+          this.$nextTick(()=>{
+            this.patentHeight = this.$refs.patentHeight.offsetHeight+80;
+            this.bottomPosition= 0;
+          })
+        }
+
       }else{
         Toast("网络出错了，请重试")
       }
     })
     findInformationListByUserIdUserId(this.$router.history.current.query.id,this.page,this.s).then(res=>{
-      console.log(res)
+//      console.log(res)
       if(res.status == true){
         this.dataList = res.data;
         this.pageNum = Math.ceil(res.total/this.s);

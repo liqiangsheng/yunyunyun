@@ -473,7 +473,7 @@ export default {
           .userinfo_top_bottom_img{
             position: absolute;
             left: 0.4rem;
-            bottom: -0.4rem;
+            bottom: -0.36rem;
             width: 0.66rem;
             height: 0.66rem;
             margin: 0;
@@ -536,8 +536,8 @@ export default {
         box-sizing: border-box;
         img{
           display: block;
-          width: 1rem;
-          height: 0.94rem;
+          width: 1.15rem;
+          height: 1rem;
           margin: 0 auto;
         }
         p{
@@ -546,7 +546,7 @@ export default {
           font-weight:300;
           color:rgba(103,103,104,1);
           line-height:0.3rem;
-          margin-top: 0.23rem;
+          margin-top: 0.13rem;
           width: 100%;
           text-align: center;
           span{

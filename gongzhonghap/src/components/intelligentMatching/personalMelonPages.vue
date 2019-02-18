@@ -13,11 +13,12 @@
          </div>
        </div>
       <!--关注，喜爱，收藏-->
-      <div class="personalMelonPages_name">
-        <div>
-          <h5>{{listData.name}}</h5>
-          <p>{{listData.regionName}}</p>
-        </div>
+      <div class="personalMelonPages_topBox" @scroll="boxScroll">
+        <div class="personalMelonPages_name">
+          <div>
+            <h5>{{listData.name}}</h5>
+            <p>{{listData.regionName}}</p>
+          </div>
 
           <ul>
             <li>
@@ -33,28 +34,31 @@
               <p>粉丝</p>
             </li>
           </ul>
-      </div>
-      <!--主要内容-->
-      <div class="personalMelonPages_content" @scroll="boxScroll">
-        <ul  class="personalMelonPages_content_Data" v-if="imgsArr.length>0&&imgsArr.length%2==0">
-          <li v-for="(item,index) in imgsArr" :class="[{active1:(index+1-1)%4==0},{active2:(index+1-2)%4==0},{active3:(index+1-3)%4==0},{active4:(index+1-4)%4==0}]" @click="goToDetail(item,index)" >
-            <img :src="item.imageUrl1" alt="">
-          </li>
-        </ul>
-        <ul  class="personalMelonPages_content_Data1" v-if="imgsArr.length>0&&imgsArr.length%2==1">
-          <li v-for="(item,index) in imgsArr" :class="[{active1:(index+1-1)%4==0},{active2:(index+1-2)%4==0},{active3:(index+1-3)%4==0},{active4:(index+1-4)%4==0}]" @click="goToDetail(item,index)" >
-            <img :src="item.imageUrl1" alt="">
-          </li>
-        </ul>
-        <div class="personalMelonPages_content_noData" v-if="imgsArr.length<=0">
-          <img src="/static/images/weidenglu.png" alt="">
-          <p>他还没留下痕迹呢</p>
         </div>
-        <!---->
-        <div class="messageFoot" v-if="!!message&&imgsArr.length>0">
-          {{message}}
+        <!--主要内容-->
+        <div class="personalMelonPages_content">
+          <ul  class="personalMelonPages_content_Data" v-if="imgsArr.length>0&&imgsArr.length%2==0">
+            <li v-for="(item,index) in imgsArr" :class="[{active1:(index+1-1)%4==0},{active2:(index+1-2)%4==0},{active3:(index+1-3)%4==0},{active4:(index+1-4)%4==0}]" @click="goToDetail(item,index)" >
+              <img :src="item.imageUrl1" alt="">
+            </li>
+          </ul>
+          <ul  class="personalMelonPages_content_Data1" v-if="imgsArr.length>0&&imgsArr.length%2==1">
+            <li v-for="(item,index) in imgsArr" :class="[{active1:(index+1-1)%4==0},{active2:(index+1-2)%4==0},{active3:(index+1-3)%4==0},{active4:(index+1-4)%4==0}]" @click="goToDetail(item,index)" >
+              <img :src="item.imageUrl1" alt="">
+            </li>
+          </ul>
+          <div class="personalMelonPages_content_noData" v-if="imgsArr.length<=0">
+            <img src="/static/images/weidenglu.png" alt="">
+            <p>他还没留下痕迹呢</p>
+          </div>
+          <!---->
+          <div class="messageFoot" v-if="!!message&&imgsArr.length>0">
+            {{message}}
+          </div>
         </div>
+
       </div>
+
     </div>
   </template>
 
@@ -232,7 +236,7 @@
        bottom: 0;
        right: 0;
        overflow: hidden;
-       background: #F5F5F5;
+       background: #ffffff;
        .personalMelonPages_bg{
          width: 100%;
          height: 1.5rem;
@@ -282,11 +286,19 @@
            }
          }
        }
+       .personalMelonPages_topBox{
+         position: absolute;
+         left: 0;
+         top: 1.87rem;
+         bottom: 0;
+         right: 0;
+         overflow-y: scroll;
+       }
        .personalMelonPages_name{
          width: 100%;
-         height: 2.62rem;
+         height: 2.42rem;
          background: #ffffff;
-         padding: 0.64rem 0.2rem 0.48rem 0.2rem;
+         padding: 0.44rem 0.2rem 0.48rem 0.2rem;
          box-sizing: border-box;
          >div{
            width: 100%;
@@ -342,13 +354,13 @@
          }
        }
        .personalMelonPages_content{
-         position: absolute;
-         left: 0;
-         bottom: 0;
-         right: 0;
-         top:4.121rem;
-         overflow: hidden;
-         overflow-y: scroll;
+         /*position: absolute;*/
+         /*left: 0;*/
+         /*bottom: 0;*/
+         /*right: 0;*/
+         /*top:4.121rem;*/
+         /*overflow: hidden;*/
+         /*overflow-y: scroll;*/
          >.personalMelonPages_content_Data{
            overflow: hidden;
            width: 100%;

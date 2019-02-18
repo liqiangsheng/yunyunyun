@@ -10,14 +10,6 @@
                <img :src="item1.designerUser.designerHonorList[0].imageUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" alt="" v-else>
              </div>
             <div class="design_offee_top_centent">
-               <div class="powerIndex">
-                 <!--<b>影响力</b>-->
-                 <b></b>
-                 <!--<div class="ul1"> </div>-->
-                 <!--<div class="ul1"> </div>-->
-                 <!--<div class="ul2" :style="{width:item1.designerUser.style}"></div>-->
-                 <!--<div class="ul2" :style="{width:item1.designerUser.style}"></div>-->
-               </div>
               <div class="caredCount">
                 <span>{{item1.caredCount?item1.caredCount:0}}</span> 粉丝 <span style="margin-left: 0.3rem">{{item1.laudedCount?item1.laudedCount:0}}</span> 次获赞
               </div>
@@ -64,68 +56,24 @@ export default {
     }
   },
   created() {
-    document.title = ""
-    commonUserList(this.p,this.s).then(res=>{
-      if(res.data.status == true){
-        console.log(res,"fhsdfjk")
-        res.data.data.forEach((item,index)=>{
-          item.designerUser.style =  (item.designerUser.powerIndex*10)*0.7+"px";
-        })
-        this.pageNum = Math.ceil(res.data.total/this.s);
-        if(this.pageNum >1){
-          this.message = ""
-        }else{
-          this.message = "这是我的底线..."
-        }
-        this.objList = res.data.data;
-      }else{
-        Toast("网络出错啦，请重试")
-      }
-    })
+     this.query(); //数据初始化
   },
   methods:{
-//    swipeup(){ //上滑
-//     this.swiperIndex++;
-//      console.log(this.swiperIndex)
-//     if( this.swiperIndex == this.objList.length){
-//       this.updataMore()
-//     }else {
-//       if(this.swiperIndex<this.objList.length-1){
-//         this.scrollHeight = this.scrollHeight+410;
-//         let box = document.getElementById('design_offee')
-//         box.pageYOffset= this.scrollHeight ;
-//         box.scrollTop = this.scrollHeight ;
-//         box.scrollTop = this.scrollHeight ;
-//       }else {
-//         this.swiperIndex = this.objList.length-1;
-//         let box = document.getElementById('design_offee')
-//         box.pageYOffset= (this.objList.length)*410 ;
-//         box.scrollTop = (this.objList.length)*410 ;
-//         box.scrollTop = (this.objList.length)*410 ;
-//       }
-//
-//     }
-//    },
-//    swipedown(){//下滑
-//      console.log("xia")
-//      this.swiperIndex--;
-//      if( this.swiperIndex<=0){
-//        Toast('到顶了');
-//        this.swiperIndex = 0;
-//        let box = document.getElementById('design_offee')
-//        box.pageYOffset=0 ;
-//        box.scrollTop = 0 ;
-//        box.scrollTop = 0 ;
-//        return
-//      }else {
-//        this.scrollHeight = this.scrollHeight-410;
-//        let box = document.getElementById('design_offee')
-//        box.pageYOffset= this.scrollHeight ;
-//        box.scrollTop = this.scrollHeight ;
-//        box.scrollTop = this.scrollHeight ;
-//      }
-//
-//    },
+    query(){
+      commonUserList(this.p,this.s).then(res=>{
+        if(res.data.status == true){
+          this.pageNum = Math.ceil(res.data.total/this.s);
+          if(this.pageNum >1){
+            this.message = ""
+          }else{
+            this.message = "这是我的底线..."
+          }
+          this.objList = res.data.data;
+        }else{
+          Toast("网络出错啦，请重试")
+        }
+      })
+    },
     cancelFollow(v){ //取消关注
       let data = JSON.parse(localStorage.getItem("userInfo"));
       if(!data){
@@ -179,21 +127,15 @@ export default {
           this.message = "这是我的底线..."
           commonUserList(this.p,this.s).then(res=>{
             if(res.data.status == true){
-              res.data.data.forEach((item,index)=>{
-                item.designerUser.style =  (item.designerUser.powerIndex*10)*0.7+"px";
-              })
               this.objList = this.objList.concat(res.data.data);
             }else{
               Toast("网络出错啦，请重试")
             }
           })
         }else if(this.p<this.pageNum){
-//        this.message = "点击加载更多..."
           commonUserList(this.p,this.s).then(res=>{
-            res.data.data.forEach((item,index)=>{
-              item.designerUser.style =  (item.designerUser.powerIndex*10)*0.7+"px";
-            })
             if(res.data.status == true){
+              this.message = "加载中..."
               this.objList =  this.objList.concat(res.data.data);
             }else{
               Toast("网络出错啦，请重试")
@@ -220,16 +162,16 @@ export default {
       margin-top: 0.1rem;
       li{
        width: 100%;
-        height: 410px;
+        height:3.8rem;
         position: relative;
         .design_offee_top{
           width: 100%;
-          padding: 0 10px;
-          height: 290px;
+          padding: 0 0.1rem;
+          height: 2.9rem;
           box-sizing: border-box;
           .design_offee_top_img{
             width: 100%;
-            height: 200px;
+            height: 2rem;
             img{
               width: 100%;
               height: 100%;
@@ -238,66 +180,30 @@ export default {
           }
           .design_offee_top_centent{
             width: 100%;
-            height: 90px;
-            padding: 15px;
+            height: 0.6rem;
+            padding: 0.15rem;
             box-sizing: border-box;
             background: #ffffff;
-            .powerIndex {
-              width: 100%;
-              box-sizing: border-box;
-              font-size: 0.12rem;
-              font-family: PingFangSC-Regular;
-              font-weight: 400;
-              color: rgba(102, 102, 102, 1);
-              position: relative;
-              b {
-                display: inline-block;
-                font-size: 0.18rem;
-                color: #262626;
-                /*width: 40px;*/
-              }
-              .ul1 {
-                display: inline-block;
-                position: absolute;
-                width: 70px;
-                height: 12px;
-                left: 70px;
-                top: 5px;
-                background: url(../../../../static/images/star2.png);
-
-              }
-              .ul2 {
-                display: inline-block;
-                width: 70px;
-                height: 12px;
-                position: absolute;
-                left: 70px;
-                z-index: 1;
-                top: 5px;
-                background: url(../../../../static/images/star1.png);
-              }
-            }
             .caredCount{
               width: 100%;
-              font-size:0.13rem;
+              font-size:0.16rem;
               font-family:PingFangSC-Regular;
               font-weight:400;
-              color:#c5c5c6;
+              color:rgba(197,197,198,1);
               margin-right: 0.1rem;
               line-height: 0.3rem;
               span{
-                font-size:0.12rem;
-                font-family:PingFangSC-Semibold;
-                font-weight:600;
-                color:rgba(0,0,0,1);
-
+                font-size:0.18rem;
+                font-family:PingFangSC-Medium;
+                font-weight:500;
+                color:rgba(38,38,40,1);
               }
             }
           }
         }
         .design_offee_bottom{
           width: 100%;
-          height: 150px;
+          height: 1.5rem;
           position: absolute;
           left: 0;
           bottom: 0;
@@ -305,26 +211,26 @@ export default {
           background-size: 100% 100%;
           .design_offee_bottom_content{
             width: 100%;
-            height: 90px;
+            height: 0.9rem;
             background: #ffffff;
             position: absolute;
             left: 0;
             top:20px;
-            padding: 25px 20px;
+            padding: 0.25rem 0.2rem;
             box-sizing: border-box;
             overflow: hidden;
             /*box-shadow: 0px 30px 30px 30px rgba(5,5,9,0.08);*/
               .img3{
-                width: 40px;
-                height:  40px;
+                width: 0.4rem;
+                height:  0.4rem;
                 margin-right: 0.05rem;
                 float: left;
                 img{
                   display: block;
-                  width: 36px;
-                  height: 36px;
+                  width: 0.36rem;
+                  height: 0.36rem;
                   border-radius: 50%;
-                  border: 2px solid #FCE76C;
+                  border: 0.02rem solid #FCE76C;
                 }
               }
               h5{

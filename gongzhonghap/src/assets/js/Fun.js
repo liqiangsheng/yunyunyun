@@ -13,7 +13,7 @@ export function UrlSearch(){
       this[name]=value;
     }
   }
-  console.log(arr)
+  // console.log(arr)
 }
 
   /*

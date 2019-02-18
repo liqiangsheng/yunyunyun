@@ -35,10 +35,10 @@
 <script>
   import Creativity from "./components/creativity.vue"
   import DesignOffee from "./components/design_offee1.vue" //设计咖 匠星
-  import ResourcePool from "./components/resource_pool.vue" //资源池
+  import ResourcePool from "./components/resource_pool.vue" //资源池 工坊
   import IntelligenceOrps from "./components/Intelligence_orps.vue" //智慧团
   import Weathervane from "./components/WEATHERVANE.vue" //风向标  //资讯
-  import BigCoffeeSays from "./components/big_coffee_say.vue" //大咖说
+  import BigCoffeeSays from "./components/big_coffee_say.vue" //大咖说 匠心
   import NewHorizons from "./components/new_horizons.vue" //新世界
   import FireMap from "../pictureLiveBroadcast/fireMap.vue" //火图直播
 export default {

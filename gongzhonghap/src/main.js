@@ -7,6 +7,9 @@ import Vuex from "vuex"
 // import $ from 'jquery'
 import './assets/rem'
 import "mint-ui/lib/style.min.css"
+//首页瀑布流
+import waterfall from 'vue-waterfall2'
+Vue.use(waterfall)
 //上线记得注释掉 调试用
 // import VConsole from 'vconsole/dist/vconsole.min.js' //import vconsole
 // let vConsole = new VConsole() // 初始化

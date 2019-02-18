@@ -17,16 +17,25 @@
         <li v-for="(item,index) in objList" @click="goDetail(item)" v-if="item.multiActivity==false">
               <img :src="item.bannerUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" class="homeImg"/>
               <div class="letGo" @click.stop="goToPicture(item)">进入图播</div>
-              <h5 class='homeBottomTitle'>
-               {{item.name}}
-              </h5>
+              <!--<h5 class='homeBottomTitle'>-->
+               <!--{{item.name}}-->
+              <!--</h5>-->
+              <h5  class='homeBottomTitle' v-if="item.expenses ==0&&item.expenses<=0&&nowTime >item.endTime" style='color:#c5c5c6'> {{item.name}}</h5>
+              <h5  class='homeBottomTitle' v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'> {{item.name}}</h5>
+              <h5  class='homeBottomTitle' v-else style='color:#7ade81'> {{item.name}}</h5>
               <div class='homeBottomPrice'>
                 <span v-if="item.expenses !=0&&item.expenses >0">¥{{item.expenses}}</span>
                 <span v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime >item.endTime" style='color:#c5c5c6'>免费</span>
                 <span v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'>免费</span>
                 <span v-else style='color:#7ade81'>免费</span>
               </div>
-              <div class='homeBottomdata'>
+              <div class='homeBottomdata' v-if="item.expenses ==0&&item.expenses<=0&&nowTime >item.endTime" style='color:#c5c5c6'>
+                <span>{{item.startTime |formatTime}}</span> | <span>{{item.regionName}}</span>
+              </div>
+              <div class='homeBottomdata' v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'>
+                <span>{{item.startTime |formatTime}}</span> | <span>{{item.regionName}}</span>
+              </div>
+              <div class='homeBottomdata' v-else style='color:#7ade81'>
                 <span>{{item.startTime |formatTime}}</span> | <span>{{item.regionName}}</span>
               </div>
               <div class='homeBottomstate' v-if="nowTime >item.signStartTime && nowTime <item.signEndTime">
@@ -110,7 +119,7 @@ export default {
       }
     })
     activityListData(this.p,this.s).then(res=>{
-      console.log(res)
+//      console.log(res)
       if(res.data.status == true){
         this.pageNum = Math.ceil(res.data.total/this.s);
         if(this.pageNum >1){

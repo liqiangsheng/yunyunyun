@@ -12,7 +12,8 @@
              <div class="followDetail_bottom_img" >
                  <ul ref="windwosWH" :style="{width:styleWidth}" v-if="item.attachments.length>1" class="followDetail_bottom_ul">
                    <li v-for="(item1,index1) in item.attachments" style="margin-right: 0.2rem">
-                      <img :src="item1.url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" :style="{height:item.attachments[0].height/2/100+'rem'}" />
+                      <img :src="item1.url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" :style="{height:item.attachments[0].height/2/100-1.5+'rem'}" v-if="item.attachments[0].height>900"/>
+                      <img :src="item1.url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" :style="{height:item.attachments[0].height/2/100+'rem'}" v-else/>
                      <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*335/100+'rem',top:item2.axesyRate*imgH/100+'rem'}">
                        <img src="/static/images/biaoqian.png" alt=""><span>{{item2.title}}</span>
                      </div>
@@ -564,13 +565,14 @@
       background: #FCE76C;
       overflow:hidden;
       padding-top: 0.25rem;
+      position: relative;
       >img{
         display: block;
         float: left;
         width: 0.4rem;
         height: 0.4rem;
         border-radius: 50%;
-        margin-left: 0.4rem;
+        margin-left: 0.2rem;
       }
       >p{
         display: block;
@@ -593,17 +595,17 @@
         height: 0.32rem;
         border: 0.02rem solid #262626;
         border-radius:0.24rem;
-        float: right;
-        margin-right: 0.21rem;
         text-align: center;
         line-height: 0.36rem;
+        position: absolute;
+        right: 0.2rem;
+        top: 0.18rem;
         font-size:0.14rem;
         font-family:PingFangSC-Semibold;
         font-weight:600;
         color:rgba(38,38,40,1)
       }
       >div.active{
-
         border: 0.02rem solid #c5c5c6;
         color:#c5c5c6;
       }
@@ -612,7 +614,7 @@
       position: absolute;
       left: 0;
       bottom: 0;
-      top: 0.83rem;
+      top: 0.93rem;
       right: 0;
       overflow: hidden;
       overflow-y: scroll;
@@ -683,9 +685,10 @@
       word-break: break-all;
     }
      .follow_login_Follow_li4{
-      width: 100%;
+      width: 3.02rem;
+       margin: 0 auto;
       display: flex;
-      padding: 0.2rem;
+      padding: 0.2rem 0;
        height: 0.7rem;
       box-sizing: border-box;
       >div{
@@ -702,6 +705,9 @@
           margin-right: 0.05rem;transform: translateY(0.02rem);
         }
       }
+       >div:last-of-type{
+         text-align: right;
+       }
     }
     .IntelligentMatchingDItem5{
       padding: 0.1rem 0.2rem 0.2rem 0.2rem;
@@ -710,7 +716,7 @@
       background: #ffffff;
       >.commentNo{
         width: 100%;
-        padding: 0.15rem 0;
+        padding: 0.6rem 0 0.15rem 0;
         border-top: 0.01rem solid rgba(220,220,220,1);
         img{
           width: 1.2rem;

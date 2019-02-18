@@ -271,7 +271,7 @@ export function OkEditingInformation (data,token) { //请求数据
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-      console.log(ajax)
+      // console.log(ajax)
       if (ajax.readyState==4 &&ajax.status==200) {
         Indicator.close()
         let res= JSON.parse(ajax.responseText)
@@ -673,7 +673,7 @@ export function activityImagesBookList(data){
   Indicator.open("加载中...")
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityImagesBook/list`;
-    console.log(url)
+    // console.log(url)
     axios.post(url,data).then(res=>{
       Indicator.close();
       resolve(res)

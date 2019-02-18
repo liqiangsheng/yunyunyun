@@ -1,6 +1,7 @@
 <template>
   <div id="loginBox">
      <!--<img class='image' src='../../assets/images/loginBj.png' />-->
+    <!--<div class="loginBox_box">-->
     <div class="loginBox_box" v-if="loginIndex == 0">
       <div class='loginTitle'>{{titleText}}</div>
       <div class="telPhone">
@@ -19,9 +20,9 @@
         <button class="ObtainCode"  disabled v-if='!isShow'>{{codeNum}}秒后重新发送</button>
       </div>
 
-      <div class="userPhonePassword" @click="loginIndex=1">
-        用户手机号密码登陆
-      </div>
+      <!--<div class="userPhonePassword" @click="loginIndex=1">-->
+        <!--用户手机号密码登陆-->
+      <!--</div>-->
 
       <div class='loginBnt' @click='loginBnt'>
         <button>登　录</button>
@@ -286,6 +287,7 @@ export default {
     background: url(../../assets/images/loginBj.png);
     background-size:cover ;
     background-size: 100% 100%;
+    overflow: hidden;
     >.passwordLogin{
       width: 100%;
       height: 100%;
@@ -433,7 +435,7 @@ export default {
       width: 90%;
       height: 0.5rem;
       margin: 0 auto;
-      margin-top: 0.31rem;
+      margin: 0.15rem;
       background: #fff;
       .verificatioCodeImage{
         width: 15%;

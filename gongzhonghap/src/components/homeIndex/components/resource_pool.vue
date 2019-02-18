@@ -7,19 +7,19 @@
            <div class="resource_pool_li1_header">
              <img :src="item.logoUrl?item.logoUrl:'/static/images/defultphoto.png'" alt="">
              <h5>{{item.name}}</h5>
-             <p>{{item.brief}}</p>
+             <p>{{item.brief?item.brief:"暂无基本介绍"}}</p>
            </div>
          </div>
          <div class="resource_pool_li2">
            <div class="resource_pool_li2_left">
-             <img :src="item.companyExtendItemsList[0]?item.companyExtendItemsList[0].imageUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim':'/static/images/logo.png'" alt="">
+             <img :src="item.companyExtendItemsList[0]?item.companyExtendItemsList[0].imageUrl+'?imageView2/1/w/230/h/230/q/75|imageslim':'/static/images/logo.png'" alt="">
            </div>
            <div class="resource_pool_li2_right">
                <div class="resource_pool_li2_right_top">
-                 <img :src="item.companyExtendItemsList[1]?item.companyExtendItemsList[1].imageUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim':'/static/images/logo.png'" alt="">
+                 <img :src="item.companyExtendItemsList[1]?item.companyExtendItemsList[1].imageUrl+'?imageView2/1/w/125/h/115/q/75|imageslim':'/static/images/logo.png'" alt="">
                </div>
                <div class="resource_pool_li2_right_top">
-                 <img :src="item.companyExtendItemsList[2]?item.companyExtendItemsList[2].imageUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim':'/static/images/logo.png'" alt="">
+                 <img :src="item.companyExtendItemsList[2]?item.companyExtendItemsList[2].imageUrl+'?imageView2/1/w/125/h/115/q/75|imageslim':'/static/images/logo.png'" alt="">
                </div>
            </div>
 

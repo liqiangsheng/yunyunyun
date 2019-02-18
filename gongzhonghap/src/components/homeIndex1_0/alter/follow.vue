@@ -16,19 +16,6 @@
           </div>
         </li>
       </ul>
-      <!--您关注的达人还未发布作品，为您推荐更多设计达人～-->
-         <!--<div class="follow_login_noFollow" v-if="followIsShow==true">-->
-           <!--<p class="follow_login_noFollow_p">您关注的达人还未发布作品，为您推荐更多设计达人～</p>-->
-           <!--<ul class="follow_login_noFollow_ul">-->
-             <!--<li class="follow_login_noFollow_li" v-for="(item,index) in Recommend">-->
-                <!--<div class="follow_login_noFollow_li1"><img :src="item.url" alt=""></div>-->
-                 <!--<div class="follow_login_noFollow_li2">{{item.name}}</div>-->
-                 <!--<div class="follow_login_noFollow_li3">-->
-                   <!--<div><img :src="item.type==false?'/static/images/weiguanzhu.png':'/static/images/yiguanzhu.png'" alt="">{{item.value}}</div>-->
-                 <!--</div>-->
-             <!--</li>-->
-           <!--</ul>-->
-         <!--</div>-->
       <!--您关注的达人发布了作品-->
         <!--<div class="follow_login_Follow" v-else>-->
         <div class="follow_login_Follow">
@@ -51,7 +38,9 @@
                      <div class="swiper-wrapper">
                        <div class="swiper-slide" v-for="(item1,index1) in item.customerPubContentMap.attachments">
                          <div class="imgIs">
-                           <img :src="item1.url" >
+                           <div class="imgIs1">
+                             <img :src="item1.url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" >
+                           </div>
                            <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*imgW+'px',top:item2.axesyRate*(item1.height/(item1.width/imgW))+'px'}">
                            <img src="/static/images/biaoqian.png" alt=""><span>{{item2.title}}</span>
                            </div>
@@ -66,7 +55,7 @@
 
                  <!--文章-->
                  <div class="follow_login_Follow_li2_2" v-else>
-                   <img :src="item.bannerDetailUrl" alt="">
+                   <img :src="item.bannerDetailUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/55/imageslim'" alt="">
                  </div>
 
                  <div class="follow_login_Follow_li3">
@@ -174,18 +163,6 @@
       LoginShow:false, //登录没登录
       followIsShow:false, //关注的人未发布作品
       listData:[],//数据
-      Recommend:[
-        {type:false,name:"fanner Walker",url:"/static/images/defultphoto.png"},
-        {type:true,name:"fanner Walker",url:"/static/images/defultphoto.png"},
-        {type:false,name:"fanner Walker",url:"/static/images/defultphoto.png"},
-        {type:true,name:"fanner Walker",url:"/static/images/defultphoto.png"},
-        {type:true,name:"fanner Walker",url:"/static/images/defultphoto.png"},
-        {type:false,name:"fanner Walker",url:"/static/images/defultphoto.png"},
-        {type:true,name:"fanner Walker",url:"/static/images/defultphoto.png"},
-        {type:true,name:"fanner Walker",url:"/static/images/defultphoto.png"},
-        {type:true,name:"fanner Walker",url:"/static/images/defultphoto.png"},
-        {type:true,name:"fanner Walker",url:"/static/images/defultphoto.png"},
-      ],//推荐 的数据
     }
   },
   created() {
@@ -193,8 +170,7 @@
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){ //登录的情况  //
       this.LoginShow = true;
-//      allInformationAndPubFindMyCaredList("100","2",this.p,this.s,this.userInfo.data.access_token).then(res=>{
-     this.query();
+      this.query();
     }else{//没有登录的情况
       this.LoginShow = false;
     }
@@ -245,11 +221,11 @@
           companyInfoCancelCareCompany(v.caredUserMap.id,data.data.id,v.userType,data.data.access_token).then(res=>{
             if(res.data.status==true){
               v.caredUserMap.caredStatus = 0;
-              Toast('关注已取消')
+
                  this.p =1;
                  this.listData = [];
                  this.query();
-
+                Toast('关注已取消')
             }else{
               Toast("网络出错了，请重试")
             }
@@ -258,10 +234,10 @@
           commonUserCancelCareUser(v.caredUserMap.id,data.data.id,v.caredUserMap.userType,data.data.access_token).then(res=>{
             if(res.data.status==true){
               v.caredUserMap.caredStatus = 0;
-              Toast('关注已取消')
               this.p =1;
               this.listData = [];
-                this.query();
+              this.query();
+              Toast('关注已取消')
             }else{
               Toast("网络出错了，请重试")
             }
@@ -445,6 +421,10 @@
               item.messageShow = false;
               item.message1 = "";
               item.value = "展开";
+              item.customerPubContentMap.commentedCount = item.customerPubContentMap.commentedCount?item.customerPubContentMap.commentedCount:0;
+              item.customerPubContentMap.favoredCount = item.customerPubContentMap.favoredCount?item.customerPubContentMap.favoredCount:0;
+              item.customerPubContentMap.laudedCount = item.customerPubContentMap.laudedCount?item.customerPubContentMap.laudedCount:0;
+              item.customerPubContentMap.readCount = item.customerPubContentMap.readCount?item.customerPubContentMap.readCount:0;
               if(item.type==2){
 
                 if(item.customerPubContentMap.content&&item.customerPubContentMap.content.length>35){
@@ -495,6 +475,10 @@
               item.messageShow = false;
               item.message1 = "";
               item.value = "展开";
+              item.customerPubContentMap.commentedCount = item.customerPubContentMap.commentedCount?item.customerPubContentMap.commentedCount:0;
+              item.customerPubContentMap.favoredCount = item.customerPubContentMap.favoredCount?item.customerPubContentMap.favoredCount:0;
+              item.customerPubContentMap.laudedCount = item.customerPubContentMap.laudedCount?item.customerPubContentMap.laudedCount:0;
+              item.customerPubContentMap.readCount = item.customerPubContentMap.readCount?item.customerPubContentMap.readCount:0;
               if(item.type==2){
 
                 if(item.customerPubContentMap.content&&item.customerPubContentMap.content.length>35){
@@ -543,34 +527,39 @@
     },
     query(){
       allInformationAndPubFindMyCaredList(this.userInfo.data.id,this.userInfo.data.userType,this.p,this.s,this.userInfo.data.access_token).then(res=>{
-        console.log(res,"fhsdjkfgdkshkgdfsjkghjksdh")
+//        console.log(res,"fhsdjkfgdkshkgdfsjkghjksdh")
         if(res.status == true){
           if(res.data.caredType==0){
             res.data.relData.forEach((item,index)=>{
               item.messageShow = false;
               item.message1 = "";
               item.value = "展开";
-              if(item.type==2){
+              if(item.customerPubContentMap){
+                item.customerPubContentMap.commentedCount = item.customerPubContentMap.commentedCount?item.customerPubContentMap.commentedCount:0;
+                item.customerPubContentMap.favoredCount = item.customerPubContentMap.favoredCount?item.customerPubContentMap.favoredCount:0;
+                item.customerPubContentMap.laudedCount = item.customerPubContentMap.laudedCount?item.customerPubContentMap.laudedCount:0;
+                item.customerPubContentMap.readCount = item.customerPubContentMap.readCount?item.customerPubContentMap.readCount:0;
+                if(item.type==2){
 
-                if(item.customerPubContentMap.content&&item.customerPubContentMap.content.length>35){
-                  item.message1=item.customerPubContentMap.content.substring(0,35)+"...";
-                  item.messageShow = true;
-                  item.value = "展开";
+                  if(item.customerPubContentMap.content&&item.customerPubContentMap.content.length>35){
+                    item.message1=item.customerPubContentMap.content.substring(0,35)+"...";
+                    item.messageShow = true;
+                    item.value = "展开";
+                  }else{
+                    item.messageShow = false;
+                    item.message1 = item.customerPubContentMap.content?item.customerPubContentMap.content:"";
+                  }
                 }else{
-                  item.messageShow = false;
-                  item.message1 = item.customerPubContentMap.content?item.customerPubContentMap.content:"";
-                }
-              }else{
-                if(item.content&&item.content.length>35){
-                  item.message1=item.content.substring(0,35)+"...";
-                  item.messageShow = true;
-                  item.value = "展开";
-                }else{
-                  item.messageShow = false;
-                  item.message1 = item.content?item.content:"";
+                  if(item.content&&item.content.length>35){
+                    item.message1=item.content.substring(0,35)+"...";
+                    item.messageShow = true;
+                    item.value = "展开";
+                  }else{
+                    item.messageShow = false;
+                    item.message1 = item.content?item.content:"";
+                  }
                 }
               }
-
             })
             this.pageNum = Math.ceil(res.total/this.s);
             if(this.pageNum>1){
@@ -579,23 +568,25 @@
               this.message = '这是我的底线...';
             }
             this.listData = res.data.relData;
-            this.$nextTick(()=>{
-              setTimeout(()=>{
-                this.imgW = this.$refs.windwosWH[0].offsetWidth;
-              },200)
-              //     滑动
-              for(var i = 0;i<this.listData.length;i++){
-                var mySwiper = new Swiper ('.swiper-container'+i, {
-                  autoplay:false,
-                  loop:true,
-                  // 如果需要分页器
-                  pagination: {
-                    el: '.swiper-pagination'+i,
-                  },
-                })
-              }
+            if(this.listData&&this.listData.length>0){
+              this.$nextTick(()=>{
+                setTimeout(()=>{
+                  this.imgW = this.$refs.windwosWH[0].offsetWidth;
+                },200)
+                //     滑动
+                for(var i = 0;i<this.listData.length;i++){
+                  var mySwiper = new Swiper ('.swiper-container'+i, {
+                    autoplay:false,
+                    // 如果需要分页器
+                    pagination: {
+                      el: '.swiper-pagination'+i,
+                    },
+                  })
+                }
 
-            })
+              })
+            }
+
           }else if(res.data.caredType == -1){
             this.listData = -1;
           }else if(res.data.caredType == -2){
@@ -806,10 +797,17 @@
               .imgIs{
                 width: 100%;
                 position: relative;
-                >img{
-                  display: block;
-                  /*width: 100%;*/
+                >.imgIs1{
+                  background: url(../../../../static/images/logo.png);
+                  background-size:100% 100% ;
+                  >img{
+                    display: block;
+                    background: url(../../../../static/images/logo.png);
+                    background-size:100% 100% ;
+                    /*width: 100%;*/
+                  }
                 }
+
                 >.biaoqian{
                   position: absolute;
                   left: 0;

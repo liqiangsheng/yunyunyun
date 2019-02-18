@@ -42,12 +42,6 @@
 
        <div class="bigShotPage_num_box" style="background: #ffffff;width: 100%">
          <div class="bigShotPage_num">
-           <!--<div class="powerIndex">-->
-             <!--<b>影响力</b>-->
-             <!--<b></b>-->
-             <!--<div class="ul1"> </div>-->
-             <!--<div class="ul2" :style="{width:listData.starWidth}"></div>-->
-           <!--</div>-->
            <ul>
              <li>
                <b>{{listData.caredCount>10000?listData.caredCount/10000+'万':listData.caredCount}}</b>
@@ -459,54 +453,20 @@
       }
       .bigShotPage_num_box{
         width: 100%;
-        height: 4.67rem;
+        height: 4.47rem;
         background: #ffffff;
         padding-top: 0.4rem;
+        box-sizing: border-box;
       }
       .bigShotPage_num{
         width: 3.2rem;
-        height: 4.27rem;
+        height: 4.07rem;
         background:rgba(246,246,246,1);
         margin-left: 0.2rem;
         padding: 0.38rem 0.29rem 0 0.3rem;
         box-sizing: border-box;
         position: relative;
         overflow: hidden;
-        .powerIndex {
-          width: 100%;
-          box-sizing: border-box;
-          font-size: 0.18rem;
-          font-family: PingFangSC-Regular;
-          font-weight:500;
-          color:rgba(38,38,40,1);
-          position: relative;
-          b {
-            display: inline-block;
-            font-size: 0.18rem;
-            color: #262626;
-            /*width: 40px;*/
-          }
-          .ul1 {
-            display: inline-block;
-            position: absolute;
-            width: 70px;
-            height: 12px;
-            left: 60px;
-            top: 7px;
-            background: url(../../../static/images/star2.png);
-
-          }
-          .ul2 {
-            display: inline-block;
-            width: 70px;
-            height: 12px;
-            position: absolute;
-            left:60px;
-            z-index: 1;
-            top:7px;
-            background: url(../../../static/images/star1.png);
-          }
-        }
         ul{
           width: 100%;
           display: flex;
@@ -548,7 +508,7 @@
         }
         p{
           width: 100%;
-          height: 1.54rem;
+          height: 1.51rem;
           margin-top: 0.16rem;
           font-size:0.13rem;
           font-family:Roboto-Light;

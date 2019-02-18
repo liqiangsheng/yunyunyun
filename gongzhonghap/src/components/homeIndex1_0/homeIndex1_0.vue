@@ -33,15 +33,13 @@
 </template>
 
 <script>
-//  import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
-//  import Find from './alter/find1.vue';
-  import Find from './alter/find.vue';
+//  import Find from './alter/find.vue';
+  import Find from './alter/find2.vue';
   import Follow from './alter/follow.vue';
   import setPassword from './alter/setPassword.vue';
 import { Toast } from 'mint-ui';  //弹框
 import { Indicator } from 'mint-ui';
 import {customerPubContentListHomePage,wxOpenOpenInfo,sysUserOperationVerifyBindStatus} from "../../assets/js/promiseHttp.js"
-//import {UrlSearch} from "../../assets/js/Fun.js"
   export default {
     name: 'find',
     components:{
@@ -49,14 +47,6 @@ import {customerPubContentListHomePage,wxOpenOpenInfo,sysUserOperationVerifyBind
     },
     data(){
       return{
-//        openPullDown:true,//下拉刷新
-//        pages:0, //总共多少页
-//        bookId:{
-//        styleH:0,
-//          p: 1, // request param//
-//          s: 20, // request param//
-//          bookId:"7",
-//        }, //测试
         displayBlock1:{display:"block"},
         imgsArr:[],
         headerTab:[{Chinese:"发现",English:"Find"},{Chinese:"关注",English:"Aattention"}], //tab
@@ -88,7 +78,6 @@ import {customerPubContentListHomePage,wxOpenOpenInfo,sysUserOperationVerifyBind
       }
     },
     created() {
-      console.log(this.$Request,"UrlSearch")
       let  data = JSON.parse(localStorage.getItem('userInfo'));
       if(!data){
          if(!!this.$Request.code){ //是不是微信登陆
@@ -176,7 +165,7 @@ import {customerPubContentListHomePage,wxOpenOpenInfo,sysUserOperationVerifyBind
     bottom: 0;
     top:0;
     right: 0;
-    background: #e6e6e6;
+    background: #eeeeee;
     overflow: hidden;
     .homeIndex1_ul{
       width: 100%;
