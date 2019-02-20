@@ -1,6 +1,6 @@
 //微信分享
 // import wx from "weixin-js-sdk";
-console.log(wx)
+// console.log(wx)
 export default {
      wxShare(newVal, _shareObj,_this){ //newVal后台返回的分享参数 ，_shareObj分享的内容 ，_this == this
         if(newVal == null || newVal == undefined ){//

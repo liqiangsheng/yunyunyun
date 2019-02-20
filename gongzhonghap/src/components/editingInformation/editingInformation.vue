@@ -106,15 +106,7 @@ export default {
 //    console.log(MobileDetect1(),"MobileDetect1")
 //    console.log(MobileDetect1().version,"version")
 //    console.log(MobileDetect1().version.indexOf('R16NW'),"version")
-    this.$nextTick(function () {
-      document.title = "编辑资料";
-//      判断是不是三星的某些手机做兼容
-//      if(MobileDetect1().version.indexOf('R16NW')==0||MobileDetect1().version.indexOf('LMY47X')==0||MobileDetect1().version.indexOf('NRD90M')==0){
-//        this.headShow = false
-//      }else{
-//        this.headShow = true
-//      }
-    })
+
     let data = JSON.parse(localStorage.getItem("userInfo"));
     console.log(data)
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));

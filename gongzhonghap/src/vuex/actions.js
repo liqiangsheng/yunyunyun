@@ -23,4 +23,13 @@ export let actions={ //异步处理VUEX
   FollowScrollTop(store,data){
     store.commit("FollowScrollTop",data)
   },
+  WEATHERVANEScrollTop(store,data){
+    store.commit("WEATHERVANEScrollTop",data)
+  },
+  resource_poolScrollTop(store,data){
+    store.commit("resource_poolScrollTop",data)
+  },
+  design_offeeScrollTop(store,data){
+    store.commit("design_offeeScrollTop",data)
+  },
 };

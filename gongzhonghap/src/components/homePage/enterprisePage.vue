@@ -3,7 +3,7 @@
    <div class="enterprisePage">
       <div class="enterprisePage_box">
          <div class="enterprisePage_header">
-             <img src="/static/images/jiantouLeft.png" alt="" @click="goback">
+           <img src="/static/images/huanhui.png" alt="" @click ="goback">
              <button @click="follow(listData)" v-if="listData.cared==false">关注</button>
              <button class="active" v-if="listData.cared==true" @click="cancefollow(listData)">取消关注</button>
              <div class="yellow"></div>
@@ -15,8 +15,8 @@
                 <img :src="listData.logoUrl?listData.logoUrl:'/static/images/defultphoto.png'" alt="">
               </div>
                <div class="enterprisePage_name">
-                 <h5>{{listData.name}}</h5>
-                 <p>{{listData.engName}}</p>
+                 <h5 ref="marginHeight" :style="'margin-top:'+marginHeight">{{listData.name}}</h5>
+                 <p ref="pmarginHeight" :style="'margin-top:'+pmarginHeight">{{listData.engName}}</p>
                </div>
             </div>
           </div>
@@ -42,12 +42,12 @@
 
         <div class="enterprisePage_product" v-if="companyExtendType2.length>0">
           <div class="enterprisePage_scroll" @scroll="scrollWidth">
-            <ul :style="{width:companyExtendType2.length>1?(companyExtendType2.length*170+230)+'px':'170px'}">
+            <ul :style="{width:companyExtendType2.length>1?(companyExtendType2.length*170+180)+'px':'170px'}">
               <li v-for="(item,index) in companyExtendType2">
                 <img :src="item.imageUrl+'?imageView2/1/w/150/h/150/q/75|imageslim'" alt="">
               </li>
-              <li style="background: #FCE76C;text-align: center;line-height: 1.5rem;color: #c5c5c6" v-if="companyExtendType2.length>1">
-                没有更多作品啦!
+              <li style="background: #f6f6f6;text-align: center;line-height: 1.5rem;color: #c5c5c6" v-if="companyExtendType2.length>1">
+                没有更多作品啦
               </li>
             </ul>
           </div>
@@ -55,7 +55,7 @@
             <h5>
               {{designerHonorListName}}
             </h5>
-            <p @click="lookmoreClick(companyExtendType2)"> 更多作品 <img src="/static/images/bigshotRight.png" alt=""></p>
+            <p @click="lookmoreClick(companyExtendType2)"> 更多作品 >></p>
           </div>
         </div>
 
@@ -67,8 +67,7 @@
             </div>
             <ul class="enterprisePage_right">
               <li v-for="(item,index) in dataList" v-if="index<2" @click="goDetail(item.id)">
-                {{item.title.length>24?item.title.slice(0,24)+'...':item.title}}
-                <img src="/static/images/sizeRight.png" alt="">
+                {{item.title.length>24?item.title.slice(0,38)+'...':item.title}} >>
               </li>
               <p @click="goToMore" v-if="dataList.length>1">更多故事 >></p>
             </ul>
@@ -81,7 +80,7 @@
             <li  v-for="(item,index) in majorScope" v-if="index<majorScope.length-1"><span>{{item}}</span></li>
           </ul>
           <ul class="enterprisePage_prize_two" v-if="honordItems.length>0">
-            <p>奖项</p>
+            <p>奖 项</p>
             <li  v-for="(item,index) in honordItems" v-if="index<honordItems.length-1"><img src="/static/images/yellowdian.png" alt=""><span>{{item}}</span></li>
           </ul>
         </div>
@@ -99,7 +98,7 @@
         </div>
 
         <div class="enterprisePage_brand" :style="{height:patentHeight/100+'rem'}" v-if="companyCooperationBrandsList.length>0">
-             <div class="enterprisePage_brand_bg" :style="{bottom:bottomPosition,height:(patentHeight-40)/100+'rem'}"></div>
+             <div class="enterprisePage_brand_bg" :style="{bottom:bottomPosition,height:(patentHeight-120)/100+'rem'}"></div>
              <div class="enterprisePage_brand_content" ref="patentHeight">
                   <p>品　/　牌　/　合　/　作</p>
                  <ul>
@@ -141,7 +140,9 @@ export default {
       honordItems:[],//奖项
       majorScope:[],//领域
       companyCooperationBrandsList:[],//品牌合作
-      bottomPosition:0
+      bottomPosition:0,
+      marginHeight:0,//根据高度改变
+      pmarginHeight:0,//根据高度改变
     }
   },
   methods:{
@@ -208,7 +209,7 @@ export default {
     share(){//分享
 
       let url = "http://account.butongtech.com/"
-      shareInfoShareUrl(url).then(res=>{
+      shareInfoShareUrl(location.href.split('#')[0].toString()).then(res=>{
         if(res.status==true){
           let obj = {
             title:this.listData.name,
@@ -224,9 +225,7 @@ export default {
     },
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "工坊主页"
-    })
+
     let data = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):{data:{user_id:"",userType:""}};
     companyInfoFindOne(this.$router.history.current.query.id,data.data.user_id,data.data.userType).then(res=>{
 //        console.log(res,"djalsdl;")
@@ -251,6 +250,17 @@ export default {
         this.listData = res.data;
         if(res.data.companyCooperationBrandsList.length>0){
           this.$nextTick(()=>{
+            console.log(this.$refs.marginHeight.offsetHeight,"marginHeight")
+            if(this.$refs.marginHeight.offsetHeight>21){
+              this.marginHeight = 0
+            }else{
+              this.marginHeight = 0.14+'rem';
+            }
+            if(this.$refs.pmarginHeight.offsetHeight>15){
+              this.pmarginHeight = 0
+            }else{
+              this.pmarginHeight = 0.13+'rem';
+            }
             this.patentHeight = this.$refs.patentHeight.offsetHeight+80;
             this.bottomPosition= 0;
           })
@@ -301,27 +311,27 @@ export default {
       background: #ffffff;
       img{
         display: inline-block;
-        width: 0.13rem;
-        height: 0.13rem;
-        margin-left: 0.12rem;
+        width: 0.18rem;
+        height: 0.15rem;
+        margin-left: 0.2rem;
         margin-top: 0.2rem;
+        transform: rotate(180deg);
       }
       button{
         display: inline-block;
         width: 0.8rem;
         height: 0.36rem;
-        line-height: 0.36rem;
+        line-height: 0.34rem;
         border: 0.02rem solid #262626;
-        outline: none;
-        background: #ffffff;
         border-radius: 0.24rem;
         float: right;
-        margin-right: 0.51rem;
+        margin-right: 0.2rem;
         margin-top: 0.16rem;
         font-weight:600;
         color:rgba(38,38,40,1);
         font-size: 0.14rem;
         text-align: center;
+        background: #ffffff;
       }
       .active{
         color: #c5c5c6;
@@ -361,17 +371,17 @@ export default {
             display: block;
             width: 0.7rem;
             height: 0.7rem;
-            margin-top: 0.41rem;
+            margin-top: 0.35rem;
+            border: 0.01rem solid #eeeeee;
           }
         }
         .enterprisePage_name{
           flex: 1;
-          height: 0.7rem;
-          padding-top: 0.41rem;
+          height: 0.8rem;
+          padding-top: 0.32rem;
           h5{
             max-height:0.42rem;
             font-size:0.18rem;
-            font-family:Roboto-Medium;
             font-weight:500;
             color:rgba(38,38,40,1);
             line-height:0.21rem;
@@ -381,20 +391,22 @@ export default {
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
+            font-family: '微软雅黑';
           }
           p{
             max-height:0.28rem;
-            font-size:0.11rem;
-            font-family:PingFangSC-Regular;
+            font-size:0.12rem;
             font-weight:400;
-            color:rgba(38,38,40,1);
-            line-height:0.14rem;
+            color:#676768;
+            line-height:0.15rem;
             word-break:break-all;
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
+            margin-top: 0.06rem;
+            font-family: '微软雅黑';
           }
         }
 
@@ -406,17 +418,18 @@ export default {
       display: flex;
       background: #ffffff;
       >div{
-        width: 1rem;
+        width: 0.7rem;
         height: 0.78rem;
       }
       ul{
         flex: 1;
-        padding-top: 0.2rem;
+        padding-top: 0.15rem;
         padding-right: 0.2rem;
         box-sizing: border-box;
         display: flex;
         li{
          flex: 1;
+          text-align: center;
           b{
             height:0.21rem;
             font-size:0.18rem;
@@ -424,22 +437,23 @@ export default {
             font-weight:500;
             color:rgba(38,38,40,1);
             line-height:0.21rem;
+            font-family:'微软雅黑';
           }
           >div{
             height:0.16rem;
-            font-size:0.11rem;
-            font-family:PingFangSC-Regular;
+            font-size:0.13rem;
             font-weight:400;
-            color:rgba(38,38,40,1);
-            line-height:0.16rem;
+            color:#676768;
+            line-height:0.17rem;
+            margin-top: 0.08rem;
           }
         }
       }
     }
       .enterprisePage_product{
         width: 100%;
-        height: 299px;
-        padding: 30px 0 57px 20px;
+        height: 289px;
+        padding: 0 0 57px 20px;
         box-sizing: border-box;
         overflow: hidden;
         background: #ffffff;
@@ -464,14 +478,15 @@ export default {
         >div{
           padding-right:20px ;
           box-sizing: border-box;
-          margin-top: 23px;
+          margin-top: 25px;
           h5{
             height:22px;
             font-size:16px;
-            font-family:Roboto-Medium;
             font-weight:500;
             color:rgba(38,38,40,1);
             line-height:19px;
+            word-break:break-all;
+            font-family: '微软雅黑';
             word-break:break-all;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -480,16 +495,13 @@ export default {
           p{
             height:16px;
             font-size:11px;
-            font-family:PingFangSC-Regular;
             font-weight:400;
-            color:rgba(38,38,40,1);
+            color:#c5c5c6;
             line-height:16px;
             word-break:break-all;
-            img{
-              display: inline-block;
-              width: 13px;
-              height: 6px
-            }
+            margin-top: 0.05rem;
+            font-family: '微软雅黑';
+
           }
         }
       }
@@ -532,24 +544,21 @@ export default {
               line-height: 0.2rem;
               border-bottom: 0.01rem solid #DEC63B;
               font-size:0.13rem;
-              font-family:PingFangSC-Light;
               font-weight:300;
               color:rgba(102,95,60,1);
-              padding: 0.09rem 0;
               box-sizing: border-box;
-              img{
-                display: inline-block;
-                width: 0.15rem;
-                height: 0.07rem;
-              }
+
             }
             li:last-child{
               border-bottom:0;
             }
+            li:nth-child(2){
+              border-bottom:0;
+              padding: 0.09rem 0 0.09rem 0;
+            }
             p{
-              margin-top: 0.21rem;
+              margin-top: 0.17rem;
               font-size:0.13rem;
-              font-family:PingFangSC-Regular;
               font-weight:400;
               color:rgba(38,38,40,1);
               word-break:break-all;
@@ -560,22 +569,22 @@ export default {
       .enterprisePage_prize{
         width: 100%;
         margin-top: 0.31rem;
+        margin-bottom: 0.3rem;
         overflow: hidden;
         .enterprisePage_prize_one{
           width: 3.55rem;
           float: right;
           background: #ffffff;
-          padding: 0.3rem 0.2rem 0 0.2rem;
+          padding: 0.3rem 0.2rem 0.1rem 0.2rem;
           box-sizing: border-box;
           overflow: hidden;
           p{
             height:0.16rem;
-            font-size:0.11rem;
-            font-family:PingFangSC-Medium;
+            font-size:0.13rem;
             font-weight:500;
-            color:rgba(38,38,40,1);
+            color:#c5c5c6;
             line-height:0.16rem;
-            margin-bottom: 0.19rem;
+            margin-bottom: 0.2rem;
           }
           li{
             height:0.22rem;
@@ -596,36 +605,34 @@ export default {
           width: 3.55rem;
           float: right;
           background: #ffffff;
-          padding: 0.3rem 0.2rem;
+          padding: 0.2rem 0.2rem 0.4rem 0.2rem;
           box-sizing: border-box;
           p{
             height:0.16rem;
-            font-size:0.11rem;
-            font-family:PingFangSC-Medium;
+            font-size:0.13rem;
             font-weight:500;
-            color:rgba(38,38,40,1);
+            color:#c5c5c6;
             line-height:0.16rem;
-            margin-bottom: 0.19rem;
+            margin-bottom: 0.2rem;
           }
           li{
             width: 100%;
             display: flex;
             img{
               display: inline-block;
-              width: 0.08rem;
-              height: 0.08rem;
-              margin-top: 0.08rem;
+              width: 0.06rem;
+              height: 0.06rem;
+              margin-top: 0.1rem;
             }
             span{
               display: inline-block;
               flex: 1;
-              line-height: 0.22rem;
+              line-height: 0.28rem;
               font-size:0.13rem;
-              font-family:Roboto-Medium;
-              font-weight:500;
+              font-weight:700;
               color:rgba(38,38,40,1);
               word-break:break-all;
-              padding-left: 0.19rem;
+              padding-left: 0.1rem;
               box-sizing: border-box;
             }
           }
@@ -661,13 +668,14 @@ export default {
             display: block;
             width: 2.95rem;
             height: 2.21rem;
+            border: 0.01rem solid #eeeeee;
           }
           h5{
             margin-top: 0.15rem;
             height:0.2rem;
             font-size:0.14rem;
             font-family:PingFangSC-Medium;
-            font-weight:500;
+            font-weight:700;
             color:rgba(38,38,40,1);
             line-height:0.2rem;
             word-break: break-all;
@@ -677,10 +685,10 @@ export default {
           }
           p{
             height:0.22rem;
-            font-size:0.13rem;
+            font-size:0.12rem;
             font-family:PingFangSC-Light;
             font-weight:300;
-            color:rgba(38,38,40,1);
+            color:#676768;
             line-height:0.22rem;
           }
         }
@@ -697,11 +705,11 @@ export default {
           background: #ffffff;
         }
         .enterprisePage_brand_content{
-          width: 3.35rem;
+          width: 3.55rem;
           background:rgba(38,38,40,1);
           position: absolute;
           right: 0;
-          top: 0;
+          top: 0.15rem;
           z-index: 1;
           p{
             height:0.18rem;
@@ -716,20 +724,21 @@ export default {
           }
           ul{
             width: 100%;
-            padding: 0.23rem 0.2rem 0.4rem 0.29rem;
+            padding: 0.23rem 0.2rem 0.2rem 0.29rem;
             border-top: 0.01rem solid rgba(45,45,48,1);
             flex-wrap: wrap;
             box-sizing: border-box;
             li{
               display: inline-block;
               width: 22%;
-              margin-right: 0.08rem;
+              margin-right: 0.09rem;
               margin-bottom: 0.08rem;
               height: 0.31rem;
+              background: #ffffff;
               img{
                 display: block;
-                /*width: 100%;*/
-                /*height: 0.31rem;*/
+                width: 100%;
+                height: 0.31rem;
               }
             }
           }

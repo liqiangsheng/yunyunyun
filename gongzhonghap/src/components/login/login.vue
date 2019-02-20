@@ -95,9 +95,7 @@ export default {
     }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "登录";
-    })
+
   },
   methods:{
     watchLogin(){//微信登陆

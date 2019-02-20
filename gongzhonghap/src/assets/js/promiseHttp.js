@@ -84,6 +84,18 @@ export function activityListData(p,s){
     })
   })
 }
+//我的页面初始化数据
+export function customerTerminalNoteFindSysUserWithTerminal(loginMobile,token){//loginMobile 手机号 terminalFlag；“XCX”jiguangRegId：10哥0 terminalType：“XCX”：terminalDetail：‘’；
+  let obj = {loginMobile:loginMobile,terminalFlag:"XCX",jiguangRegId:'0000000000',terminalType:"XCX",terminalDetail:''}
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/customerTerminalNote/findSysUserWithTerminal`;
+    axios.post(url,obj,{headers:{'Content-Type': 'application/json','Accept': '*/*','Authorization':'Bearer '+token}}).then(res=>{
+      resolve(res)
+    }).catch(res=>{
+      Toast("500后台服务器错误")
+    })
+  })
+}
 
 // 我的 头像初始数据 //个人
 export function IntallData(item){

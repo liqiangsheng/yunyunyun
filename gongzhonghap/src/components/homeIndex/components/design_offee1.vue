@@ -6,8 +6,8 @@
         <li v-for="(item1,index1) in objList"  @click="goToHomePage(item1)" ref="swiperScroll">
           <div class="design_offee_top">
              <div class="design_offee_top_img">
-               <img :src="item1.coverHonor.imageUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" alt="" v-if="item1.coverHonor">
-               <img :src="item1.designerUser.designerHonorList[0].imageUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" alt="" v-else>
+               <img :src="item1.coverHonor.imageUrl+'?imageView2/1/w/355/h/200/q/75|imageslim'" alt="" v-if="item1.coverHonor">
+               <img :src="item1.designerUser.designerHonorList[0].imageUrl+'?imageView2/1/w/355/h/200/q/75|imageslim'" alt="" v-else>
              </div>
             <div class="design_offee_top_centent">
               <div class="caredCount">
@@ -34,6 +34,9 @@
     <div class="messageFoot" @click="updataMore" v-if="!!message">
       {{message}}
     </div>
+    <div @click="refresh" class="refresh">
+      刷新
+    </div>
   </div>
 </template>
 
@@ -42,6 +45,7 @@
   import { Toast } from 'mint-ui';  //弹框
 export default {
   name: 'design_offee',
+  props:['headerIndex'],
   data(){
     return{
       p:1,  //页
@@ -55,10 +59,28 @@ export default {
       scrollHeight:0,
     }
   },
+  watch:{
+    "$route":function(newl,old1){ //滚动定位到实际地方 点击图片的位置
+      if(newl.path=='/homeIndex'&&this.headerIndex==0){
+        this.$nextTick(function(){
+          document.querySelector("#design_offee").scrollTop = this.$store.state.design_offeeScrollTop;
+        })
+      }
+    },
+  },
   created() {
      this.query(); //数据初始化
   },
   methods:{
+    refresh(){//刷新
+      this.p = 1;
+      this.query();
+      document.querySelector("#design_offee").scrollTop = 0;
+      this.$store.dispatch("design_offeeScrollTop",0)
+    },
+    DesignOffeeScrollTop(){
+      document.querySelector("#design_offee").scrollTop = this.$store.state.design_offeeScrollTop;
+    },
     query(){
       commonUserList(this.p,this.s).then(res=>{
         if(res.data.status == true){
@@ -115,6 +137,7 @@ export default {
       this.$router.push({path: "/bigShotPage", query: {id:v.id}}) //去企业主页 1是企业 2是个人
     },
     updataMore(e){ //加载更多 分页
+      this.$store.dispatch("design_offeeScrollTop",e.target.scrollTop);
       if(e.target.scrollTop>=(e.target.scrollHeight-e.target.clientHeight)){
         this.p++;
         if(this.p>this.pageNum){
@@ -181,19 +204,18 @@ export default {
           .design_offee_top_centent{
             width: 100%;
             height: 0.6rem;
-            padding: 0.15rem;
+            padding: 0.12rem 0.15rem 0.15rem 0.15rem;
             box-sizing: border-box;
             background: #ffffff;
             .caredCount{
               width: 100%;
-              font-size:0.16rem;
+              font-size:0.14rem;
               font-family:PingFangSC-Regular;
               font-weight:400;
-              color:rgba(197,197,198,1);
+              color:#676768;
               margin-right: 0.1rem;
               line-height: 0.3rem;
               span{
-                font-size:0.18rem;
                 font-family:PingFangSC-Medium;
                 font-weight:500;
                 color:rgba(38,38,40,1);
@@ -240,7 +262,7 @@ export default {
                   display: block;
                   width: 100%;
                   font-size:0.13rem;
-                  font-family:PingFangSC-Semibold;
+                  color: #262628;
                   font-weight:600;
                   line-height: 0.24rem;
                   overflow: hidden;
@@ -252,7 +274,6 @@ export default {
                   width: 100%;
                   line-height: 0.16rem;
                   font-size: 0.13rem;
-                  font-family: PingFangSC-Regular;
                   font-weight: 400;
                   color: #999999;
                   overflow: hidden;
@@ -265,7 +286,7 @@ export default {
               width: 0.7rem;
               height: 0.32rem;
               background: #ffffff;
-              border-radius:0.24rem;
+              border-radius:0.28rem;
               line-height: 0.32rem;
               text-align: center;
               float: right;
@@ -283,6 +304,24 @@ export default {
           }
         }
       }
+    }
+    .refresh{
+      position: fixed;
+      z-index: 1;
+      bottom: 0.6rem;
+      right: 0.05rem;
+      background: rgba(5,5,9,0.3);
+      color: #ffffff;
+      font-size: 0.1rem;
+      font-weight: 100;
+      width: 0.4rem;
+      height: 0.4rem;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 0.4rem;
+      box-sizing: border-box;
     }
     .messageFoot{
       width: 100%;

@@ -58,9 +58,7 @@ export default {
     }
   },
   created() {
-    this.$nextTick(function () {
-      document.title = "我的活动";
-    })
+
     this.installData("",1);
     setTimeout(()=>{
       console.log(this.pageNum)

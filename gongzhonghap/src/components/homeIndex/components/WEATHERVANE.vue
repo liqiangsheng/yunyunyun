@@ -5,7 +5,7 @@
           <div class="img"></div>
         </div>
         <div class="centent">
-           <ul @scroll="updataMore">
+           <ul @scroll="updataMore" id="WEATHERVANEScrollTop">
              <div style="height: 1rem">
 
            </div>
@@ -19,9 +19,9 @@
                    无
                  </p>
                  <div class="centent_look">
-                   <span><img src="/static/images/liulangshu.svg" alt="">{{item.viewCount>10000?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}</span>
-                   <span><img src="/static/images/xihuanshu.svg" alt="">{{item.laudedCount>10000?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}}</span>
-                   <span><img src="/static/images/pinlunshu.svg" alt="">{{item.commentCount>10000?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</span>
+                   <span><img src="../../../assets/images/liulangshu.svg" alt="">{{item.viewCount>10000?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}</span>
+                   <span><img src="../../../assets/images/xihuanshu.svg" alt="">{{item.laudedCount>10000?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}}</span>
+                   <span><img src="../../../assets/images/pinglunshu.svg" alt="">{{item.commentCount>10000?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</span>
                  </div>
                  <img class="jiantouRight" src="/static/images/jiantoufangkuai.png" alt="">
                </div>
@@ -33,7 +33,9 @@
            </ul>
 
         </div>
-
+        <div @click="refresh" class="refresh">
+          刷新
+        </div>
       </div>
     </template>
 
@@ -42,6 +44,7 @@
       import { Toast } from 'mint-ui';  //弹框
       export default {
         name: 'big_coffee_says',
+        props:['headerIndex'],
         data(){
           return{
             p:1,  //页
@@ -53,28 +56,49 @@
             lengthBt:false,
           }
         },
-        created() {
-          document.title = "资讯"
-          specialSubjectFindSubjectInfoByCategory("4",this.p,this.s).then(res=>{
-            if(res.data.status == true){
-              this.pageNum = Math.ceil(res.data.data.totalAll/this.s);
-              if(this.pageNum >1){
-                this.message = ""
-              }else{
-                this.message = "这是我的底线..."
-              }
-              this.objList = res.data.data.informationVoList;
-              this.banner = res.data.data;
-            }else{
-              Toast("网络出错啦，请重试")
+        watch:{
+          "$route":function(newl,old1){ //滚动定位到实际地方 点击图片的位置
+            if(newl.path=='/homeIndex'&&this.headerIndex==2){
+              this.$nextTick(function(){
+                document.querySelector("#WEATHERVANEScrollTop").scrollTop = this.$store.state.WEATHERVANEScrollTop;
+              })
             }
-          })
+          }
+        },
+        created() {
+           this.query();
         },
         methods:{
+          weathERVANEScrollTop(){
+            document.querySelector("#WEATHERVANEScrollTop").scrollTop = this.$store.state.WEATHERVANEScrollTop;
+          },
+          refresh(){//刷新
+           this.p = 1;
+            this.query();
+            document.querySelector("#WEATHERVANEScrollTop").scrollTop = 0;
+            this.$store.dispatch("WEATHERVANEScrollTop",0)
+          },
+          query(){ //初始化数据
+            specialSubjectFindSubjectInfoByCategory("4",this.p,this.s).then(res=>{
+              if(res.data.status == true){
+                this.pageNum = Math.ceil(res.data.data.totalAll/this.s);
+                if(this.pageNum >1){
+                  this.message = ""
+                }else{
+                  this.message = "这是我的底线..."
+                }
+                this.objList = res.data.data.informationVoList;
+                this.banner = res.data.data;
+              }else{
+                Toast("网络出错啦，请重试")
+              }
+            })
+          },
           goToHomeDetail(v){ //去个人主页详情
             this.$router.push({path: "/homeDetail", query: {id:v.id}}) //去企业主页个人主页详情
           },
           updataMore(e){ //加载更多 分页
+            this.$store.dispatch("WEATHERVANEScrollTop",e.target.scrollTop);
             if(e.target.scrollHeight==(e.target.scrollTop+e.target.offsetHeight)){
               this.p++;
               if(this.p>this.pageNum){
@@ -156,7 +180,7 @@
                 box-sizing: border-box;
                 h5{
                   width: 93%;
-                  font-size: 0.16rem;
+                  font-size: 0.18rem;
                   overflow: hidden;
                   text-overflow: ellipsis;
                   white-space: nowrap;
@@ -174,7 +198,8 @@
                   -webkit-box-orient: vertical;
                   word-break:break-all;
                   line-height: 0.18rem;
-                  font-size: 0.1rem;
+                  font-weight: 100;
+                  font-size: 0.13rem;
                   letter-spacing: 0.005rem;
                 }
                 .centent_look{
@@ -205,6 +230,24 @@
 
             }
           }
+        }
+        .refresh{
+          position: fixed;
+          z-index: 1;
+          bottom: 0.6rem;
+          right: 0.05rem;
+          background: rgba(5,5,9,0.3);
+          color: #ffffff;
+          font-size: 0.1rem;
+          font-weight: 100;
+          width: 0.4rem;
+          height: 0.4rem;
+          -webkit-border-radius: 50%;
+          -moz-border-radius: 50%;
+          border-radius: 50%;
+          text-align: center;
+          line-height: 0.4rem;
+          box-sizing: border-box;
         }
         .messageFoot{
           width: 100%;

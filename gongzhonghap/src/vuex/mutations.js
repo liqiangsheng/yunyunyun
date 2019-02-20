@@ -24,4 +24,13 @@ export let mutations = {
   FollowScrollTop(state,data){
     state.FollowScrollTop=data;
   },
+  WEATHERVANEScrollTop(state,data){
+    state.WEATHERVANEScrollTop=data;
+  },
+  resource_poolScrollTop(state,data){
+    state.resource_poolScrollTop=data;
+  },
+  design_offeeScrollTop(state,data){
+    state.design_offeeScrollTop=data;
+  },
 }

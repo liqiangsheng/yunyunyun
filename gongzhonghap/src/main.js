@@ -14,7 +14,7 @@ Vue.use(waterfall)
 // import VConsole from 'vconsole/dist/vconsole.min.js' //import vconsole
 // let vConsole = new VConsole() // 初始化
 // Vue.use(vConsole)
-import mintui from 'mint-ui'
+// import mintui from 'mint-ui'
 import VueTouch from 'vue-touch';
 Vue.use(VueTouch, {name: 'v-touch'})
 import { mutations } from "@/vuex/mutations"
@@ -47,7 +47,7 @@ Vue.prototype.$Aiox = axios;
 Vue.prototype.$http = common.apiDomain;
 Vue.config.productionTip = false
 Vue.use(VueAMap);
-Vue.use(mintui);
+// Vue.use(mintui);
 Vue.use(Vuex);
 const store = new Vuex.Store({
   state,

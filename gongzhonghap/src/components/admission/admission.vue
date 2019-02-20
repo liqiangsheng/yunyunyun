@@ -72,9 +72,7 @@ export default {
     }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "我的门票";
-    })
+
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
     let objListId = JSON.parse(localStorage.getItem("objListId"))
     console.log(objListId)

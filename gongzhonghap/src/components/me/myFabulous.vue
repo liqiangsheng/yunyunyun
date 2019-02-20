@@ -88,9 +88,7 @@ export default {
       }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "我的赞";
-    })
+
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
 //    console.log(this.userInfo.data.access_token)
     if(this.userInfo){

@@ -4,13 +4,13 @@
         <li style="width: 0.2rem;float: left;height: 100%">
 <!--占位u-->
         </li>
-        <li v-for="(item,index) in objData" class="fireMapList" :style="'background:url('+item.advertiseImage.imageUrl+');background-size:100% 100%;width:'+310/375*screenWidh/100+'rem'">
+        <li v-for="(item,index) in objData" class="fireMapList" :style="'background:url('+item.advertiseImage.imageUrl+');background-size:100% 100%;width:'+310/375*screenWidh/100+'rem'" @click="goToPicture(item)">
         <!--<li v-for="(item,index) in objData" class="fireMapList" :style="'background:url(../../../static/images/bg0.png);background-size:100% 100%'">-->
            <div class="fireMapBox_box">
               <h5>{{item.activityTitle}}</h5>
                <p>{{item.activitySummary}}</p>
                <span>{{item.activityStartTime|formatTime}}</span>
-              <div @click="goToPicture(item)">进入火图</div>
+              <div>进入火图</div>
            </div>
         </li>
       </ul>
@@ -39,7 +39,6 @@ export default {
   },
   created() {
     this.$nextTick(function () {
-      document.title = "图播平台";
       this.screenWidh = this.$refs.screenWidh.offsetWidth;
     })
     activityImagesBookList(this.page).then(res=>{
@@ -54,7 +53,7 @@ export default {
          if(res.data.data.length>0){
            this.objData = res.data.data;
            this.$nextTick(function(){
-             this.styleWidth ={width: this.objData.length*(310/375*this.screenWidh)/100+0.5+"rem"}
+             this.styleWidth ={width: this.objData.length*(310/375*this.screenWidh)/100+1+"rem"}
            })
          }else {
            this.styleWidth ={width: 3.4+"rem"}
@@ -84,7 +83,7 @@ export default {
               })
               that.objData = that.objData.concat(res.data);
               this.$nextTick(function(){
-                this.styleWidth ={width: this.objData.length*(310/375*this.screenWidh)/100+0.5+"rem"}
+                this.styleWidth ={width: this.objData.length*(310/375*this.screenWidh)/100+1+"rem"}
               })
             }else{
               Indicator.close();
@@ -101,7 +100,7 @@ export default {
               })
               that.objData = that.objData.concat(res.data);
               this.$nextTick(function(){
-                this.styleWidth ={width: this.objData.length*(310/375*this.screenWidh)/100+0.5+"rem"}
+                this.styleWidth ={width: this.objData.length*(310/375*this.screenWidh)/100+1+"rem"}
               })
             }else{
               Indicator.close();
@@ -130,17 +129,17 @@ export default {
 
     .fireMapBox{
       position: absolute;
-      top:0.2rem;
+      top:0.15rem;
       bottom: 0.21rem;
       overflow-y: hidden;
       .fireMapList{
         width: 3.1rem;
         height: 100%;
-        margin-right: 0.1rem;
+        margin-right: 0.15rem;
         float: left;
         position: relative;
         .fireMapBox_box{
-         padding: 0 0.35rem 0 0.4rem;
+         padding: 0 0.25rem 0 0.3rem;
           box-sizing: border-box;
           height: 1.92rem;
           position: absolute;

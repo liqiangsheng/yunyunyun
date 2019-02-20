@@ -97,10 +97,6 @@
             res.data.caredCount = res.data.caredCount?res.data.caredCount:0;
             res.data.laudCount = res.data.laudCount?res.data.laudCount:0;
              this.listData =res.data;
-            this.$nextTick(function () {
-              document.title = res.data.name +"的主页"
-            })
-
           }else{
             Toast("网络出错了，请重试")
           }
@@ -168,7 +164,7 @@
         },
         share(){//分享
           let url = "http://account.butongtech.com/"
-          shareInfoShareUrl(url).then(res=>{
+          shareInfoShareUrl(location.href.split('#')[0].toString()).then(res=>{
             if(res.status==true){
               let obj = {
                 title:this.listData.regionName,
@@ -242,13 +238,13 @@
          height: 1.5rem;
          background: url(../../assets/images/meBg.png);
          background-size: 100% 100%;
-         padding-top: 0.27rem;
+         padding-top: 0.22rem;
          box-sizing: border-box;
          position: relative;
          .personalMelonPages_header{
            width: 100%;
            height: 0.36rem;
-           padding: 0 0.51rem 0 0.2rem;
+           padding: 0 0.14rem 0 0.2rem;
            box-sizing: border-box;
            >img{
              display: inline-block;
@@ -289,68 +285,76 @@
        .personalMelonPages_topBox{
          position: absolute;
          left: 0;
-         top: 1.87rem;
+         top: 1.97rem;
          bottom: 0;
          right: 0;
          overflow-y: scroll;
        }
        .personalMelonPages_name{
          width: 100%;
-         height: 2.42rem;
+         height: 2.32rem;
          background: #ffffff;
-         padding: 0.44rem 0.2rem 0.48rem 0.2rem;
+         padding: 0.20rem 0.2rem 0.48rem 0.2rem;
          box-sizing: border-box;
          >div{
            width: 100%;
-           height: 1.01rem;
+           height: .91rem;
            >h5{
              width: 100%;
+             padding: 0 0.2rem;
+             box-sizing: border-box;
              text-align: center;
              font-size:0.18rem;
-             font-family:Roboto-Medium;
-             font-weight:500;
+             font-family:'微软雅黑';
+             font-weight:700;
              color:rgba(38,38,40,1);
-             line-height:0.21rem;
+             line-height:0.25rem;
            }
            >p{
              width: 100%;
              text-align: center;
-             margin-top: 0.13rem;
-             font-size:0.11rem;
-             font-family:Roboto-Regular;
+             margin-top: 0.1rem;
+             font-size:0.13rem;
+             /*font-family:'微软雅黑';*/
              font-weight:400;
-             color:rgba(38,38,40,1);
-             line-height:0.13rem;
+             color:#c5c5c6;
+             line-height:0.16rem;
            }
          }
 
          >ul{
-           width: 2.5rem;
-           margin: 0 auto;
+           width:100%;
+           padding: 0 0.2rem;
+           box-sizing: border-box;
            display: flex;
            li{
              flex: 1;
+             text-align: center;
              b{
                display: block;
                width: 100%;
-               text-align: center;
-               font-size:0.2rem;
-               font-family:Roboto-Medium;
+               font-size:0.18rem;
+               font-family:'微软雅黑';
                font-weight:500;
                color:rgba(38,38,40,1);
                line-height:0.24rem;
              }
              p{
                width: 100%;
-               text-align: center;
-               font-size:0.12rem;
-               font-family:PingFangSC-Light;
-               font-weight:300;
-               color:rgba(103,103,104,1);
+               font-size:0.13rem;
+               /*font-family:'微软雅黑';*/
+               font-weight:400;
+               color:#c5c5c6;
                line-height:0.17rem;
                margin-top: 0.08rem;
              }
            }
+           /*li:first-of-type{*/
+             /*text-align: left;*/
+           /*}*/
+           /*li:last-of-type{*/
+             /*text-align: right;*/
+           /*}*/
          }
        }
        .personalMelonPages_content{

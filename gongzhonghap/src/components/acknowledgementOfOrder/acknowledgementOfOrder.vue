@@ -80,10 +80,7 @@ export default {
     }
   },
   created() {
-    this.$nextTick(function () {
-      document.title = "购票确认";
-      this.$store.dispatch('loadingFalse',true)//是顺着去加载页还是退回来false为顺着去true为退回上一页
-    })
+    this.$store.dispatch('loadingFalse',true)//是顺着去加载页还是退回来false为顺着去true为退回上一页
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
     if(this.userInfo){
        this.userID = this.userInfo.data.user_id;

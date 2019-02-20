@@ -13,14 +13,16 @@
    <div class="homeIndex_content">
      <!--<Creativity v-if="headerIndex==0"></Creativity>-->
      <keep-alive>
-       <DesignOffee v-if="headerIndex==0"></DesignOffee>
+       <DesignOffee v-show="headerIndex==0" ref="DesignOffee" :headerIndex="headerIndex"></DesignOffee>
      </keep-alive>
      <keep-alive>
-       <ResourcePool v-if="headerIndex==1"></ResourcePool>
+       <ResourcePool v-show="headerIndex==1"  ref="ResourcePool" :headerIndex="headerIndex"></ResourcePool>
      </keep-alive>
-       <Weathervane v-if="headerIndex==2"></Weathervane>
      <keep-alive>
-       <FireMap v-if="headerIndex==3"></FireMap>
+       <Weathervane v-show="headerIndex==2" ref="Weathervane" :headerIndex="headerIndex"></Weathervane>
+     </keep-alive>
+     <keep-alive>
+       <FireMap v-if="headerIndex==3" ref="FireMap">></FireMap>
    </keep-alive>
    </div>
 
@@ -58,6 +60,19 @@ export default {
         {icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
       ],
       tabbarAarrIndex:1,  //点击tab的下标
+      numb:0,
+    }
+  },
+  watch:{
+
+    'headerIndex':function (newl,old1) {
+      if(newl==1){
+        this.$refs.ResourcePool.resource_poolScroll();
+      }else if(newl==2){
+        this.$refs.Weathervane.weathERVANEScrollTop();
+      }else if(newl==0){
+        this.$refs.DesignOffee.DesignOffeeScrollTop();
+      }
     }
   },
   created() {
@@ -65,25 +80,7 @@ export default {
   },
 
   methods:{
-    swiperleft(){//左划
-      this.headerIndex--;
-      if(this.headerIndex<=0){
-        this.headerIndex =0;
-        this.$store.dispatch("headerIndex",this.headerIndex) //设计咖 智慧团 资源池下标存VueX
-      }else {
-        this.$store.dispatch("headerIndex",this.headerIndex) //设计咖 智慧团 资源池下标存VueX
-      }
 
-    },
-    swiperright(){//右划
-      this.headerIndex++;
-      if(this.headerIndex>=3){
-        this.headerIndex =3;
-        this.$store.dispatch("headerIndex",this.headerIndex) //设计咖 智慧团 资源池下标存VueX
-      }else {
-        this.$store.dispatch("headerIndex",this.headerIndex) //设计咖 智慧团 资源池下标存VueX
-      }
-    },
     headerClick(i){//头部按钮
       this.headerIndex = i;
       this.$store.dispatch("headerIndex",this.headerIndex) //设计咖 智慧团 资源池下标存VueX
@@ -124,6 +121,7 @@ export default {
             line-height: 0.24rem;
             margin-top: 0.04rem;
             font-size: 0.14rem;
+            font-weight: 100;
           }
           p{
             line-height: 0.12rem;
@@ -132,17 +130,17 @@ export default {
             font-size: 0.1rem;
           }
         }
-        .homeIndex_header_div.active{
-          font-size:0.14rem;
-          font-family:PingFangSC-Regular;
-          font-weight:600;
-          color:rgba(5,5,9,1);
+        .active{
           border-bottom:0.02rem solid rgba(5,5,9,1);
-          p{
-            color:rgba(102,102,102,1);
-            font-weight:100;
-            font-size: 0.1rem;
+          span{
+            display: inline-block;
+            line-height: 0.24rem;
+            margin-top: 0.04rem;
+            font-size: 0.14rem;
+            color: #262628;
+            font-weight: 600;
           }
+
         }
 
       }

@@ -37,6 +37,9 @@
     <div class="messageFoot"  v-if="!!message">
       {{message}}
     </div>
+    <div @click="refresh" class="refresh">
+      刷新
+    </div>
   </div>
 </template>
 
@@ -45,6 +48,7 @@
   import { Toast } from 'mint-ui';  //弹框
 export default {
   name: 'resource_pool',
+  props:['headerIndex'],
   data(){
     return{
       p:1,  //页
@@ -52,26 +56,49 @@ export default {
       message:"", //触底提示
       pageNum:"",//每页数据
       objList:[], // 智慧团数据
+      indexNum:0
     }
   },
-  created() {
-    document.title = "工坊"
-    companyList(this.p,this.s).then(res=>{
-      if(res.data.status == true){
-        this.pageNum = Math.ceil(res.data.total/this.s);
-        if(this.pageNum >1){
-          this.message = ""
-        }else{
-          this.message = "这是我的底线..."
-        }
-        this.objList = res.data.data;
-      }else{
-        Toast("网络出错啦，请重试")
+  watch:{
+    "$route":function(newl,old1){ //滚动定位到实际地方 点击图片的位置
+      if(newl.path=='/homeIndex'&&this.headerIndex==1){
+        this.$nextTick(function(){
+          document.querySelector("#resource_pool").scrollTop = this.$store.state.resource_poolScrollTop;
+        })
       }
-    })
+    },
+  },
+  created() {
+    this.indexNum = this.headerIndex;
+    this.query();
   },
   methods:{
+    refresh(){//刷新
+      this.p = 1;
+      this.query();
+      document.querySelector("#resource_pool").scrollTop = 0;
+      this.$store.dispatch("resource_poolScrollTop",0)
+    },
+    resource_poolScroll(){
+      document.querySelector("#resource_pool").scrollTop = this.$store.state.resource_poolScrollTop;
+    },
+    query(){//初始化数据
+      companyList(this.p,this.s).then(res=>{
+        if(res.data.status == true){
+          this.pageNum = Math.ceil(res.data.total/this.s);
+          if(this.pageNum >1){
+            this.message = ""
+          }else{
+            this.message = "这是我的底线..."
+          }
+          this.objList = res.data.data;
+        }else{
+          Toast("网络出错啦，请重试")
+        }
+      })
+    },
     updataMore(e) { //加载更多 分页
+      this.$store.dispatch("resource_poolScrollTop",e.target.scrollTop);
       if(e.target.scrollHeight==(e.target.scrollTop+e.target.offsetHeight)){
         this.p++;
         if (this.p > this.pageNum) {
@@ -137,12 +164,14 @@ export default {
            img{
              display: block;
              position: absolute;
-             right: 0;
+             right: -0.01rem;
              top:  0.25rem;
              width:  0.6rem;
              height: 0.6rem;
+             border: 0.01rem solid #eeeeee;
            }
            h5{
+             padding-top: 0.1rem;
              width: 2.05rem;
              height: 0.2rem;
              line-height: 0.2rem;
@@ -150,14 +179,15 @@ export default {
              overflow: hidden;
              text-overflow: ellipsis;
              white-space: nowrap;
+             color: #262628;
            }
            p{
              width: 2.05rem;
              height: 0.36rem;
              line-height: 0.18rem;
              font-size: 0.12rem;
-             color: #c5c5c6;
-             margin-top:0.05rem;
+             color: #676768;
+             margin-top:0.04rem;
              display: -webkit-box;
              -webkit-box-orient: vertical;
              -webkit-line-clamp: 2;
@@ -169,11 +199,11 @@ export default {
         .resource_pool_li2{
           position: absolute;
           left: 0;
-          top: 1.1rem;
+          top: 1.09rem;
           z-index: 2;
           width: 100%;
           height: 2.3rem;
-          box-shadow: 0 2px 30px rgba(5,5,9,0.3);
+          box-shadow: 0 2px 30px rgba(5,5,9,0.1);
           display: flex;
           .resource_pool_li2_left{
             width: 2.3rem;
@@ -199,7 +229,7 @@ export default {
         }
         .resource_pool_li3{
           width: 100%;
-          height: 0.8rem;
+          height: 0.82rem;
           padding: 0 0.2rem;
           position: absolute;
           bottom: 0;
@@ -207,7 +237,7 @@ export default {
           box-sizing: border-box;
           ul{
             width: 100%;
-            height: 0.8rem;
+            height: 0.82rem;
             background: #ffffff;
             padding: 0 0 0  0.31rem;
             box-sizing: border-box;
@@ -216,10 +246,11 @@ export default {
               height: 100%;
               float: left;
               line-height: 0.8rem;
-              color: #c5c5c6;
+              color: #676768;
               font-size: 0.12rem;
               span,b{
                 color: #262626;
+                font-size: 0.14rem;
               }
               span{
                 font-weight: 900;
@@ -229,6 +260,24 @@ export default {
           }
         }
     }
+  }
+  .refresh{
+    position: fixed;
+    z-index: 2;
+    bottom: 0.6rem;
+    right: 0.05rem;
+    background: rgba(5,5,9,0.3);
+    color: #ffffff;
+    font-size: 0.1rem;
+    font-weight: 100;
+    width: 0.4rem;
+    height: 0.4rem;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 0.4rem;
+    box-sizing: border-box;
   }
   .messageFoot{
     width: 100%;

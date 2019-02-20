@@ -206,9 +206,7 @@ export default {
   },
   created(){
     this.state = this.$router.history.current.query.state?this.$router.history.current.query.state:"XCX"; //
-    this.$nextTick(function () {
-      document.title = "活动详情";
-    })
+
     this.quiry();
   },
   methods:{

@@ -6,7 +6,7 @@
             <div class="bigShotPage_yellow"></div>
             <div class="bigShotPage_conten">
                 <div class="bigShotPage_header">
-                    <img src="/static/images/jiantouLeft.png" alt="" @click ="goback">
+                    <img src="/static/images/huanhui.png" alt="" @click ="goback">
                     <div class="button" @click="follow(listData)" v-if="listData.cared==false">关注</div>
                     <div class="button active" v-if="listData.cared==true" @click="cancefollow(listData)">取消关注</div>
                 </div>
@@ -24,17 +24,29 @@
             </div>
         </div>
 
+       <!--滚动-->
+       <div class="positionBox">
+
        <div class="bigShotPage_image">
          <div class="bigShotPage_size">
            <span>照</span>
            <span>／</span>
            <span>片</span>
          </div>
-         <div class="bigShotPage_ul">
-           <ul :style="{width:(arrList.length*2.2+1.1)+'rem'}">
+         <div class="bigShotPage_ul" v-if="arrList.length>0">
+           <ul :style="{width:(arrList.length*2.2+0.93)+'rem'}" v-if="arrList.length>1">
              <li style="width: 0.91rem;height: 2.6rem;margin: 0"></li>
              <li v-for="(item,index) in arrList">
                <img :src="item.imageUrl" />
+             </li>
+           </ul>
+           <ul :style="{width:(2*2.2+0.93)+'rem'}" v-if="arrList.length==1">
+             <li style="width: 0.91rem;height: 2.6rem;margin: 0"></li>
+             <li v-for="(item,index) in arrList">
+               <img :src="item.imageUrl" />
+             </li>
+             <li style="text-align: center;line-height: 2.6rem;color: #c5c5c6;background: #f6f6f6">
+                没有更多了
              </li>
            </ul>
          </div>
@@ -74,8 +86,8 @@
                  <li v-for="(item,index) in designerHonorList">
                      <img :src="item.imageUrl+'?imageView2/1/w/150/h/150/q/75|imageslim'" alt="">
                  </li>
-                 <li style="background: #FCE76C;text-align: center;line-height: 1.5rem;color: #c5c5c6" v-if="designerHonorList.length>1">
-                     没有更多作品啦!
+                 <li style="background: #f6f6f6;text-align: center;line-height: 1.5rem;color: #c5c5c6" v-if="designerHonorList.length>1">
+                     没有更多作品啦
                  </li>
              </ul>
          </div>
@@ -83,7 +95,7 @@
            <h5>
              {{designerHonorListName}}
            </h5>
-           <p @click="bigImage(designerHonorList[p],designerHonorList)">放大查看 <img src="/static/images/bigshotRight.png" alt=""></p>
+           <p @click="bigImage(designerHonorList[p],designerHonorList)">放大查看 >></p>
          </div>
        </div>
 
@@ -91,12 +103,11 @@
             <div class="bigShotPage_article_bg"></div>
             <div class="bigShotPage_article_size">
                <div class="bigShotPage_left">
-                 <img src="/static/images/yuanchuangwenzhang.png" alt="">
+                 <img src="/static/images/yuanchuangwenzhang.svg">
                </div>
               <ul class="bigShotPage_right">
                  <li v-for="(item,index) in dataList" v-if="index<2" @click="goDetail(item.id)">
-                   {{item.title.length>24?item.title.slice(0,24)+'...':item.title}}
-                   <img src="/static/images/sizeRight.png" alt="">
+                   {{item.title.length>24?item.title.slice(0,24)+'...':item.title}} >>
                  </li>
                  <p @click="goToMore" v-if="dataList.length>1">更多故事 >></p>
               </ul>
@@ -105,13 +116,14 @@
 
        <div class="bigShotPage_prize" v-if="honordItems.length>0">
             <ul>
-              <p>奖项</p>
+              <p>奖 项</p>
               <li  v-for="(item,index) in honordItems" v-if="honordItems.length-1>index"><img src="/static/images/yellowdian.png" alt=""><span>{{item}}</span></li>
             </ul>
        </div>
 
        <div class="bigShotPage_foot"  @click="contactClick">
          联系不同，与我们共享设计生态 >
+       </div>
        </div>
      </div>
   </div>
@@ -211,7 +223,7 @@
       share(){//分享
 
         let url = "http://account.butongtech.com/"
-        shareInfoShareUrl(url).then(res=>{
+        shareInfoShareUrl(location.href.split('#')[0].toString()).then(res=>{
           if(res.status==true){
             let obj = {
               title:this.listData.name,
@@ -227,9 +239,7 @@
       },
     },
     created(){
-      this.$nextTick(function () {
-        document.title = "匠星主页"
-      })
+
       let data = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):{data:{user_id:"",userType:""}};
       commonUserFindOne(this.$router.history.current.query.id,data.data.user_id,data.data.userType).then(res=>{
 //      console.log(res,"djalsdl;")
@@ -269,13 +279,19 @@
       })
 
     }
-
-
   }
 
 </script>
 
 <style scoped lang="less">
+  .positionBox{
+    position: absolute;
+    left: 0;
+    top: 2.2rem;
+    right: 0;
+    bottom: 0;
+    overflow-y: scroll;
+  }
   .bigShotPage{
     position: absolute;
     left: 0;
@@ -288,10 +304,10 @@
       width: 100%;
       height: 100%;
       overflow-x: hidden;
-      overflow-y: scroll;
+
       .bigShotPage_people{
         width: 100%;
-        height: 2.1rem;
+        height: 2.2rem;
         position: relative;
         background: #ffffff;
         .bigShotPage_yellow{
@@ -312,10 +328,11 @@
             position: relative;
             img{
               display: inline-block;
-              width: 0.13rem;
-              height: 0.13rem;
-              margin-left: 0.12rem;
+              width: 0.18rem;
+              height: 0.15rem;
+              margin-left: 0.2rem;
               margin-top: 0.2rem;
+              transform: rotate(180deg);
             }
             .button{
               display: inline-block;
@@ -325,21 +342,22 @@
               border: 0.02rem solid #262626;
               border-radius: 0.24rem;
               float: right;
-              margin-right: 0.51rem;
+              margin-right: 0.15rem;
               margin-top: 0.16rem;
               font-weight:600;
               color:rgba(38,38,40,1);
               font-size: 0.14rem;
               text-align: center;
             }
-            .active{
-              color: #c5c5c6;
-              border-color: #c5c5c6;
-            }
+            /*.active{*/
+              /*color: #c5c5c6;*/
+              /*border-color: #c5c5c6;*/
+            /*}*/
           }
           .bigShotPage_img{
             width: 100%;
             height: 0.6rem;
+            margin-top: 0.1rem;
             >div{
               width: 0.9rem;
               height: 0.6rem;
@@ -358,7 +376,7 @@
           .bigShotPage_h5{
             width: 100%;
             height: 1.06rem;
-            padding: 0.12rem 0.33rem 0.1rem 0;
+            padding: 0.12rem 0.15rem 0.1rem 0;
             display: flex;
             box-sizing: border-box;
             >.bigShotPage_{
@@ -371,7 +389,6 @@
               h5{
                 max-height:0.42rem;
                 font-size:0.18rem;
-                font-family:Roboto-Medium;
                 font-weight:500;
                 color:rgba(38,38,40,1);
                 line-height:0.21rem;
@@ -381,21 +398,22 @@
                 display: -webkit-box;
                 -webkit-line-clamp: 2;
                 -webkit-box-orient: vertical;
+                font-family: '微软雅黑';
               }
               p{
                 max-height:0.28rem;
-                font-size:0.11rem;
-                font-family:PingFangSC-Regular;
+                font-size:0.12rem;
                 font-weight:400;
-                color:rgba(38,38,40,1);
-                line-height:0.14rem;
+                color:#676768;
+                line-height:0.15rem;
                 word-break:break-all;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 display: -webkit-box;
                 -webkit-line-clamp: 2;
                 -webkit-box-orient: vertical;
-                margin-top: 0.04rem;
+                margin-top: 0.08rem;
+                font-family: '微软雅黑';
               }
             }
           }
@@ -410,7 +428,7 @@
         padding-top: 0.1rem;
         box-sizing: border-box;
         .bigShotPage_size{
-          padding-top: 0.62rem;
+          padding-top: 0.52rem;
           width: 0.91rem;
           position: absolute;
           left: 0;
@@ -455,15 +473,15 @@
         width: 100%;
         height: 4.47rem;
         background: #ffffff;
-        padding-top: 0.4rem;
+        padding-top: 0.43rem;
         box-sizing: border-box;
       }
       .bigShotPage_num{
         width: 3.2rem;
-        height: 4.07rem;
+        height: 4.27rem;
         background:rgba(246,246,246,1);
         margin-left: 0.2rem;
-        padding: 0.38rem 0.29rem 0 0.3rem;
+        padding: 0.38rem 0 0 0;
         box-sizing: border-box;
         position: relative;
         overflow: hidden;
@@ -473,31 +491,37 @@
           height: 0.61rem;
           li{
             flex: 1;
-            margin-top: 0.11rem;
+            text-align: center;
             b{
-              height:0.21rem;
+              display: block;
+              width: 100%;
               font-size:0.18rem;
-              font-family:Roboto-Medium;
+              font-family:'微软雅黑';
               font-weight:500;
               color:rgba(38,38,40,1);
-              line-height:0.21rem;
+              line-height:0.24rem;
             }
             >div{
-              height:0.16rem;
-              font-size:0.11rem;
-              font-family:PingFangSC-Regular;
+              width: 100%;
+              font-size:0.13rem;
+              /*font-family:'微软雅黑';*/
               font-weight:400;
-              color:rgba(38,38,40,1);
-              line-height:0.16rem;
+              color:#676768;
+              line-height:0.17rem;
+              margin-top: 0.08rem;
             }
           }
         }
         h5{
-          font-size:0.14rem;
-          height: 0.72rem;
+          width: 100%;
+          padding: 0 0.3rem;
+          box-sizing: border-box;
+          font-size:0.16rem;
+          height: 1rem;
           font-family:PingFangSC-Medium;
           font-weight:500;
-          line-height: 0.18rem;
+          margin-top: 0.04rem;
+          line-height: 0.25rem;
           color:rgba(38,38,40,1);
           word-break:break-all;
           overflow: hidden;
@@ -508,12 +532,16 @@
         }
         p{
           width: 100%;
+          padding: 0 0.3rem;
+          box-sizing: border-box;
+          width: 100%;
           height: 1.51rem;
-          margin-top: 0.16rem;
+          margin-top: 0.1rem;
           font-size:0.13rem;
           font-family:Roboto-Light;
+          letter-spacing: 0.01rem;
           font-weight:300;
-          color:rgba(38,38,40,1);
+          color:#676768;
           line-height:0.22rem;
           word-break:break-all;
           overflow: hidden;
@@ -543,12 +571,13 @@
       }
       .bigShotPage_product{
         width: 100%;
-        height: 299px;
+        height: 319px;
         padding: 30px 0 57px 20px;
         box-sizing: border-box;
         overflow: hidden;
         background: #ffffff;
         .bigShotPage_scroll{
+          overflow-y: hidden;
           overflow-x: scroll;
           height: 150px;
           ul{
@@ -558,6 +587,7 @@
               height: 150px;
               margin-right: 20px;
               float: left;
+              border: 0.01rem solid #f5f5f5;
               img{
                 display: block;
                 width: 150px;
@@ -569,29 +599,25 @@
         >div{
           padding-right:20px ;
           box-sizing: border-box;
-          margin-top: 23px;
+          margin-top: 25px;
           h5{
             height:22px;
             font-size:16px;
-            font-family:Roboto-Medium;
             font-weight:500;
             color:rgba(38,38,40,1);
             line-height:19px;
             word-break:break-all;
+            font-family: '微软雅黑';
           }
           p{
             height:16px;
             font-size:11px;
-            font-family:PingFangSC-Regular;
             font-weight:400;
-            color:rgba(38,38,40,1);
+            color:#c5c5c6;
             line-height:16px;
             word-break:break-all;
-            img{
-              display: inline-block;
-              width: 13px;
-              height: 6px
-            }
+            margin-top: 0.05rem;
+           font-family: '微软雅黑';
           }
         }
       }
@@ -626,7 +652,7 @@
             }
           }
           .bigShotPage_right{
-           width: 2.25rem;
+           width: 2.15rem;
             float: left;
             li{
               width: 100%;
@@ -634,24 +660,20 @@
               line-height: 0.2rem;
               border-bottom: 0.01rem solid #DEC63B;
               font-size:0.13rem;
-              font-family:PingFangSC-Light;
               font-weight:300;
               color:rgba(102,95,60,1);
-              padding: 0.09rem 0;
               box-sizing: border-box;
-              img{
-                display: inline-block;
-                width: 0.15rem;
-                height: 0.07rem;
-              }
             }
             li:last-child{
               border-bottom:0;
             }
+            li:nth-child(2){
+              border-bottom:0;
+              padding: 0.09rem 0 0.09rem 0;
+            }
             p{
-              margin-top: 0.21rem;
+              margin-top: 0.17rem;
               font-size:0.13rem;
-              font-family:PingFangSC-Regular;
               font-weight:400;
               color:rgba(38,38,40,1);
               word-break:break-all;
@@ -671,32 +693,30 @@
           box-sizing: border-box;
           p{
               height:0.16rem;
-              font-size:0.11rem;
-              font-family:PingFangSC-Medium;
+              font-size:0.13rem;
               font-weight:500;
-              color:rgba(38,38,40,1);
+              color:#c5c5c6;
               line-height:0.16rem;
-            margin-bottom: 0.19rem;
+              margin-bottom: 0.1rem;
           }
           li{
              width: 100%;
             display: flex;
             img{
               display: inline-block;
-              width: 0.08rem;
-              height: 0.08rem;
-              margin-top: 0.08rem;
+              width: 0.06rem;
+              height: 0.06rem;
+              margin-top: 0.1rem;
             }
             span{
               display: inline-block;
               flex: 1;
-              line-height: 0.22rem;
+              line-height: 0.28rem;
               font-size:0.13rem;
-              font-family:Roboto-Medium;
-              font-weight:500;
+              font-weight:700;
               color:rgba(38,38,40,1);
               word-break:break-all;
-              padding-left: 0.19rem;
+              padding-left: 0.1rem;
               box-sizing: border-box;
             }
           }
@@ -709,8 +729,7 @@
         text-align: center;
         line-height: 0.6rem;
         font-size:0.12rem;
-        font-family:PingFangSC-Semibold;
-        font-weight:600;
+        font-weight:700;
         color:rgba(38,38,40,1);
         margin-top: 0.41rem;
       }

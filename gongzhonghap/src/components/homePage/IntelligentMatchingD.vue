@@ -38,7 +38,10 @@
          </div>
        </div>
        <!--点赞-->
-       <div class="IntelligentMatchingDItem1" @click="fabulousClick">
+       <div class="IntelligentMatchingDItem1" @click="fabulousClick" v-if="fabulousMessage=='已赞'" style="background:#FF8E74;border-radius: 0.48rem">
+         <img src="../../assets//images/zan1.png" alt="">{{fabulousNum}} {{fabulousMessage}}
+       </div>
+       <div class="IntelligentMatchingDItem1" @click="fabulousClick" v-if="fabulousMessage=='赞' ">
          <img src="../../assets//images/zan1.png" alt="">{{fabulousNum}} {{fabulousMessage}}
        </div>
        <!--版权-->
@@ -51,7 +54,8 @@
          <span v-if="messageArr.isOriginal==0"><span v-if="!!messageArr.fromReprint">转载自：{{messageArr.fromReprint}} </span><span v-if="!!messageArr.source">/ 文章来源：{{messageArr.source}} </span><span v-if="!!messageArr.author">/ 作者：{{messageArr.author}}</span></span>
        </div>
       <!--评论-->
-       <ul class="IntelligentMatchingDItem5" v-if="boxShow">
+       <div v-if="commenArr.length<=0" style="height: 0.2rem"></div>
+       <ul class="IntelligentMatchingDItem5" v-if="commenArr.length>0">
          <li v-for="(item,index) in commenArr" v-if="!!item.sysUserContentVo">
            <div class="IntelligentMatchingDItemL" @click="commentGoHomepage(item)">
              <img :src="item.userDp" alt="" @click="giveClick">
@@ -84,18 +88,18 @@
            </div>
           <ul>
             <li class="footerLi2">
-              <img src="../../assets/images/xingxing.png" alt="">
+              <img src="/static/images/shoucang1.svg" alt="">
             </li>
             <li class="footerLi2">
-              <img src="../../assets/images/bianji.png" alt="">
+              <img src="/static/images/guanzhuyueduliang.svg" alt="">
             </li>
-            <li class="footerLi2">
-              <img src="../../assets/images/bianxie.png" alt="">
-            </li>
+            <!--<li class="footerLi2">-->
+              <!--<img src="../../assets/images/bianxie.png" alt="">-->
+            <!--</li>-->
           </ul>
       </div>
       <div class="gobackTop" @click="gobackTop" v-show="boxShow">
-        <img src="/static/images/jiantouLeft.png" alt="">
+       顶部
       </div>
     <mt-actionsheet
       :actions="actions"
@@ -165,11 +169,6 @@ export default {
 
   },
   mounted(){
-    if(window.common.apiDomain20020=='https://dcloud.butongtech.com:20020'){
-      setTimeout(()=>{
-        this.share();
-      },200)
-    }
   },
   methods:{
     gobackTop(){//回到顶部
@@ -188,7 +187,7 @@ export default {
     },
     share(){//分享
       let url = "http://account.butongtech.com/"
-      shareInfoShareUrl(url).then(res=>{
+      shareInfoShareUrl(location.href.split('#')[0].toString()).then(res=>{
 //      console.log(this.messageArr,"this.messageArr")
         if(res.status==true){
           let obj = {
@@ -356,7 +355,7 @@ export default {
                 if(res.data.status == true){
                   Toast("关注成功")
                   this.cared = true;
-                  this.followMessage = "已关注";
+                  this.followMessage = "取消关注";
                 }else{
                   Toast("网络出错了，请重试")
                 }
@@ -367,7 +366,7 @@ export default {
                 if(res.data.status == true){
                   Toast("关注已取消")
                   this.cared = false;
-                  this.followMessage = "+ 关注";
+                  this.followMessage = "关注";
                 }else{
                   Toast("网络出错了，请重试")
                 }
@@ -380,7 +379,7 @@ export default {
                   if(res.data.status == true){
                     Toast("关注成功")
                     this.cared = true;
-                    this.followMessage = "已关注";
+                    this.followMessage = "取消关注";
                   }else{
                     Toast("网络出错了，请重试")
                   }
@@ -391,7 +390,7 @@ export default {
                   if(res.data.status == true){
                     Toast("关注已取消")
                     this.cared = false;
-                    this.followMessage = "+ 关注";
+                    this.followMessage = "关注";
                   }else{
                     Toast("网络出错了，请重试")
                   }
@@ -446,13 +445,14 @@ export default {
             this.fabulousMessage = "赞"
           }
           if(this.cared == false){
-            this.followMessage = "+ 关注";
+            this.followMessage = "关注";
           }else{
-            this.followMessage = "已关注";
+            this.followMessage = "取消关注";
           }
           if(res.data.sysUserContentVo.userDp){
             this.userDp = res.data.sysUserContentVo.userDp;
           }
+          this.share();
 
         }else{
           Toast("网络出错了，请重试")
@@ -481,13 +481,14 @@ export default {
           })
           this.pageNum = Math.ceil(res.total/this.s);
           if(res.data.length<=0){
-            this.message = "暂无更多评论~"
+            this.message = ""
           }else if(res.data.length>0&&this.pageNum >1){
             this.message = "点击加载更多..."
           }else{
             this.message = "这是我的底线..."
           }
           this.commenArr = res.data;
+          this.share();
         }else{
           this.message = "数据出错啦！"
           Toast("网络出错了，请重试")
@@ -585,11 +586,11 @@ export default {
        text-align: center;
     }
     .articleDetails_content_tagName{
-      margin-top: 0.08rem;
+      margin-top: 0.06rem;
       font-size:0.12rem;
       font-family:PingFangSC-Regular;
       font-weight:400;
-      color:rgba(38,38,40,1);
+      color:#c5c5c6;
       line-height:0.17rem;
       text-align: center;
     }
@@ -600,31 +601,32 @@ export default {
     .articleDetails_content_Introducer{
       width: 100%;
       background:rgba(246,246,246,1);
-      padding: 0.33rem 0.2rem;
+      padding: 0.19rem 0.2rem 0.33rem 0.2rem;
       box-sizing: border-box;
       margin-bottom: 0.27rem;
       .IntelligentMatchingDHeaderIndex2{
         width: 100%;
         margin: 0.15rem 0;
-        height: 0.64rem;
+        height: 0.56rem;
         position: relative;
         display: flex;
         border-bottom: 0.01rem solid rgba(38,38,40,0.1);
         padding-bottom: 0.06rem;
         img{
           display: inline-block;
-          width: 0.5rem;
-          height: 0.5rem;
+          width: 0.38rem;
+          height: 0.38rem;
           border-radius: 50%;
           margin-right: 0.05rem;
+          border: 0.02rem solid #fce76c;
         }
         >div{
           width: 2rem;
           height: 0.64rem;
           p{
-            font-size:0.13rem;
-            font-family:PingFangSC-Medium;
-            font-weight:500;
+            padding-top: 0.04rem;
+            font-size:0.14rem;
+            font-weight:700;
             color:rgba(38,38,40,1);
             overflow: hidden;
             word-break:break-all;
@@ -633,6 +635,7 @@ export default {
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             line-height:0.18rem;
+            margin-bottom: 0.04rem;
           }
           span{
             color:rgba(102,102,102,1);
@@ -648,10 +651,12 @@ export default {
           right: 0;
           top: 0.07rem;
           width: 0.8rem;
-          height: 0.34rem;
-          line-height: 0.34rem;
-          border: 0.01rem solid #262626;
+          height: 0.32rem;
+          line-height: 0.3rem;
+          border: 0.02rem solid #262626;
           border-radius:0.48rem;
+          font-size: 0.14rem;
+          font-weight: 900;
           color: #262626;
           outline: none;
           background: 0;
@@ -659,10 +664,9 @@ export default {
       }
       .IntelligentMatchingDHeaderIndex3{
         width: 100%;
-        padding-top: 0.2rem;
+        padding-top: 0.07rem;
         box-sizing: border-box;
         font-size:0.15rem;
-        font-family:PingFangSC-Medium;
         font-weight:500;
         color:rgba(38,38,40,1);
         line-height:21px;
@@ -675,7 +679,7 @@ export default {
     }
     .IntelligentMatchingDItem{
       width: 100%;
-      padding-bottom: 0.15rem;
+      padding-bottom: 0.2rem;
       box-sizing: border-box;
       h5{
         width: 100%;
@@ -686,7 +690,7 @@ export default {
         line-height:0.21rem;
         text-align: center;
         word-break:break-all;
-        margin-bottom: 0.15rem;
+        margin-bottom: 0.1rem;
       }
       .IntelligentMatchingDItemIndex{
         width: 100%;
@@ -746,7 +750,7 @@ export default {
       font-family:PingFangSC-Regular;
       font-weight:400;
       color:rgba(153,153,153,1);
-      line-height:0.35rem;
+      line-height:0.25rem;
     }
     .IntelligentMatchingDItem3{
       width: 100%;
@@ -755,7 +759,7 @@ export default {
       font-family:PingFangSC-Regular;
       font-weight:400;
       color:rgba(153,153,153,1);
-      line-height:0.35rem;
+      line-height:0.2rem;
     }
     .IntelligentMatchingDItem5{
       width: 100%;
@@ -767,19 +771,20 @@ export default {
         border-bottom: 0.01rem solid rgba(220,220,220,1);
         display: flex;
         >.IntelligentMatchingDItemL{
-          width: 0.6rem;
-          height: 0.6rem;
+          width: 0.38rem;
+          height: 0.43rem;
           >img{
             display: block;
-            width: 0.6rem;
-            height: 0.6rem;
+            width: 0.38rem;
+            height: 0.38rem;
             border-radius: 50%;
+            margin-top: 0.05rem;
           }
         }
         .IntelligentMatchingDItemR{
           /*flex: 1;*/
           width: 100%;
-          padding-left: 0.15rem;
+          padding-left: 0.1rem;
           box-sizing: border-box;
           h5{
             width: 100%;
@@ -787,7 +792,8 @@ export default {
             font-family:PingFangSC-Medium;
             font-weight:500;
             color:rgba(5,5,9,1);
-            line-height:0.48rem;
+            line-height:0.24rem;
+            margin-top: 0.05rem;
           }
           .time{
             font-size:0.09rem;
@@ -807,6 +813,7 @@ export default {
               position: absolute;
               right: -35%;
               top: 0;
+              color: #262628;
               img{
                 display: inline-block;
                 width: 0.13rem;
@@ -880,7 +887,7 @@ export default {
       box-sizing: border-box;
      >div{
       float: left;
-       width: 60%;
+       width: 70%;
        height: 0.38rem;
        border-radius:1rem;
        border:0.01rem solid rgba(224,224,224,1);
@@ -892,13 +899,14 @@ export default {
        color:rgba(38,38,40,1);
      }
     >ul{
-      width: 39%;
+      width: 29%;
       float: left;
       display: flex;
       li{
         flex: 1;
         padding-top: 0.1rem;
         img{
+          float: right;
           display: block;
           width: 0.21rem;
           height: 0.2rem;
@@ -909,19 +917,15 @@ export default {
   }
   .gobackTop{
     position: fixed;
-    right: 0;
+    right: 0.05rem;
     bottom: 0.7rem;
-    width: 0.3rem;
-    height: 0.3rem;
+    width: 0.4rem;
+    height: 0.4rem;
     border-radius: 50%;
     background: rgba(5,5,5,0.3);
-    img{
-      width: 0.18rem;
-      height: 0.15rem;
-      margin: 0 auto;
-      margin-top: 0.06rem;
-      transform: rotate(90deg);
-    }
+    text-align: center;
+    line-height: 0.4rem;
+    color: #ffffff;
   }
 }
 

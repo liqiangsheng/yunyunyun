@@ -62,9 +62,6 @@ export default {
   watch:{
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "报名活动资料填写";
-    })
 
     this.listData.forEach((item,index)=>{
       item.messageName = "请选择";

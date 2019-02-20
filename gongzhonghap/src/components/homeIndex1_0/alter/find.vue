@@ -68,7 +68,6 @@
     created() {
       this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):"";
       this.$nextTick(function(){
-        document.title = "发现";
         this.query(this.p,this.s);
       })
 

@@ -53,9 +53,7 @@ export default {
     }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "智能匹配";
-    })
+
      let objData = JSON.parse(sessionStorage.getItem("IntelligentMatchingBData"))?JSON.parse(sessionStorage.getItem("IntelligentMatchingBData")):{};
       let postData = (function(value){  //把参数拼接好
         let oStr;

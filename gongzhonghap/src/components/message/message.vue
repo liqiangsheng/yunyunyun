@@ -233,9 +233,7 @@ export default {
     }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "不同科技";
-    })
+
      this.obj = JSON.parse(localStorage.getItem("messageShow1")); //拿到值，看是哪个页面传来的状态显示不同的内容
   },
   methods:{

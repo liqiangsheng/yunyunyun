@@ -57,9 +57,6 @@ export default {
     }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "绑定手机号";
-    })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
   },
   methods:{
@@ -199,10 +196,8 @@ export default {
     bottom: 15%;
     right: 10%;
     left: 10%;
-    background: url(../../../assets/images/loginBj.png);
+    background: #ffffff;
     background-size:cover ;
-    background-size: 100% 100%;
-
     .loginTitle{
       width: 100%;
       text-align: center;

@@ -29,9 +29,12 @@
                  </li>
                </ul>
              </div>
-             <div class="followDetail_bottom_concent">
-                   {{item.content}}
-             </div>
+          <div style="width: 100%;background: #ffffff;padding-top: 0.2rem">
+              <div class="followDetail_bottom_concent">
+                {{item.content}}
+              </div>
+          </div>
+          <div style="width: 100%;background: 100%">
             <div class="follow_login_Follow_li4">
               <div @click="giveClick">
                    <img src="/static/images/guanzhuyueduliang.png" alt="">  {{item.commentedCount<10000?item.commentedCount:(item.commentedCount/10000).toFixed(2)+'万'}}
@@ -52,6 +55,7 @@
               </div>
 
             </div>
+          </div>
           <!--评论-->
           <ul class="IntelligentMatchingDItem5">
               <li v-if="commenArr.length<=0" class="commentNo">
@@ -123,9 +127,7 @@
     }
   },
   created() {
-    this.$nextTick(function () {
-      document.title = "作品详情"
-    })
+
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):{data:{user_id:"",userType:""}};
 //    this.userInfo = {data:{currentUser:this.$router.history.current.query.currentUser,id:this.$router.history.current.query.id,access_token:this.$router.history.current.query.token,userType:this.$router.history.current.query.userType,}}
 //    if(this.userInfo){ //登录的情况  //
@@ -236,7 +238,7 @@
     share(){//分享
 
       let url = "http://account.butongtech.com/"
-      shareInfoShareUrl(url).then(res=>{
+      shareInfoShareUrl(location.href.split('#')[0].toString()).then(res=>{
         console.log(res,"分享")
          if(res.status==true){
            let obj = {
@@ -339,10 +341,8 @@
                 Toast("网络出错了，请重试")
               }
             })
-
           }
         }
-
     },
     commentariesClick(v){ //评论去的点赞 第一级的赞
       let data = JSON.parse(localStorage.getItem("userInfo"));
@@ -470,10 +470,10 @@
     giveClick(){ //下载IOS 或则安卓
       this.sheetVisible =true;
     },
-    IOS(){ //ios下载
+    IOS(){
       location.href="https://itunes.apple.com/cn/app/id1439775835"
     },
-    Android(){//安卓下载
+    Android(){
       location.href="https://www.pgyer.com/designcloud"
     },
     updataMore(e){ //加载更多 分页
@@ -561,7 +561,7 @@
     position: relative;
     .followDetail_top{
       width: 100%;
-      height: 1.2rem;
+      height:1.48rem;
       background: #FCE76C;
       overflow:hidden;
       padding-top: 0.25rem;
@@ -582,7 +582,7 @@
         padding-left: 0.11rem;
         line-height: 0.4rem;
         letter-spacing:0.01rem;
-        font-size:0.12rem;
+        font-size:0.14rem;
         font-family:Roboto-Bold;
         font-weight:bold;
         color:rgba(38,38,40,1);
@@ -596,25 +596,25 @@
         border: 0.02rem solid #262626;
         border-radius:0.24rem;
         text-align: center;
-        line-height: 0.36rem;
+        line-height: 0.32rem;
         position: absolute;
         right: 0.2rem;
-        top: 0.18rem;
+        top: 0.25rem;
         font-size:0.14rem;
         font-family:PingFangSC-Semibold;
         font-weight:600;
         color:rgba(38,38,40,1)
       }
-      >div.active{
-        border: 0.02rem solid #c5c5c6;
-        color:#c5c5c6;
-      }
+      /*>div.active{*/
+        /*border: 0.02rem solid #c5c5c6;*/
+        /*color:#c5c5c6;*/
+      /*}*/
     }
     .followDetail_bottom{
       position: absolute;
       left: 0;
       bottom: 0;
-      top: 0.93rem;
+      top: 0.88rem;
       right: 0;
       overflow: hidden;
       overflow-y: scroll;
@@ -679,17 +679,19 @@
       font-size:0.14rem;
       font-family:PingFangSC-Regular;
       font-weight:400;
-      color:rgba(38,38,40,1);
+      color:#676768;
       line-height: 0.24rem;
-      margin-top: 0.47rem;
+      margin-top: 0.27rem;
       word-break: break-all;
+      letter-spacing:0.01rem;
+      background: #ffffff;
     }
      .follow_login_Follow_li4{
       width: 3.02rem;
        margin: 0 auto;
       display: flex;
       padding: 0.2rem 0;
-       height: 0.7rem;
+       height: 0.55rem;
       box-sizing: border-box;
       >div{
         flex: 1;
@@ -710,14 +712,14 @@
        }
     }
     .IntelligentMatchingDItem5{
-      padding: 0.1rem 0.2rem 0.2rem 0.2rem;
+      padding: 0 0.2rem 0.2rem 0.2rem;
       box-sizing: border-box;
       width: 100%;
       background: #ffffff;
+      border-top: 0.01rem solid rgba(220,220,220,1);
       >.commentNo{
         width: 100%;
         padding: 0.6rem 0 0.15rem 0;
-        border-top: 0.01rem solid rgba(220,220,220,1);
         img{
           width: 1.2rem;
           height: 1.14rem;
@@ -732,29 +734,32 @@
           line-height: 0.28rem;
         }
       }
+      >.commentYes:nth-child(1){
+        border-top: none;
+      }
       >.commentYes{
         width: 100%;
         padding: 0.15rem 0;
-        border-top: 0.01rem solid rgba(220,220,220,1);
+        border-top: 0.01rem solid #f0f0f0;
         display: flex;
         >.IntelligentMatchingDItemL{
-          width: 0.6rem;
-          height: 0.6rem;
+          width: 0.35rem;
+          height: 0.35rem;
           >img{
             display: block;
-            width: 0.6rem;
-            height: 0.6rem;
+            width: 0.35rem;
+            height: 0.35rem;
             border-radius: 50%;
           }
         }
         .IntelligentMatchingDItemR{
           /*flex: 1;*/
           width: 100%;
-          padding-left: 0.15rem;
+          padding-left: 0.1rem;
           box-sizing: border-box;
           h5{
             width: 100%;
-            font-size:0.13rem;
+            font-size:0.14rem;
             font-family:PingFangSC-Medium;
             font-weight:500;
             color:rgba(5,5,9,1);
@@ -767,13 +772,13 @@
             -webkit-box-orient: vertical;
           }
           .time{
-            font-size:0.09rem;
+            font-size:0.11rem;
             font-family:PingFangSC-Regular;
             font-weight:400;
             color:rgba(153,153,153,1)
           }
           .commen{
-            width: 70%;
+            width: 80%;
             position: relative;
             margin-top: 0.1rem;
             font-size:0.13rem;
@@ -782,8 +787,9 @@
             color:rgba(5,5,9,1);
             .zan1{
               position: absolute;
-              right: -35%;
+              right: -18%;
               top: 0;
+              color: #676768;
               img{
                 display: inline-block;
                 width: 0.13rem;

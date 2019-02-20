@@ -131,9 +131,7 @@ export default {
     }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "文章详情";
-    })
+
     this.operationUser = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):{data:{user_id:"",userType:""}};
     this.NativeState = this.$router.history.current.query.state?this.$router.history.current.query.state:"XCX";
     if(this.operationUser!=""&&this.operationUser){
@@ -177,7 +175,7 @@ export default {
     },
     share(){//分享
       let url = "http://account.butongtech.com/"
-      shareInfoShareUrl(url).then(res=>{
+      shareInfoShareUrl(location.href.split('#')[0].toString()).then(res=>{
       console.log(this.messageArr,"this.messageArr")
         if(res.status==true){
           let obj = {

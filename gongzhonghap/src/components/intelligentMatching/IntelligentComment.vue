@@ -41,9 +41,7 @@
     }
   },
   created() {
-    this.$nextTick(function () {
-      document.title = "更多评论";
-    })
+
 
     this.operationUser = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")).data:"";
     if(this.operationUser){

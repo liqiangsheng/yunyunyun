@@ -130,9 +130,7 @@ export default {
     }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "票务选择";
-    })
+
       console.log(this.$store.state.multiActivityId)
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
       if( this.userInfo){
@@ -151,7 +149,7 @@ export default {
                    item.num = 0;// 选中的数量
                    res.data.activityGoodsVoList[index].danId = res.data.activityGoodsVoList[index].id+"dan";
                    res.data.activityGoodsVoList[index].youhuijia = res.data.activityGoodsVoList[index].originalPrice - res.data.activityGoodsVoList[index].payPrice;
-                   if (res.data.activityGoodsVoList[index].remaining<0){
+                   if (res.data.activityGoodsVoList[index].remaining<=0){
                      res.data.activityGoodsVoList[index].remainingState = "已售完";
                      res.data.activityGoodsVoList[index].bntBj = false;
                    } else if (nowTime < res.data.startTime){  //活动的开始时间
@@ -171,7 +169,7 @@ export default {
                   item.num = 0;// 选中的数量
                   res.data.activityGoodsGroupVoList[index].duoId = res.data.activityGoodsGroupVoList[index].id + "duo";
                   res.data.activityGoodsGroupVoList[index].youhuijia = res.data.activityGoodsGroupVoList[index].originalPrice - res.data.activityGoodsGroupVoList[index].payPrice;
-                  if (res.data.activityGoodsGroupVoList[index].remaining<0){
+                  if (res.data.activityGoodsGroupVoList[index].remaining<=0){
                     res.data.activityGoodsGroupVoList[index].remainingState = "已售完";
                     res.data.activityGoodsGroupVoList[index].bntBj = false;
                   } else if (nowTime < res.data.startTime){  //活动的开始时间

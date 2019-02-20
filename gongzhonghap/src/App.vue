@@ -20,7 +20,9 @@
   watch:{
     "$route":function (newl,oldl) {
 //   console.log(newl,"dsfs")
-
+      if(newl){
+        document.title = newl.meta.title;
+      }
     }
   },
   created() {

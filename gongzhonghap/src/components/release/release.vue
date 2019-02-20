@@ -16,13 +16,14 @@
 
 <script>
   import { Actionsheet } from 'mint-ui';
+  import { Toast } from 'mint-ui';  //弹框
   import Vue from 'vue';
   Vue.component(Actionsheet.name, Actionsheet);
 export default {
   name: 'release',
   data(){
     return{
-      actions:[{ name:"请下载不同Tech App进行发布" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
+      actions:[{ name:"请下载不同Tech App" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
       tabbarAarr:[  //、、tab
         {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
         {name:"资讯",icon:"./static/images/zixun2.png",icon1:"./static/images/zixun1.png",path:"/homeIndex"},
@@ -36,6 +37,9 @@ export default {
   },
   created() {
   this.sheetVisible = true;
+
+//判断用户终端类型
+
   },
   methods:{
     butong(){ //不同下载
@@ -43,7 +47,6 @@ export default {
     },
     tabarClick(i){  //tabar点击事件
       this.$router.push({path:this.tabbarAarr[i].path});
-
     },
     IOS(){
       location.href="https://itunes.apple.com/cn/app/id1439775835"

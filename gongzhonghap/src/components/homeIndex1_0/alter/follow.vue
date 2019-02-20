@@ -166,7 +166,6 @@
     }
   },
   created() {
-    document.title = "关注列表"
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){ //登录的情况  //
       this.LoginShow = true;

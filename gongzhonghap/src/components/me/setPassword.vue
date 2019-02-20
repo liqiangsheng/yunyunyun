@@ -57,9 +57,7 @@ export default {
     }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "修改密码";
-    })
+
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
     console.log(this.userInfo)
   },
@@ -173,7 +171,6 @@ export default {
     background: url(../../assets/images/loginBj.png);
     background-size:cover ;
     background-size: 100% 100%;
-
     .loginTitle{
       width: 100%;
       text-align: center;

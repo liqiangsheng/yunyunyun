@@ -58,9 +58,7 @@ export default {
     }
   },
   created() {
-    this.$nextTick(function () {
-      document.title = "人脸识别拍照";
-    })
+
      this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
     if(this.userInfo){
       qiniuToken(this.userInfo.data.access_token).then(res=>{

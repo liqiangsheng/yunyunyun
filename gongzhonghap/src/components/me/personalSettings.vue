@@ -58,9 +58,7 @@ export default {
       }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "消息";
-    })
+
   },
 
   methods:{

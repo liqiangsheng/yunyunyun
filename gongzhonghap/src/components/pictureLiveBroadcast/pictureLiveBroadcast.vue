@@ -15,7 +15,7 @@
       <!---->
       <div class="pictureLiveBroadcast_title">
           <h5>{{objDataTitle.name}}</h5>
-          <div class="pictureLiveBroadcast_titleItem">已有 <span>{{objDataTitle.viewCount}}</span>人次浏览了此相册</div>
+          <div class="pictureLiveBroadcast_titleItem">已有 <span>{{objDataTitle.viewCount}}</span> 人次浏览了此相册</div>
           <div class="pictureLiveBroadcast_titleItem"><img src="/static/images/time.png" alt="">{{objDataTitle.bookTime|formatTime}}</div>
           <div class="pictureLiveBroadcast_titleItem"><img src="/static/images/position.png" alt="">{{objDataTitle.regionName}}</div>
       </div>
@@ -105,10 +105,7 @@ export default {
     vueWaterfallEasy,welcomePage
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "火图直播平台";
 
-    })
     if(this.$router.history.current.query.isBool=="false"||this.$router.history.current.query.isBool==false){
       this.pageShow = false;
       this.bookId.bookId = this.$router.history.current.query.bookId;
@@ -214,7 +211,7 @@ export default {
   methods: {
     share(){//分享
       let url = "http://account.butongtech.com/"
-      shareInfoShareUrl(url).then(res=>{
+      shareInfoShareUrl(location.href.split('#')[0].toString()).then(res=>{
         if(res.status==true){
           let obj = {
             title:this.objDataTitle.name,
@@ -362,7 +359,6 @@ export default {
 <style scoped lang="less">
 #pictureLiveBroadcast{
   width: 100%;
-  box-sizing: border-box;
   .pictureLiveBroadcast_box{
     width:100%;
     >.swiper-container{
@@ -384,26 +380,33 @@ export default {
     }
     .pictureLiveBroadcast_title{
       width: 100%;
-      padding: 0.1rem;
+      padding: 0.1rem 0.1rem 0.1rem 0.2rem;
       background: #ffffff;
       box-sizing: border-box;
+      font-family: '微软雅黑';
       h5{
         width: 100%;
         font-size: 0.18rem;
         line-height: 0.24rem;
+        font-family: '微软雅黑';
+        color: #262628;
       }
       .pictureLiveBroadcast_titleItem{
         width: 100%;
         font-size: 0.12rem;
         line-height: 0.24rem;
+        font-family: '微软雅黑';
+        color: #676768;
         span{
-          color: rgb(41, 152, 255);
+          color: #262628 ;
+          font-weight: 900;
+          font-family: '微软雅黑';
         }
         img{
           display: inline-block;
           width:0.09rem;
           height: 0.09rem;
-          margin-right:0.15rem;
+          margin-right:0.1rem;
         }
       }
     }
@@ -525,10 +528,10 @@ export default {
       text-align: center;
       .span1{
         display: inline-block;
-        width: 0.4rem;
+        width: 0.2rem;
         height: 0.02rem;
-        background:rgb(41, 152, 255) ;
-        transform: translateY(-0.15rem);
+        background:#262628 ;
+        transform: translateY(-0.12rem);
       }
       .span{
         display: inline-block;
@@ -537,7 +540,7 @@ export default {
         line-height: 0.28rem;
       }
       .span.active{
-        color: rgb(41, 152, 255) ;
+        color:#262628 ;
       }
     }
   }

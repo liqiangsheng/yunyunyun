@@ -59,15 +59,10 @@ import {customerPubContentListHomePage,wxOpenOpenInfo,sysUserOperationVerifyBind
           {icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
         ],
         tabbarAarrIndex:0,  //点击tab的下标
-        refshash:"下拉刷新",
         p:1,  //页
         s:10, //每页多少
         message:"", //触底提示
         pages:0,//每页数据
-        isFirstLoad:true, //第一次加载
-        maxCols:2,  //瀑布流显示最大的列数
-        openPullDown:true,//下拉刷新
-        OffsetHeight:0,//屏幕高度
         imgsArr:[], //数据
         userInfo:"", //用户信息
         pullDownDistance:0,//下拉的距离

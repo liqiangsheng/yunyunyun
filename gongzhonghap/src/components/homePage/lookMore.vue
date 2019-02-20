@@ -20,9 +20,6 @@ export default {
     }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "查看更多";
-    })
     this.listData = JSON.parse(window.localStorage.getItem("lookmoreDetail")); //拿本地数据展示
   }
 }

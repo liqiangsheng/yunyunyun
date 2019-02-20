@@ -42,9 +42,7 @@ export default {
     }
   },
   created() {
-    this.$nextTick(function () {
-      document.title = "通知";
-    })
+
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){
         if(this.objList.length>0){

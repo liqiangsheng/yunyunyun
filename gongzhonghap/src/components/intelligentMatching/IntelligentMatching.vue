@@ -22,9 +22,7 @@ export default {
     }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "智能匹配";
-    })
+
   },
   methods:{
     IntelligentMatchingClick(v,i){ //点击选中的下标

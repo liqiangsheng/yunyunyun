@@ -26,9 +26,7 @@
       }
     },
     created() {
-      this.$nextTick(function () {
-        document.title = "收藏我的";
-      })
+
       this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     },
     methods:{

@@ -41,59 +41,12 @@ const Admission = resolve => require(['@/components/admission/admission'], resol
 const PayH5 = resolve => require(['@/components/PayH5/payH5'], resolve); //选择支付
 const Contact = resolve => require(['@/components/homePage/contact'], resolve); //联系不同
 const PictureLiveBroadcast = resolve => require(['@/components/pictureLiveBroadcast/pictureLiveBroadcast'], resolve); //图片直播
-const FireMap = resolve => require(['@/components/pictureLiveBroadcast/fireMap'], resolve); //火图
 const homeIndex = resolve => require(['@/components/homeIndex/homeIndex'], resolve); //资讯
 const HomeIndex1_0 = resolve => require(['@/components/homeIndex1_0/homeIndex1_0'], resolve); //首页
 const Follow = resolve => require(['@/components/homeIndex1_0/alter/follow'], resolve); //关注
 const FindDetail = resolve => require(['@/components/homeIndex1_0/findDetail'], resolve); //作品详情发现的详情
 const PersonalMelonPages = resolve => require(['@/components/intelligentMatching/personalMelonPages'], resolve); //个人吃瓜页
 const Release = resolve => require(['@/components/release/release'], resolve); //发布
-// import Home from '@/components/home/home'
-// import HomeMap from '@/components/homeMap/homeMap' //详情地图
-// import Index from '@/components/index/index' //智慧活动
-// import Me from '@/components/me/me' //我的
-// import Myfollow from '@/components/me/myfollow' //我的关注
-// import Fans from '@/components/me/fans' //我的粉丝
-// import MyFabulous from '@/components/me/myFabulous' //我的赞
-// import MyCollection from '@/components/me/myCollection' //我的收藏
-// import MyComment from '@/components/me/myComment' //我的评论
-// import UserFeedback from '@/components/me/userFeedback' //用户反馈
-// import messageNotification from '@/components/me/messageNotification' //消息通知
-// import PraiseMe from '@/components/me/praiseMe' //点赞我的
-// import CommentOnMy from '@/components/me/comment_on_my' //评论我的
-// import CollectMy from '@/components/me/collect_my' //收藏我的
-// import PersonalSettings from '@/components/me/personalSettings' //个人设置
-
-// import Login1 from '@/components/login1/login1' //登录1
-// import Login from '@/components/login/login' //登录
-// import Message from '@/components/message/message' //协议，之类
-// import EditingInformation from '@/components/editingInformation/editingInformation' //编辑
-// import MeActivity from '@/components/meActivity/meActivity' //我的活动
-// import MultiActivity from '@/components/multiActivity/multiActivity' //购票列表
-// import RegistrationInformation from '@/components/registrationInformation/registrationInformation' //填写报名信息
-// import LookMore from '@/components/homePage/lookMore' //查看更多
-// import MoreStories from '@/components/homePage/moreStories' //更多故事
-// import IntelligentMatching from '@/components/intelligentMatching/IntelligentMatching' //智能匹配
-// import IntelligentMatchingA from '@/components/intelligentMatching/IntelligentMatchingA' //智能匹配
-// import IntelligentMatchingB from '@/components/intelligentMatching/IntelligentMatchingB' //智能匹配
-// import IntelligentMatchingC from '@/components/intelligentMatching/IntelligentMatchingC' //智能匹配
-// import IntelligentComment from '@/components/intelligentMatching/IntelligentComment' //智能匹配
-// import HomeDetail from '@/components/homePage/IntelligentMatchingD' //个人主页的详情
-// import Face from '@/components/face/face' //拍照选择
-// import AcknowledgementOfOrder from '@/components/acknowledgementOfOrder/acknowledgementOfOrder' //订单确认
-// import Photograph from '@/components/Photograph/Photograph' //拍照页面
-// import Loading from '@/components/loading/loading' //拍照等待上传页面
-// import Admission from '@/components/admission/admission' //生成门票
-// import PayH5 from '@/components/PayH5/payH5' //选择支付
-// import Contact from '@/components/homePage/contact' //联系不同
-// import PictureLiveBroadcast from '@/components/pictureLiveBroadcast/pictureLiveBroadcast' //图片直播
-// import homeIndex from '@/components/homeIndex/homeIndex' //首页
-// import HomeIndex1_0 from '@/components/homeIndex1_0/homeIndex1_0' //首页
-// import Follow from '@/components/homeIndex1_0/alter/follow' //首页
-// import FindDetail from '@/components/homeIndex1_0/findDetail' //发现的详情
-// import PersonalMelonPages from '@/components/intelligentMatching/personalMelonPages' //个人吃瓜页
-// import Release from '@/components/release/release' //发布
-
 
 Vue.use(Router)
 
@@ -111,6 +64,7 @@ export default new Router({
       component: HomeIndex1_0,
       meta:{
         isTrue:true,
+        title:"发现",
       }
     },
     {
@@ -119,6 +73,7 @@ export default new Router({
       component: Follow,
       meta:{
         isTrue:false,
+        title:"关注",
       }
     },
     {
@@ -127,6 +82,7 @@ export default new Router({
       component: FindDetail,
       meta:{
         isTrue:false,
+        title:"作品详情",
       }
     },
     {
@@ -134,7 +90,8 @@ export default new Router({
       name: 'homeIndex',
       component: homeIndex,
       meta:{
-        isTrue:false,
+        isTrue:true,
+        title:"资讯",
       }
     },
     {
@@ -143,6 +100,7 @@ export default new Router({
       component: Index,
       meta:{
         isTrue:true,
+        title:"活动",
       }
     },
     {
@@ -151,6 +109,7 @@ export default new Router({
       component: Release,
       meta:{
         isTrue:false,
+        title:"发布",
       }
     },
     {
@@ -159,14 +118,7 @@ export default new Router({
       component: Contact,
       meta:{
         isTrue:false,
-      }
-    },
-    {
-      path: '/fireMap',
-      name: 'fireMap',
-      component: FireMap,
-      meta:{
-        isTrue:true,
+        title:"联系不同",
       }
     },
     {
@@ -175,6 +127,7 @@ export default new Router({
       component: SetPassword,
       meta:{
         isTrue:false,
+        title:"修改密码",
       }
     },
     {
@@ -183,6 +136,7 @@ export default new Router({
       component: PayH5,
       meta:{
         isTrue:false,
+        title:"支付",
       }
     },
     {
@@ -191,6 +145,7 @@ export default new Router({
       component: PictureLiveBroadcast,
       meta:{
         isTrue:false,
+        title:"火图直播平台",
       }
     },
     {
@@ -199,6 +154,7 @@ export default new Router({
       component: Loading,
       meta:{
         isTrue:false,
+        title:"加载页",
       }
     },
     {
@@ -207,6 +163,7 @@ export default new Router({
       component: Admission,
       meta:{
         isTrue:false,
+        title:"活动门票",
       }
     },
     {
@@ -215,6 +172,7 @@ export default new Router({
       component: Photograph,
       meta:{
         isTrue:false,
+        title:"生成照片",
       }
     },
     {
@@ -223,6 +181,7 @@ export default new Router({
       component: AcknowledgementOfOrder,
       meta:{
         isTrue:false,
+        title:"订单确认",
       }
     },
     {
@@ -231,6 +190,7 @@ export default new Router({
       component: Face,
       meta:{
         isTrue:false,
+        title:"照片选择",
       }
     },
     {
@@ -239,6 +199,7 @@ export default new Router({
       component: IntelligentMatching,
       meta:{
         isTrue:false,
+        title:"智能匹配",
       }
     },
     { path: '/lookMore',
@@ -246,6 +207,7 @@ export default new Router({
       name: 'lookMore',
       meta:{
         isTrue:false,
+        title:"查看更多",
       }
     },
     { path: '/moreStories',
@@ -253,6 +215,7 @@ export default new Router({
       name: 'moreStories',
       meta:{
         isTrue:false,
+        title:"更多故事",
       }
     },
     {
@@ -261,6 +224,7 @@ export default new Router({
       component: IntelligentMatchingA,
       meta:{
         isTrue:false,
+        title:"智能匹配",
       }
     },
     {
@@ -269,6 +233,7 @@ export default new Router({
       component: IntelligentMatchingB,
       meta:{
         isTrue:false,
+        title:"智能匹配",
       }
     },
     {
@@ -277,6 +242,7 @@ export default new Router({
       component: IntelligentMatchingC,
       meta:{
         isTrue:false,
+        title:"智能匹配",
       }
     },
     {
@@ -285,6 +251,7 @@ export default new Router({
       component: IntelligentComment,
       meta:{
         isTrue:false,
+        title:"评论详情",
       }
     },
     {
@@ -293,6 +260,7 @@ export default new Router({
       component: PersonalMelonPages,
       meta:{
         isTrue:false,
+        title:"个人主页",
       }
     },
     {
@@ -301,6 +269,7 @@ export default new Router({
       component: HomeDetail,
       meta:{
         isTrue:false,
+        title:"文章详情",
       }
     },
     {
@@ -309,6 +278,7 @@ export default new Router({
       component: EnterprisePage,
       meta:{
         isTrue:false,
+        title:"工坊主页",
       }
     },
     {
@@ -317,6 +287,7 @@ export default new Router({
       component: BigShotPage,
       meta:{
         isTrue:false,
+        title:"匠心主页",
       }
     },
     {
@@ -325,6 +296,7 @@ export default new Router({
       component: RegistrationInformation,
       meta:{
         isTrue:false,
+        title:"报名信息填写",
       }
     },
     {
@@ -333,6 +305,7 @@ export default new Router({
       component: MultiActivity,
       meta:{
         isTrue:false,
+        title:"票务选择",
       }
     },
     {
@@ -341,6 +314,7 @@ export default new Router({
       component: MeActivity,
       meta:{
         isTrue:false,
+        title:"我的活动",
       }
     },
     {
@@ -349,6 +323,7 @@ export default new Router({
       component: EditingInformation,
       meta:{
         isTrue:false,
+        title:"编辑资料",
       }
     },
     {
@@ -357,6 +332,7 @@ export default new Router({
       component: Message,
       meta:{
         isTrue:false,
+        title:"协议",
       }
     },
     {
@@ -365,6 +341,7 @@ export default new Router({
       component: Home,
       meta:{
         isTrue:false,
+        title:"活动详情",
       }
     },
     { path: '/homeMap',
@@ -372,6 +349,7 @@ export default new Router({
       name: 'map',
       meta:{
         isTrue:false,
+        title:"活动地图"
       }
     },
       { path: '/me',
@@ -379,6 +357,7 @@ export default new Router({
       name: 'me',
         meta:{
           isTrue:false,
+          title:"我的"
         }
     },
     { path: '/personalSettings',
@@ -386,6 +365,7 @@ export default new Router({
       name: 'personalSettings',
       meta:{
         isTrue:false,
+        title:"个人设置"
       }
     },
     { path: '/praiseMe',
@@ -393,6 +373,7 @@ export default new Router({
       name: 'praiseMe',
       meta:{
         isTrue:false,
+        title:"赞我的",
       }
     },
     { path: '/collect_my',
@@ -400,6 +381,7 @@ export default new Router({
       name: 'collect_my',
       meta:{
         isTrue:false,
+        title:"收藏我的"
       }
     },
     { path: '/comment_on_my',
@@ -407,6 +389,7 @@ export default new Router({
       name: 'comment_on_my',
       meta:{
         isTrue:false,
+        title:"评论我的"
       }
     },
     { path: '/userFeedback',
@@ -414,6 +397,7 @@ export default new Router({
       name: 'userFeedback',
       meta:{
         isTrue:false,
+        title:"用户反馈",
       }
     },
     { path: '/messageNotification',
@@ -421,6 +405,7 @@ export default new Router({
       name: 'messageNotification',
       meta:{
         isTrue:false,
+        title:"消息通知",
       }
     },
     { path: '/myfollow',
@@ -428,6 +413,7 @@ export default new Router({
       name: 'myfollow',
       meta:{
         isTrue:false,
+        title:"我的关注",
       }
     },
     { path: '/myComment',
@@ -435,6 +421,7 @@ export default new Router({
       name: 'myComment',
       meta:{
         isTrue:false,
+        title:"我的评论",
       }
     },
     { path: '/myCollection',
@@ -442,6 +429,7 @@ export default new Router({
       name: 'myCollection',
       meta:{
         isTrue:false,
+        title:"我的收藏"
       }
     },
     { path: '/fans',
@@ -449,6 +437,7 @@ export default new Router({
       name: 'fans',
       meta:{
         isTrue:false,
+        title:"我的粉丝"
       }
     },
     { path: '/myFabulous',
@@ -456,6 +445,7 @@ export default new Router({
       name: 'myFabulous',
       meta:{
         isTrue:false,
+        title:"我的点赞"
       }
     },
     { path: '/login1',
@@ -463,6 +453,7 @@ export default new Router({
       name: 'login1',
       meta:{
         isTrue:false,
+        title:"登陆"
       }
     },
     { path: '/login',
@@ -470,6 +461,7 @@ export default new Router({
       name: 'login',
       meta:{
         isTrue:false,
+        title:"登陆"
       }
     },
   ]

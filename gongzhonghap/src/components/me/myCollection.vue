@@ -84,9 +84,7 @@ export default {
       }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "我的赞";
-    })
+
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     if(this.userInfo){ //默认文章列表数据
       customerFavoriteNoteListFavoredContent(this.userInfo.data.id,this.userInfo.data.access_token,this.p,this.s).then(res=>{

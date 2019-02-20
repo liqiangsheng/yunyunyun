@@ -26,18 +26,18 @@ export default {
     }
   },
   created() {
-    this.$nextTick(function () {
-      if(this.childrenValue.notifyType == 1){
-        document.title = "系统通知";
-      }else if(this.childrenValue.notifyType == 2){
-        document.title = "审核通知";
-      }else if(this.childrenValue.notifyType == 3){
-        document.title = "活动通知";
-      }else if(this.childrenValue.notifyType == 4){
-        document.title = "其他通知";
-      }
-
-    })
+//    this.$nextTick(function () {
+//      if(this.childrenValue.notifyType == 1){
+//        document.title = "系统通知";
+//      }else if(this.childrenValue.notifyType == 2){
+//        document.title = "审核通知";
+//      }else if(this.childrenValue.notifyType == 3){
+//        document.title = "活动通知";
+//      }else if(this.childrenValue.notifyType == 4){
+//        document.title = "其他通知";
+//      }
+//
+//    })
     notificationFindOne(this.childrenValue.id,this.userInfo.data.access_token).then(res=>{
       if(res.status==true){
         this.listData = res.data;

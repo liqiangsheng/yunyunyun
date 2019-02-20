@@ -31,8 +31,7 @@ export default {
     }
   },
   created() {
-    document.title="填写联系方式"
-    console.log(this.$router.history.current.query.teamName)
+
     if(this.$router.history.current.query.teamName){
       this.teamName = this.$router.history.current.query.teamName;
     }else{

@@ -22,12 +22,12 @@
               <!--</h5>-->
               <h5  class='homeBottomTitle' v-if="item.expenses ==0&&item.expenses<=0&&nowTime >item.endTime" style='color:#c5c5c6'> {{item.name}}</h5>
               <h5  class='homeBottomTitle' v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'> {{item.name}}</h5>
-              <h5  class='homeBottomTitle' v-else style='color:#7ade81'> {{item.name}}</h5>
+              <h5  class='homeBottomTitle' v-else> {{item.name}}</h5>
               <div class='homeBottomPrice'>
                 <span v-if="item.expenses !=0&&item.expenses >0">¥{{item.expenses}}</span>
                 <span v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime >item.endTime" style='color:#c5c5c6'>免费</span>
                 <span v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'>免费</span>
-                <span v-else style='color:#7ade81'>免费</span>
+                <span v-else>免费</span>
               </div>
               <div class='homeBottomdata' v-if="item.expenses ==0&&item.expenses<=0&&nowTime >item.endTime" style='color:#c5c5c6'>
                 <span>{{item.startTime |formatTime}}</span> | <span>{{item.regionName}}</span>
@@ -35,7 +35,7 @@
               <div class='homeBottomdata' v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'>
                 <span>{{item.startTime |formatTime}}</span> | <span>{{item.regionName}}</span>
               </div>
-              <div class='homeBottomdata' v-else style='color:#7ade81'>
+              <div class='homeBottomdata' v-else>
                 <span>{{item.startTime |formatTime}}</span> | <span>{{item.regionName}}</span>
               </div>
               <div class='homeBottomstate' v-if="nowTime >item.signStartTime && nowTime <item.signEndTime">
@@ -101,9 +101,7 @@ export default {
 
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "活动列表";
-    })
+
     tsconfigjson().then(res=>{
       if(res.status == 200){
         this.banner = res.data.img;
@@ -292,7 +290,6 @@ export default {
             font-size:0.2rem;
             font-family:PingFangSC-Medium;
             font-weight:500;
-            color:#ff8e74;
             line-height:0.28rem;
           }
           .homeBottomdata{

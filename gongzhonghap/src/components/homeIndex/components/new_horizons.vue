@@ -38,7 +38,6 @@
       }
     },
     created() {
-      document.title = "新视界"
       specialSubjectFindSubjectInfoByCategory("5",this.p,this.s).then(res=>{
         if(res.data.status == true){
           this.pageNum = Math.ceil(res.data.data.totalAll/this.s);

@@ -50,9 +50,7 @@ export default {
     }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "登录";
-    })
+
     if(this.$store.state.multiActivityId){
       InitializationData(this.$store.state.multiActivityId).then(res=>{
         this.infoData = res.data.data;

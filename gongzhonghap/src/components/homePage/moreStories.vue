@@ -1,9 +1,7 @@
 <template>
   <div class="moreStories">
     <div class="moreStories_top">
-      <div class="moreStories_top_goback">
-        <img src="/static/images/huanhui.png" alt="" @click="goback">
-      </div>
+
       <div class="moreStories_top_bg"></div>
     </div>
     <ul class="moreStories_ul" @scroll="moreData">
@@ -14,9 +12,9 @@
         <div class="moreStories_ul_right">
           <h5>{{item.title}}</h5>
            <ul>
-             <li><img src="/static/images/liulangshu.svg" alt="">{{item.viewCount>10000?(item.viewCount/10000).toFixed(2):item.viewCount}}</li>
-             <li><img src="/static/images/xihuanshu.svg" alt="">{{item.laudedCount>10000?(item.laudedCount/10000).toFixed(2):item.laudedCount}}</li>
-             <li><img src="/static/images/pinlunshu.svg" alt="">{{item.commentCount>10000?(item.commentCount/10000).toFixed(2):item.commentCount}}</li>
+             <li><img src="../../assets/images/liulangshu.svg" alt="">{{item.viewCount>10000?(item.viewCount/10000).toFixed(2):item.viewCount}}</li>
+             <li><img src="../../assets/images/xihuanshu.svg" alt="">{{item.laudedCount>10000?(item.laudedCount/10000).toFixed(2):item.laudedCount}}</li>
+             <li><img src="../../assets/images/pinglunshu.svg" alt="">{{item.commentCount>10000?(item.commentCount/10000).toFixed(2):item.commentCount}}</li>
            </ul>
         </div>
       </li>
@@ -113,27 +111,27 @@ export default {
    display: flex;
    .moreStories_top_goback{
      flex: 1;
-     img{
-       display: block;
-       width: 0.25rem;
-       height: 0.19rem;
-       transform: rotate(180deg);
-       -ms-transform:rotate(180deg); 	/* IE 9 */
-       -moz-transform:rotate(180deg); 	/* Firefox */
-       -webkit-transform:rotate(180deg); /* Safari 和 Chrome */
-       -o-transform:rotate(180deg);
-       margin: 0.25rem 0 0 0.2rem;
-     }
+     /*img{*/
+       /*display: block;*/
+       /*width: 0.18rem;*/
+       /*height: 0.15rem;*/
+       /*transform: rotate(180deg);*/
+       /*-ms-transform:rotate(180deg); 	!* IE 9 *!*/
+       /*-moz-transform:rotate(180deg); 	!* Firefox *!*/
+       /*-webkit-transform:rotate(180deg); !* Safari 和 Chrome *!*/
+       /*-o-transform:rotate(180deg);*/
+       /*margin: 0.25rem 0 0 0.2rem;*/
+     /*}*/
    }
-   .moreStories_top_bg{
-     width: 0.15rem;
-     height: 100%;
-     background: #FCE76C;
-   }
+   /*.moreStories_top_bg{*/
+     /*width: 0.15rem;*/
+     /*height: 100%;*/
+     /*background: #FCE76C;*/
+   /*}*/
  }
   .moreStories_ul{
     position: absolute;
-    top:0.6rem;
+    top:0.3rem;
     right: 0.2rem;
     left: 0.2rem;
     bottom: 0;
@@ -180,14 +178,13 @@ export default {
            flex: 1;
             line-height: 0.13rem;
             font-size:0.12rem;
-            font-family:PingFangSC-Regular;
-            font-weight:400;
+            font-weight: 500;
             color:rgba(103,103,104,1);
             img{
               display: inline-block;
               width: 0.14rem;
               height: 0.11rem;
-              margin-right: 0.03rem;
+              margin-right: 0.05rem;
             }
           }
         }

@@ -61,9 +61,7 @@
       }
     },
     created() {
-      this.$nextTick(function () {
-        document.title = "评论我的";
-      })
+
       this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
       if(this.userInfo){
 //        commentFindForMeCommentList("20181203103707dc00a09e48224f51bf733765edfa7633",this.userInfo.data.access_token,this.p,this.s).then(res=>{

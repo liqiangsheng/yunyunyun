@@ -31,9 +31,6 @@ export default {
     }
   },
   created(){
-    this.$nextTick(function () {
-      document.title = "支付";
-    })
     if(!!this.$store.state.payId){
 
     }else {
