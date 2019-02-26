@@ -5,21 +5,21 @@
        <li v-for="(item,index) in objList" @click="goToHomePage(item)">
          <div class="resource_pool_li1">
            <div class="resource_pool_li1_header">
-             <img :src="item.logoUrl?item.logoUrl:'/static/images/defultphoto.png'" alt="">
+             <img v-lazy="item.logoUrl?item.logoUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="">
              <h5>{{item.name}}</h5>
              <p>{{item.brief?item.brief:"暂无基本介绍"}}</p>
            </div>
          </div>
          <div class="resource_pool_li2">
            <div class="resource_pool_li2_left">
-             <img :src="item.companyExtendItemsList[0]?item.companyExtendItemsList[0].imageUrl+'?imageView2/1/w/230/h/230/q/75|imageslim':'/static/images/logo.png'" alt="">
+             <img v-lazy="item.companyExtendItemsList[0]?item.companyExtendItemsList[0].imageUrl+'?imageView2/1/w/230/h/230/q/75|imageslim':'https://pub.qinius.butongtech.com/gongfang1.png?imageView2/1/w/230/h/230/q/75|imageslim'" alt="">
            </div>
            <div class="resource_pool_li2_right">
                <div class="resource_pool_li2_right_top">
-                 <img :src="item.companyExtendItemsList[1]?item.companyExtendItemsList[1].imageUrl+'?imageView2/1/w/125/h/115/q/75|imageslim':'/static/images/logo.png'" alt="">
+                 <img v-lazy="item.companyExtendItemsList[1]?item.companyExtendItemsList[1].imageUrl+'?imageView2/1/w/125/h/115/q/75|imageslim':'https://pub.qinius.butongtech.com/gongfang2.png?imageView2/1/w/125/h/115/q/75|imageslim'" alt="">
                </div>
                <div class="resource_pool_li2_right_top">
-                 <img :src="item.companyExtendItemsList[2]?item.companyExtendItemsList[2].imageUrl+'?imageView2/1/w/125/h/115/q/75|imageslim':'/static/images/logo.png'" alt="">
+                 <img v-lazy="item.companyExtendItemsList[2]?item.companyExtendItemsList[2].imageUrl+'?imageView2/1/w/125/h/115/q/75|imageslim':'https://pub.qinius.butongtech.com/gongfang3.png?imageView2/1/w/125/h/115/q/75|imageslim'" alt="">
                </div>
            </div>
 
@@ -45,6 +45,7 @@
 
 <script>
   import {companyList} from "../../../assets/js/promiseHttp"
+  import { Indicator } from 'mint-ui';
   import { Toast } from 'mint-ui';  //弹框
 export default {
   name: 'resource_pool',
@@ -70,6 +71,7 @@ export default {
   },
   created() {
     this.indexNum = this.headerIndex;
+    Indicator.open("加载中...")
     this.query();
   },
   methods:{
@@ -92,7 +94,9 @@ export default {
             this.message = "这是我的底线..."
           }
           this.objList = res.data.data;
+          Indicator.close();
         }else{
+          Indicator.close();
           Toast("网络出错啦，请重试")
         }
       })
@@ -101,23 +105,30 @@ export default {
       this.$store.dispatch("resource_poolScrollTop",e.target.scrollTop);
       if(e.target.scrollHeight==(e.target.scrollTop+e.target.offsetHeight)){
         this.p++;
+
         if (this.p > this.pageNum) {
           this.message = "这是我的底线..."
           return
         } else if (this.p == this.pageNum) {
-          this.message = "这是我的底线..."
+
           companyList(this.p, this.s).then(res => {
             if (res.data.status == true) {
               this.objList = this.objList.concat(res.data.data);
+              this.message = "这是我的底线..."
+
             } else {
+
               Toast("网络出错啦，请重试")
             }
           })
         } else if (this.p < this.pageNum) {
+          Indicator.open("加载中...")
           companyList(this.p, this.s).then(res => {
             if (res.data.status == true) {
               this.objList = this.objList.concat(res.data.data);
+              Indicator.close();
             } else {
+              Indicator.close();
               Toast("网络出错啦，请重试")
             }
           })
@@ -200,7 +211,7 @@ export default {
           position: absolute;
           left: 0;
           top: 1.09rem;
-          z-index: 2;
+          /*z-index: 1;*/
           width: 100%;
           height: 2.3rem;
           box-shadow: 0 2px 30px rgba(5,5,9,0.1);

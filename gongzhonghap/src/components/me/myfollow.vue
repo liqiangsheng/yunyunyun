@@ -8,7 +8,7 @@
         <ul v-if="objList.length>0">
           <li v-for="(item,index) in objList">
             <div class="myfollow_li1" @click="goHomepage(item)">
-              <img :src="item.url?item.url:'/static/images/defultphoto.png'" alt="">
+              <img :src="item.url?item.url:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="">
             </div>
             <div class="myfollow_li2">
               <h5>{{item.name}}</h5>

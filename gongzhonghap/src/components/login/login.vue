@@ -275,7 +275,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-/*@import "../../assets/css/login.css";*/
+
   #loginBox{
     position: absolute;
     top: 0;

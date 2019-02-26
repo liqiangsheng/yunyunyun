@@ -18,7 +18,7 @@
                      {{item.commentContent}}
                    </div>
                 <div class="myComment___box" @click="goDetail(item)">
-                    <img :src="item.bannerUrl?item.bannerUrl:'/static/images/defultphoto.png'" alt="">
+                    <img :src="item.bannerUrl?item.bannerUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="">
                     <div>
                       <p>{{item.title}}</p>
                       <p>作者：{{item.infoUserName}}</p>

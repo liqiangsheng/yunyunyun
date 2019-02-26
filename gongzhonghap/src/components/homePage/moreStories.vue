@@ -7,7 +7,7 @@
     <ul class="moreStories_ul" @scroll="moreData">
       <li v-for="(item,index) in listData" @click="goDetail(item.id)">
         <div class="moreStories_ul_left">
-          <img :src="item.bannerUrl?item.bannerUrl+'?imageView2/1/w/100/h/70/q/75|imageslim':'/static/images/logo.png'" alt="">
+          <img :src="item.bannerUrl?item.bannerUrl+'?imageView2/1/w/100/h/70/q/75|imageslim':'https://pub.qinius.butongtech.com/logo.png?imageView2/1/w/100/h/70/q/75|imageslim'" alt="">
         </div>
         <div class="moreStories_ul_right">
           <h5>{{item.title}}</h5>

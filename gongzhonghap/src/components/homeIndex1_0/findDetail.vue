@@ -3,28 +3,27 @@
   <div id="followDetail">
     <div v-for="(item,index) in listData">
        <div class="followDetail_top">
-              <img :src="item.authorInfo?item.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt="" @click="headerClick(item)">
+              <img :src="item.authorInfo?item.authorInfo.ownerUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="" @click="headerClick(item)">
               <p>{{item.authorInfo?item.authorInfo.name:"null"}}</p>
               <div v-if="item.authorInfo&&item.authorInfo.caredStatus==0&&userInfo.data.id!=item.authorInfo.id" @click="follow(item)">关注</div>
               <div v-if="item.authorInfo&&item.authorInfo.caredStatus==1&&userInfo.data.id!=item.authorInfo.id" class="active" @click="cancelFollow(item)">取消关注</div>
        </div>
-        <v-touch class="followDetail_bottom" @scroll="updataMore">
+        <div class="followDetail_bottom" @scroll="updataMore">
              <div class="followDetail_bottom_img" >
                  <ul ref="windwosWH" :style="{width:styleWidth}" v-if="item.attachments.length>1" class="followDetail_bottom_ul">
                    <li v-for="(item1,index1) in item.attachments" style="margin-right: 0.2rem">
-                      <img :src="item1.url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" :style="{height:item.attachments[0].height/2/100-1.5+'rem'}" v-if="item.attachments[0].height>900"/>
-                      <img :src="item1.url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" :style="{height:item.attachments[0].height/2/100+'rem'}" v-else/>
+                      <img :src="item1.url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" :style="{height:(item.attachments[0].height*(335/item.attachments[0].width))/100+'rem'}" />
                      <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*335/100+'rem',top:item2.axesyRate*imgH/100+'rem'}">
-                       <img src="/static/images/biaoqian.png" alt=""><span>{{item2.title}}</span>
+                       <img src="https://pub.qinius.butongtech.com/biaoqian.png" alt=""><span>{{item2.title}}</span>
                      </div>
                    </li>
                  </ul>
                <!--leng==1-->
                <ul ref="windwosWH" :style="{width:styleWidth,margin:'0 auto','box-sizing':'border-box'}" v-if="item.attachments.length<=1">
                  <li v-for="(item1,index1) in item.attachments">
-                   <img :src="item1.url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" />
+                   <img v-lazy="item1.url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" :style="{height:(item.attachments[0].height*(335/item.attachments[0].width))/100+'rem'}"  />
                    <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*335/100+'rem',top:item2.axesyRate*imgH/100+'rem'}">
-                     <img src="/static/images/biaoqian.png" alt=""><span>{{item2.title}}</span>
+                     <img src="https://pub.qinius.butongtech.com/biaoqian.png" alt=""><span>{{item2.title}}</span>
                    </div>
                  </li>
                </ul>
@@ -50,7 +49,7 @@
                   {{item.favoredCount<10000?item.favoredCount:(item.favoredCount/10000).toFixed(2)+'万'}}
               </div>
               <div>
-                  <img src="/static/images/liulangshu.svg" alt="">
+                  <img src="../../assets/images/liulangshu.svg" alt="">
                   {{item.readCount<10000?item.readCount:(item.readCount/10000).toFixed(2)+'万'}}
               </div>
 
@@ -64,7 +63,7 @@
               </li>
               <li v-for="(item,index) in commenArr" v-if="commenArr.length>0" class="commentYes">
                   <div class="IntelligentMatchingDItemL">
-                     <img :src="item.userDp" alt="" @click="commentGoHomepage(item)">
+                     <img v-lazy="item.userDp" alt="" @click="commentGoHomepage(item)">
                   </div>
                   <div class="IntelligentMatchingDItemR">
                      <h5>{{item.name}}</h5>
@@ -85,7 +84,7 @@
            <div class="messageFoot" v-if="!!message&&commenArr.length>0">
              {{message}}
            </div>
-        </v-touch>
+        </div>
       <mt-actionsheet
         :actions="actions"
         v-model="sheetVisible">
@@ -129,12 +128,6 @@
   created() {
 
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))?JSON.parse(localStorage.getItem("userInfo")):{data:{user_id:"",userType:""}};
-//    this.userInfo = {data:{currentUser:this.$router.history.current.query.currentUser,id:this.$router.history.current.query.id,access_token:this.$router.history.current.query.token,userType:this.$router.history.current.query.userType,}}
-//    if(this.userInfo){ //登录的情况  //
-//    }else{//没有登录的情况
-//
-//    }
-
     if(this.$router.history.current.query.id){ //这个id请求数据 截取url的
       customerPubContentFindOne(this.$router.history.current.query.id,this.userInfo.data.user_id,this.userInfo.data.userType).then(res=>{
         if(res.status == true){
@@ -180,7 +173,7 @@
                 if(item.sysUserContentVo.userDp){
                   item.userDp = item.sysUserContentVo.userDp;
                 }else {
-                  item.userDp = "./static/images/defultphoto.png";
+                  item.userDp = "https://pub.qinius.butongtech.com/defultphoto.png";
                 }
                 if(item.sysUserContentVo.name){
                   item.name = item.sysUserContentVo.name;
@@ -188,7 +181,7 @@
                   item.name = "游客";
                 }
               }else{
-                item.userDp = "./static/images/defultphoto.png";
+                item.userDp = "https://pub.qinius.butongtech.com/defultphoto.png";
                 item.name = "游客";
               }
 
@@ -236,10 +229,7 @@
     },
 
     share(){//分享
-
-      let url = "http://account.butongtech.com/"
-      shareInfoShareUrl(location.href.split('#')[0].toString()).then(res=>{
-        console.log(res,"分享")
+      shareInfoShareUrl(encodeURIComponent(location.href.split('#')[0])).then(res=>{
          if(res.status==true){
            let obj = {
              title:this.listData[0].title,
@@ -491,7 +481,7 @@
                 if(item.sysUserContentVo.userDp){
                   item.userDp = item.sysUserContentVo.userDp;
                 }else {
-                  item.userDp = "./static/images/defultphoto.png";
+                  item.userDp = "https://pub.qinius.butongtech.com/defultphoto.png";
                 }
                 if(item.sysUserContentVo.name){
                   item.name = item.sysUserContentVo.name;
@@ -499,7 +489,7 @@
                   item.name = "游客";
                 }
               }else{
-                item.userDp = "./static/images/defultphoto.png";
+                item.userDp = "https://pub.qinius.butongtech.com/defultphoto.png";
                 item.name = "游客";
               }
 
@@ -519,7 +509,7 @@
                 if(item.sysUserContentVo.userDp){
                   item.userDp = item.sysUserContentVo.userDp;
                 }else {
-                  item.userDp = "./static/images/defultphoto.png";
+                  item.userDp = "https://pub.qinius.butongtech.com/defultphoto.png";
                 }
                 if(item.sysUserContentVo.name){
                   item.name = item.sysUserContentVo.name;
@@ -527,7 +517,7 @@
                   item.name = "游客";
                 }
               }else{
-                item.userDp = "./static/images/defultphoto.png";
+                item.userDp = "https://pub.qinius.butongtech.com/defultphoto.png";
                 item.name = "游客";
               }
 

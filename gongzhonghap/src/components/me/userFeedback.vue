@@ -8,16 +8,22 @@
         <div class="userFeedback_xian"></div>
       </ul>
        <div class="userFeedback_components">
-         <CommonProblem v-if="tabListIndex==0"></CommonProblem>
+         <CommonProblem v-if="tabListIndex==0" @sheetVisibleT="sheetVisibleT"></CommonProblem>
          <MyOpinion v-if="tabListIndex==1"></MyOpinion>
        </div>
     </div>
-
+    <mt-actionsheet
+      :actions="actions"
+      v-model="sheetVisible">
+    </mt-actionsheet>
   </div>
 </template>
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
+  import { Actionsheet } from 'mint-ui';
+  import Vue from 'vue';
+  Vue.component(Actionsheet.name, Actionsheet);
   import { questionAndAnswerList } from '../../assets/js/promiseHttp';
   import CommonProblem from "./alter/commonProblem.vue"
   import MyOpinion from "./alter/myOpinion.vue"
@@ -28,6 +34,8 @@ export default {
   name: 'userFeedback',
   data(){
     return{
+      actions:[{name:"请下载不同Tech App提意见" },{name:"iOS",method:this.IOS },{name:"Android",method:this.Android }],//下载地址
+      sheetVisible:false, //是否显示弹框
       tabList:["我的意见","常见问题"],//tab
       tabListIndex:0, //tab的下标
       myfollow:true, //数据请求成功显示
@@ -36,8 +44,8 @@ export default {
       s:20, //每页多少
       pageNum:"",//每页数据
       objList:[
-        {bannerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 工业设计师",zuoping:"501",fensi:"2838",isguanzhun:false},
-        {bannerUrl:"./static/images/defultphoto.png",name:"fanner Walker",address:"深圳 工业设计师",zuoping:"501",fensi:"2838",isguanzhun:true},
+        {bannerUrl:"https://pub.qinius.butongtech.com/defultphoto.png",name:"fanner Walker",address:"深圳 工业设计师",zuoping:"501",fensi:"2838",isguanzhun:false},
+        {bannerUrl:"https://pub.qinius.butongtech.com/defultphoto.png",name:"fanner Walker",address:"深圳 工业设计师",zuoping:"501",fensi:"2838",isguanzhun:true},
       ], // 数据
     }
   },
@@ -56,8 +64,17 @@ export default {
     }
   } ,
   methods:{
+    sheetVisibleT(v){
+      this.sheetVisible = v;
+    },
     tabClick(i){ //tab切换
       this.tabListIndex = i;
+    },
+    IOS(){
+      location.href="https://itunes.apple.com/cn/app/id1439775835"
+    },
+    Android(){
+      location.href="https://www.pgyer.com/designcloud"
     },
   },
 }

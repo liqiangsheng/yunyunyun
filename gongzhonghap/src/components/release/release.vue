@@ -4,7 +4,6 @@
     <ul class="Indextab">
       <li v-for="(item,index) in tabbarAarr" class="indexTabLi" @click="tabarClick(index)">
         <img :src="tabbarAarrIndex==index?item.icon:item.icon1" alt="" class="indexTabImg" :class="{active:index==2}">
-        {{item.name}}
       </li>
     </ul>
     <mt-actionsheet
@@ -25,11 +24,11 @@ export default {
     return{
       actions:[{ name:"请下载不同Tech App" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
       tabbarAarr:[  //、、tab
-        {name:"首页",icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
-        {name:"资讯",icon:"./static/images/zixun2.png",icon1:"./static/images/zixun1.png",path:"/homeIndex"},
+        {icon:"./static/images/homesmall.png",icon1:"./static/images/homesmall1.png",path:"/homeIndex1_0"},
+        {icon:"./static/images/zixun2.png",icon1:"./static/images/zixun1.png",path:"/homeIndex"},
         {icon:"./static/images/zhaio.png",icon1:"./static/images/zhaio.png",path:"/release"},
-        {name:"智慧活动",icon:"./static/images/zhihuihuodong2.png",icon1:"./static/images/zhihuihuodong1.png",path:"/index"},
-        {name:"我的",icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
+        {icon:"./static/images/zhihuihuodong2.png",icon1:"./static/images/zhihuihuodong1.png",path:"/index"},
+        {icon:"./static/images/mesmall.png",icon1:"./static/images/mesmall1.png",path:"/me"},
       ],
       tabbarAarrIndex:2,  //点击tab的下标
       sheetVisible:false, //是否显示弹框
@@ -75,8 +74,8 @@ export default {
   .Indextab{
     position: absolute;
     width: 100%;
-    height: 0.49rem;
-    bottom: 0rem;
+    height: 0.55rem;
+    bottom: 0;
     left: 0;
     background: #ffffff;
     border-top: 0.01rem solid #EEEEEE;
@@ -84,16 +83,18 @@ export default {
     .indexTabLi{
       flex: 1;
       text-align: center;
-      padding-top:0.05rem ;
+      padding-top:0.13rem ;
+      box-sizing: border-box;
       .indexTabImg{
-        width: 0.16rem;
-        height: 0.19rem;
+        width:  24px;
+        height:  24px;
         display:block;
         margin: 0 auto;
       }
       .indexTabImg.active{
-        width: 0.32rem;
-        height: 0.32rem;
+        width: 0.3rem;
+        transform: translateY(-0.05rem);
+        height: 0.3rem;
       }
     }
   }

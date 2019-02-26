@@ -41,6 +41,7 @@
 
     <script>
       import {specialSubjectFindSubjectInfoByCategory} from "../../../assets/js/promiseHttp"
+      import { Indicator } from 'mint-ui';
       import { Toast } from 'mint-ui';  //弹框
       export default {
         name: 'big_coffee_says',
@@ -99,7 +100,7 @@
           },
           updataMore(e){ //加载更多 分页
             this.$store.dispatch("WEATHERVANEScrollTop",e.target.scrollTop);
-            if(e.target.scrollHeight==(e.target.scrollTop+e.target.offsetHeight)){
+            if(e.target.scrollTop>(e.target.scrollHeight-e.target.clientHeight-500)){
               this.p++;
               if(this.p>this.pageNum){
                 this.message = "这是我的底线..."
@@ -146,7 +147,7 @@
            width: 10rem;
            height: 1.39rem;
            animation: leftBox 25s infinite;
-           background: url(../../../assets/images/bolang1.png);
+           background: url('https://pub.qinius.butongtech.com/bolang1.png');
            background-size: 100% 100%;
          }
        }
@@ -156,7 +157,7 @@
           bottom: 0;
           top: 1.3rem;
           right: 0;
-          background: url(../../../assets/images/zixunBg.png);
+          background: url('https://pub.qinius.butongtech.com/zixunBg.png');
           background-size: 100% 100%;
           ul{
             width: 90%;

@@ -1,5 +1,5 @@
 
-import axios from "axios"
+// import axios from "axios"
 import { Toast } from 'mint-ui';  //弹框
 import { Indicator } from 'mint-ui';
 const activityEdition = "v1.0";
@@ -91,8 +91,6 @@ export function customerTerminalNoteFindSysUserWithTerminal(loginMobile,token){/
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/customerTerminalNote/findSysUserWithTerminal`;
     axios.post(url,obj,{headers:{'Content-Type': 'application/json','Accept': '*/*','Authorization':'Bearer '+token}}).then(res=>{
       resolve(res)
-    }).catch(res=>{
-      Toast("500后台服务器错误")
     })
   })
 }
@@ -711,15 +709,15 @@ export function operationTeamInfos(p,s){
 }
 // 资源池
 export function companyList(p,s){
-  Indicator.open("加载中...")
+
   let obj = {companyCat:"2",p:p,s:s,userType:"",currentUser:""};
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/list`;
     axios.post(url,obj,{headers:{"Content-Type":"application/json"}}).then(res=>{
-      Indicator.close();
+
       resolve(res)
     }).catch(function (error) {
-      Indicator.close();
+
       Toast("网络错误工坊500，请重试")
     })
   })
@@ -1287,10 +1285,10 @@ export function customerPubContentListOwner(id,pubStatus,p,s,token) { // 用户i
         let res= JSON.parse(ajax.responseText)
         resolve(res) ;
       }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
-      }
+      // if(ajax.status==500){
+      //   Indicator.close()
+      //   Toast("500后台服务器错误！")
+      // }
     }
   })
 }

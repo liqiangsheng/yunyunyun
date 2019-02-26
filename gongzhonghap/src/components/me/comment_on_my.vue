@@ -8,7 +8,7 @@
     <ul class="comment_on_my_true" v-else>
       <li class="comment_on_my_true_li" v-for="(item,index) in objList">
         <div class="comment_on_my_true_li_left" @click="goHomepage(item)">
-          <img :src="item.userDp?item.userDp:'/static/images/defultphoto.png'" alt="">
+          <img :src="item.userDp?item.userDp:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="">
         </div>
         <div class="comment_on_my_true_li_right">
              <h5 class="comment_on_my_true_li_right_name"><span v-if="item.typec!=0">{{item.replyName}}</span> <span v-if="item.typec==0">{{item.commentName}}</span></h5>

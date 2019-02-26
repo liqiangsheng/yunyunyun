@@ -3,35 +3,40 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import Vuex from "vuex"
-// import $ from 'jquery'
 import './assets/rem'
-import "mint-ui/lib/style.min.css"
+console.log(qiniu,"qiniu")
 //首页瀑布流
 import waterfall from 'vue-waterfall2'
 Vue.use(waterfall)
+//路由懒加载
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  error: 'https://pub.qinius.butongtech.com/404.jpg',
+  loading: 'https://pub.qinius.butongtech.com/gongfang1.png',
+  attempt: 1
+})
 //上线记得注释掉 调试用
-// import VConsole from 'vconsole/dist/vconsole.min.js' //import vconsole
 // let vConsole = new VConsole() // 初始化
 // Vue.use(vConsole)
-// import mintui from 'mint-ui'
-import VueTouch from 'vue-touch';
-Vue.use(VueTouch, {name: 'v-touch'})
+//touch事件
+// import VueTouch from 'vue-touch';
+// Vue.use(VueTouch, {name: 'v-touch'})
+//vuex
 import { mutations } from "@/vuex/mutations"
 import { state } from "@/vuex/state";
 import { actions } from "@/vuex/actions";
+//url地址
 const common = window.common;
-import moment from 'moment'// 格式化时间
-import vueFilter from './assets/js/filter' //过滤器
+//过滤器
+import vueFilter from './assets/js/filter'
 for (let key in vueFilter){
   Vue.filter(key,vueFilter[key])
 }
-
-import axios from "axios";
-import {UrlSearch} from  "./assets/js/Fun"  //导航栏url截取
+//导航栏url截取
+import {UrlSearch} from  "./assets/js/Fun"
 let Request = new UrlSearch(); //方法实力化
-// 引入vue-amap
-import VueAMap from 'vue-amap';
+// 高德引入vue-amap组件
+//   import VueAMap from 'vue-amap';
 // 初始化vue-amap
 VueAMap.initAMapApiLoader({
   // 高德的key
@@ -41,13 +46,13 @@ VueAMap.initAMapApiLoader({
   // 高德 sdk 版本，默认为 1.4.4
   v: '1.4.4'
 });
-Vue.prototype.$moment = moment;
+Vue.use(VueAMap.default);
+Vue.prototype.$moment = moment;// 格式化时间
 Vue.prototype.$Request = Request;
 Vue.prototype.$Aiox = axios;
 Vue.prototype.$http = common.apiDomain;
 Vue.config.productionTip = false
-Vue.use(VueAMap);
-// Vue.use(mintui);
+
 Vue.use(Vuex);
 const store = new Vuex.Store({
   state,

@@ -26,7 +26,7 @@
          </div>
          <div class="myFabulous_bannaerUrl">
            <div class="myFabulous_bannaerUrl_left" @click.stop="goHomePage(item)">
-             <img :src="item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'/static/images/defultphoto.png'" alt="">
+             <img v-lazy="item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="">
            </div>
            <div class="myFabulous_name">
              <b>{{item.authorInfo.name}}</b>
@@ -45,12 +45,12 @@
               <div class="myFabulous_left">
                 <h5>{{item.title}}</h5>
                 <div style="color: #AAAAAA">
-                  <img src="/static/images/liulangshu.svg" alt=""> {{item.viewCount>10000?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}
+                  <img src="../../assets/images/liulangshu.svg" alt=""> {{item.viewCount>10000?(item.viewCount/10000).toFixed(2)+'万':item.viewCount}}
                 </div>
                 <div><img src="/static/images/xihuanshu.svg" alt=""> {{item.laudedCount>10000?(item.laudedCount/10000).toFixed(2)+'万':item.laudedCount}} <img src="/static/images/pinlunshu.svg"  alt="" style="margin-left: 0.3rem"> {{item.commentCount>10000?(item.commentCount/10000).toFixed(2)+'万':item.commentCount}}</div>
               </div>
               <div class="myFabulous_right">
-                <img :src="item.bannerUrl?item.bannerUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim ':'/static/images/缺省图.png'" alt="">
+                <img v-lazy="item.bannerUrl?item.bannerUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim ':'/static/images/queshengtu.png'" alt="">
               </div>
          </li>
        </ul>

@@ -12,7 +12,7 @@
                 </div>
                 <div class="bigShotPage_img">
                   <div></div>
-                  <img :src="listData.ownerUrl?listData.ownerUrl:'/static/images/defultphoto.png'" alt="">
+                  <img :src="listData.ownerUrl?listData.ownerUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="">
                 </div>
                <div class="bigShotPage_h5">
                  <div class="bigShotPage_"></div>
@@ -37,13 +37,13 @@
            <ul :style="{width:(arrList.length*2.2+0.93)+'rem'}" v-if="arrList.length>1">
              <li style="width: 0.91rem;height: 2.6rem;margin: 0"></li>
              <li v-for="(item,index) in arrList">
-               <img :src="item.imageUrl" />
+               <img v-lazy="item.imageUrl" />
              </li>
            </ul>
            <ul :style="{width:(2*2.2+0.93)+'rem'}" v-if="arrList.length==1">
              <li style="width: 0.91rem;height: 2.6rem;margin: 0"></li>
              <li v-for="(item,index) in arrList">
-               <img :src="item.imageUrl" />
+               <img v-lazy="item.imageUrl" />
              </li>
              <li style="text-align: center;line-height: 2.6rem;color: #c5c5c6;background: #f6f6f6">
                 没有更多了
@@ -84,7 +84,7 @@
            <ul :style="{width:designerHonorList.length>1?(designerHonorList.length*170+230)+'px':'170px'}">
              <!--<ul :style="{width:(designerHonorList.length*170+230)+'px'}">-->
                  <li v-for="(item,index) in designerHonorList">
-                     <img :src="item.imageUrl+'?imageView2/1/w/150/h/150/q/75|imageslim'" alt="">
+                     <img v-lazy="item.imageUrl+'?imageView2/1/w/150/h/150/q/75|imageslim'" alt="">
                  </li>
                  <li style="background: #f6f6f6;text-align: center;line-height: 1.5rem;color: #c5c5c6" v-if="designerHonorList.length>1">
                      没有更多作品啦
@@ -131,6 +131,7 @@
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
+  import wxShare from "../../assets/js/wxShare"
   import { commonUserFindOne,commonUserCareUser,commonUserCancelCareUser,findInformationListByUserIdUserId,shareInfoShareUrl } from '../../assets/js/promiseHttp'; //数据
   export default {
     name: 'bigShotPage',
@@ -221,9 +222,7 @@
         this.$router.push({path:"/contact"})
       },
       share(){//分享
-
-        let url = "http://account.butongtech.com/"
-        shareInfoShareUrl(location.href.split('#')[0].toString()).then(res=>{
+        shareInfoShareUrl(encodeURIComponent(location.href.split('#')[0])).then(res=>{
           if(res.status==true){
             let obj = {
               title:this.listData.name,
@@ -237,6 +236,14 @@
           }
         })
       },
+    },
+    mounted(){
+      let that = this;
+      if(window.common.apiDomain20020=='https://dcloud.butongtech.com:20020'){
+        setTimeout(()=>{
+          that.share();
+        },200)
+      }
     },
     created(){
 

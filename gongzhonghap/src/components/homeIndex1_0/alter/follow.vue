@@ -22,7 +22,7 @@
              <ul class="follow_login_Follow_ul" v-if="followIsShow==false&&!!listData&&listData!=-1&&listData!=-2">
                <li class="follow_login_Follow_li" v-for="(item,index) in listData" @click="goDetail(item)" ref="windwosWH">
                  <div class="follow_login_Follow_li1">
-                   <img :src="item.caredUserMap.ownerUrl?item.caredUserMap.ownerUrl:'/static/images/defultphoto.png'" alt="" @click.stop="headerClick(item)">
+                   <img v-lazy="item.caredUserMap.ownerUrl?item.caredUserMap.ownerUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="" @click.stop="headerClick(item)">
                    <div class="follow_login_Follow_li1_title">
                      <b>{{item.caredUserMap.name}}</b>
                      <span>{{item.createdAt|formatTime2}}</span>
@@ -32,30 +32,31 @@
                  </div>
 
                  <!--作品-->
-                 <v-touch class="follow_login_Follow_li2" v-if="item.type==2">
+                 <div class="follow_login_Follow_li2" v-if="item.type==2">
+                   <img v-lazy="item.customerPubContentMap.attachments[0].url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/55/imageslim'" alt="">
                    <!--轮播-->
-                   <div :class="'swiper-container'+index">
-                     <div class="swiper-wrapper">
-                       <div class="swiper-slide" v-for="(item1,index1) in item.customerPubContentMap.attachments">
-                         <div class="imgIs">
-                           <div class="imgIs1">
-                             <img :src="item1.url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" >
-                           </div>
-                           <div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*imgW+'px',top:item2.axesyRate*(item1.height/(item1.width/imgW))+'px'}">
-                           <img src="/static/images/biaoqian.png" alt=""><span>{{item2.title}}</span>
-                           </div>
-                         </div>
-                       </div>
-                     </div>
-                     <!-- 如果需要分页器 -->
-                     <!--<div :class="'swiper-pagination'+index" style="text-align: center"></div>-->
-                   </div>
+                   <!--<div :class="'swiper-container'+index">-->
+                     <!--<div class="swiper-wrapper">-->
+                       <!--<div class="swiper-slide" v-for="(item1,index1) in item.customerPubContentMap.attachments">-->
+                         <!--<div class="imgIs">-->
+                           <!--<div class="imgIs1">-->
+                             <!--<img v-lazy="item1.url+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" >-->
+                           <!--</div>-->
+                           <!--<div class="biaoqian" v-for="(item2,index2) in item1.anchors" :style="{left:item2.axesxRate*imgW+'px',top:item2.axesyRate*(item1.height/(item1.width/imgW))+'px'}">-->
+                           <!--<img src="https://pub.qinius.butongtech.com/biaoqian.png" alt=""><span>{{item2.title}}</span>-->
+                           <!--</div>-->
+                         <!--</div>-->
+                       <!--</div>-->
+                     <!--</div>-->
+                     <!--&lt;!&ndash; 如果需要分页器 &ndash;&gt;-->
+                     <!--&lt;!&ndash;<div :class="'swiper-pagination'+index" style="text-align: center"></div>&ndash;&gt;-->
+                   <!--</div>-->
                    <!---->
-                 </v-touch>
+                 </div>
 
                  <!--文章-->
                  <div class="follow_login_Follow_li2_2" v-else>
-                   <img :src="item.bannerDetailUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/55/imageslim'" alt="">
+                   <img v-lazy="item.bannerDetailUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/55/imageslim'" alt="">
                  </div>
 
                  <div class="follow_login_Follow_li3">
@@ -797,11 +798,11 @@
                 width: 100%;
                 position: relative;
                 >.imgIs1{
-                  background: url(../../../../static/images/logo.png);
+                  background: url('https://pub.qinius.butongtech.com/logo.png');
                   background-size:100% 100% ;
                   >img{
                     display: block;
-                    background: url(../../../../static/images/logo.png);
+                    background: url('https://pub.qinius.butongtech.com/logo.png');
                     background-size:100% 100% ;
                     /*width: 100%;*/
                   }

@@ -12,7 +12,7 @@
             <div class="yellow"></div>
             <div class="enterprisePage_title_content">
               <div class="enterprisePage_logurl">
-                <img :src="listData.logoUrl?listData.logoUrl:'/static/images/defultphoto.png'" alt="">
+                <img :src="listData.logoUrl?listData.logoUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="">
               </div>
                <div class="enterprisePage_name">
                  <h5 ref="marginHeight" :style="'margin-top:'+marginHeight">{{listData.name}}</h5>
@@ -44,7 +44,7 @@
           <div class="enterprisePage_scroll" @scroll="scrollWidth">
             <ul :style="{width:companyExtendType2.length>1?(companyExtendType2.length*170+180)+'px':'170px'}">
               <li v-for="(item,index) in companyExtendType2">
-                <img :src="item.imageUrl+'?imageView2/1/w/150/h/150/q/75|imageslim'" alt="">
+                <img v-lazy="item.imageUrl+'?imageView2/1/w/150/h/150/q/75|imageslim'" alt="">
               </li>
               <li style="background: #f6f6f6;text-align: center;line-height: 1.5rem;color: #c5c5c6" v-if="companyExtendType2.length>1">
                 没有更多作品啦
@@ -88,7 +88,7 @@
         <div class="enterprisePage_patent" v-if="companyExtendType1.length>0">
            <div class="enterprisePage_patent_bg"></div>
            <div class="enterprisePage_patent_content">
-             <img :src="companyExtendType1[0].imageUrl+'?imageView2/1/w/295/h/221/q/75|imageslim'" alt="">
+             <img v-lazy="companyExtendType1[0].imageUrl+'?imageView2/1/w/295/h/221/q/75|imageslim'" alt="">
              <h5>
                {{companyExtendType1[0].name}}
              </h5>
@@ -103,7 +103,7 @@
                   <p>品　/　牌　/　合　/　作</p>
                  <ul>
                    <li v-for="(item,index) in companyCooperationBrandsList">
-                     <img :src="item.imageUrl" alt="">
+                     <img v-lazy="item.imageUrl" alt="">
                    </li>
                  </ul>
              </div>
@@ -119,6 +119,7 @@
 
 <script>
   import { Toast } from 'mint-ui';  //弹框
+  import wxShare from "../../assets/js/wxShare"
   import { companyInfoFindOne,companyInfoCareCompany,companyInfoCancelCareCompany,findInformationListByUserIdUserId,shareInfoShareUrl } from '../../assets/js/promiseHttp'; //数据
 export default {
   name: 'enterprisePage',
@@ -207,9 +208,7 @@ export default {
       this.$router.push({path:"/contact"})
     },
     share(){//分享
-
-      let url = "http://account.butongtech.com/"
-      shareInfoShareUrl(location.href.split('#')[0].toString()).then(res=>{
+      shareInfoShareUrl(encodeURIComponent(location.href.split('#')[0])).then(res=>{
         if(res.status==true){
           let obj = {
             title:this.listData.name,
@@ -223,6 +222,14 @@ export default {
         }
       })
     },
+  },
+  mounted(){
+    let that = this;
+    if(window.common.apiDomain20020=='https://dcloud.butongtech.com:20020'){
+      setTimeout(()=>{
+        that.share();
+      },200)
+    }
   },
   created(){
 

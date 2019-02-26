@@ -147,7 +147,7 @@ export default {
         tabListBool:false, //显示
         bgImge:"./static/images/bg.png",
         userInfo: {
-        header:"./static/images/defultphoto.png",
+        header:"https://pub.qinius.butongtech.com/defultphoto.png",
         name: "请登录",
           care_count:0,
           cared_count:0,
@@ -184,7 +184,7 @@ export default {
          customerTerminalNoteFindSysUserWithTerminal(data.data.mobile,data.data.access_token).then(res=>{
 //             console.log(res,"res")
            if(res.data.status ==true){
-             this.userInfo.header= res.data.data.owner_url?res.data.data.owner_url:"./static/images/defultphoto.png";
+             this.userInfo.header= res.data.data.owner_url?res.data.data.owner_url:"https://pub.qinius.butongtech.com/defultphoto.png";
                this.userInfo.name= res.data.data.name;
                this.$nextTick(function () {
                  this.userInfo.care_count = res.data.data.care_count?res.data.data.care_count:0 ;
@@ -241,7 +241,7 @@ export default {
        }else{
          this.tabListBool = false;
          this.bgImge="./static/images/bg.png";
-         this.userInfo.header= "./static/images/defultphoto.png";
+         this.userInfo.header= "https://pub.qinius.butongtech.com/defultphoto.png";
          this.userInfo.name= "请登录";
          this.imgsArr1 = [];
          this.imgsArr = [];
@@ -405,7 +405,7 @@ export default {
       .userinfo_top{
         width: 100%;
         height: 1.31rem;
-        background: url(../../assets/images/meBg.png);
+        background: url('https://pub.qinius.butongtech.com/meBg.png');
         background-size: 100% 100%;
         .userinfo_top_top{
           width: 100%;

@@ -1,13 +1,12 @@
 <template>
   <!--设计咖-->
-  <!--<v-touch @swipeup="swipeup" @swipedown="swipedown">-->
   <div id="design_offee" @scroll="updataMore">
     <ul>
         <li v-for="(item1,index1) in objList"  @click="goToHomePage(item1)" ref="swiperScroll">
           <div class="design_offee_top">
              <div class="design_offee_top_img">
-               <img :src="item1.coverHonor.imageUrl+'?imageView2/1/w/355/h/200/q/75|imageslim'" alt="" v-if="item1.coverHonor">
-               <img :src="item1.designerUser.designerHonorList[0].imageUrl+'?imageView2/1/w/355/h/200/q/75|imageslim'" alt="" v-else>
+               <img v-lazy="item1.coverHonor.imageUrl+'?imageView2/1/w/355/h/200/q/75|imageslim'" alt="" v-if="item1.coverHonor">
+               <img v-lazy="item1.designerUser.designerHonorList[0].imageUrl+'?imageView2/1/w/355/h/200/q/75|imageslim'" alt="" v-else>
              </div>
             <div class="design_offee_top_centent">
               <div class="caredCount">
@@ -18,7 +17,7 @@
           <div class="design_offee_bottom">
             <div class="design_offee_bottom_content">
                     <div  class="img3">
-                          <img :src="item1.ownerUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" alt="">
+                          <img v-lazy="item1.ownerUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim'" alt="">
                     </div>
                     <h5>
                         <span>{{item1.name}}</span>
@@ -138,7 +137,7 @@ export default {
     },
     updataMore(e){ //加载更多 分页
       this.$store.dispatch("design_offeeScrollTop",e.target.scrollTop);
-      if(e.target.scrollTop>=(e.target.scrollHeight-e.target.clientHeight)){
+      if(e.target.scrollTop>(e.target.scrollHeight-e.target.clientHeight-500)){
         this.p++;
         if(this.p>this.pageNum){
           this.p =this.pageNum;

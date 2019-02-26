@@ -13,7 +13,8 @@
 </template>
 
 <script>
-  import {AMapManager} from 'vue-amap'; //地图
+
+//  import {AMapManager} from 'vue-amap'; //地图
 export default {
   data(){
     return{

@@ -26,29 +26,31 @@
     </ul>
     <div class="pictureLiveBroadcast_center" v-show="tabState == 0" >
       <div class="pictureLiveBroadcast_center_fixed" @click="goBackTop" v-show="gotopShow">共 {{total}} 张 ▲</div>
-      <vue-waterfall-easy :imgsArr="imgsArr"  srcKey="imageUrl1" @click="clickFn">
-        <!--<div slot="loading" slot-scope="{isFirstLoad}">-->
-          <!--<div slot="loading" v-if="isFirstLoad">不同努力加载中...</div>-->
-        <!--</div>-->
-      </vue-waterfall-easy>
+      <waterfall :col='col' :width="itemWidth1" :gutterWidth="gutterWidth1"  :data="data"  @loadmore="loadmore">
+        <template >
+          <div class="cell-item" v-for="(item,index) in data" @click="clickFn(item,index)">
+            <img v-lazy="item.imageUrl1":style="'height:'+(185/item.width)*item.height/100+'rem'"/>
+          </div>
+        </template>
+      </waterfall>
     </div>
     <!--热门图片-->
     <ul class="pictureLiveBroadcast_ul" v-show="tabState == 1">
          <li v-for="(item,index) in imgsArr1" v-if="index<3" class="li1" @click="goToImg(item,imgsArr1,index)">
-           <img :src="item.imageUrl1" alt="">
+           <img v-lazy="item.imageUrl1" alt="">
            <div :class="[{active1:index==1},{active2:index==2}]">{{index+1}}</div>
          </li>
       </ul>
     <ul class="pictureLiveBroadcast_ul1" v-show="tabState == 1">
          <li v-for="(item,index) in imgsArr1" v-if="index>=3&&index<9" class="li2" @click="goToImg(item,imgsArr1,index)">
-           <img :src="item.imageUrl1" alt="">
+           <img v-lazy="item.imageUrl1" alt="">
            <div>{{index+1}}</div>
          </li>
 
       </ul>
     <ul class="pictureLiveBroadcast_ul2" v-show="tabState == 1">
          <li v-for="(item,index) in imgsArr1" v-if="index>=9&&index<=29"  class="li3" @click="goToImg(item,imgsArr1,index)">
-           <img :src="item.imageUrl1" alt="">
+           <img v-lazy="item.imageUrl1" alt="">
          </li>
     </ul>
     <!--欢迎页-->
@@ -62,7 +64,6 @@
 </template>
 
 <script>
-  import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
   import welcomePage from './welcomePage.vue'
   import wxShare from "../../assets/js/wxShare"
   import {activityImagesList,activityImagesBookFindOne,activityImageslistHot,shareInfoShareUrl} from "../../assets/js/promiseHttp.js"
@@ -72,6 +73,10 @@ export default {
   name: 'pictureLiveBroadcast',
   data(){
     return {
+      itemWidth1:null,
+      gutterWidth1:10,
+      col:2,
+      data:[],
       isFirstLoad:true, //第一次加载
       objDataTitle:{}, //头部数据
       titleData:{},//头部数据
@@ -87,7 +92,7 @@ export default {
       fixedStyle:"", //吸顶初始效果
       banner:[], //banner
         gotopShow:false,
-        imgsArr: [], //图片直播数据
+//        imgsArr: [], //图片直播数据
         imgsArr1: [],//热门活动直播
         size:30, //热门活动数量
         scrollTop:0, //距离顶部距离
@@ -102,10 +107,11 @@ export default {
        }
   },
   components: {
-    vueWaterfallEasy,welcomePage
+      welcomePage
   },
   created(){
-
+    this.itemWidth1= this.itemWidth();
+    this.gutterWidth1= this.gutterWidth();
     if(this.$router.history.current.query.isBool=="false"||this.$router.history.current.query.isBool==false){
       this.pageShow = false;
       this.bookId.bookId = this.$router.history.current.query.bookId;
@@ -114,11 +120,15 @@ export default {
         if(res.data.status == true){
 //            ?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim
           res.data.data.forEach((item,index)=>{
+            this.$Aiox.get(item.imageUrl+'?imageInfo').then(res=>{
+              item.width  = res.data.width;
+              item.height  = res.data.height;
+            })
             item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
           })
           this.total =res.data.total;
           this.pages = Math.ceil(res.data.total/this.bookId.s)
-          this.imgsArr = res.data.data;
+          this.data = res.data.data;
         }else{
           Toast("网络出错了，请重试")
         }
@@ -204,20 +214,29 @@ export default {
     let that = this;
     if(window.common.apiDomain20020=='https://dcloud.butongtech.com:20020'){
       setTimeout(()=>{
-        this.share();
+        that.share();
       },200)
     }
   },
   methods: {
+    loadmore(index){
+      console.log(index,"index")
+    },
+    itemWidth(){
+      return (185*1*(document.documentElement.clientWidth/375)) // #rem布局 计算宽度
+    },
+    gutterWidth(){
+      return (10*0.5*(document.documentElement.clientWidth/375))  // #rem布局 计算x轴方向margin(y轴方向的margin自定义在css中即可)
+    },
     share(){//分享
-      let url = "http://account.butongtech.com/"
-      shareInfoShareUrl(location.href.split('#')[0].toString()).then(res=>{
+      console.log(this.objDataTitle);
+      shareInfoShareUrl(encodeURIComponent(location.href.split('#')[0])).then(res=>{
         if(res.status==true){
           let obj = {
             title:this.objDataTitle.name,
             desc:this.objDataTitle.remark,
             url:"http://account.butongtech.com/index.html#/pictureLiveBroadcast?isBool=false&bookId="+this.$router.history.current.query.bookId+"&id="+this.$router.history.current.query.id,//id=20190101000004BUTONG00001&isBool=false&bookId=20190101000004BUTONG00001
-            imgUrl:this.objDataTitle.bannerImageList[0].imageUrl,
+            imgUrl:!!this.objDataTitle.bannerImageList?this.objDataTitle.bannerImageList[0].imageUrl:'https://pub.qinius.butongtech.com/defultphoto.png',
           }
           wxShare.wxShare(res.data,obj)
         }else{
@@ -233,11 +252,15 @@ export default {
         if(res.data.status == true){
 //            ?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim
           res.data.data.forEach((item,index)=>{
+            this.$Aiox.get(item.imageUrl+'?imageInfo').then(res=>{
+              item.width  = res.data.width;
+              item.height  = res.data.height;
+            })
             item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
           })
           this.total =res.data.total;
           this.pages = Math.ceil(res.data.total/this.bookId.s)
-          this.imgsArr = res.data.data;
+          this.data = res.data.data;
         }else{
           Toast("网络出错了，请重试")
         }
@@ -290,16 +313,14 @@ export default {
     stateClick(i){//tab切换
       this.tabState = i;
     },
-    ishowItem(v){ //子组件传来的false
-    },
-    clickFn(event, { index, value }) { //点击每个图片放大
+    clickFn(value,index) { //点击每个图片放大
 
       // 阻止a标签跳转
       event.preventDefault()
 //      // 只有当点击到图片时才进行操作
 
       let list = [];
-      this.imgsArr.forEach((item,index)=>{
+      this.data.forEach((item,index)=>{
         list.push(item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/85/imageslim ")
       })
       wx.previewImage({
@@ -320,11 +341,15 @@ export default {
         activityImagesList(that.bookId).then(res=>{
           if(res.data.status == true){
             res.data.data.forEach((item,index)=>{
+              this.$Aiox.get(item.imageUrl+'?imageInfo').then(res=>{
+                item.width  = res.data.width;
+                item.height  = res.data.height;
+              })
               item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
             })
             setTimeout(()=>{
               Indicator.close();
-              that.imgsArr = that.imgsArr.concat(res.data.data);
+              that.data = that.data.concat(res.data.data);
             },200)
 
           }else{
@@ -337,11 +362,15 @@ export default {
         activityImagesList(that.bookId).then(res=>{
           if(res.data.status == true){
             res.data.data.forEach((item,index)=>{
+              this.$Aiox.get(item.imageUrl+'?imageInfo').then(res=>{
+                item.width  = res.data.width;
+                item.height  = res.data.height;
+              })
               item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
             })
             setTimeout(()=>{
               Indicator.close();
-              that.imgsArr = that.imgsArr.concat(res.data.data);
+              that.data = that.data.concat(res.data.data);
             },200)
 
           }else{
@@ -359,6 +388,7 @@ export default {
 <style scoped lang="less">
 #pictureLiveBroadcast{
   width: 100%;
+  overflow-x: hidden;
   .pictureLiveBroadcast_box{
     width:100%;
     >.swiper-container{
@@ -558,5 +588,12 @@ export default {
   }
   .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
     opacity: 0;
+  }
+  .cell-item{
+    background: #ffffff;
+    margin-top: 0.05rem;
+  }
+  .cell-item img{
+    width: 100%;
   }
 </style>

@@ -135,7 +135,7 @@ export default {
    right: 0;
    bottom: 0.49rem;
    overflow-y: auto;
-   background: url(../../assets/images/bj2.png);
+   background: url('https://pub.qinius.butongtech.com/bj2.png');
    background-size: 100% 100%;
    .IntelligentMatchingBItemIndex{
      width: 90%;

@@ -1,7 +1,7 @@
 <template>
   <div id="IntelligentMatching">
         <div class="IntelligentMatchingItem">
-          <img src="/static/images/images7.png" alt="">
+          <img src="https://pub.qinius.butongtech.com/images7.png" alt="">
         </div>
         <div class="IntelligentMatchingItem1">
           <div class="IntelligentMatchingItem1Index">请问你需要智能匹配服务吗？</div>
@@ -46,7 +46,7 @@ export default {
    right: 0;
    bottom: 0;
    overflow-y: auto;
-   background: url(../../assets/images/bj2.png);
+   background: url('https://pub.qinius.butongtech.com/bj2.png');
     background-size: 100% 100%;
  }
   .IntelligentMatchingItem{

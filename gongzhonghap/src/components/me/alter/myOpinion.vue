@@ -8,7 +8,7 @@
       </ul>
     <div  v-if="lisrData.length<=0" class="lengthFalse">
       <img src="/static/images/queshengtu.png" alt="">
-      <p>常见区目前空空如也～</p>
+      <p>常见问题区目前空空如也～</p>
     </div>
     <div class="messageFoot" @click="updataMore" v-if="lisrData.length>0">
       {{message}}
@@ -20,7 +20,6 @@
   import { questionAndAnswerList } from '../../../assets/js/promiseHttp';
   import { Toast } from 'mint-ui';  //弹框
   export default {
-  name: 'myOpinion',
   data(){
     return{
       userInfo:{}, //用户信息

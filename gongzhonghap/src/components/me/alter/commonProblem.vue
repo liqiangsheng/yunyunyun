@@ -5,10 +5,10 @@
         <li v-for="(item,index) in lisrData">
           <div class="commonProblem_title">{{$moment(item.trackTime).format('YYYY/MM/DD HH:mm:ss')}}</div>
           <div class="commonProblem_message" :class="{avtive:item.senderId==userInfo.data.id}">
-            <img class="commonProblem_you_img" v-if="item.senderId!=userInfo.data.id" :src="item.senderUrl?item.senderUrl:'/static/images/defultphoto.png'" alt="">
-            <div class="commonProblem_you" v-if="item.senderId!=userInfo.data.id"><p v-if="item.content">{{item.content}}</p><img :src="item.url" alt="" v-if="item.url"></div>
-            <div class="commonProblem_me" v-if="item.senderId==userInfo.data.id"><p v-if="item.content">{{item.content}}</p><img :src="item.url" alt="" v-if="item.url"></div>
-            <img class="commonProblem_me_img"  v-if="item.senderId==userInfo.data.id" :src="item.senderUrl?item.senderUrl:'/static/images/defultphoto.png'" alt="">
+            <img class="commonProblem_you_img" v-if="item.senderId!=userInfo.data.id" :src="item.senderUrl?item.senderUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="">
+            <div class="commonProblem_you" v-if="item.senderId!=userInfo.data.id"><div v-if="item.content" v-html="item.content"></div><img :src="item.url" alt="" v-if="item.url"></div>
+            <div class="commonProblem_me" v-if="item.senderId==userInfo.data.id"><div v-if="item.content" v-html="item.content"></div><img :src="item.url" alt="" v-if="item.url"></div>
+            <img class="commonProblem_me_img"  v-if="item.senderId==userInfo.data.id" :src="item.senderUrl?item.senderUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="">
           </div>
         </li>
         <div class="messageFoot" @click="updataMore" v-if="lisrData.length>0">
@@ -35,10 +35,7 @@
          <div class="commonProblem_sendImg">发送图片</div>
        </div>
      </div>
-    <mt-actionsheet
-      :actions="actions"
-      v-model="sheetVisible">
-    </mt-actionsheet>
+
   </div>
 </template>
 
@@ -46,7 +43,6 @@
   import { Toast } from 'mint-ui';  //弹框
   import { suggestionTrackListOwner } from '../../../assets/js/promiseHttp';
   export default {
-  name: 'commonProblem',
   data(){
     return{
       p:1,
@@ -54,8 +50,6 @@
       userInfo:{},
       pageNum:0,
       message:"",
-      actions:[{ name:"请下载不同Tech App提意见" },{ name:"iOS",method:this.IOS },{ name:"Android",method:this.Android }],//下载地址
-      sheetVisible:false, //是否显示弹框
       messageValue:"", //意见的内容
       lisrData:[],
     }
@@ -78,6 +72,12 @@
         }else{
           this.message = "这是我的底线..."
         }
+        res.data.forEach((item,index)=>{
+          item.content = item.content.replace(/(\r\n)|(\n)/g,'<br>')
+          item.content = '<p>'+item.content+'</p>'
+
+        })
+        console.log(res.data,"sxjfksdjk")
         this.lisrData = res.data;
       }else{
         Toast("网络出错啦，请重试")
@@ -88,14 +88,9 @@
   },
   methods:{
     footClick(){//点击编辑
-        this.sheetVisible = true;
+        this.$emit('sheetVisibleT',true);
     },
-    IOS(){
-      location.href="https://itunes.apple.com/cn/app/id1439775835"
-    },
-    Android(){
-      location.href="https://www.pgyer.com/designcloud"
-    },
+
     okClick(){
 
     },
@@ -193,9 +188,8 @@
 
             .commonProblem_me{ //右
               flex: 1;
-
               margin-right: 0.1rem;
-              p{
+              div{
                 padding: 0.05rem 0.1rem;
                 box-sizing: border-box;
                 display: block;
@@ -205,7 +199,19 @@
                 font-weight:400;
                 color:rgba(5,5,9,1);
                 line-height:0.24rem;
+                p{
+                  padding: 0.05rem 0.1rem;
+                  box-sizing: border-box;
+                  display: block;
+                  background: #ffffff;
+                  font-size:0.14rem;
+                  font-family:PingFangSC-Regular;
+                  font-weight:400;
+                  color:rgba(5,5,9,1);
+                  line-height:0.24rem;
+                }
               }
+
               img{
                 display: block;
                 max-width: 1rem;
@@ -216,7 +222,8 @@
             .commonProblem_you{ //左
               flex: 1;
               margin-left: 0.1rem;
-              p{
+              div{
+                width: 100%;
                 padding: 0.05rem 0.1rem;
                 box-sizing: border-box;
                 display: block;
@@ -226,6 +233,17 @@
                 font-weight:400;
                 color:rgba(5,5,9,1);
                 line-height:0.24rem;
+                p{
+                  padding: 0.05rem 0.1rem;
+                  box-sizing: border-box;
+                  display: block;
+                  background: #ffffff;
+                  font-size:0.14rem;
+                  font-family:PingFangSC-Regular;
+                  font-weight:400;
+                  color:rgba(5,5,9,1);
+                  line-height:0.24rem;
+                }
               }
               img{
                 display: block;

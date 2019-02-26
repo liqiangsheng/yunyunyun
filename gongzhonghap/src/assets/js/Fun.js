@@ -1,5 +1,5 @@
 // import MobileDetect from 'mobile-detect'
-import * as qiniu from 'qiniu-js'
+// import * as qiniu from 'qiniu-js'
 import { Indicator } from 'mint-ui';
 export function UrlSearch(){
   let name,value,str=location.href,num=str.indexOf("?"); //取得整个地址栏
@@ -101,6 +101,7 @@ export function UrlSearch(){
 //     }
 //     return obj={model,version:md.versionStr('Build')}
 //   }
+console.log(qiniu,"fun")
 export function QINIUUpdata(event,qiniuToken){ //七牛云上传
    let headerImg = '';
      let mydate = new Date()

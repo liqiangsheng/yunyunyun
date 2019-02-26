@@ -8,7 +8,7 @@
     <ul class="praiseMe_box_true" v-else>
         <li v-for="(item,index) in objList">
            <div class="praiseMe_box_true_left">
-             <img :src="item.userDp?item.userDp:'/static/images/defultphoto.png'" alt="" @click="goHomepage(item)">
+             <img :src="item.userDp?item.userDp:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="" @click="goHomepage(item)">
            </div>
            <div class="praiseMe_box_true_right">
              <h5>{{item.laudName}}</h5>

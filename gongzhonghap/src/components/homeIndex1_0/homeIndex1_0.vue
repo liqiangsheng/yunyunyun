@@ -33,7 +33,6 @@
 </template>
 
 <script>
-//  import Find from './alter/find.vue';
   import Find from './alter/find2.vue';
   import Follow from './alter/follow.vue';
   import setPassword from './alter/setPassword.vue';

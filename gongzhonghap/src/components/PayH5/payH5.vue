@@ -101,7 +101,7 @@ export default {
   #PayH5{
     background: #ffffff;
     position:absolute;
-    background: url(../../assets/images/bj2.png);
+    background: url('https://pub.qinius.butongtech.com/bj2.png');
     background-size: cover;
     background-size: 100% 100%;
     left: 0;

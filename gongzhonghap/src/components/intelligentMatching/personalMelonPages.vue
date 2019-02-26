@@ -9,7 +9,7 @@
             <div v-if="listData.cared==true"  @click="followClick('已关注',listData)">已关注</div>
          </div>
          <div class="personalMelonPages_bannerUrl">
-           <img :src="listData.ownerUrl?listData.ownerUrl:'/static/images/defultphoto.png'" alt="">
+           <img :src="listData.ownerUrl?listData.ownerUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="">
          </div>
        </div>
       <!--关注，喜爱，收藏-->
@@ -63,7 +63,7 @@
   </template>
 
   <script>
-//    import vueWaterfallEasy from 'vue-waterfall-easy'  //瀑布流上拉刷新
+
     import { Toast } from 'mint-ui';  //弹框
     import { Indicator } from 'mint-ui';
     import wxShare from "../../assets/js/wxShare"
@@ -163,11 +163,10 @@
           })
         },
         share(){//分享
-          let url = "http://account.butongtech.com/"
-          shareInfoShareUrl(location.href.split('#')[0].toString()).then(res=>{
+          shareInfoShareUrl(encodeURIComponent(location.href.split('#')[0])).then(res=>{
             if(res.status==true){
               let obj = {
-                title:this.listData.regionName,
+                title:this.listData.name,
                 desc:this.listData.introduce,
                 url:"http://account.butongtech.com/index.html#/personalMelonPages?id="+this.$router.history.current.query.id,
                 imgUrl:this.listData.ownerUrl,
@@ -236,7 +235,7 @@
        .personalMelonPages_bg{
          width: 100%;
          height: 1.5rem;
-         background: url(../../assets/images/meBg.png);
+         background: url('https://pub.qinius.butongtech.com/meBg.png');
          background-size: 100% 100%;
          padding-top: 0.22rem;
          box-sizing: border-box;

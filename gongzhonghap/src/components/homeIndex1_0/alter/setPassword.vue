@@ -105,8 +105,8 @@ export default {
               let obj = {};
               obj.birthday= "19700101";
               obj.regionId= '2018042317050430c6a250e4044f94bb4cc074302b789a';
-//              obj.ownerUrl= wetachUserInfo?wetachUserInfo.headimgurl:'/static/images/defultphoto.png';
-              obj.ownerUrl= '/static/images/defultphoto.png';
+//              obj.ownerUrl= wetachUserInfo?wetachUserInfo.headimgurl:'https://pub.qinius.butongtech.com/defultphoto.png';
+              obj.ownerUrl= 'https://pub.qinius.butongtech.com/defultphoto.png';
               obj.name= wetachUserInfo?wetachUserInfo.nickname:"微信用户";
               obj.remark= '不同科技欢迎你';
               obj.sex= wetachUserInfo?wetachUserInfo.sex:0;

@@ -68,7 +68,7 @@
   import InputValue from "./alter/input.vue"
   import { DatetimePicker,Picker } from 'mint-ui';
   import Vue from "vue";
-  import * as qiniu from 'qiniu-js'
+//  import * as qiniu from 'qiniu-js'
   import { Indicator } from 'mint-ui';
   Vue.component(DatetimePicker.name, DatetimePicker,Picker.name, Picker);
 export default {
@@ -85,7 +85,7 @@ export default {
       startDate: new Date(1900), //开始时间
       endDate: new Date(), //开始时间
 //      headerImg:"https://pub.qinius.butongtech.com/defult_photo@3x.png", //头像
-      headerImg:"/static/images/defultphoto.png", //头像
+      headerImg:"https://pub.qinius.butongtech.com/defultphoto.png", //头像
       introductionValue:"", //简介
       nameValue:"", //名字
       sexMessage:"请选择", //性别
@@ -119,7 +119,7 @@ export default {
             this.birthday = !!res.data.data.birthday?res.data.data.birthday:"19700101";
             this.region = !!res.data.data.region_name?res.data.data.region_name:"深圳市";
             this.regionId = !!res.data.data.region_id?res.data.data.region_id:"2018042317050430c6a250e4044f94bb4cc074302b789a";
-            this.headerImg = !!res.data.data.owner_url?res.data.data.owner_url:"/static/images/defultphoto.png";
+            this.headerImg = !!res.data.data.owner_url?res.data.data.owner_url:"https://pub.qinius.butongtech.com/defultphoto.png";
             this.nameValue = res.data.data.name;
             this.introductionValue = res.data.data.introduce;
             this.sexNum = !!res.data.data.sex?res.data.data.sex:"0";
@@ -138,7 +138,7 @@ export default {
             this.birthday = !!res.data.data.birthday?res.data.data.birthday:"19700101";
             this.region = !!res.data.data.region_name?res.data.data.region_name:"深圳市";
             this.regionId = !!res.data.data.region_id?res.data.data.region_id:"2018042317050430c6a250e4044f94bb4cc074302b789a";
-            this.headerImg = !!res.data.data.owner_url?res.data.data.owner_url:"/static/images/defultphoto.png";
+            this.headerImg = !!res.data.data.owner_url?res.data.data.owner_url:"https://pub.qinius.butongtech.com/defultphoto.png";
             this.nameValue = res.data.data.name;
             this.introductionValue = res.data.data.introduce;
             this.sexNum = !!res.data.data.sex?res.data.data.sex:"0";
@@ -206,11 +206,13 @@ export default {
           // ...
         },
         error(err){
-//          console.log(res,"错误")
+          Toast("上传失败，网络出错啦！")
+          Indicator.close();
+          console.log(err,"错误")
           // ...
         },
         complete(res){
-//          console.log(res,"完成")
+          console.log(res,"完成")
            return this.headerImg = url1+'/'+res.key;
           // ...
         }
@@ -219,9 +221,9 @@ export default {
       Indicator.open("头像上传中")
       setTimeout(()=>{
         this.headerImg =subscription.observer.headerImg;
-        console.log( this.headerImg," this.headerImg")
+//        console.log(this.headerImg," this.headerImg")
         Indicator.close();
-      },1000)
+      },1500)
 
 
     },

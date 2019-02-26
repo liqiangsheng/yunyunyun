@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="19px" height="17px" viewBox="0 0 19 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>评论1</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M243.125122,53.0120239 C243.0473,52.8500259 243.006784,52.671394 243.006784,52.4902747 L243.006784,46.4919526 C243.006784,44.5408325 240.483091,43 238.628029,43 L233.355003,43 C231.50178,43 230,44.563202 230,46.4919526 L229.911641,52.5080474 C229.911641,54.436715 231.414897,56 233.270119,56 L244.218994,56 L243.125122,53.0120239 Z M246.887208,56.4623356 C247.238103,57.168793 246.727783,58 245.943158,58 L233.273392,58 C230.361018,58 228,55.625305 228,52.6948289 L228,46.3051711 C228,43.3750617 230.359189,41 233.270119,41 L238.79248,41 C241.706471,41 244.969421,43.3609444 244.969421,46.3051711 L244.969421,52.4003906 L246.887208,56.4623356 Z" id="path-1"></path>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="切图2" transform="translate(-228.000000, -41.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="评论1" fill="#262628" fill-rule="nonzero" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>

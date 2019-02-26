@@ -10,7 +10,7 @@
          </div>
        <!--banner图片-->
        <div class="IntelligentMatchingDHeaderIndex1" v-if="!!messageArr.bannerDetailUrl">
-         <img :src="messageArr.bannerDetailUrl" alt="">
+         <img v-lazy="messageArr.bannerDetailUrl" alt="">
        </div>
        <!--导语，关注-->
        <div class="articleDetails_content_Introducer">
@@ -34,7 +34,7 @@
          <h5 v-if="!!item.titleName"><span></span>/　{{item.titleName}}　/</h5>
          <div class="IntelligentMatchingDItemIndex" v-for="(item1,index1) in item.titleInformationList">
            <span v-if="!!item1.titleInformation">{{item1.titleInformation}}</span>
-           <img v-if="!!item1.titleImg" :src="item1.titleImg" alt="">
+           <img v-if="!!item1.titleImg" v-lazy="item1.titleImg" alt="">
          </div>
        </div>
        <!--点赞-->
@@ -46,7 +46,7 @@
        </div>
        <!--版权-->
        <div class="IntelligentMatchingDItem2">
-         <img src="/static/images/banqun.png" alt="">版 权
+         <img src="https://pub.qinius.butongtech.com/banqun.png" alt="">版 权
        </div>
        <!--版权解释-->
        <div class="IntelligentMatchingDItem3">
@@ -129,7 +129,7 @@ export default {
       s:20, //每页多少
       message:"", //触底提示
       pageNum:"",//每页数据
-      userDp:"./static/images/defultphoto.png",
+      userDp:"https://pub.qinius.butongtech.com/defultphoto.png",
       isNative:false, //是不是原生或则小程序
       orgId:"2",  //2是个人 /1是企业
       userId:"1", // 用户id
@@ -187,7 +187,7 @@ export default {
     },
     share(){//分享
       let url = "http://account.butongtech.com/"
-      shareInfoShareUrl(location.href.split('#')[0].toString()).then(res=>{
+      shareInfoShareUrl(encodeURIComponent(location.href.split('#')[0])).then(res=>{
 //      console.log(this.messageArr,"this.messageArr")
         if(res.status==true){
           let obj = {
@@ -467,7 +467,7 @@ export default {
               if(item.sysUserContentVo.userDp){
                 item.userDp = item.sysUserContentVo.userDp;
               }else {
-                item.userDp = "./static/images/defultphoto.png";
+                item.userDp = "https://pub.qinius.butongtech.com/defultphoto.png";
               }
               if(item.sysUserContentVo.name){
                 item.name = item.sysUserContentVo.name;
@@ -475,7 +475,7 @@ export default {
                 item.name = "游客";
               }
             }else{
-              item.userDp = "./static/images/defultphoto.png";
+              item.userDp = "https://pub.qinius.butongtech.com/defultphoto.png";
               item.name = "游客";
             }
           })
@@ -517,7 +517,7 @@ export default {
                     item.name = "游客";
                   }
                 }else{
-                  item.userDp = "./static/images/defultphoto.png";
+                  item.userDp = "https://pub.qinius.butongtech.com/defultphoto.png";
                   item.name = "游客";
                 }
               })
@@ -535,7 +535,7 @@ export default {
                 if(item.sysUserContentVo.userDp){
                   item.userDp = item.sysUserContentVo.userDp;
                 }else {
-                  item.userDp = "./static/images/defultphoto.png";
+                  item.userDp = "https://pub.qinius.butongtech.com/defultphoto.png";
                 }
                 if(item.sysUserContentVo.name){
                   item.name = item.sysUserContentVo.name;
@@ -543,7 +543,7 @@ export default {
                   item.name = "游客";
                 }
               }else{
-                item.userDp = "./static/images/defultphoto.png";
+                item.userDp = "https://pub.qinius.butongtech.com/defultphoto.png";
                 item.name = "游客";
               }
             })

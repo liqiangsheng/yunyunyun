@@ -58,6 +58,10 @@ export default new Router({
       path: '/',
       redirect: '/homeIndex1_0',
     },
+    // {
+    //   path: '/',
+    //   redirect: '/login',
+    // },
     {
       path: '/homeIndex1_0',
       name: 'homeIndex1_0',
