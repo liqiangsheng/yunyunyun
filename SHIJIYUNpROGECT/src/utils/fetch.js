@@ -24,7 +24,7 @@ service.interceptors.request.use(config => {
         isLocalhost('?access_token=')
     }
     function isLocalhost(tokenName){
-        if (window.location.href.indexOf('localhost') >= 0 || window.location.hostname === "127.0.0.1") {
+        if (window.location.href.indexOf('localhost') >= 0 || window.location.hostname === "127.0.0.1"|| window.location.hostname === "172.16.0.31") {
             if (config.headers.token) {
                 config.url =  window._Host.LOGIN_API + window._Host.LOGIN_CONTEXT + config.url
             } else {

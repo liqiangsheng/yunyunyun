@@ -42,3 +42,55 @@ npm run dev
 ├── index.html                  // html模板
 └── package.json                // package.json
 
+//组合票提交参数
+{
+	"id": "201903131130302096615ab5ad4f8b93c1b79c9f6c84f1",
+	activityGoodsVoList: [{
+		"id": "14",
+		"originalPrice": "100",
+		"payPrice": "0.05",
+		"sort": 0
+	}],
+	activityGoodsGroupVoList: [{
+		"originalPrice": "100",
+		"payPrice": "0.05",
+		"sort": 0,
+		"groupRemark": "组合备注1",
+		"openStatus": 1,
+		"name":'', //活动title
+		"activityGoodsIdList": ["14"]
+	}, {
+		"originalPrice": "100",
+		"payPrice": "0.5",
+		"sort": 1,
+		"groupRemark": "组合备注2",
+		"openStatus": 1
+		"activityGoodsIdList": ["14"]
+	}]
+}
+{
+	"id": "201903131130302096615ab5ad4f8b93c1b79c9f6c84f1",
+	activityGoodsVoList: [{
+		"id": "14",
+		"originalPrice": "100",
+		"payPrice": "0.05",
+		"sort": 0
+	}],
+	activityGoodsGroupVoList: [{
+		"name":"组合名称1",
+		"originalPrice": "100",
+		"payPrice": "0.05",
+		"sort": 0,
+		"groupRemark": "组合备注1",
+		"openStatus": 1
+		"activityGoodsIdList": ["14"]
+	}, {
+		"name":"组合名称2",
+		"originalPrice": "100",
+		"payPrice": "0.5",
+		"sort": 1,
+		"groupRemark": "组合备注2",
+		"openStatus": 1
+		"activityGoodsIdList": ["14"]
+	}]
+}

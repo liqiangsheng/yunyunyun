@@ -3,18 +3,18 @@ import Router from 'vue-router';
 const _import = require('./_import');
 /* layout template 模板文件*/
 import Layout from '../views/layout/Layout.vue';
-import workbench from '@/router/workbench' // 工作台模块
+// import workbench from '@/router/workbench' // 工作台模块
 import system from '@/router/system' // 系统模块
-// import marketing from '@/router/marketing' // 营销模块
 import activitymrg from '@/router/activityManagement/activityManagement.js' // 活动模块
 import consultativeManagement from '@/router/consultativeManagement/consultativeManagement.js' // 咨讯管理
 import worksmanagement from '@/router/worksmanagement/worksmanagement.js' // 作品管理
 import userManagement from '@/router/userManagement/userManagement.js' // 用户管理
 import communityManagement from '@/router/communityManagement/index.js' // 社区管理
 import report_form from '@/router/report_form/index.js' // 报表管理
+import pictureBroadcastMrg from '@/router/pictureBroadcastManagement/pictureBroadcastManagement.js' // 报表管理
 
 Vue.use(Router);
-export const avoid = ['/workbench', '/operation', '/licensing', '/education', '/traffic', '/finance', '/system', '/activitymrg', '/consultativeManagement','/worksmanagement','/userManagement',"/communityManagement","/report_form"]; // 不做处理的路由
+export const avoid = ['/workbench', '/operation', '/licensing', '/education', '/traffic', '/finance', '/system', '/activitymrg', '/consultativeManagement','/worksmanagement','/userManagement',"/communityManagement","/report_form",'/pictureBroadcastMrg']; // 不做处理的路由
 
 export const constantRouterMap = [
   { path: '/login', component: _import('login/indexNew'), hidden: true },
@@ -24,7 +24,7 @@ export const constantRouterMap = [
   {
     path: '/',
     component: Layout,
-    redirect: '/workbench/home',
+    redirect: '/userManagement/userManagement/userManagementHome',
     name: 'Home',
     hidden: true,
     children: [
@@ -42,20 +42,14 @@ export default new Router({
 });
 
 export const asyncRouterMap = [
-  {
-    path: '/workbench',
-    id: 'workbench',
-    component: Layout,
-    name: '工作台',
-    children: workbench
-  },
-    // {
-    //     path: '/marketing',
-    //     id: 'marketing',
-    //     component: Layout,
-    //     name: '营销管理',
-    //     children: marketing
-    // },
+  // {
+  //   path: '/workbench',
+  //   id: 'workbench',
+  //   component: Layout,
+  //   name: '工作台',
+  //   children: workbench
+  // },
+
     {
         path: '/userManagement',
         id: 'userManagement',
@@ -97,6 +91,13 @@ export const asyncRouterMap = [
     component: Layout,
     name: '活动管理',
     children: activitymrg
+  },
+    {
+    path: '/pictureBroadcastMrg',
+    id: 'pictureBroadcastMrg',
+    component: Layout,
+    name: '火图管理',
+    children: pictureBroadcastMrg
   },
   {
     path: '/system',

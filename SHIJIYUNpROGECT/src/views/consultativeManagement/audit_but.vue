@@ -31,7 +31,7 @@
                         border-bottom
                         style="width: 100%">
                     <el-table-column width="180" align="center" prop="image">
-                        <template scope="scope">
+                        <template slot-scope="scope">
                             <img src="/static/images/logo.png" width="100" height="60"/>
                         </template>
                     </el-table-column>
@@ -48,6 +48,7 @@
                     <div class="works_list_content_AI_top">
                         <span>AI审核结果</span>
                         <el-radio v-model="radio" label="不通过">不通过</el-radio>
+                        <el-button type="primary" @click="previewClick">预览图文内容</el-button>
                     </div>
                     <div class="works_list_content_AI_bottom">
                         <div class="works_list_content_AI_bottom_left">不通过原因</div>
@@ -58,7 +59,7 @@
                                 <el-table  :data="tableDataAi" max-height="200" border style="width: 100%">
                                     <el-table-column prop="date" label="序号" width="180"> </el-table-column>
                                     <el-table-column prop="name" label="相关内容" width="180"></el-table-column>
-                                    <el-table-column prop="涉及以下原因不通过"  label="地址"></el-table-column>
+                                    <el-table-column prop="涉及以下原因不通过"  label="涉及以下原因不通过"></el-table-column>
                                 </el-table>
                             </div>
                             <div style="font-weight: 900;font-size: 16px;line-height: 32px">图片</div>
@@ -85,6 +86,8 @@
                         <span>人工审核</span>
                         <el-radio v-model="RGradio" label="不通过">不通过</el-radio>
                         <el-radio v-model="RGradio" label="通过">通过</el-radio>
+                        <span>人工结果</span>
+                        <el-radio v-model="RGradio" :label="RGradio">{{RGradio}}</el-radio>
                     </div>
                     <div class="works_list_content_RG_bottom">
                         <span>人工审核备注</span>
@@ -169,6 +172,9 @@
 
         },
         methods: {
+            previewClick(){//预览图文内容
+
+            },
             addClick(){ //提交
 
             },

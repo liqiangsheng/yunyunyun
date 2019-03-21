@@ -440,6 +440,7 @@
                 };
                 this.loading = true;
                 getCharTableList(data).then(res => {
+                    console.log(res,"getCharTableList")
                     this.loading = false;
                     if(res.data.status){
                         for(let i in res.data.data){
@@ -462,6 +463,7 @@
 
         },
         created(){
+            console.log(this.tabsData,"tabsData")
             this.getList();  //初始化数据
             if(Object.keys(this.formData).length<=7){     //如果搜索条件框小于7 更多按钮不能点击
                 this.disMore = true;    //false表示可以点击

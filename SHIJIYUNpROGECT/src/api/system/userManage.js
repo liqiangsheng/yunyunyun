@@ -5,7 +5,7 @@ import fetch from '@/utils/fetch';
 export function getCharTableList(res) {     //x
     return fetch({
         method: 'POST',
-        url: '/system/sysRole/list',
+        url: '/system/'+systemEdition+'/sysRole/list',
         data: res,
     })
 }
@@ -13,7 +13,7 @@ export function getCharTableList(res) {     //x
 export function saveCharOrUpdate(res) {     //新增或编辑
     return fetch({
         method: 'POST',
-        url: '/system/sysRole/saveOrUpdate',
+        url: '/system/'+systemEdition+'/sysRole/saveOrUpdate',
         data: res,
     })
 }
@@ -21,7 +21,7 @@ export function saveCharOrUpdate(res) {     //新增或编辑
 export function enableCharRoles(res) {     //批量启用
     return fetch({
         method: 'POST',
-        url: '/system/sysRole/enableRoles',
+        url: '/system/'+systemEdition+'/sysRole/enableRoles',
         data: res,
     })
 }
@@ -29,7 +29,7 @@ export function enableCharRoles(res) {     //批量启用
 export function disableCharRoles(res) {     //批量停用
     return fetch({
         method: 'POST',
-        url: '/system/sysRole/disableRoles',
+        url: '/system/'+systemEdition+'/sysRole/disableRoles',
         data: res,
     })
 }
@@ -37,7 +37,7 @@ export function disableCharRoles(res) {     //批量停用
 export function getCharInfo(res) {     //批量停用
     return fetch({
         method: 'GET',
-        url: '/system/sysRole/getInfo/'+res,
+        url: '/system/'+systemEdition+'/sysRole/getInfo/'+res,
     })
 }
 
@@ -47,7 +47,7 @@ export function getCharInfo(res) {     //批量停用
 export function uMgrSaveOrUpdate(res){  // 新增 编辑
     return fetch({
         method: 'POST',
-        url:'/system/sysUser/saveOrUpdate',
+        url:'/system/'+systemEdition+'/sysUser/saveOrUpdate',
         data: res,
     });
 }
@@ -56,7 +56,7 @@ export function uMgrSaveOrUpdate(res){  // 新增 编辑
 export function uMgrEnabled(res){  // 启用
     return fetch({
         method: 'POST',
-        url:'/system/sysUser/enableUsers',
+        url:'/system/'+systemEdition+'/sysUser/enableUsers',
         data: res,
     });
 }
@@ -65,7 +65,7 @@ export function uMgrEnabled(res){  // 启用
 export function uMgrDisabled(res){  // 停用
     return fetch({
         method: 'POST',
-        url:'/system/sysUser/disableUsers',
+        url:'/system/'+systemEdition+'/sysUser/disableUsers',
         data: res,
     });
 }
@@ -73,7 +73,7 @@ export function uMgrDisabled(res){  // 停用
 export function uMgrList(res){  // list
     return fetch({
         method: 'POST',
-        url:'/system/sysUser/list',
+        url:'/system/'+systemEdition+'/sysUser/list',
         data: res,
     });
 }
@@ -81,7 +81,7 @@ export function uMgrList(res){  // list
 export function uSysRoleSelectList(res){  // selectList
     return fetch({
         method: 'POST',
-        url:'/system/sysRole/selectList',
+        url:'/system/'+systemEdition+'/sysRole/selectList',
         // data: res,
     });
 }
@@ -93,7 +93,7 @@ export function uSysRoleSelectList(res){  // selectList
 export function positingList(res){  // list
     return fetch({
         method: 'POST',
-        url:'/system/sysPosition/list',
+        url:'/system/'+systemEdition+'/sysPosition/list',
         data: res,
     });
 }
@@ -101,7 +101,7 @@ export function positingList(res){  // list
 export function positingSaveOrUpdate(res){  // list
     return fetch({
         method: 'POST',
-        url:'/system/sysPosition/saveOrUpdate',
+        url:'/system/'+systemEdition+'/sysPosition/saveOrUpdate',
         data: res,
     });
 }
@@ -109,7 +109,7 @@ export function positingSaveOrUpdate(res){  // list
 export function positingEnabled(res){  // 启用
     return fetch({
         method: 'POST',
-        url:'/system/sysPosition/enablePositions',
+        url:'/system/'+systemEdition+'/sysPosition/enablePositions',
         data: res,
     });
 }
@@ -118,7 +118,7 @@ export function positingEnabled(res){  // 启用
 export function positingDisabled(res){  // 停用
     return fetch({
         method: 'POST',
-        url:'/system/sysPosition/disablePositions',
+        url:'/system/'+systemEdition+'/sysPosition/disablePositions',
         data: res,
     });
 }
@@ -129,7 +129,7 @@ export function positingDisabled(res){  // 停用
 export function findPageResource(res) {     //获取列表
     return fetch({
         method: 'POST',
-        url: '/system/sysResource/findPageResource?pageCode='+res,
+        url: '/system/'+systemEdition+'/sysResource/findPageResource?pageCode='+res,
     })
 }
 
@@ -140,7 +140,7 @@ export function findPageResource(res) {     //获取列表
 export function getResourceList(res){  //获取资源列表
     return fetch({
         method: 'POST',
-        url:'/system/sysResource/tree',
+        url:'/system/'+systemEdition+'/sysResource/tree',
         data: res,
     });
 }
@@ -148,7 +148,7 @@ export function getResourceList(res){  //获取资源列表
 export function delResourcePost(res){  //删除资源
     return fetch({
         method: 'POST',
-        url:'/system/sysResource/delete/'+res,
+        url:'/system/'+systemEdition+'/sysResource/delete/'+res,
         data: {},
     });
 }
@@ -156,7 +156,7 @@ export function delResourcePost(res){  //删除资源
 export function saveResource(res){  //保存|更新资源
     return fetch({
         method: 'POST',
-        url:'/system/sysResource/saveOrUpdate',
+        url:'/system/'+systemEdition+'/sysResource/saveOrUpdate',
         data: res,
     });
 }
@@ -169,7 +169,7 @@ export function saveResource(res){  //保存|更新资源
 export function getRegionList(res){  //获取地区列表
     return fetch({
         method: 'POST',
-        url:'/system/sysRegion/tree',
+        url:'/system/'+systemEdition+'/sysRegion/tree',
         data: res,
     });
 }
@@ -177,7 +177,7 @@ export function getRegionList(res){  //获取地区列表
 export function delRegionPost(res){  //删除地区
     return fetch({
         method: 'POST',
-        url:'/system/sysRegion/delete/'+res,
+        url:'/system/'+systemEdition+'/sysRegion/delete/'+res,
         data: {},
     });
 }
@@ -185,7 +185,7 @@ export function delRegionPost(res){  //删除地区
 export function saveRegion(res){  //保存|更新地区
     return fetch({
         method: 'POST',
-        url:'/system/sysRegion/saveOrUpdate',
+        url:'/system/'+systemEdition+'/sysRegion/saveOrUpdate',
         data: res,
     });
 }
@@ -197,7 +197,7 @@ export function saveRegion(res){  //保存|更新地区
 export function getOrgList(res){  //获取地区列表
     return fetch({
         method: 'POST',
-        url:'/system/sysOrg/tree',
+        url:'/system/'+systemEdition+'/sysOrg/tree',
         data: res,
     });
 }
@@ -232,7 +232,7 @@ export function deployment(res){  //获取地区列表
 export function modify(res){  //获取地区列表
     return fetch({
         method: 'POST',
-        url:'/system/sysUser/password/modify',
+        url:'/system/'+systemEdition+'/sysUser/password/modify',
         data: res,
     });
 }

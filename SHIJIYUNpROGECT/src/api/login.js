@@ -3,18 +3,21 @@ import axios from 'axios'; //引入axios
 import store from '@/store'
 
 ///////////////////////////////* 正式 login登录 *///////////////////////////////////////////
-/*export function login(username, password) {
-    var loginUrl = window.location.href.indexOf('localhost') >= 0 ? window._Host.LOGIN_API + window._Host.LOGIN_CONTEXT  + '/sec/oauth/token' : window._Host.LOGIN_CONTEXT + '/sec/oauth/token'
-    return axios({
-         method:"POST",
-         url: loginUrl,
-         headers: {
-             "Authorization": "Basic " + btoa('clientapp' + ":" + '123456'),
-             "Content-Type": "application/x-www-form-urlencoded"
-         },
-         data: 'username='+ username + '&password=' + password + '&grant_type=password'
-     })
-}*/
+// export function login(username, password) {
+//     var loginUrl = window.location.href.indexOf('localhost') >= 0 ? window._Host.LOGIN_API + window._Host.LOGIN_CONTEXT  + '/sec/oauth/token' : window._Host.LOGIN_CONTEXT + '/sec/oauth/token'
+//     // var loginUrl = window._Host.LOGIN_API + '/sec/oauth/token'
+//     console.log(loginUrl,"loginUrl")
+//     console.log(window.location.hostname,"loginUrl")
+//     return axios({
+//          method:"POST",
+//          url: loginUrl,
+//          headers: {
+//              "Authorization": "Basic " + btoa('clientapp' + ":" + '123456'),
+//              "Content-Type": "application/x-www-form-urlencoded"
+//          },
+//          data: 'username='+ username + '&password=' + password + '&grant_type=password'
+//      })
+// }
 
 export function login(username, password,verifyCode,key) {
     return fetch({
@@ -26,7 +29,7 @@ export function login(username, password,verifyCode,key) {
             "Content-Type": "application/x-www-form-urlencoded",
             "token":true //标识
         },
-        data: 'username='+ username + '&password=' + password + '&grant_type=password'+'&key='+key+'&imageCode='+verifyCode
+        data: 'username='+ username + '&password=' + password + '&grant_type=password'+'&key='+key,
     })
 }
 export function refreshToken(refreshToken) {
@@ -86,7 +89,7 @@ export function getInfo() {
 export function loadDictCache() {
     return fetch({
         method: 'GET',
-        url: '/system/home/loadDictCache',
+        url: '/system/'+window.systemEdition+'/home/loadDictCache',
     })
 }
 
@@ -94,12 +97,12 @@ export function loadDictCache() {
 export function loadOrgCache() {
     return fetch({
         method: 'GET',
-        url: '/system/home/loadOrgCache',
+        url: '/system/'+window.systemEdition+'/home/loadOrgCache',
     })
 }
 export function load() {
     return fetch({
         method: 'GET',
-        url: '/system/home/load',
+        url: '/system/'+window.systemEdition+'/home/load',
     })
 }

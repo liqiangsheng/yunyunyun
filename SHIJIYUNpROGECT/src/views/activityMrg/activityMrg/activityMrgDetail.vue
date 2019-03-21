@@ -2,65 +2,85 @@
     <!--活动详情查询-->
     <div class="activitydetailBox">
         <div class="activityBox">
-           <div class="activityBoxLeft">
-              活动项：
-           </div>
             <div class="activityBoxRight">
-               <table class="activityBoxtable">
-                   <thead>
-                       <tr>
-                           <th width="90">活动号</th>
-                           <th width="240">活动名称</th>
-                           <th width="90">地点</th>
-                           <th width="110">时间</th>
-                           <th width="90">收藏</th>
-                           <th width="90">报名</th>
-                           <th width="90">评论</th>
-                           <th width="90">状态</th>
-                           <th width="110">报名时间</th>
-                           <th width="90">费用</th>
-                           <th width="90">管理部门</th>
-                           <th width="90">活动审核</th>
-                           <th width="90">操作</th>
-                           <th width="90">报名入口</th>
-                           <th width="90">人脸识别</th>
-                           <th width="90">购买设置</th>
-                           <th width="90">门票备注</th>
-                       </tr>
-                   </thead>
-                   <tbody>
-                     <tr>
-                         <td width="90">S10000011</td>
-                         <td width="240">第十一届中国（深圳）国际文化产业博览交易会中芬设计园分会场</td>
-                         <td width="90">深圳</td>
-                         <td width="110">从 2018-11-06 </td>
-                         <td width="90">3000</td>
-                         <td width="90">3</td>
-                         <td width="90">1080</td>
-                         <td width="90">接受报名</td>
-                         <td width="110">
-                             从 2018-09-01到 2018-11-05
-                         </td>
-                         <td width="90">300</td>
-                         <td width="90">运营1组</td>
-                         <td width="90">2018-08-02 </td>
-                         <td width="120">
-                             <span>编辑</span>
-                             <span>取消</span>
-                             <span>分享</span>
-                         </td>
-                         <td width="250">
-                             <div><span>普通</span><span>独立</span></div>
-                             <span>设置</span>
-                             <span>登记设置</span>
-                             <span>报名详单</span>
-                         </td>
-                         <td width="90">无</td>
-                         <td width="90">单张</td>
-                         <td width="90"><el-input></el-input></td>
-                     </tr>
-                   </tbody>
-               </table>
+                <el-table :data="activityInfo" style="width: 100%">
+                    <el-table-column label="活动号" width="240">
+                        <template slot-scope="scope">
+                          {{scope.row.id}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="活动名称" width="200">
+                        <template slot-scope="scope">
+                            {{scope.row.title}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="地点" width="200">
+                        <template slot-scope="scope">
+                            {{scope.row.address}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="时间" width="110">
+                        <template slot-scope="scope">
+                            从{{$moment(scope.row.startTime).format("YYYY-MM-DD")}}到{{$moment(scope.row.endTime).format("YYYY-MM-DD")}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="报名" width="100">
+                        <template slot-scope="scope">
+                            {{scope.row.signCount}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="状态" width="100">
+                        <template slot-scope="scope">
+                             <span class='homeBottomstate' v-if="nowTime >scope.row.signStartTime && nowTime <scope.row.signEndTime">
+                                      立即报名
+                                  </span>
+                            <span class='homeBottomstate' v-if="nowTime < scope.row.signStartTime">
+                                      即将开始
+                                  </span>
+                            <span class='homeBottomstate' v-if="nowTime <= scope.row.sendTime && nowTime >= scope.row.sstartTime">
+                                      正在进行
+                                  </span>
+                            <span class='homeBottomstate end' v-if="nowTime >scope.row.endTime">
+                                      活动结束
+                                  </span>
+                            <span class='homeBottomstate end' v-if="nowTime > scope.row.signEndTime && nowTime < scope.row.sstartTime">
+                                      报名结束
+                                  </span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="报名时间" width="120">
+                        <template slot-scope="scope">
+                            从{{$moment(scope.row.signStartTime).format("YYYY-MM-DD")}}到{{$moment(scope.row.signEndTime).format("YYYY-MM-DD")}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="管理部门" width="100">
+                        <template slot-scope="scope">
+                            {{scope.row.responsibleOrg}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="200">
+                        <template slot-scope="scope">
+                            <span class="cursor fontColor operation" @click="commonFnc(name='分享',scope.row.id)">分享</span>
+                            <span class="cursor fontColor operation" @click="commonFnc(name='查看',scope.row.id)">查看</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="报名入口" width="100">
+                        <template slot-scope="scope">
+                            {{scope.row.noteMode|noteMode}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="人脸识别" width="100">
+                        <template slot-scope="scope">
+                            {{!!scope.row.faceDetection?'是':'否'}}
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="门票备注" width="100">
+                        <template slot-scope="scope">
+                            {{scope.row.ticketRemark}}
+                        </template>
+                    </el-table-column>
+
+                </el-table>
             </div>
         </div>
         <!------------------->
@@ -68,83 +88,215 @@
         报名列表
         </div>
        <div class="activityBoxItem1">
-           <table class="activityBoxItem1Table">
-               <thead>
-                   <tr>
-                       <!--<th v-for="(item,index) in activityBoxItem1Table">{{item}}</th>-->
-                       <th width="90">报名号</th>
-                       <th width="90">姓名</th>
-                       <th width="120">手机号</th>
-                       <th width="240">邮箱</th>
-                       <th width="90">国家</th>
-                       <th width="90">省份</th>
-                       <th width="90">城市</th>
-                       <th width="240">地址</th>
-                   </tr>
-               </thead>
-               <tbody>
-                     <tr>
-                        <td width="90">00000001</td>
-                        <td width="90">韩梅梅</td>
-                        <td width="120">13866997760</td>
-                        <td width="240">meimei.han@163.com</td>
-                        <td width="90">中国</td>
-                        <td width="90">广东省</td>
-                        <td width="90">广州市</td>
-                        <td width="240">番禺区碧桂园332号1901</td>
-                        <td width="120">
-                            <span class="cursor">照片</span>
-                            <span class="cursor">二维码</span>
-                        </td>
-                     </tr>
-               </tbody>
-           </table>
+           <el-table :data="tbodyList" style="width: 100%">
+               <el-table-column :label="item.displayName" width="120" v-for="(item,index) in thead" :key="index">
+                   <template slot-scope="scope">
+                       <span>{{scope.row[item.code]}}</span>
+                   </template>
+               </el-table-column>
+               <el-table-column width="120">
+                   <template slot-scope="scope">
+                       <a :href="scope.row.faceUrl" target="_Blank" v-if="!!scope.row.faceUrl" class="cursor">拍照图片</a>
+                   </template>
+               </el-table-column>
+               <el-table-column width="120" >
+                   <template slot-scope="scope">
+                       <span @click="erweima(scope.row.thirdPartCode)" class="cursor">二维码</span>
+                   </template>
+               </el-table-column>
+           </el-table>
        </div>
         <!-------->
-        <div class="box-page"><refresh-icon @refreshTable="getList()"></refresh-icon>
+        <div class="box-page"><refresh-icon @refreshTable="getList"></refresh-icon>
             <el-pagination
                     @current-change="handleCurrentChange"
                     @size-change="handleSizeChange"
                     :current-page="currentPage"
-                    :page-sizes="[10, 20, 30, 40]"
+                    :page-sizes="[10, 50, 100, 200]"
                     :page-size="pageSize"
                     layout="total, sizes, prev, pager, next, jumper"
                     :total="total">
             </el-pagination>
         </div>
+        <!--分享生成二维码-->
+        <el-dialog :append-to-body="true" class="dialog" title="二维码" :visible.sync="qrcodeShow" :close-on-click-modal="true" width="300px" top="30%">
+            <qrCode v-if="qrcodeShow" :activityID="activityID"></qrCode>
+        </el-dialog>
+        <!--二维码-->
+        <el-dialog :append-to-body="true" class="dialog" title="二维码" :visible.sync="erweimaShow" :close-on-click-modal="true" width="300px" top="30%">
+            <erweima v-if="erweimaShow" :erweimaId="erweimaId"></erweima>
+        </el-dialog>
     </div>
 </template>
 
 
 <script>
-
+    //         报名活动查询      //报名的详细人资料              //动态生成的报名信息                      //城市
+    import {activityInfofindOne,ustomerActivitySignupNotelistTob,activitySignupNoteSettingfindByActivityId,sysRegionsinglelevel} from '../../../api/activityMrg/activityMrg'
+    import qrCode from "./alter/qrcode.vue"
+    import erweima from "./alter/erweima.vue"
+    const date = new Date().getTime();
     export default {
+        components:{
+            qrCode,erweima
+        },
         data() {
             return {
+                erweimaId : '',  //二维码字符串
+                erweimaShow :false, //二维码显示
+                activityID:'', //活动id
+                thead:[],//报名的动态头部信息
+                tbodyList:[],//实际报名数据
+                qrcodeShow:false, // 二维码显示
+                activityInfo:[], // 活动信息
+                nowTime: date, //现在的时间
                 activityBoxItem1Table:["报名号","姓名","手机号","邮箱","国家","省份","城市","地址"],
                 pageSize:10, //当前页面
                 currentPage:1,  //跳转页面
                 total:0,   //分页总数量
+                cityName:[], //城市
             }
         },
-
+        created(){
+            sysRegionsinglelevel().then(res=>{
+                if(res.data.status == true){
+                    this.cityName = res.data.data;
+                }else{
+                    this.$message.warning(res.data.message)
+                }
+            })
+            activityInfofindOne(this.$router.history.current.query.id).then(res=>{
+                 console.log(res,"报名号")
+                if(res.data.status == true){
+                    this.activityInfo = [res.data.data];
+                }else{
+                    this.$message.warning(res.data.message)
+                }
+            })
+            this.query();
+        },
         methods: {
-            getList(){ // 获取数据
-                console.log(1)
+            erweima(id){ //二维码
+             this.erweimaId = id;
+             this.erweimaShow = true;
+            },
+            commonFnc(v,id){ //编辑 取消 分享 登记设置
+                if(v === '分享'){
+                    this.activityID = this.$router.history.current.query.id;
+                    this.qrcodeShow = true;
+                }else if(v === '查看'){ //去活动查看列表
+                    this.$router.push({path:'/activitymrg/activityMrg/activityMrgAddSingle/lookActivityMrgSingle',query:{id}})
+                }
+            },
+            query(){ // 获取数据
+                activitySignupNoteSettingfindByActivityId(this.$router.history.current.query.id).then(res=>{
+                    if(res.data.status == true){
+
+                        res.data.data.forEach((item,index)=>{
+                            if(item.hideStatus == false){
+                                this.thead.push(item);
+                            }
+                        })
+
+                    }else{
+                        this.$message.warning(res.data.message)
+                    }
+                })
+                ustomerActivitySignupNotelistTob({activityId:this.$router.history.current.query.id,p:this.currentPage,s:this.pageSize}).then(res=>{
+                    if(res.data.status==true){
+                        res.data.data.forEach((item,index)=>{
+                                if(item.sex){
+                                    item.sex = item.sex==0?'男':item.sex==1?'女':'未知';
+                                }
+                                if(item.regionId){
+                                    item.regionId = item.regionName;
+                                }
+                            if(item.idType){
+                                item.idType = item.idType==1?'身份证': item.idType==2?'护照': item.idType==3?'军官证':'未知';
+                            }
+                            if(item.gainChannel){
+                                item.gainChannel = item.gainChannel==1?'微信': item.gainChannel==2?'微博': item.gainChannel==3?'官网': item.gainChannel==4?'展会官方': item.gainChannel==5?'主办方邀请函': item.gainChannel==6?'新闻（报纸/电视/电台）': item.gainChannel==7?'户外广告（公交站台/路牌广告）': item.gainChannel==8?'参展商推广平台': '其他';
+                            }else {
+                                item.gainChannel = '其他'
+                            }
+                            if(item.corpDomains){
+                                item.corpDomains = item.corpDomains==1?'智能家居设计': item.corpDomains==2?'智能硬件设计': item.corpDomains==3?'VR': item.corpDomains==4?'家具设计': item.corpDomains==5?'消费电子': item.corpDomains==6?'智能制造': item.corpDomains==7?'创客': '其他';
+                            }else {
+                                item.corpDomains = '其他'
+                            }
+                            if(item.interestedDomains){
+                                item.interestedDomains = item.interestedDomains==1?'智能家居设计': item.interestedDomains==2?'智能硬件设计': item.interestedDomains==3?'VR': item.interestedDomains==4?'家具设计': item.interestedDomains==5?'消费电子': item.interestedDomains==6?'智能制造': item.interestedDomains==7?'创客': '其他';
+                            }else {
+                                item.interestedDomains = '其他'
+                            }
+
+
+                        })
+
+                        this.tbodyList = res.data.data;
+                        this.total = res.data.total;
+                    }else{
+                        this.$message.warning(res.data.message)
+                    }
+                })
+            },
+            getList(){
+                this.currentPage = 1;
+                this.query();
             },
             handleSizeChange(val) {     //每页显示多少行
                 this.pageSize = val;
-                this.getList();
+                this.query();
             },
             handleCurrentChange(val) {  //当前页
                 this.currentPage = val;
-                this.getList();
+                this.query();
             },
         }
     };
 </script>
 
 <style scoped lang="scss">
- @import "../../../assets/css/activity/activityMrgDetail.css";
+    .activitydetailBox{
+       width:100%;
+    }
+    .activityBox{
+        width: 100%;
+        background: #eeeeee;
+        .activityBoxRight{
+            width: 100%;
+        }
+    }
+
+    .activityBoxtable thead tr th{
+        text-align: center;
+        font-size: 16px;
+        background: #5a5e66;
+    }
+    .activityBoxtable tbody tr td{
+        text-align: center;
+        font-size: 14px;
+        /*padding-top: 20px;*/
+
+        height: 80px;
+    }
+    .activityBoxItem{
+        width: 100%;
+        height: 50px;
+        line-height: 50px;
+        font-size: 16px;
+        font-weight: 900;
+        background: #FFFFFF;
+    }
+    .activityBoxItem1{
+        width: 100%;
+    }
+
+
+    .cursor{
+        color: #0000FF;
+        cursor: pointer;
+    }
+
 
 </style>

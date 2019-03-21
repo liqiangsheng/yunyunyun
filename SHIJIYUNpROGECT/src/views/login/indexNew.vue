@@ -3,7 +3,7 @@
     <div id="loginBox">
       <div class="box-left">
         <div class="loginImage ">
-          <img src="../../assets/images/login/login-img.png" width="100%" height="100%"/>
+          <img src="../../assets/images/login/login-img.png" style="width: 385px;height: 272px"/>
         </div>
         <div class="copyright">Copyright©2016 Lilixc.com,All Rights Reserved</div>
       </div>
@@ -19,15 +19,15 @@
             <el-form-item prop="password" :rules="filter_rules({required:true})" class="contentBox inputTop">
               <el-input name="password"  type="password" v-model="loginForm.password"  placeholder="请输入密码" prefix-icon="icon2"></el-input>
             </el-form-item>
-            <el-row :span="24">
-              <el-col :span="12">
-                <el-form-item prop="verifyCode"  :rules="filter_rules({required:true})" class="verificationBox inputTop">
-                  <el-input  type="text" v-model="loginForm.verifyCode"  placeholder="请输入验证码" ></el-input>
-                </el-form-item>
-              </el-col>
-              <img :src="loginForm.imageCode" alt="" class="verificationImg inputTop" @click="refresh" :key="loginForm.refreshImg" style="border:1px solid #c1c1c1">
-              <!--<el-checkbox v-model="checked" class="remember">记住密码</el-checkbox>-->
-            </el-row>
+            <!--<el-row :span="24">-->
+              <!--<el-col :span="12">-->
+                <!--<el-form-item prop="verifyCode"  :rules="filter_rules({required:true})" class="verificationBox inputTop">-->
+                  <!--<el-input  type="text" v-model="loginForm.verifyCode"  placeholder="请输入验证码" ></el-input>-->
+                <!--</el-form-item>-->
+              <!--</el-col>-->
+              <!--<img :src="loginForm.imageCode" alt="" class="verificationImg inputTop" @click="refresh" :key="loginForm.refreshImg" style="border:1px solid #c1c1c1">-->
+              <!--&lt;!&ndash;<el-checkbox v-model="checked" class="remember">记住密码</el-checkbox>&ndash;&gt;-->
+            <!--</el-row>-->
             <el-row :span="24" class="btnBox">
               <el-col :span="24" class="contentBox">
                 <el-form-item >
@@ -54,27 +54,27 @@
                     password: '',
                     verifyCode:'',
                     refreshImg:0,
-                    imageCode:'',
-                    key:''
+//                    imageCode:'',
+//                    key:''
                 },
                 checked:false,
                 loading: false,
             }
         },
         methods: {
-            valiCodea(){
-                this.loginForm.verifyCode = '';
-                verification().then(res=>{
-                    if(res.data.status){
-                        this.loginForm.imageCode = res.data.data.image;
-                        this.loginForm.key = res.data.data.key;
-                    }
-                })
-            },
-            refresh(){
-                this.loginForm.refreshImg++;
-                this.valiCodea();
-            },
+//            valiCodea(){
+//                this.loginForm.verifyCode = '';
+//                verification().then(res=>{
+//                    if(res.data.status){
+//                        this.loginForm.imageCode = res.data.data.image;
+//                        this.loginForm.key = res.data.data.key;
+//                    }
+//                })
+//            },
+//            refresh(){
+//                this.loginForm.refreshImg++;
+//                this.valiCodea();
+//            },
             handleLogin: function (formName) {
                 this.loading = true;
                 this.$refs[formName].validate((valid) => {
@@ -99,7 +99,7 @@
                                             router.addRoutes(this.$store.getters.addRouters);
 //                                            //登录处理 如果有“首页路由权限”跳首页，如果没有跳“欢迎页面”
                                             let addRouters = this.$store.getters.addRouters;
-                                            console.log(addRouters,"carter")
+//                                            console.log(addRouters,"carter")
                                             for (let j = 0; j < addRouters.length; j++) {
                                                 if (addRouters[j].path === "/workbench") {
                                                     console.log(addRouters[j].path ,"asdasjkdk")
@@ -121,21 +121,21 @@
                                         })
                                     } else {
                                         this.loading = false;
-                                        this.loginForm.refreshImg++;
-                                        this.valiCodea()
+//                                        this.loginForm.refreshImg++;
+//                                        this.valiCodea()
                                     }
                                 })
                             } else {
                                 this.loading = false;
-                                this.loginForm.refreshImg++;
-                                this.valiCodea()
+//                                this.loginForm.refreshImg++;
+//                                this.valiCodea()
                                 this.$message.warning(res.data.message);
                             }
                         }).catch((res) => {
                             // this.$message.error('登录失败，请联系管理员');
                             this.loading = false;
-                            this.loginForm.refreshImg++;
-                            this.valiCodea()
+//                            this.loginForm.refreshImg++;
+//                            this.valiCodea()
                         });
                     } else {
                         this.$message.warning('请输入必填项！');
@@ -178,7 +178,7 @@
         },
         mounted(){
            // this.getCookie()
-           this.valiCodea()
+//           this.valiCodea()
             let _this = this;
             document.onkeydown=function(e){
                 let keycode=document.all?event.keyCode:e.which;

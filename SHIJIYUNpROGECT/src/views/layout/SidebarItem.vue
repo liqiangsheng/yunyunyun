@@ -79,7 +79,7 @@
 
         },
         created(){
-            console.log(this.routes,"carter")
+//            console.log(this.routes,"carter")
         }
     }
 </script>

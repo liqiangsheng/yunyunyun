@@ -1,4 +1,4 @@
-export function parseTime(time, cFormat) {
+export function parseTime(time, cFormat) { //时间戳转时间格式
     if(time===null||time===''||time==='-'){
         return '-'
     }
@@ -33,7 +33,7 @@ export function parseTime(time, cFormat) {
     return time_str
 }
 
- export function formatTime(time, option) {
+ export function formatTime(time, option) {//时间方法，
    time = +time * 1000;
    const d = new Date(time);
    const now = Date.now();

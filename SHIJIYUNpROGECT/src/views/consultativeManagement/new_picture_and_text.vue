@@ -113,15 +113,21 @@
         <el-dialog :append-to-body="true" class="dialog" title="预览" :visible.sync="shortMessageaShow" :close-on-click-modal="true" width="375px" top="10%">
             <shortMessageaAlter :preservationMessage="preservationMessage"></shortMessageaAlter>
         </el-dialog>
+        <el-dialog :append-to-body="true" class="dialog" title="全文预览" :visible.sync="fullTextPreviewShow" :close-on-click-modal="true" width="375px" top="10%">
+            <fullTextPreviewAlter :fullTextPreviewObj="fullTextPreviewObj"></fullTextPreviewAlter>
+        </el-dialog>
     </div>
 </template>
 
 
 <script>
-    import shortMessageaAlter from "./alter/previewAlter.vue"
+    import shortMessageaAlter from "./alter/previewAlter.vue" //段落预览
+    import fullTextPreviewAlter from "./alter/fullTextPreview.vue" //全文预览
     export default {
         data() {
             return {
+                fullTextPreviewShow:false, //全文预览
+                fullTextPreviewObj:{title:"我是中国人"},//全文预览内容
                 preservationMessage:"2222", //预览的内容
                 shortMessageaShow:false,// 预览显示消失
                 other:"允许评论",//其他
@@ -152,14 +158,20 @@
             }
         },
         components:{
-            shortMessageaAlter
+            shortMessageaAlter,fullTextPreviewAlter
         },
         created(){
 
         },
         methods: {
             preservationClick(i){ //1保存2全文预览3发布
+                   if(i==1){
 
+                   }else if(i==2){
+                       this.fullTextPreviewShow = true;
+                   }else if(i==3){
+
+                   }
             },
             addtextArrClick(v){//添加段落
              console.log(v)

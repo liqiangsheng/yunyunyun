@@ -2,7 +2,7 @@ import fetch from '@/utils/fetch';
 export function getTableList(res) {
     return fetch({
         method: 'POST',
-        url: '/system/sysRole/list',
+        url: '/system/'+window.systemEdition+'/sysRole/list',
         data: res,
     })
 }
@@ -15,6 +15,6 @@ export function getTableList(res) {
 export function imageUpToken() {
     return fetch({
         method: 'GET',
-        url: '/system/sysAttachment/upToken',
+        url: '/system/'+window.systemEdition+'/sysAttachment/upToken',
     })
 }

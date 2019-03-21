@@ -8,7 +8,7 @@
                            border-bottom
                            style="width: 100%">
                        <el-table-column width="180" align="center" prop="image">
-                           <template scope="scope">
+                           <template slot-scope="scope">
                                <img src="/static/images/logo.png" width="100" height="60"/>
                            </template>
                        </el-table-column>

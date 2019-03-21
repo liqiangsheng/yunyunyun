@@ -18,6 +18,7 @@ import './permission'
 import vuePlugins from '@/utils/vuePlugins'
 import '@/utils/plugins'
 import '@/directive/index.js'
+
 //carter
 import './filter'
 import moment from 'moment'

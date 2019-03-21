@@ -87,6 +87,7 @@
                     "resourceIds":this.$refs.tree.getCheckedKeys()
                 };
                 saveCharOrUpdate(data).then(res=>{
+                    console.log(res,"ppppppppp")
                     _this.editDisabled = true;
                     if(res.data.status){
                         _this.getList();
@@ -121,6 +122,7 @@
                 //let data = [];
                 let authorityId = this.tabsData.data.res.id;
                 getCharInfo(authorityId).then(res =>{
+                    console.log(res,"getCharInfo")
                     _this.formData = res.data.data;
                     _this.data = res.data.data.resources;
                     _this.resourceIds = res.data.data.resourceIds
@@ -135,7 +137,9 @@
             
         },
         created(){
+            console.log(this.tabsData)
             this.getList();  //初始化数据
+
         }
     };
 </script>

@@ -52,7 +52,7 @@
                                 <el-table-column width="80" type="expand" >
                                     <template slot-scope="props">
                                         <el-form label-position="left" inline class="demo-table-expand">
-                                            <el-form-item :label="props.row.pinglunNum" v-for="(item1,index1) in props.row.childres" class="childresList">
+                                            <el-form-item :label="props.row.pinglunNum" v-for="(item1,index1) in props.row.childres" class="childresList" :key="index">
 
                                                 <div  class="listData">{{item1.biaoji}}</div>
                                                 <div  class="listData1">{{item1.pinglun}}</div>

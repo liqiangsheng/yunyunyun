@@ -5,7 +5,7 @@ import fetch from '@/utils/fetch';
 export function saveHiddenColumn(res) {     //获取列表
     return fetch({
         method: 'POST',
-        url: '/system/sysResource/saveHiddenColumn',
+        url: '/system/'+window.systemEdition+'/sysResource/saveHiddenColumn',
         data: res
     })
 }
@@ -13,7 +13,7 @@ export function saveHiddenColumn(res) {     //获取列表
 export function saveHiddenColumn1(res) {     //获取列表
     return fetch({
         method: 'POST',
-        url: '/system/sysResource/saveHiddenColumn',
+        url: '/system/'+window.systemEdition+'/sysResource/saveHiddenColumn',
         data: res
     })
 }
@@ -24,6 +24,6 @@ export function saveHiddenColumn1(res) {     //获取列表
 export function findPageResource(res) {     //获取列表
     return fetch({
         method: 'POST',
-        url: '/system/sysResource/findPageResource?pageCode='+res,
+        url: '/system/'+window.systemEdition+'/sysResource/findPageResource?pageCode='+res,
     })
 }

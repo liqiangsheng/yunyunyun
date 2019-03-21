@@ -62,7 +62,7 @@ const user = {
     Login({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo.username, userInfo.password,userInfo.verifyCode,userInfo.key).then(response => {  //登录页面请求
-            console.log(response,"carter")
+            // console.log(response,"carter")
            if(response.data.status){
                /* 第一步 获取token信息 */
                Cookies.set('ACCESS_TOKEN',response.data.access_token);   //存储access_token

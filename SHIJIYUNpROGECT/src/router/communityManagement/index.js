@@ -1,6 +1,6 @@
 const _import = require('../_import');
 const communityManagement = [
-    { path: 'communityManagement', component: _import('layout/routerView'), name: '社区管理', children: [
+    { path: 'communityManagement', component: _import('layout/routerView'), name: '社区管理菜单', children: [
         //用户管理子页面
         {path:"notice",component:_import("communityManagement/notice"),name:"通知管理", children: [
             //通知管理子页面
