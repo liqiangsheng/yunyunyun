@@ -309,7 +309,7 @@ export default new Router({
       component: MultiActivity,
       meta:{
         isTrue:false,
-        title:"票务选择",
+          title:"票务选择",
       }
     },
     {

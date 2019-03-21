@@ -33,6 +33,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     'vuex': 'Vuex',
     'vue-lazyload': 'VueLazyload',
     'vconsole': 'VConsole',
+    'jquery' : '$',
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html

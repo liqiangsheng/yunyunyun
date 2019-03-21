@@ -206,6 +206,7 @@
           commonUserCareUser(v.id,data.data.id,"2",data.data.access_token).then(res=>{
             if(res.data.status==true){
               v.cared = true;
+              this.$shujike('关注');
               Toast("关注成功")
             }else{
               Toast("关注500出错啦")

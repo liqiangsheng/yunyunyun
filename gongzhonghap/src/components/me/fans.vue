@@ -99,6 +99,7 @@ export default {
           v.userType = '1'
           companyInfoCareCompany(v.userId,this.userInfo.data.id,v.userType,this.userInfo.data.access_token).then(res=>{
             if(res.data.status==true){
+              this.$shujike('关注');
               Toast("关注成功");
               v.mutual = true
             }else{

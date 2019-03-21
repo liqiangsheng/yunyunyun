@@ -24,7 +24,7 @@
               <h5  class='homeBottomTitle' v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'> {{item.name}}</h5>
               <h5  class='homeBottomTitle' v-else> {{item.name}}</h5>
               <div class='homeBottomPrice'>
-                <span v-if="item.expenses !=0&&item.expenses >0">¥{{item.expenses}}</span>
+                <span v-if="item.expenses !=0&&item.expenses >0" style="color: rgb(254, 95, 95)">¥{{item.expenses}}</span>
                 <span v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime >item.endTime" style='color:#c5c5c6'>免费</span>
                 <span v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'>免费</span>
                 <span v-else>免费</span>
@@ -148,9 +148,9 @@ export default {
             })
           }
         })
-        Indicator.close();
+//        Indicator.close();
       }else{
-        Indicator.close();
+//        Indicator.close();
         Tost("网络异常，请重试")
       }
     })

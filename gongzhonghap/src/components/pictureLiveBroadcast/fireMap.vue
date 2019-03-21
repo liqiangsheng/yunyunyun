@@ -4,7 +4,7 @@
         <li style="width: 0.2rem;float: left;height: 100%">
 <!--占位u-->
         </li>
-        <li v-for="(item,index) in objData" class="fireMapList" :style="'background:url('+item.advertiseImage.imageUrl+');background-size:100% 100%;width:'+310/375*screenWidh/100+'rem'" @click="goToPicture(item)">
+        <li v-for="(item,index) in objData" class="fireMapList" :style="'background:url('+item.advertiseImage.imageUrl+');background-size:100% 100%;width:'+300/375*screenWidh/100+'rem'" @click="goToPicture(item)">
         <!--<li v-for="(item,index) in objData" class="fireMapList" :style="'background:url(../../../static/images/bg0.png);background-size:100% 100%'">-->
            <div class="fireMapBox_box">
               <h5>{{item.activityTitle}}</h5>

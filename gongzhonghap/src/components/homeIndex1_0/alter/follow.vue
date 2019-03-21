@@ -177,12 +177,6 @@
 
   },
   methods:{
-    swiperleft(){
-//        Toast("zuo")
-    },
-    swiperright(){
-//        Toast("you")
-    },
     headerClick(v){//点击头像 去吃瓜页 或则设计师主页 或者企业
 //       console.log(v)
       if(v.caredUserMap.userType=="2"){ //个人
@@ -257,6 +251,7 @@
           companyInfoCareCompany(v.caredUserMap.id,data.data.id,v.caredUserMap.userType,data.data.access_token).then(res=>{
             if(res.data.status==true){
               v.caredUserMap.caredStatus = 1;
+              this.$shujike('关注');
               Toast('关注成功')
             }else{
               Toast("网络出错了，请重试")
@@ -265,8 +260,9 @@
         }else if(v.caredUserMap.userType == "2"){  //个人
           commonUserCareUser(v.caredUserMap.id,data.data.id,v.caredUserMap.userType,data.data.access_token).then(res=>{
             if(res.data.status==true){
-              Toast('关注成功')
+              this.$shujike('关注');
               v.caredUserMap.caredStatus = 1;
+              Toast('关注成功')
             }else{
               Toast("网络出错了，请重试")
             }
@@ -283,7 +279,8 @@
           if (v.customerPubContentMap.laudedStatus == true) { //点赞
             customerPubContentLaudContent(v.targetId, data.data.access_token).then(res => {
               if (res.status == true) {
-                v.customerPubContentMap.laudedCount = v.customerPubContentMap.laudedCount + 1
+                v.customerPubContentMap.laudedCount = v.customerPubContentMap.laudedCount + 1;
+                this.$shujike('点赞');
                 Toast('点赞成功')
               } else {
                 Toast("网络出错了，请重试")
@@ -306,8 +303,10 @@
             informationLaudInformation(v.targetId,data.data.access_token).then(res=>{
               console.log(res)
               if(res.status == true){
+                this.$shujike('点赞');
+                v.laudedCount = v.laudedCount+1;
                 Toast('点赞成功')
-                v.laudedCount = v.laudedCount+1
+
               }else{
                 Toast("网络出错了，请重试")
               }
@@ -340,6 +339,7 @@
             customerPubContentFavorContent(v.targetId,data.data.access_token).then(res=>{
 
               if(res.status == true){
+                this.$shujike('收藏');
                 Toast('收藏成功')
                 v.customerPubContentMap.favoredCount = v.customerPubContentMap.favoredCount+1
               }else{
@@ -349,8 +349,9 @@
           }else { //取消收藏
             customerPubContentCancelFavorContent(v.targetId,data.data.access_token).then(res=>{
               if(res.status == true){
-                Toast('收藏已取消')
                 v.customerPubContentMap.favoredCount = v.customerPubContentMap.favoredCount-1;
+                Toast('收藏已取消')
+
               }else{
                 Toast("网络出错了，请重试")
               }
@@ -362,8 +363,9 @@
             informationFavoriteInformation(v.targetId,data.data.access_token).then(res=>{
 
               if(res.status == true){
+                this.$shujike('收藏');
+                v.favoredCount = v.favoredCount+1;
                 Toast('收藏成功')
-                v.favoredCount = v.favoredCount+1
               }else{
                 Toast("网络出错了，请重试")
               }
@@ -371,8 +373,8 @@
           }else { //取消收藏
             informationCancelFavoriteInformation(v.targetId,data.data.access_token).then(res=>{
               if(res.status == true){
-                Toast('收藏已取消')
                 v.favoredCount = v.favoredCount-1;
+                Toast('收藏已取消')
               }else{
                 Toast("网络出错了，请重试")
               }

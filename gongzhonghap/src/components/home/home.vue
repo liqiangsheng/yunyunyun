@@ -43,7 +43,7 @@
             </div>
             <div class="homeBoxItemFour">
               <img src="/static/images/price.png" alt="">
-              <span style="color: #FE5F5F" v-if="objData.expenses>0">¥ {{objData.expenses}}</span>
+              <span style="color: #FE5F5F" v-if="objData.expenses>0">¥ {{objData.expenses.toFixed(2)}}</span>
               <span style="color:#21CB61" v-else="">免费</span>
 
             </div>
@@ -62,7 +62,7 @@
      </div>
 
      <!---->
-         <div class="homeBoxItem1">
+         <div class="homeBoxItem1" v-if="schedules&&schedules.length>0">
            <div class='activityArrangementItem'><span></span>活动安排<span></span></div>
            <div class='activityArrangementItem1'>
              <div v-for='(item,index) in schedules' class='activityArrangementItemBox'>
@@ -72,20 +72,20 @@
                  <div>{{item.endTime}}</div>
                  <img src='/static/images/timePosition.png'/>
                </div>
-               <div class='activityArrangementItem1Right'>
+               <div class='activityArrangementItem1Right' v-if="item.honoredGuestList&&item.honoredGuestList.length>0">
                  <div class='activityArrangementItem1RightA'>
                    <div class='value' v-if="item.subject">{{item.subject}}</div>
-                   <div v-for='(item1,index1) in item.honoredGuestVoList' v-if="item.honoredGuestVoList.length>0">
+                   <div v-for='(item1,index1) in item.honoredGuestList' v-if="item.honoredGuestList.length>0">
                      <div class='name'>{{item1.name}}</div>
                      <div class='founder'>{{item1.honor}}</div>
                    </div>
                    <div v-if='item.brief&&item.brief!="null"' class='brief'>{{item.brief}}</div>
                    <div class='position' v-if="item.location"><img src='/static/images/position.png'/>{{item.location}}</div>
                  </div>
-                 <div class='activityArrangementItem1RightB' v-if="item.childList.length>0" v-for="(items,indexs) in item.childList">
+                 <div class='activityArrangementItem1RightB' v-if="item.children.length>0" v-for="(items,indexs) in item.children">
                    <div class='value'>{{items.startTime}}-{{items.startTime}}</div>
                    <div class='value'>{{items.subject}}</div>
-                   <div v-for='(item1,index1) in items.honoredGuestVoList' v-if="items.honoredGuestVoList.length>0">
+                   <div v-for='(item1,index1) in items.honoredGuestList' v-if="items.honoredGuestList.length>0">
                      <div class='name'>{{item1.name}}</div>
                      <div class='founder'>{{item1.honor}}</div>
                    </div>
@@ -134,16 +134,15 @@
            </div>
            <!------------------>
            <!-- ----其他---- -->
-           <div  class='Other'>
+           <div  class='Other' v-if="!!objData.customContent">
              <div class='activityArrangementItem'><span></span>其他<span></span></div>
              <!--互文本内容-->
               <div v-html="objData.customContent" class="homeBoxItemTenContent">
               </div>
            </div>
            <!-- ---------- -->
-           <div class='mattersNeedingAttention mattersNeedingAttentionFoot'>
-           <span>注意事项：</span> 本论坛配备同声翻译，请记得携带您本人身份证到达
-           会场，现场入口处将提供免费同传耳机租借服务。
+           <div class='mattersNeedingAttention mattersNeedingAttentionFoot' v-if="!!objData.matters">
+           <span>注意事项：</span> {{objData.matters}}
          </div>
 
      </div>
@@ -347,10 +346,10 @@ export default {
              for (var i = 0; i < res.data.data.length;i++){
                res.data.data[i].startTime =formatTime4(res.data.data[i].startTime)
                res.data.data[i].endTime =formatTime4(res.data.data[i].endTime)
-               if (res.data.data[i].childList.length > 0) {
-                 for (var j = 0; j < res.data.data[i].childList.length; j++) {
-                   res.data.data[i].childList[j].startTime = formatTime4(res.data.data[i].childList[j].startTime)
-                   res.data.data[i].childList[j].endTime = formatTime4(res.data.data[i].childList[j].endTime)
+               if (res.data.data[i].children.length > 0) {
+                 for (var j = 0; j < res.data.data[i].children.length; j++) {
+                   res.data.data[i].children[j].startTime = formatTime4(res.data.data[i].children[j].startTime)
+                   res.data.data[i].children[j].endTime = formatTime4(res.data.data[i].children[j].endTime)
                  }
                }
              }
@@ -373,10 +372,10 @@ export default {
              for (var i = 0; i < res.data.data.length;i++){
                res.data.data[i].startTime =formatTime4(res.data.data[i].startTime)
                res.data.data[i].endTime =formatTime4(res.data.data[i].endTime)
-               if (res.data.data[i].childList.length > 0) {
-                 for (var j = 0; j < res.data.data[i].childList.length; j++) {
-                   res.data.data[i].childList[j].startTime = formatTime4(res.data.data[i].childList[j].startTime)
-                   res.data.data[i].childList[j].endTime = formatTime4(res.data.data[i].childList[j].endTime)
+               if (res.data.data[i].children.length > 0) {
+                 for (var j = 0; j < res.data.data[i].children.length; j++) {
+                   res.data.data[i].children[j].startTime = formatTime4(res.data.data[i].children[j].startTime)
+                   res.data.data[i].children[j].endTime = formatTime4(res.data.data[i].children[j].endTime)
                  }
                }
              }
@@ -445,10 +444,10 @@ export default {
           for (var i = 0; i < res.data.data.length;i++){
                 res.data.data[i].startTime =formatTime4(res.data.data[i].startTime)
                 res.data.data[i].endTime =formatTime4(res.data.data[i].endTime)
-            if (res.data.data[i].childList.length > 0) {
-              for (var j = 0; j < res.data.data[i].childList.length; j++) {
-                res.data.data[i].childList[j].startTime = formatTime4(res.data.data[i].childList[j].startTime)
-                res.data.data[i].childList[j].endTime = formatTime4(res.data.data[i].childList[j].endTime)
+            if (res.data.data[i].children.length > 0) {
+              for (var j = 0; j < res.data.data[i].children.length; j++) {
+                res.data.data[i].children[j].startTime = formatTime4(res.data.data[i].children[j].startTime)
+                res.data.data[i].children[j].endTime = formatTime4(res.data.data[i].children[j].endTime)
               }
             }
           }
@@ -516,7 +515,7 @@ export default {
           let obj = {
             title:this.objData.title,
             desc:this.objData.summary,
-            url:"http://account.butongtech.com/index.html#/home?id="+this.$router.history.current.query.id,//id=20190101000004BUTONG00001&isBool=false&bookId=20190101000004BUTONG00001
+            url:"https://dcloud.butongtech.com/index.html#/home?id="+this.$router.history.current.query.id,//id=20190101000004BUTONG00001&isBool=false&bookId=20190101000004BUTONG00001
             imgUrl:this.objData.bannerUrl,
           }
           wxShare.wxShare(res.data,obj)
@@ -760,7 +759,7 @@ export default {
   }
 
   .homeBoxItemFiveLeft{
-    display: inline-block;
+    display: block;
     font-family:PingFangSC-Regular;
     font-weight:400;
     color:rgba(102,102,102,1);
@@ -770,7 +769,6 @@ export default {
   /******************************/
   .homeBoxItem1{
     width: 100%;
-    min-height: 1rem;
     margin-top: 0.1rem;
     background: #FFFFFF;
     padding: 0.26rem 0;
@@ -807,7 +805,6 @@ export default {
   .activityArrangementItem1{
     width: 94%;
     margin: 0 3%;
-    min-height: 4.81rem;
     background: #FAFAFA;
     margin-top: 0.2rem;
     padding: 0.11rem;
@@ -1056,66 +1053,6 @@ export default {
   .Other{
     width: 100%;
     margin-top: 0.2rem;
-  }
-  .OtherBox{
-    width: 94%;
-    margin: 0 3%;
-  }
-  .OtherBoxItem1{
-    width: 100%;
-    height: 0.24rem;
-    font-size:0.14rem;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
-    color:rgba(5,5,9,1);
-    line-height:0.23rem;
-    margin-top: 0.2rem;
-  }
-  .OtherBoxItem2{
-    width: 100%;
-    height:0.24rem;
-    font-size:0.14rem;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
-    color:rgba(5,5,9,1);
-    line-height:0.23rem;
-    margin-bottom: 0.05rem;
-    position: relative;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    white-space:nowrap
-  }
-  .OtherBoxItem3{
-    width: 100%;margin-bottom: 0.2rem;
-  }
-
-  .OtherBoxItem4{
-    height: 0.24rem;
-    font-size:0.14rem;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
-    color:rgba(5,5,9,1);
-    line-height:0.23rem;
-  }
-  .OtherBoxItem6{
-    height: 0.24rem;
-    font-size:0.14rem;
-    font-family:PingFangSC-Regular;
-    font-weight:400;
-    color:rgba(5,5,9,1);
-    line-height:0.23rem;
-    margin-left: 0.7rem;
-  }
-  .OtherBoxItem7{
-    width: 100%;
-    display: block;
-    overflow: hidden;
-    margin: 0.1rem 0;
-    min-height: 1.5rem;
-  }
-  .OtherBoxItem7 img{
-    display: block;
-    width: 100%;
   }
 
   /* ---------------------------------- */

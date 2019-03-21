@@ -30,9 +30,9 @@
          </div>
        </div>
        <!--内容-->
-       <div class="IntelligentMatchingDItem" v-for="(item,index) in messageArr.informationChildrenTitleVoList" v-if="boxShow">
-         <h5 v-if="!!item.titleName"><span></span>/　{{item.titleName}}　/</h5>
-         <div class="IntelligentMatchingDItemIndex" v-for="(item1,index1) in item.titleInformationList">
+       <div class="IntelligentMatchingDItem" v-if="boxShow">
+         <div class="IntelligentMatchingDItemIndex" v-for="(item1,index1) in messageArr.titleInformationVoList">
+           <h5 v-if="!!item1.titleName"><span></span>/　{{item1.titleName}}　/</h5>
            <span v-if="!!item1.titleInformation">{{item1.titleInformation}}</span>
            <img v-if="!!item1.titleImg" v-lazy="item1.titleImg" alt="">
          </div>
@@ -236,6 +236,7 @@ export default {
                 v.lauded = true;
                 replylaudReply(v.id,data.data.access_token).then(res=>{
                   if(res.status==true){
+                    this.$shujike('点赞');
                     Toast("点赞成功")
                     v.laudedCount =  v.laudedCount+1;
                   }else{
@@ -272,6 +273,7 @@ export default {
                 v.lauded = true;
                 commentlaudComment(v.id,data.data.access_token).then(res=>{
                   if(res.status==true){
+                    this.$shujike('点赞');
                      Toast("点赞成功")
                     v.laudedCount =  v.laudedCount+1;
                   }else{
@@ -309,6 +311,7 @@ export default {
                informationLaudInformation(this.detailId,data.data.access_token).then(res=>{
 
                  if(res.status == true){
+                   this.$shujike('点赞');
                     Toast("点赞成功")
                      this.fabulousNum = this.fabulousNum+1;
                      this.fabulousMessage = "已赞"
@@ -353,6 +356,7 @@ export default {
               commonUserCareUser(this.userId,data.data.user_id,this.orgId,data.data.access_token).then(res=>{
 //                console.log(res,"skdkkfsdk")
                 if(res.data.status == true){
+                  this.$shujike('关注');
                   Toast("关注成功")
                   this.cared = true;
                   this.followMessage = "取消关注";
@@ -621,7 +625,7 @@ export default {
           border: 0.02rem solid #fce76c;
         }
         >div{
-          width: 2rem;
+          width: 1.6rem;
           height: 0.64rem;
           p{
             padding-top: 0.04rem;
@@ -681,17 +685,7 @@ export default {
       width: 100%;
       padding-bottom: 0.2rem;
       box-sizing: border-box;
-      h5{
-        width: 100%;
-        font-size:0.15rem;
-        font-family:PingFangSC-Semibold;
-        font-weight:600;
-        color:rgba(5,5,9,1);
-        line-height:0.21rem;
-        text-align: center;
-        word-break:break-all;
-        margin-bottom: 0.1rem;
-      }
+
       .IntelligentMatchingDItemIndex{
         width: 100%;
         font-size:0.15rem;
@@ -701,10 +695,21 @@ export default {
         line-height: 0.28rem;
         /*margin-bottom: 0.1rem;*/
         word-break:break-all;
+        > h5{
+          width: 100%;
+          font-size:0.15rem;
+          font-family:PingFangSC-Semibold;
+          font-weight:600;
+          color:rgba(5,5,9,1);
+          line-height:0.21rem;
+          text-align: center;
+          word-break:break-all;
+          margin-bottom: 0.1rem;
+        }
         img{
           display: block;
           width: 100%;
-          margin-top: 0.1rem;
+          margin: 0.1rem 0;
         }
       }
       .IntelligentMatchingDItemIndex1{

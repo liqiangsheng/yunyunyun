@@ -1,6 +1,7 @@
 //微信分享
 // import wx from "weixin-js-sdk";
 // console.log(wx)
+import {shujike} from './common'
 export default {
      wxShare(newVal, _shareObj,_this){ //newVal后台返回的分享参数 ，_shareObj分享的内容 ，_this == this
         if(newVal == null || newVal == undefined ){//
@@ -35,7 +36,9 @@ export default {
             //   dataUrl: "", // 如果type是music或video，则要提供数据链接，默认为空
             success: function() {
                 // 用户确认分享后执行的回调函数
+                shujike('分享');
                 alert("分享成功");
+
             },
             cancel: function() {
                 // 用户取消分享后执行的回调函数

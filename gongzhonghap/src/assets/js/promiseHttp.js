@@ -23,7 +23,7 @@ export function tsconfigjson(){
     axios.get(url).then(res=>{
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -34,7 +34,7 @@ export function packagejson(){
     axios.get(url).then(res=>{
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -45,7 +45,7 @@ export function InitializationData(id){
     axios.get(url).then(res=>{
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -56,7 +56,7 @@ export function activitySchedulelist(data){
     axios.post(url,data).then(res=>{
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -67,7 +67,7 @@ export function honoredGuestlist(data){
     axios.post(url,data).then(res=>{
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -79,8 +79,10 @@ export function activityListData(p,s){
     let data = {p:p,s:s}
     axios.post(url,data,{headers:{'Content-Type': 'application/json','Accept': '*/*'}}).then(res=>{
       resolve(res)
+      Indicator.close();
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res);
+      Indicator.close();
     })
   })
 }
@@ -103,7 +105,7 @@ export function IntallData(item){
     axios.get(url,{headers:{'Content-Type': 'application/json','Accept': '*/*','Authorization':'Bearer '+item.data.access_token}}).then(res=>{
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -114,7 +116,7 @@ export function companyInfofindCompanyInfoById(item){
     axios.get(url,{headers:{'Content-Type': 'application/json','Accept': '*/*','Authorization':'Bearer '+item.data.access_token}}).then(res=>{
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -125,10 +127,9 @@ export function telCode(tel){
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/sysUserOperation/generateMobileVerifyCode?mobileType=XCX&mobile=${tel}`;
 
     axios.get(url).then(res=>{
-
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -142,7 +143,7 @@ export function sysUserOperationVerifyBindStatus(openId){
       Indicator.close();
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -155,7 +156,7 @@ export function wxOpenOpenInfo(code){
       Indicator.close();
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -169,7 +170,7 @@ export function sysUserOperationUpdateUserPassword(tel,psd,setPsd,token){
       Indicator.close();
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -183,7 +184,7 @@ export function login(tel,psd){
       Indicator.close();
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -197,7 +198,7 @@ export function bangdingLogin(tel,psd,password,wechat){
       Indicator.close();
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -218,7 +219,7 @@ export function  regionTree(){
 
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -229,7 +230,7 @@ export function  levelCity(){
     axios.get(url).then(res=>{
       resolve(res)
     }).catch(res=>{
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -248,7 +249,7 @@ export function  EditingInformationIntall(userId,token){
       resolve(res)
     }).catch(res=>{
       Indicator.close()
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -266,7 +267,7 @@ export function  EditingInformationIntall1(userId,token){
       resolve(res)
     }).catch(res=>{
       Indicator.close()
-      Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -281,16 +282,15 @@ export function OkEditingInformation (data,token) { //请求数据
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-      // console.log(ajax)
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close()
-        let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
-      }
+        if (ajax.readyState==4 ) {
+          let res= JSON.parse(ajax.responseText)
+          if(ajax.status==200){
+            resolve(res) ;
+          }else {
+            Toast(res.message)
+          }
+          Indicator.close();
+        }
     }
   })
 }
@@ -305,16 +305,15 @@ export function qiniuToken(token) { //请求数据
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close()
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
-      }
-
     }
   })
 }
@@ -352,14 +351,14 @@ export function meActivityData (data,token) { //请求数据
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close()
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -374,14 +373,14 @@ export function findOneWithGoods(token,id) { //请求数据
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close()
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -391,19 +390,19 @@ export function findByVersionToClient(token,id) { //请求数据
   Indicator.open("加载中...")
   return new Promise(function (resolve,reject) {
     let ajax = new XMLHttpRequest();
-    ajax.open('get',window.common.apiDomain20020+"/apis/activity/"+activityEdition+"/activitySignupNoteSetting/findByVersionToClient");
+    ajax.open('get',window.common.apiDomain20020+"/apis/activity/"+activityEdition+"/activitySignupNoteSetting/findByActivityIdToClient?activityId="+id);
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close()
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -421,14 +420,14 @@ export function tagGroupAll (token) { //请求数据
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close()
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -444,14 +443,14 @@ export function tagLibMatch (token,data) { //请求数据
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(data);
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close()
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -467,13 +466,14 @@ export function insertSignupNoteAndOrder (token,data) { //请求数据
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -489,14 +489,14 @@ export function findSimpleOneToClient (token,id) { //请求数据
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close()
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-          Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -512,14 +512,14 @@ export function informationId(id,userId,userType) { //请求数据 资讯id user
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      Indicator.close();
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -535,14 +535,14 @@ export function companyInfoFindOne(id,userId,userType) { //请求数据
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      Indicator.close();
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -558,14 +558,14 @@ export function commonUserFindOne(id,userId,userType) { //请求数据
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      Indicator.close();
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -581,14 +581,14 @@ export function findInformationListByUserIdUserId(id,p,s) { //请求数据
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      Indicator.close();
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -604,14 +604,14 @@ export function findCommentsByInfoId(id,p,s) { //请求数据
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      Indicator.close();
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -626,7 +626,7 @@ export function proposalContactTrack(obj) { //请求数据
       resolve(res)
     }).catch(res=>{
         Indicator.close()
-        Toast("500后台服务器错误！")
+      Toast(res)
     })
   })
 }
@@ -707,25 +707,24 @@ export function operationTeamInfos(p,s){
     })
   })
 }
-// 资源池
+// 工坊
 export function companyList(p,s){
 
-  let obj = {companyCat:"2",p:p,s:s,userType:"",currentUser:""};
+  let obj = {companyCat:"2",p:p,s:s,userType:"",currentUser:"",orderField:'sort,rand()'};
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/companyInfo/list`;
     axios.post(url,obj,{headers:{"Content-Type":"application/json"}}).then(res=>{
 
       resolve(res)
     }).catch(function (error) {
-
-      Toast("网络错误工坊500，请重试")
+      Toast(error)
     })
   })
 }
-// 匠星
+// 匠心
 export function commonUserList(p,s){
   Indicator.open("加载中...")
-  let obj = {"userCat":"2",p:p,s:s}
+  let obj = {"userCat":"2",p:p,s:s,orderField:'rand()'}
   return  new Promise((resolve,reject)=>{
     let url = `${window.common.apiDomain20020}/apis/operation/${operationEdition}/commonUser/list`;
     axios.post(url,obj,{headers:{"Content-Type":"application/json"}}).then(res=>{
@@ -733,7 +732,7 @@ export function commonUserList(p,s){
         resolve(res)
     }).catch(function (error) {
       Indicator.close();
-      Toast("网络错误匠星500，请重试")
+      Toast(error)
     })
   })
 }
@@ -752,6 +751,21 @@ export function specialSubjectFindSubjectInfoByCategory(state,p,s){
     })
   })
 }
+//资讯列表接口information/list
+export function informationList(p,s){
+  Indicator.open("加载中...")
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/content/${contentEdition}/information/list?p=${p}&s=${s}`;
+    // axios.get(url,{headers:{"Content-Type":"application/json","Authorization":"bearer "+token}}).then(res=>{
+    axios.get(url,{headers:{"Content-Type":"application/json"}}).then(res=>{
+      Indicator.close();
+      resolve(res)
+    }).catch(function (error) {
+      Indicator.close();
+      Toast(error)
+    })
+  })
+}
 //详情里面的关注个人
 export function commonUserCareUser(userId,currentUser,userType,token){ //userId关注谁id currentUser当前用户id userType当前用户类型，1问企业，2位个人 Authorization token
   return  new Promise((resolve,reject)=>{
@@ -759,7 +773,7 @@ export function commonUserCareUser(userId,currentUser,userType,token){ //userId�
     axios.get(url,{headers:{"Content-Type":"application/json","Authorization":"bearer "+token}}).then(res=>{
       resolve(res)
     }).catch(function (error) {
-      Toast("点赞500后台出错啦")
+      Toast(error)
     })
   })
 }
@@ -770,7 +784,7 @@ export function commonUserCancelCareUser(userId,currentUser,userType,token){ //u
     axios.get(url,{headers:{"Content-Type":"application/json","Authorization":"bearer "+token}}).then(res=>{
       resolve(res)
     }).catch(function (error) {
-      Toast("取消点赞500后台出错啦")
+      Toast(error)
     })
   })
 }
@@ -782,8 +796,7 @@ export function companyInfoCareCompany(companyId,currentUser,userType,token){ //
     axios.get(url,{headers:{"Content-Type":"application/json","Authorization":"bearer "+token}}).then(res=>{
       resolve(res)
     }).catch(function (error) {
-
-      Toast("点赞500后台出错啦")
+      Toast(error)
     })
   })
 }
@@ -796,7 +809,7 @@ export function companyInfoCancelCareCompany(companyId,currentUser,userType,toke
 
       resolve(res)
     }).catch(function (error) {
-      Toast("取消点赞500后台出错啦")
+      Toast(error)
     })
   })
 }
@@ -810,12 +823,14 @@ export function informationLaudInformation(informationId,token) { //informationI
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Toast("点赞500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -830,13 +845,14 @@ export function informationCancelLaudInformation(informationId,token) { //inform
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Toast("取消点赞500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -851,14 +867,14 @@ export function informationFavoriteInformation(informationId,token) { //informat
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      Indicator.close();
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -873,14 +889,14 @@ export function informationCancelFavoriteInformation(informationId,token) { //in
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      Indicator.close();
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -896,13 +912,14 @@ export function commentlaudComment(commentId,token) { //commentId 点赞谁comme
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-
-        Toast("点赞500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -917,12 +934,14 @@ export function commentCancelLaudComment(commentId,token) { //commentId 取消�
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Toast("取消点赞500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -937,12 +956,14 @@ export function replylaudReply(replyId,token) { //replyId 点赞谁replyId
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Toast("点赞500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -956,12 +977,14 @@ export function replyCancelLaudReply(replyId,token) { //reply 取消点赞谁rep
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Toast("取消点赞500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -976,14 +999,14 @@ export function commentFindReplysByCommentId(commentId,token) { //commentId 点�
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      Indicator.close();
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -1000,15 +1023,14 @@ export function customerCareNoteListCare(id,token,p,s) { //id 用户id
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -1025,15 +1047,14 @@ export function customerCareNoteListCared(id,token,p,s) { //id 用户id
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -1049,15 +1070,14 @@ export function customerFavoriteNoteMyFavoriteList(id,token,p,s) { //id 用户id
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -1073,15 +1093,14 @@ export function customerLaudNoteLaudList(id,token,p,s) { //id 用户id
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -1098,15 +1117,14 @@ export function questionAndAnswerList(token,p,s) { //id 用户id
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -1123,15 +1141,14 @@ export function suggestionTrackListOwner(token,p,s) { //id 用户id
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -1148,14 +1165,14 @@ export function customerLaudNoteListFavoredContent(id,token,p,s) { //userId 用�
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -1172,14 +1189,14 @@ export function customerFavoriteNoteListFavoredContent(id,token,p,s) { //userId 
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -1195,14 +1212,14 @@ export function commentFindMyCommentList(id,token,p,s) { //userId 用户id
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -1218,14 +1235,14 @@ export function commentFindForMeCommentList(id,token,p,s) { //userId 用户id
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -1241,14 +1258,14 @@ export function customerLaudNoteLaudForMeList(id,token,p,s) { //userId 用户id
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -1264,7 +1281,7 @@ export function commentFindCommentsByPubId(id,p,s){ //pubId 作品id
       resolve(res)
     }).catch(function (error) {
       Indicator.close();
-      Toast("500评论数据出错啦")
+      Toast(error)
     })
   })
 }
@@ -1304,14 +1321,14 @@ export function customerPubContentList(id,p,s,pubStatus) { // 用户id，
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
+        Indicator.close();
       }
     }
   })
@@ -1327,14 +1344,13 @@ export function customerPubContentListHomePage(p,s) { // pubStatus 固定参数t
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        // Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        // Indicator.close()
-        Toast("500后台服务器错误！")
+        if(ajax.status==200){
+          resolve(res) ;
+        }else {
+          Toast(res.message)
+        }
       }
     }
   })
@@ -1349,14 +1365,14 @@ export function customerPubContentFindOne(id,userId,userType) { // 作品id
     ajax.setRequestHeader("Content-Type","application/json");
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
+      if (ajax.readyState==4 ) {
         let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Indicator.close()
-        Toast("500后台服务器错误！")
+         if(ajax.status==200){
+           resolve(res) ;
+         }else {
+             Toast(res.message)
+         }
+        Indicator.close();
       }
     }
   })
@@ -1370,12 +1386,14 @@ export function customerPubContentLaudContent(id,token) { // 作品id
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
+      if (ajax.readyState==4) {
         let res= JSON.parse(ajax.responseText);
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Toast("500后台服务器错误！")
+        if( ajax.status==200){
+          resolve(res) ;
+        }else{
+          Toast(res.message)
+        }
+        Indicator.close()
       }
     }
   })
@@ -1389,12 +1407,14 @@ export function customerPubContentCancelLaudContent(id,token) { // 作品id
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Toast("500后台服务器错误！")
+      if (ajax.readyState==4) {
+        let res= JSON.parse(ajax.responseText);
+        if( ajax.status==200){
+          resolve(res) ;
+        }else{
+          Toast(res.message)
+        }
+        Indicator.close()
       }
     }
   })
@@ -1408,12 +1428,14 @@ export function customerPubContentFavorContent(id,token) { // 作品id
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Toast("500后台服务器错误！")
+      if (ajax.readyState==4) {
+        let res= JSON.parse(ajax.responseText);
+        if( ajax.status==200){
+          resolve(res) ;
+        }else{
+          Toast(res.message)
+        }
+        Indicator.close()
       }
     }
   })
@@ -1427,12 +1449,14 @@ export function customerPubContentCancelFavorContent(id,token) { // 作品id
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
-        Toast("500后台服务器错误！")
+      if (ajax.readyState==4) {
+        let res= JSON.parse(ajax.responseText);
+        if( ajax.status==200){
+          resolve(res) ;
+        }else{
+          Toast(res.message)
+        }
+        Indicator.close()
       }
     }
   })
@@ -1449,14 +1473,14 @@ export function customerPubContentListWithCare(p,s,token) {
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
-        let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
+      if (ajax.readyState==4) {
+        let res= JSON.parse(ajax.responseText);
+        if( ajax.status==200){
+          resolve(res) ;
+        }else{
+          Toast(res.message)
+        }
         Indicator.close()
-        Toast("500后台服务器错误！")
       }
     }
   })
@@ -1473,14 +1497,14 @@ export function allInformationAndPubFindMyCaredList(loginUser,userType,p,s,token
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
-        let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
+      if (ajax.readyState==4) {
+        let res= JSON.parse(ajax.responseText);
+        if( ajax.status==200){
+          resolve(res) ;
+        }else{
+          Toast(res.message)
+        }
         Indicator.close()
-        Toast("500后台服务器错误！")
       }
     }
   })
@@ -1496,14 +1520,14 @@ export function shareInfoShareUrl(url) { //url域名
     // ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
-        let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
+      if (ajax.readyState==4) {
+        let res= JSON.parse(ajax.responseText);
+        if( ajax.status==200){
+          resolve(res) ;
+        }else{
+          Toast(res.message)
+        }
         Indicator.close()
-        Toast("500分享后台服务器错误！")
       }
     }
   })
@@ -1519,14 +1543,14 @@ export function notificationList(p,s,token) {
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(data));
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
-        let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
+      if (ajax.readyState==4) {
+        let res= JSON.parse(ajax.responseText);
+        if( ajax.status==200){
+          resolve(res) ;
+        }else{
+          Toast(res.message)
+        }
         Indicator.close()
-        Toast("500通知后台服务器错误！")
       }
     }
   })
@@ -1541,14 +1565,14 @@ export function notificationFindOne(id,token) {
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send();
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        Indicator.close();
-        let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
-      }
-      if(ajax.status==500){
+      if (ajax.readyState==4) {
+        let res= JSON.parse(ajax.responseText);
+        if( ajax.status==200){
+          resolve(res) ;
+        }else{
+          Toast(res.message)
+        }
         Indicator.close()
-        Toast("500通知后台服务器错误！")
       }
     }
   })
@@ -1564,12 +1588,35 @@ export function notificationRemove(id,token) { //传数组
     ajax.setRequestHeader("Authorization","bearer "+token);
     ajax.send(JSON.stringify(arr));
     ajax.onreadystatechange = function () {
-      if (ajax.readyState==4 &&ajax.status==200) {
-        let res= JSON.parse(ajax.responseText)
-        resolve(res) ;
+      if (ajax.readyState==4) {
+        let res= JSON.parse(ajax.responseText);
+        if( ajax.status==200){
+          resolve(res) ;
+        }else{
+          Toast(res.message)
+        }
+
       }
-      if(ajax.status==500){
-        Toast("500通知后台服务器错误！")
+    }
+  })
+}
+// 根据订报名表id获取订单信息
+export function activityOrderFindOneByNodeIdVo(id,token) {
+  return new Promise(function (resolve,reject) {
+    let ajax = new XMLHttpRequest();
+    ajax.open('get',`${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityOrder/findOneByNodeIdVo?nodeId=${id}`);
+    ajax.setRequestHeader("Content-Type","application/json");
+    ajax.setRequestHeader("Authorization","bearer "+token);
+    ajax.send();
+    ajax.onreadystatechange = function () {
+      if (ajax.readyState==4) {
+        let res= JSON.parse(ajax.responseText);
+        if( ajax.status==200){
+          resolve(res) ;
+        }else{
+          Toast(res.message)
+        }
+
       }
     }
   })

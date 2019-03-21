@@ -1,164 +1,171 @@
 <template>
     <div id="PayH5">
-          <div class="PayH5Header">
-              <div class="selction">
-               请选择支付方式 :
-              </div>
-             <div class="pay" v-for="(item,index) in payArray" @click="payClick(index)">
-               <img class="imgShow" src="../../assets/images/successPay.png" alt="选中" v-show="item.isShow">
-               <img class="img" :src="item.img" :alt="item.alt">
-               {{item.alt}}
-             </div>
+        支付中...
+          <!--<div class="PayH5Header">-->
+              <!--<div class="selction">-->
+               <!--请选择支付方式 :-->
+              <!--</div>-->
+            <!--<div class="paySelction" v-if="!isWeixinSelction">-->
+              <!--<div class="pay" v-for="(item,index) in payArray" @click="payClick(index)">-->
+                <!--<img class="img" :src="item.img" :alt="item.alt">-->
+              <!--</div>-->
 
-          </div>
-         <div class="goPay">
-           <mt-button type="primary" @click="goPay">去支付</mt-button>
-         </div>
+            <!--</div>-->
+            <!--<div class="paySelction" v-else>-->
+              <!--<div class="pay" @click="weixinClick">-->
+                <!--<img class="img" src="/static/images/weixin.png" />-->
+              <!--</div>-->
+            <!--</div>-->
+
+
+          <!--</div>-->
+
     </div>
 </template>
 
 <script>
   import { Toast } from 'mint-ui';
+  import {isWeixin} from '../../assets/js/common'
+  import {} from "../../assets/js/promiseHttp.js"
 export default {
   name: 'PayH5',
   data(){
     return{
           payArray:[
-            {img:"/static/images/weixin.png",className:"weixin",alt:"微信支付",isShow:true,state:"weixin"},
-            {img:"/static/images/aliPay.png",className:"alipay",alt:"支付宝支付",isShow:false,state:"alipay"},
+//            {img:"/static/images/weixin.png",className:"weixin",alt:"微信支付",isShow:true,state:"weixin"},
+//            {img:"/static/images/aliPay.png",className:"alipay",alt:"支付宝支付",isShow:false,state:"alipay"},
           ],
-       state:"",
+//       isWeixinSelction:true,
     }
   },
   created(){
-    if(!!this.$store.state.payId){
+         let orderId = JSON.parse(localStorage.getItem('objListId'))
+          if(!!this.$Request.code){//请求支付的接口
+             console.log('微信授权成功过')
+          }else{
+            Toast('微信授权失败，请重试')
+          }
+//            this.isWeixinSelction = isWeixin(); //是不是微信
 
-    }else {
-//      this.$router.go(-1);
-    }
   },
   methods:{
-    payClick(i){ //选择支付方式
-      this.payArray.forEach((item,index)=>{
-        if(index == i){
-          item.isShow = !item.isShow
-        }else{
-          item.isShow = false;
-        }
-      })
 
-     if(this.payArray[i].isShow == true){
-       this.state = this.payArray[i].state
-     }else {
-       this.state = "";
-     }
-    },
-    goPay(){ //去支付
-      if(this.state==""){
-        Toast('请选择支付方式');
-      }else{
-        console.log(this.state)
-        if(this.state == "weixin"){ //微信
-          if (typeof WeixinJSBridge == "undefined"){
-            if( document.addEventListener ){
-              document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false);
-            }else if (document.attachEvent){
-              document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady);
-              document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady);
-            }
-          }else{
-            this.onBridgeReady();
-          }
-        }else if(this.state == "alipay"){ //支付宝
-
-        }
-      }
-    },
+//    weixinClick(){//微信公众号支付
+//
+//    },
+//    payClick(i){ //选择H5支付方式
+//      if(i===0){ //微信支付
+//        if (typeof WeixinJSBridge == "undefined"){
+//          if( document.addEventListener ){
+//            document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false);
+//          }else if (document.attachEvent){
+//            document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady);
+//            document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady);
+//          }
+//        }else{
+//          this.onBridgeReady();
+//        }
+//      }else if(i==1){ //支付宝支付
+//        let data = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjpbXSwiY29kZSI6MjAwLCJkYXRhIjoiIiwidXNlcl9uYW1lIjoiMTg1NjU4OTAzMDYiLCJqaWd1YW5nUmVnSWQiOiIiLCJtb2JpbGUiOiIxODU2NTg5MDMwNiIsInJvbGVMaXN0IjpbeyJyb2xlSWQiOiIyMDAiLCJyb2xlQ29kZSI6ImNvbW1vbl9tZW1iZXIiLCJyb2xlTmFtZSI6IuaZrumAmuS8muWRmCJ9XSwibWVzc2FnZSI6IiIsImF1dGhvcml0aWVzIjpbIuaZrumAmuS8muWRmCJdLCJjbGllbnRfaWQiOiJhY21lIiwidG90YWwiOjAsInVzZXJfaWQiOiIyMDAiLCJzY29wZSI6WyJvcGVuaWQiXSwidXNlckFjY291bnQiOiIxODU2NTg5MDMwNiIsIm5hbWUiOiJ3ZWIgQ29kaW5nIFBlYXNhbnQiLCJoZWFkZXIiOiJodHRwOi8vcHViLnFpbml1LmJ1dG9uZ3RlY2guY29tL2RlZnVsdF9waG90b0AzeC5wbmciLCJ1c2VyVHlwZSI6IjIiLCJpZCI6IjIwMCIsImp0aSI6ImU4YTMzYjVhLTVjZDItNDg3NS1iOWVjLWE1NzVlNzY4NDkyZiIsInN0YXR1cyI6dHJ1ZX0.mFv1tSKZFNM5rVxOGtvQGOhl-f33LZcHG8fgGo5iJhSPZJBUnXj7bX9eLpSLoe-EUoTcRJZ2ae6dYdKoGb_b9VNp46k76LY8HePSIEc7r5D98Y-cnduD6Dp3W6JXXeXd3cBY_ISg4rykDts_lrL_I5H3xIgfX_cemTj4L2UWVndNqzQMcpOHfDpowSbyfQUIYFQYCY_wEHhZTDAAcIaoJIy60y55V8qGfAyYt2XW6L28CJlIKu0RxkayJcjHmSeJW2RofPT4cVlwgsuDNk2Q2q48C_M1kXZ3SC-GGuN3mGf6XGlBgkiDKty4YyuteFMCyrFbMkRH-ADukNOK9O1RlQ'
+//        let url= 'http://172.16.0.59:10020/apis/activity/v1.0/payWithAlipay/wapPay';
+//        let data1 = new Date().getTime();//随机时间戳
+//        let obj = {
+//          "out_trade_no":"2015032001010131012"+data1,
+//          "total_amount":0.01,
+//          "subject":"Iphone616G",
+//          "product_code":"QUICK_WAP_WAY",
+//          "seller_id":"13112345678",
+//          "quit_url":"http://172.16.0.55:8080/#/PayH5"
+//        }
+//        this.$Aiox.post(url,obj,{headers:{"Authorization":"bearer "+data}}).then(res=>{
+//          console.log(res,"支付宝支付")
+//          if(res.status==200){
+//             const div = document.createElement('div');
+//             div.innerHTML = res.data;
+//             document.body.appendChild(div);
+//             document.forms[0].submit()
+////             const form = res.data;
+////             deleteExisting('#alipay'); // 判断之前是否插入过#alipay
+////             const div = document.createElement('div');
+////             div.id = 'alipay';
+////             div.innerHTML = form;
+////             document.body.appendChild(div);
+////             document.querySelector('#alipay').children[0].submit(); // 执行后会唤起支付宝
+//          }
+//        })
+//      }
+//    },
+//    onBridgeReady(){
+//      WeixinJSBridge.invoke(
+//        'getBrandWCPayRequest', {
+//          "appId":"wx2421b1c4370ec43b",     //公众号名称，由商户传入
+//          "timeStamp":"1395712654",         //时间戳，自1970年以来的秒数
+//          "nonceStr":"e61463f8efa94090b1f366cccfbbb444", //随机串
+//          "package":"prepay_id=u802345jgfjsdfgsdg888",
+//          "signType":"MD5",         //微信签名方式：
+//          "paySign":"70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名
+//        },
+//        function(res){
+//          if(res.err_msg == "get_brand_wcpay_request:ok" ){
+//            console.log("jndskajdkaksdkak")
+//            // 使用以上方式判断前端返回,微信团队郑重提示：
+//            //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+//          }
+//        });
+//    }
   },
-  onBridgeReady(){
-    WeixinJSBridge.invoke(
-      'getBrandWCPayRequest', {
-        "appId":"wx2421b1c4370ec43b",     //公众号名称，由商户传入
-        "timeStamp":"1395712654",         //时间戳，自1970年以来的秒数
-        "nonceStr":"e61463f8efa94090b1f366cccfbbb444", //随机串
-        "package":"prepay_id=u802345jgfjsdfgsdg888",
-        "signType":"MD5",         //微信签名方式：
-        "paySign":"70EA570631E4BB79628FBCA90534C63FF7FADD89" //微信签名
-      },
-      function(res){
-        if(res.err_msg == "get_brand_wcpay_request:ok" ){
-          console.log("jndskajdkaksdkak")
-          // 使用以上方式判断前端返回,微信团队郑重提示：
-          //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-        }
-      });
-  }
+
 }
 
 </script>
 
 <style scoped lang="less">
   #PayH5{
-    background: #ffffff;
+    background: red;
     position:absolute;
-    background: url('https://pub.qinius.butongtech.com/bj2.png');
-    background-size: cover;
-    background-size: 100% 100%;
     left: 0;
     bottom: 0;
     right: 0;
     top:0;
-  }
-  .goPay{
-    width:90%;
-    height:  0.5rem;
-    position:absolute;
-    left: 5%;
-    bottom: 0.2rem;
-   button{
-      width: 100%;
-      height: 100%;
-    }
+    display: flex;
+    justify-content:center;
+    align-items:center;
   }
 
   .PayH5Header{
-    width: 100%;
-    min-height: 0.5rem;
-    overflow: hidden;
-  }
-  .pay{
-    position: relative;
-    width:90%;
-    height: 0.5rem;
-    margin: 0 auto;
-    line-height: 0.5rem;
-    color: #ffffff;
-    font-size: 0.14rem;
-    overflow: hidden;
-    margin-bottom: 0.15rem;
-    .img{
-      display:block;
-      float: left;
-      width:0.5rem;
-      height: 0.5rem;
-      margin-right: 0.2rem;
+    width: 2rem;
+    background: #ffffff;
+    border-radius: 0.1rem;
+    .paySelction{
+      width: 100%;
+      display: flex;
+      .pay {
+        flex: 1;
+        height: 0.5rem;
+        line-height: 0.5rem;
+        color: #ffffff;
+        font-size: 0.14rem;
+        overflow: hidden;
+        margin-bottom: 0.15rem;
+        .img{
+          display:block;
+          width:0.5rem;
+          height: 0.5rem;
+          margin: 0 auto;
+        }
+      }
     }
   }
+
   .selction{
     width: 90%;
     margin: 0 auto;
     height: 0.5rem;
     line-height: 0.5rem;
-    color: #ffffff;
+    color: #262626;
     font-weight:900;
     font-size:0.16rem;
   }
-  .imgShow{
-    width: 0.12rem;
-    height: 0.12rem;
-    position: absolute;
-    right: 20%;
-    top:45%;
-  }
+
 
 </style>

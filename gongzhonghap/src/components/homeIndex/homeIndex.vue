@@ -78,7 +78,9 @@ export default {
   created() {
     this.headerIndex = this.$store.state.headerIndex; //点击还回回到原来的页面
   },
+mounthed(){
 
+},
   methods:{
 
     headerClick(i){//头部按钮

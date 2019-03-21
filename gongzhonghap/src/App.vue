@@ -26,6 +26,11 @@
     }
   },
   created() {
+    if(JSON.parse(localStorage.getItem('userInfo'))){
+      this.$shujike('登陆');
+      console.log('v登陆')
+    }
+    //   this.$Aiox.get(item.imageUrl+'?imageInfo').then(res=>{//图片信息
 //    https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect](https://open.weixin.qq.com/connect/oauth2/authorize?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect
 
 //    //判断数组中是否包含某字符串

@@ -3,7 +3,7 @@
   <div id="followDetail">
     <div v-for="(item,index) in listData">
        <div class="followDetail_top">
-              <img :src="item.authorInfo?item.authorInfo.ownerUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="" @click="headerClick(item)">
+              <img :src="item.authorInfo&&item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="" @click="headerClick(item)">
               <p>{{item.authorInfo?item.authorInfo.name:"null"}}</p>
               <div v-if="item.authorInfo&&item.authorInfo.caredStatus==0&&userInfo.data.id!=item.authorInfo.id" @click="follow(item)">关注</div>
               <div v-if="item.authorInfo&&item.authorInfo.caredStatus==1&&userInfo.data.id!=item.authorInfo.id" class="active" @click="cancelFollow(item)">取消关注</div>
@@ -285,8 +285,9 @@
        if(v.authorInfo.userType== "1"){ //企业
          companyInfoCareCompany(v.authorInfo.id,data.data.id,v.authorInfo.userType,data.data.access_token).then(res=>{
            if(res.data.status==true){
-             Toast("关注成功")
+             this.$shujike('关注');
              v.authorInfo.caredStatus = 1;
+             Toast("关注成功");
            }else{
              Toast("网络出错了，请重试")
            }
@@ -294,8 +295,9 @@
        }else if(v.authorInfo.userType == "2"){  //个人
          commonUserCareUser(v.authorInfo.id,data.data.id,v.authorInfo.userType,data.data.access_token).then(res=>{
            if(res.data.status==true){
-             Toast("关注成功")
+             this.$shujike('关注');
              v.authorInfo.caredStatus = 1;
+             Toast("关注成功");
            }else{
              Toast("网络出错了，请重试")
            }
@@ -315,8 +317,10 @@
             v.lauded = true;
             replylaudReply(v.id,data.data.access_token).then(res=>{
               if(res.status==true){
-                   Toast("点赞成功")
+                this.$shujike('点赞');
                 v.laudedCount =  v.laudedCount+1;
+                   Toast("点赞成功");
+
               }else{
                 Toast("网络出错了，请重试")
               }
@@ -346,8 +350,10 @@
             v.lauded = true;
             commentlaudComment(v.id,data.data.access_token).then(res=>{
               if(res.status==true){
-                   Toast("点赞成功")
+                this.$shujike('点赞');
                 v.laudedCount =  v.laudedCount+1;
+                   Toast("点赞成功");
+
               }else{
                 Toast("网络出错了，请重试")
               }
@@ -390,7 +396,8 @@
           customerPubContentLaudContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
 //            console.log(res)
             if(res.status == true){
-              Toast("点赞成功")
+              this.$shujike('点赞');
+              Toast("点赞成功");
               v.laudedCount = v.laudedCount+1
             }else{
               Toast("网络出错了，请重试")
@@ -422,6 +429,7 @@
           customerPubContentFavorContent(this.$router.history.current.query.id,data.data.access_token).then(res=>{
 
             if(res.status == true){
+              this.$shujike('收藏');
               Toast("收藏成功")
               v.favoredCount = v.favoredCount+1
             }else{

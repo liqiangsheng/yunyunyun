@@ -1,74 +1,70 @@
 <template>
   <div id="pictureLiveBroadcast">
-    <div class="pictureLiveBroadcastBox" @scroll="pageScroll">
-        <div class="pictureLiveBroadcast_box" ref="box">
-          <!--轮播-->
-          <div class="swiper-container">
-            <div class="swiper-wrapper">
-              <div class="swiper-slide" v-for="(item,index) in banner">
-                <div class="imgIs">
-                  <img :src="item.imageUrl" >
-                </div>
-              </div>
+
+    <div class="pictureLiveBroadcast_box" ref="box">
+      <!--轮播-->
+      <div class="swiper-container">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide" v-for="(item,index) in banner">
+            <div class="imgIs">
+              <img :src="item.imageUrl" >
             </div>
           </div>
-          <!---->
-          <div class="pictureLiveBroadcast_title">
-              <h5>{{objDataTitle.name}}</h5>
-              <div class="pictureLiveBroadcast_titleItem">已有 <span>{{objDataTitle.viewCount}}</span> 人次浏览了此相册</div>
-              <div class="pictureLiveBroadcast_titleItem"><img src="/static/images/time.png" alt="">{{objDataTitle.bookTime|formatTime}}</div>
-              <div class="pictureLiveBroadcast_titleItem"><img src="/static/images/position.png" alt="">{{objDataTitle.regionName}}</div>
-          </div>
         </div>
-    <!--图片直播-->
-        <ul class="pictureLiveBroadcast_tab"  :style="fixedStyle">
-          <li v-for="(item,index) in tabAtt" @click="stateClick(index)"><span class="span" :class="{active:tabState==index}">{{item}}</span><br><span class="span1"  v-if="tabState == index"></span></li>
-        </ul>
-        <div class="pictureLiveBroadcast_center" v-show="tabState == 0" >
-          <div class="pictureLiveBroadcast_center_fixed" @click="goBackTop" v-show="gotopShow">共 {{total}} 张 ▲</div>
-          <waterfall :col='col' :width="itemWidth1" :gutterWidth="gutterWidth1"  :data="data"  @loadmore="loadmore">
-            <template >
-              <div class="cell-item" v-for="(item,index) in data" @click="clickFn(item,index)">
-                <img v-lazy="item.imageUrl1":style="'height:'+(185/item.width)*item.height/100+'rem'"/>
-              </div>
-            </template>
-          </waterfall>
-        </div>
-        <!--热门图片-->
-        <ul class="pictureLiveBroadcast_ul" v-show="tabState == 1">
-             <li v-for="(item,index) in imgsArr1" v-if="index<3" class="li1" @click="goToImg(item,imgsArr1,index)">
-               <img v-lazy="item.imageUrl1" alt="">
-               <div :class="[{active1:index==1},{active2:index==2}]">{{index+1}}</div>
-             </li>
-          </ul>
-        <ul class="pictureLiveBroadcast_ul1" v-show="tabState == 1">
-             <li v-for="(item,index) in imgsArr1" v-if="index>=3&&index<9" class="li2" @click="goToImg(item,imgsArr1,index)">
-               <img v-lazy="item.imageUrl1" alt="">
-               <div>{{index+1}}</div>
-             </li>
-
-          </ul>
-        <ul class="pictureLiveBroadcast_ul2" v-show="tabState == 1">
-             <li v-for="(item,index) in imgsArr1" v-if="index>=9&&index<=29"  class="li3" @click="goToImg(item,imgsArr1,index)">
-               <img v-lazy="item.imageUrl1" alt="">
-             </li>
-        </ul>
-        <!--欢迎页-->
-        <transition name="fade">
-          <welcomePage v-if="pageShow" @temp="temp"  :activityId="activityId"></welcomePage>
-        </transition>
-        <!--查看图片-->
-        <!--欢迎页-->
-        <transition name="fade">
-          <photoswipe v-if="photoswipeShow" @temp="temp" @close="photoswipeShow=false" :ObjData="ObjData"></photoswipe>
-        </transition>
+      </div>
+      <!---->
+      <div class="pictureLiveBroadcast_title">
+          <h5>{{objDataTitle.name}}</h5>
+          <div class="pictureLiveBroadcast_titleItem">已有 <span>{{objDataTitle.viewCount}}</span> 人次浏览了此相册</div>
+          <div class="pictureLiveBroadcast_titleItem"><img src="/static/images/time.png" alt="">{{objDataTitle.bookTime|formatTime}}</div>
+          <div class="pictureLiveBroadcast_titleItem"><img src="/static/images/position.png" alt="">{{objDataTitle.regionName}}</div>
+      </div>
     </div>
+<!--图片直播-->
+    <ul class="pictureLiveBroadcast_tab"  :style="fixedStyle">
+      <li v-for="(item,index) in tabAtt" @click="stateClick(index)"><span class="span" :class="{active:tabState==index}">{{item}}</span><br><span class="span1"  v-if="tabState == index"></span></li>
+    </ul>
+    <div class="pictureLiveBroadcast_center" v-show="tabState == 0" >
+      <div class="pictureLiveBroadcast_center_fixed" @click="goBackTop" v-show="gotopShow">共 {{total}} 张 ▲</div>
+      <waterfall :col='col' :width="itemWidth1" :gutterWidth="gutterWidth1"  :data="data"  @loadmore="loadmore">
+        <template >
+          <div class="cell-item" v-for="(item,index) in data" @click="clickFn(item,index)">
+            <img v-lazy="item.imageUrl1":style="'height:'+(185/item.width)*item.height/100+'rem'"/>
+          </div>
+        </template>
+      </waterfall>
+    </div>
+    <!--热门图片-->
+    <ul class="pictureLiveBroadcast_ul" v-show="tabState == 1">
+         <li v-for="(item,index) in imgsArr1" v-if="index<3" class="li1" @click="goToImg(item,imgsArr1,index)">
+           <img v-lazy="item.imageUrl1" alt="">
+           <div :class="[{active1:index==1},{active2:index==2}]">{{index+1}}</div>
+         </li>
+      </ul>
+    <ul class="pictureLiveBroadcast_ul1" v-show="tabState == 1">
+         <li v-for="(item,index) in imgsArr1" v-if="index>=3&&index<9" class="li2" @click="goToImg(item,imgsArr1,index)">
+           <img v-lazy="item.imageUrl1" alt="">
+           <div>{{index+1}}</div>
+         </li>
+
+      </ul>
+    <ul class="pictureLiveBroadcast_ul2" v-show="tabState == 1">
+         <li v-for="(item,index) in imgsArr1" v-if="index>=9&&index<=29"  class="li3" @click="goToImg(item,imgsArr1,index)">
+           <img v-lazy="item.imageUrl1" alt="">
+         </li>
+    </ul>
+    <!--欢迎页-->
+    <transition name="fade">
+      <welcomePage v-if="pageShow" @temp="temp"  :activityId="activityId"></welcomePage>
+    </transition>
+    <!--查看图片-->
+
+
   </div>
 </template>
 
 <script>
   import welcomePage from './welcomePage.vue'
-  import photoswipe from './photoswipe.vue'
   import wxShare from "../../assets/js/wxShare"
   import {activityImagesList,activityImagesBookFindOne,activityImageslistHot,shareInfoShareUrl} from "../../assets/js/promiseHttp.js"
   import { Toast } from 'mint-ui';  //弹框
@@ -77,8 +73,6 @@ export default {
   name: 'pictureLiveBroadcast',
   data(){
     return {
-      ObjData:{},//传个查看相册的对象
-      photoswipeShow:false, //图播的放大缩小出现
       itemWidth1:null,
       gutterWidth1:10,
       col:2,
@@ -113,7 +107,7 @@ export default {
        }
   },
   components: {
-      welcomePage,photoswipe
+      welcomePage
   },
   created(){
     this.itemWidth1= this.itemWidth();
@@ -175,8 +169,48 @@ export default {
       this.activityId = '7';
     }
 
+
+    let that =this;
+
+    setTimeout(()=>{
+      let clientHeight = that.$refs.box.clientHeight;
+      window.onscroll = function(){ //监听滚动高度
+        //变量scrollTop是滚动条滚动时，距离顶部的距离
+        var scrollTop = document.documentElement.scrollTop||document.body.scrollTop;
+        if(scrollTop>201){
+          that.$nextTick(function () {
+            that.gotopShow = true;
+            setTimeout(()=>{
+              that.gotopShow = false;
+            },3000)
+          })
+
+        }else {
+          that.gotopShow = false;
+        }
+
+          if(scrollTop>=clientHeight){ //吸顶效果
+            that.$nextTick(function () {})//
+            that.fixedStyle={"position":"fixed","top":"0","left":"0","z-index":"999991!important"}
+          }else {
+            that.fixedStyle='';
+          }
+        //变量windowHeight是可视区的高度
+        var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+        //变量scrollHeight是滚动条的总高度
+        var scrollHeight = document.documentElement.scrollHeight||document.body.scrollHeight;
+        //滚动条到底部的条件
+//        console.log(scrollTop,"fsdakfjksdfjksdk")
+//        console.log(scrollHeight - windowHeight-200)
+        if(scrollTop == (scrollHeight - windowHeight)&&that.tabState==0){ //触底自动加载
+            that.getData();
+        }
+      }
+    },300)
+
   },
   mounted() {
+    window.addEventListener('scroll', this.handleScroll) //监听回到顶部按钮出现
     let that = this;
     if(window.common.apiDomain20020=='https://dcloud.butongtech.com:20020'){
       setTimeout(()=>{
@@ -185,30 +219,6 @@ export default {
     }
   },
   methods: {
-
-    pageScroll(e){ //页面滚动
-      let that = this,clientHeight = that.$refs.box.clientHeight;
-      if(e.target.scrollTop>249) {
-        that.$nextTick(function () {
-          that.gotopShow = true;
-          setTimeout(() => {
-            that.gotopShow = false;
-          }, 3000)
-        })
-      }else {
-        that.gotopShow = false;
-      }
-      if(e.target.scrollTop>=clientHeight){ //吸顶效果
-        that.$nextTick(function () {})//
-        that.fixedStyle={"position":"fixed","top":"0","left":"0","z-index":"2!important"}
-      }else {
-        that.fixedStyle='';
-      }
-      if(e.target.scrollHeight==(e.target.scrollTop+e.target.offsetHeight)){
-        that.getData();
-      }
-
-    },
     loadmore(index){
       console.log(index,"index")
     },
@@ -219,6 +229,7 @@ export default {
       return (10*0.5*(document.documentElement.clientWidth/375))  // #rem布局 计算x轴方向margin(y轴方向的margin自定义在css中即可)
     },
     share(){//分享
+      console.log(this.objDataTitle);
       shareInfoShareUrl(encodeURIComponent(location.href.split('#')[0])).then(res=>{
         if(res.status==true){
           let obj = {
@@ -284,13 +295,20 @@ export default {
       })
     },
     goToImg(v,v1,i){ //进入图片
-        this.ObjData.arrList =this.imgsArr1;
-        this.ObjData.firstData =v.imageUrl;
-       this.ObjData.indexNum =i;
-        this.photoswipeShow =true;
+
+      let list = [];
+      this.imgsArr1.forEach((item,index)=>{
+        list.push(item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/85/imageslim ")
+      })
+      wx.previewImage({
+        current: v.imageUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/85/imageslim ', // 当前显示图片的http链接
+        urls: list // 需要预览的图片http链接列表
+      });
     },
     goBackTop(){//回到头部
-      document.querySelector('.pictureLiveBroadcastBox').scrollTop = 0;
+      window.pageYOffset= 0;
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
     },
     stateClick(i){//tab切换
       this.tabState = i;
@@ -299,14 +317,19 @@ export default {
 
       // 阻止a标签跳转
       event.preventDefault()
-
 //      // 只有当点击到图片时才进行操作
-      this.ObjData.arrList =this.data;
-      this.ObjData.firstData =value.imageUrl;
-      this.ObjData.indexNum =index;
-      this.photoswipeShow =true;
+
+      let list = [];
+      this.data.forEach((item,index)=>{
+        list.push(item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/85/imageslim ")
+      })
+      wx.previewImage({
+        current: value.imageUrl+'?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/85/imageslim ', // 当前显示图片的http链接
+        urls: list // 需要预览的图片http链接列表
+      });
     },
     getData() {
+
       let that = this;
       that.bookId.p++;
       if(that.pages<that.bookId.p){
@@ -364,17 +387,8 @@ export default {
 
 <style scoped lang="less">
 #pictureLiveBroadcast{
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  top: 0;
-  right: 0;
-  overflow: hidden;
-  .pictureLiveBroadcastBox{
-    width:100%;
-    height: 100%;
-    overflow-y: scroll;
-  }
+  width: 100%;
+  overflow-x: hidden;
   .pictureLiveBroadcast_box{
     width:100%;
     >.swiper-container{
@@ -441,7 +455,7 @@ export default {
     font-size: 0.12rem;
     line-height: 0.3rem;
     border-radius: 0 0.5rem 0.5rem 0 ;
-    z-index: 2;
+    z-index: 999992;
     color: #ffffff;
   }
 }

@@ -9,7 +9,7 @@
             <img class="jiao" src="/static/images/xiaojiao.png" alt="">
             <div  class="img-info_li1">
             <div class="img-info_li1_img">
-            <img :src="item.authorInfo?item.authorInfo.ownerUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="" v-if="item.authorInfo">
+            <img :src="item.authorInfo&&item.authorInfo.ownerUrl?item.authorInfo.ownerUrl:'https://pub.qinius.butongtech.com/defultphoto.png'" alt="" v-if="item.authorInfo">
             </div>
             <b v-if="item.authorInfo">{{item.authorInfo?item.authorInfo.name:'无'}}</b>
             </div>

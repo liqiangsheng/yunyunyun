@@ -183,6 +183,7 @@
             if(v=='关注'){ //关注
               commonUserCareUser(v1.id,data.data.id,"2",data.data.access_token).then(res=>{
                 if(res.data.status==true){
+                  this.$shujike('关注');
                   Toast("关注成功")
                   v1.cared =true
                 }else{

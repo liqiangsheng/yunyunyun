@@ -123,6 +123,58 @@ export function formatTime4(inputTime) {
   return h + ':' + minute ;
 }
 
+export function shujike(v) {
+  if(v=='关注'){ //关注
+     if(window.location.href.split('#')[0]=='https://dcloud.butongtech.com/'){ //正式
+       window._dgt.push(['trackEvent', 'Care',['d_sjkCare'], ['关注']]);
+     }else{ //测试
+       window._dgt.push(['trackEvent', 'Care',['d_sjkCare'], ['关注']]);
+    }
+
+  }else if(v=='收藏'){ //收藏
+    if(window.location.href.split('#')[0]=='https://dcloud.butongtech.com/'){ //正式
+      window._dgt.push(['trackEvent', 'Favorate',['d_sjkFavorate'], ['收藏']]);
+    }else{ //测试
+      window._dgt.push(['trackEvent', 'Favorate',['d_sjkFavorate'], ['收藏']]);
+    }
+  }else if(v=='点赞'){ //点赞
+    if(window.location.href.split('#')[0]=='https://dcloud.butongtech.com/'){ //正式
+      window._dgt.push(['trackEvent', 'Laud',['d_sjkLaud'], ['点赞']]);
+    }else{ //测试
+      window._dgt.push(['trackEvent', 'Laud',['d_sjkLaud'], ['点赞']]);
+    }
+  }else if(v=='分享'){ //分享
+    if(window.location.href.split('#')[0]=='https://dcloud.butongtech.com/'){ //正式
+      window._dgt.push(['trackEvent', 'Share',['d_sjkShare'], ['分享']]);
+    }else{ //测试
+      window._dgt.push(['trackEvent', 'Share',['d_sjkShare'], ['分享']]);
+    }
+  }else if(v=='登陆'){ //登陆
+    if(window.location.href.split('#')[0]=='https://dcloud.butongtech.com/'){ //正式
+      window._dgt.push(['trackEvent', 'Login',['d_sjkLogin'], ['登陆']]);
+    }else{ //测试
+      window._dgt.push(['trackEvent', 'Login',['d_sjkLogin'], ['登陆']]);
+    }
+  }else if(v=='注册'){ //注册
+    if(window.location.href.split('#')[0]=='https://dcloud.butongtech.com/'){ //正式
+      window._dgt.push(['trackEvent', 'Regist',['d_sjkRegist'], ['注册']]);
+    }else{ //测试
+      window._dgt.push(['trackEvent', 'Regist',['d_sjkRegist'], ['注册']]);
+    }
+  }
+
+}
+export function isWeixin(){  //判断是否是微信浏览器的函数
+    //window.navigator.userAgent属性包含了浏览器类型、版本、操作系统类型、浏览器引擎类型等信息，这个属性可以用来判断浏览器类型
+    var ua = window.navigator.userAgent.toLowerCase();
+    //通过正则表达式匹配ua中是否含有MicroMessenger字符串
+    if(ua.match(/MicroMessenger/i) == 'micromessenger'){
+      return true;
+    }else{
+      return false;
+    }
+
+}
 
 
 

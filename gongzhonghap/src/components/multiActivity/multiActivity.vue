@@ -7,7 +7,7 @@
            <div>{{listData.title}}</div>
            <div v-if='listData.expenses>0'>￥{{listData.expenses}}</div>
            <div  style='color:#21CB61'  v-if='listData.expenses<=0'>免费</div>
-           <div><img style='margin-right:10px;' src='/static/images/time.png'/>{{listData.startTime|formatTime}}<img style='margin:0 10px;' src='/static/images/position.png'/>{{listData.regionName}}</div>
+           <div><img class="img" style='margin-right:10px;' src='/static/images/time.png'/>{{listData.startTime|formatTime}}<img class="img" style='margin:0 10px;' src='/static/images/position.png'/>{{listData.regionName}}</div>
 
          </div>
        </div>
@@ -22,15 +22,15 @@
               <div class="originalPrice">
                 <div class='multiActivityBoxPrice' v-if="item.youhuijia>0">
                   优惠价¥
-                  <span>{{item.originalPrice-item.youhuijia}} </span>
+                  <span>{{(item.originalPrice-item.youhuijia).toFixed(2)}} </span>
                 </div>
                 <div style='color:#999999' class='multiActivityBoxPrice1' v-if="item.youhuijia>0">
                   原价¥
-                  <div class='Oprice'>{{item.originalPrice}}
+                  <div class='Oprice'>{{item.originalPrice.toFixed(2)}}
                     <span class='hr'></span>
                   </div>
                 </div>
-                <div style='color:rgba(254,95,95,1);display: inline-block' v-if="item.youhuijia<=0&&item.originalPrice>0">{{item.originalPrice}} </div>
+                <div style='color:rgba(254,95,95,1);display: inline-block' v-if="item.youhuijia<=0&&item.originalPrice>0">{{item.originalPrice.toFixed(2)}} </div>
                 <div style='color:#21CB61;display: inline-block' v-if='item.originalPrice==0'>免费 </div>
                 <div class='multiActivityBoxState1' v-if='item.remainingState=="已售完"&&item.bgItem==false'>
                   {{item.remainingState}}
@@ -48,7 +48,7 @@
                 </div>
               </div>
             <div class="discount" v-if="item.youhuijia>0">
-              注：已优惠 <span style='color:#FE5F5F'>{{item.youhuijia}}</span>元
+              注：已优惠 <span style='color:#FE5F5F'>{{item.youhuijia.toFixed(2)}}</span>元
             </div>
           </div>
         </div>
@@ -64,15 +64,15 @@
            <div class="originalPrice">
                  <div class='multiActivityBoxPrice' v-if="item.youhuijia>0">
                    优惠价¥
-                   <span>{{item.originalPrice-item.youhuijia}} </span>
+                   <span>{{(item.originalPrice-item.youhuijia).toFixed(2)}} </span>
                  </div>
                  <div style='color:#999999' class='multiActivityBoxPrice1' v-if="item.youhuijia>0">
                    原价¥
-                   <div class='Oprice'>{{item.originalPrice}}
+                   <div class='Oprice'>{{item.originalPrice.toFixed(2)}}
                      <span class='hr'></span>
                    </div>
                  </div>
-                 <div style='color:rgba(254,95,95,1);display: inline-block' v-if="item.youhuijia<=0&&item.originalPrice>0">{{item.originalPrice}} </div>
+                 <div style='color:rgba(254,95,95,1);display: inline-block' v-if="item.youhuijia<=0&&item.originalPrice>0">{{item.originalPrice.toFixed(2)}} </div>
                  <div style='color:#21CB61;display: inline-block' v-if='item.originalPrice==0'>免费 </div>
                  <div class='multiActivityBoxState1' v-if='item.remainingState=="已售完"&&item.bgItem==false'>
                    {{item.remainingState}}
@@ -188,7 +188,7 @@ export default {
             }
           })
         }else {
-          this.$router.push({path:"/home"})
+          this.$router.push({path:"/index"})
         }
       }else{
         Toast("登录异常，请重新登录")
@@ -259,7 +259,7 @@ export default {
         Toast("请选择至少一场活动门票")
         return;
       }else{
-        findByVersionToClient(this.userInfo.data.access_token).then(res=>{
+        findByVersionToClient(this.userInfo.data.access_token,this.$store.state.multiActivityId).then(res=>{
           console.log(res,"数据")
           if(res.status == true){
             sessionStorage.setItem("findByVersionToClient",JSON.stringify(res.data));
@@ -484,7 +484,7 @@ export default {
       line-height:0.25rem;
       padding-left:0.1rem;
     }
-    .multiActivityBoxHeader div div:nth-child(3) img,.multiActivityBoxHeader div div:nth-child(4) img{
+    .multiActivityBoxHeader .img{
       display: inline-block;
       width: 0.11rem;
       height: 0.11rem;

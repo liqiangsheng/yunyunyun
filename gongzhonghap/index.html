@@ -10,13 +10,58 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/css/swiper.min.css">
       <link rel="stylesheet" href="./static/css/reset.css">
     <!--mint-ui样式-->
-    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
-<!--轮播滚动-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.min.js"></script>
-    <!--axios-->
-    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="./static/css/mint-ui.css">
+    <!--PhotoSwipe 是专为移动触摸设备设计的相册/画廊css-->
+    <link href="https://cdn.bootcss.com/photoswipe/4.1.1/photoswipe.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/photoswipe/4.1.1/default-skin/default-skin.css" rel="stylesheet">
     <!--数据请求接口-->
     <script src="./static/js/baseHttp.js"></script>
+    <!--数极客统计-->
+    <script>
+      if(window.location.href.split('#')[0]=='https://dcloud.butongtech.com/'){ //数极客上正式的监控
+        var _dgt = _dgt || [];
+        window._dgt = _dgt;
+        (function () {
+          _dgt.push(['enableh5tag']);
+          _dgt.push(['setSiteId', '856d1d8f1087f602']);
+          var d = document, g = d.createElement('script'),
+            s = d.getElementsByTagName('script')[0];
+          g.type = 'text/javascript'; g.async = true;
+          g.defer = true;
+          g.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 't.shujike.com/dgt.js';
+          s.parentNode.insertBefore(g, s);
+        })();
+      }else {//数极客上测试的监控
+        var _dgt = _dgt || [];
+        window._dgt = _dgt;
+        (function () {
+          _dgt.push(['enableh5tag']);
+          _dgt.push(['setSiteId', 'ef5d05738e2860b8']);
+          var d = document, g = d.createElement('script'),
+            s = d.getElementsByTagName('script')[0];
+          g.type = 'text/javascript'; g.async = true;
+          g.defer = true;
+          g.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 't.shujike.com/dgt.js';
+          s.parentNode.insertBefore(g, s);
+        })();
+      }
+
+    </script>
+  </head>
+
+
+  <body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+    <!--jq-->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/vue/2.5.21/vue.min.js"></script>
+    <!--轮播滚动-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.0.2/js/swiper.min.js"></script>
+    <!--axios-->
+    <script src="./static/js/axios.js"></script>
+   <!--支付宝-->
+    <script src="https://gw.alipayobjects.com/as/g/h5-lib/alipayjsapi/3.1.1/alipayjsapi.min.js"></script>
     <!--微信-->
     <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
     <!--事件插件-->
@@ -24,21 +69,20 @@
     <!--移动端打印-->
     <script src="https://cdn.bootcss.com/vConsole/3.2.2/vconsole.min.js"></script>
     <!--7牛云上传图片-->
-    <script src="https://unpkg.com/qiniu-js@2.5.3/dist/qiniu.min.js"></script>
-  </head>
-  <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-    <script src="https://cdn.bootcss.com/vue/2.5.21/vue.min.js"></script>
+    <script src="./static/js/qiuniu.min.js"></script>
+    <!--<script src="./static/js/vue.min.js"></script>-->
     <!--路由-->
     <!--<script src="https://cdn.bootcss.com/vue-router/3.0.2/vue-router.min.js"></script>-->
     <!--vueX-->
     <script src="https://cdn.bootcss.com/vuex/3.0.1/vuex.min.js"></script>
     <!--图片懒加载-->
-    <script src="https://unpkg.com/vue-lazyload/vue-lazyload.js"></script>
+    <script src="./static/js/vue-lazyload.js"></script>
     <!--高德地图-->
-    <script src="https://unpkg.com/vue-amap/dist/index.js"></script>
+    <script src="./static/js/vue-amap.js"></script>
     <!-- mint-ui引入组件库 -->
     <!--<script src="https://unpkg.com/mint-ui/lib/index.js"></script>-->
+    <!--PhotoSwipe 是专为移动触摸设备设计的相册/画廊JS-->
+    <!--<script src="https://cdn.bootcss.com/photoswipe/4.1.1/photoswipe.js"></script>-->
+    <!--<script src="https://cdn.bootcss.com/photoswipe/4.1.1/photoswipe-ui-default.js"></script>-->
   </body>
 </html>

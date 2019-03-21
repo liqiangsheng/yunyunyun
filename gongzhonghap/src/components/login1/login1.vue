@@ -81,6 +81,11 @@ export default {
         login(that.telValue,that.psdValue).then(res=>{
 
            if(res.data.status==true){
+             if(res.data.data.newStatus&&!!res.data.data.newStatus){
+               this.$shujike('注册')
+             }else{
+               this.$shujike('登陆')
+             }
              window.localStorage.setItem("userInfo",JSON.stringify(res.data))
              Indicator.open("正在登录...");
              setTimeout(()=>{

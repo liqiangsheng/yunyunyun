@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import './assets/rem'
-console.log(qiniu,"qiniu")
+
 //首页瀑布流
 import waterfall from 'vue-waterfall2'
 Vue.use(waterfall)
@@ -16,11 +16,11 @@ Vue.use(VueLazyload, {
   attempt: 1
 })
 //上线记得注释掉 调试用
-// let vConsole = new VConsole() // 初始化
-// Vue.use(vConsole)
+let vConsole = new VConsole() // 初始化
+Vue.use(vConsole)
 //touch事件
-// import VueTouch from 'vue-touch';
-// Vue.use(VueTouch, {name: 'v-touch'})
+import {shujike} from './assets/js/common'
+Vue.prototype.$shujike = shujike;
 //vuex
 import { mutations } from "@/vuex/mutations"
 import { state } from "@/vuex/state";

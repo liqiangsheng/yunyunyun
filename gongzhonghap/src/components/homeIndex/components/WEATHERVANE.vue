@@ -40,7 +40,7 @@
     </template>
 
     <script>
-      import {specialSubjectFindSubjectInfoByCategory} from "../../../assets/js/promiseHttp"
+      import {informationList} from "../../../assets/js/promiseHttp"
       import { Indicator } from 'mint-ui';
       import { Toast } from 'mint-ui';  //弹框
       export default {
@@ -52,8 +52,7 @@
             s:20, //每页多少
             message:"", //触底提示
             pageNum:"",//每页数据
-            objList:[], // 大咖说数据
-            banner:{}, // 大咖说数据
+            objList:[], // 资讯说数据
             lengthBt:false,
           }
         },
@@ -80,7 +79,9 @@
             this.$store.dispatch("WEATHERVANEScrollTop",0)
           },
           query(){ //初始化数据
-            specialSubjectFindSubjectInfoByCategory("4",this.p,this.s).then(res=>{
+
+//            informationList(this.p,this.s, JSON.parse(localStorage.getItem('userInfo')).data.access_token).then(res=>{
+            informationList(this.p,this.s).then(res=>{
               if(res.data.status == true){
                 this.pageNum = Math.ceil(res.data.data.totalAll/this.s);
                 if(this.pageNum >1){
@@ -88,8 +89,7 @@
                 }else{
                   this.message = "这是我的底线..."
                 }
-                this.objList = res.data.data.informationVoList;
-                this.banner = res.data.data;
+                this.objList = res.data.data;
               }else{
                 Toast("网络出错啦，请重试")
               }
@@ -107,18 +107,18 @@
                 return
               }else if(this.p==this.pageNum){
                 this.message = "这是我的底线..."
-                specialSubjectFindSubjectInfoByCategory("4",this.p,this.s).then(res=>{
+                informationList(this.p,this.s).then(res=>{
                   if(res.data.status == true){
-                    this.objList = this.objList.concat(res.data.data.informationVoList);
+                    this.objList = this.objList.concat(res.data.data);
                   }else{
                     Toast("网络出错啦，请重试")
                   }
                 })
               }else if(this.p<this.pageNum){
                 this.message = ""
-                specialSubjectFindSubjectInfoByCategory("4",this.p,this.s).then(res=>{
+                informationList(this.p,this.s).then(res=>{
                   if(res.data.status == true){
-                    this.objList =  this.objList.concat(res.data.data.informationVoList);
+                    this.objList =  this.objList.concat(res.data.data);
                   }else{
                     Toast("网络出错啦，请重试")
                   }

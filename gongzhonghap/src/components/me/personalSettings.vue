@@ -33,6 +33,10 @@
         密码设置
         <img src='/static/images/right.png'/>
       </li>
+      <!--<li @click='patMent'>-->
+        <!--支付-->
+        <!--<img src='/static/images/right.png'/>-->
+      <!--</li>-->
         <li @click='aboutBnt(1," 关于不同")'>
         关于不同
           <img src='/static/images/right.png'/>
@@ -58,10 +62,45 @@ export default {
       }
   },
   created(){
-
+      console.log(wx,"http://172.16.0.55:8080/#/personalSettings")
   },
 
   methods:{
+    onBridgeReady(){
+      WeixinJSBridge.invoke(
+        'getBrandWCPayRequest', {
+          "appId":"wx1c2c5188fd27b150",     //公众号名称，由商户传入
+          "timeStamp":"1552964480",         //时间戳，自1970年以来的秒数
+          "nonceStr":"n4dWXkD0sRKo8Got", //随机串
+          "package":"prepay_id=wx19110135608060f141dba7202197576323",
+          "signType":"MD5",         //微信签名方式：
+          "paySign":"566B6E1E165521E737BDCD793E0AF068" //微信签名
+        },
+        function(res){
+          alert(res.err_code+res.err_desc+res.err_msg,"cuowu")
+          if(res.err_msg == "get_brand_wcpay_request:ok" ){
+            console.log(res,"支付成共")
+            // 使用以上方式判断前端返回,微信团队郑重提示：
+            //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+          }else{
+            console.log(res,"xxxxxxxxxxx")
+          }
+        });
+    },
+    patMent(){
+      console.log(111111111111111111111111111)
+      if (typeof WeixinJSBridge == "undefined"){
+        if( document.addEventListener ){
+          document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(), false);
+        }else if (document.attachEvent){
+          document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady());
+          document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady());
+        }
+      }else{
+        this.onBridgeReady();
+      }
+
+    },
     setPassword(){//密码设置
       let data = JSON.parse(localStorage.getItem("userInfo"))
       if (data) {
