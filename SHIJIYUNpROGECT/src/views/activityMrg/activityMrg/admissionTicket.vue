@@ -182,7 +182,12 @@
 
         },
         watch:{
-
+          '$route':function(a,b){
+               console.log(a,"$route")
+              if(a.path=='/activitymrg/activityMrg/admissionTicket'){
+                  this.query();
+              }
+          }
         },
         methods: {
             preservation(){//保存
@@ -236,6 +241,8 @@
                          this.$message.warning("保存成功");
                          this.query();
                      }else{
+                         this.$router.push({path:"/activitymrg/activityMrg/activityMrgAddList"})
+//                         location.reload();
                          this.$message.warning(res.data.message);
                      }
                  })
@@ -285,11 +292,12 @@
                     this.tableList.forEach((item,index)=>{
                         item['check'+i]=false;
                     })
-                    this.tableList.splice(this.tableList.length,0)
-                    this.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
+                    this.tableList.splice(this.tableList.length,0);
+                    this.preservation();
+//                    this.$message({
+//                        type: 'success',
+//                        message: '删除成功!'
+//                    });
                 }).catch(() => {
                     this.$message({
                         type: 'info',
@@ -389,7 +397,7 @@
            this.query();
         },
         created(){
-
+            this.query();
 
         }
     }

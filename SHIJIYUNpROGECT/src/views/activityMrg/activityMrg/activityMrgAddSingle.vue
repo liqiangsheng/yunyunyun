@@ -28,7 +28,7 @@
                           :default-time="['00:00:00', '23:59:59']">
                   </el-date-picker>
               </li>
-                <li><span>开始时间<b>*</b></span>
+                <li><span>报名时间<b>*</b></span>
                     <el-date-picker
                             v-model="activetyStarTime"
                             type="datetimerange"
@@ -112,14 +112,26 @@
             <div class="activityarrangeItem">
                 <div class="activityarrangeItemLeft">
                     <el-table :data="tableData" style="width: 100%">
-                        <el-table-column label="开始时间" width="120">
+                        <el-table-column label="开始时间" width="210">
                             <template slot-scope="scope">
-                                <input type="text" v-model="scope.row.startTime">
+                                <el-date-picker
+                                        style="width: 190px"
+                                        v-model="scope.row.startTime"
+                                        type="datetime"
+                                        placeholder="开始时间">
+                                </el-date-picker>
+                                <!--<input type="text" v-model="scope.row.startTime">-->
                             </template>
                         </el-table-column>
-                        <el-table-column label="结束时间" width="120">
+                        <el-table-column label="结束时间" width="210">
                             <template slot-scope="scope">
-                                <input type="text" v-model="scope.row.endTime">
+                                <el-date-picker
+                                        style="width: 190px"
+                                        v-model="scope.row.endTime"
+                                        type="datetime"
+                                        placeholder="结束时间">
+                                </el-date-picker>
+                                <!--<input type="text" v-model="scope.row.endTime">-->
                             </template>
                         </el-table-column>
                         <el-table-column  label="主题" width="200">
@@ -135,10 +147,22 @@
                                                 <span>{{index+1}}.</span>
                                             </div>
                                             <div class="liItem">
-                                                <input type="text" placeholder="开始时间" v-model="item.startTime" width="100">
+                                                <el-date-picker
+                                                        style="width: 190px"
+                                                        v-model="item.startTime"
+                                                        type="datetime"
+                                                        placeholder="开始时间">
+                                                </el-date-picker>
+                                                <!--<input type="text" placeholder="开始时间" v-model="item.startTime" width="100">-->
                                             </div>
                                             <div class="liItem">
-                                                <input type="text" placeholder="结束时间" v-model="item.endTime" width="120">
+                                                <el-date-picker
+                                                        style="width: 190px"
+                                                        v-model="item.endTime"
+                                                        type="datetime"
+                                                        placeholder="结束时间">
+                                                </el-date-picker>
+                                                <!--<input type="text" placeholder="结束时间" v-model="item.endTime" width="120">-->
                                             </div>
                                             <div class="liItem">
                                                 <input type="text" placeholder="主题" v-model="item.subject" width="200">
@@ -185,9 +209,11 @@
                                 <input type="text" v-model="item.honor" v-for="(item,index) in scope.row.honoredGuestList" style="margin-top: 5px" :key="">
                             </template>
                         </el-table-column>
-                        <el-table-column label="其他" width="200">
+                        <el-table-column label="操作" width="200">
                             <template slot-scope="scope">
-                            <el-button type="primary" plain @click="addSon(scope.$index)">新增活动安排</el-button>
+                               <el-button type="primary" plain @click="addSon(scope.$index)">新增活动安排</el-button>
+
+                                <el-button type="primary" plain @click="fatherChildren(scope.$index)" style="margin-top: 5px">删除</el-button>
                             </template>
 
                         </el-table-column>
@@ -287,7 +313,6 @@
             }
         },
         created(){
-            this.qiniuToken(); //七牛token
             sysRegionTree().then(res=>{
                 console.log(res,"")
                 if(res.data.status==true){
@@ -298,6 +323,9 @@
             })
         },
         methods: {
+            fatherChildren(index,item,i){ //父级别删除
+                this.tableData.splice(index,1);
+            },
             distinguishedGuestListSon(item){//选择了嘉宾列表子
 //                console.log(item,'distinguishedGuestListSon')
 //                console.log( item.map(function(item1, index, item) { return {honoredGuestId: item1.id, sort:index,name:item1.name,honor:item1.honor}; })," item.map(function(item1, index, item) { return {honorGuestId: item1.id, sort: item1.sort}; })")
@@ -362,6 +390,15 @@
 
             },
             parameter() {//传后台的参数
+
+                this.tableData.forEach((item,index)=>{
+                    item.endTime =this.$moment(item.endTime).format('YYYY-MM-DD HH:mm:ss').includes("Invalid")?"":this.$moment(item.endTime).format('YYYY-MM-DD HH:mm:ss');
+                    item.startTime =this.$moment(item.startTime).format('YYYY-MM-DD HH:mm:ss').includes("Invalid")?"":this.$moment(item.startTime).format('YYYY-MM-DD HH:mm:ss');
+                    item.children.forEach((item1,index1)=>{
+                        item1.endTime =this.$moment(item1.endTime).format('YYYY-MM-DD HH:mm:ss').includes("Invalid")?"":this.$moment(item1.endTime).format('YYYY-MM-DD HH:mm:ss');
+                        item1.startTime =this.$moment(item1.startTime).format('YYYY-MM-DD HH:mm:ss').includes("Invalid")?"":this.$moment(item1.startTime).format('YYYY-MM-DD HH:mm:ss');
+                    })
+                })
                 //                先判断到底是不是必填
                 if(this.seloctTime.length>0){
                     this.startTime= this.$moment(this.seloctTime[0]).format('YYYY-MM-DD HH:mm:ss').includes("Invalid")?"":this.$moment(this.seloctTime[0]).format('YYYY-MM-DD HH:mm:ss');
@@ -381,7 +418,7 @@
                     address: this.address,//详细地址 , //
                     aloneEntrance:false,// 报名是否独立入口（0：否，1：是） ,
                     bannerUrl:this.bannerUrl,// 海报图片（七牛云） ,//
-                    coOrganizers:this.coOrganizers,// 协办单位 ,//
+                    coOrganizers:!!this.coOrganizers?this.coOrganizers:'无,',// 协办单位 ,//
                     content:this.content,// 活动介绍 ,
                     customContent:this.HUcontent2,//自定义活动描述 ,
                     endTime :this.endTime, //活动结束时间 ,//
@@ -394,7 +431,7 @@
                     longitude :this.longitude,// 经度 ,//
                     multiActivity:false,//是否多活动（0：否，1：是） ,
                     multiSection:false,//是否分段（0：否，1：是） ,
-                    organizers :this.organizers,// 承办单位 ,//
+                    organizers :!!this.organizers?this.organizers:'无,',// 承办单位 ,//
                     originalPrice :this.originalPrice,// 商品原价 ,//
                     parentId:this.parentId,//主活动id（若是单体活动则为0） ,
                     payExpired:this.payExpired,//付款时效（分钟） ,//
@@ -454,7 +491,8 @@
                      console.log(res,"新增单活动")
                     if(res.data.status=true){
                         this.$message.success('新增活动成功');
-                        this.$router.push({path:'/activitymrg/activityMrg/activityMrgAddList'})
+                        this.$router.push({path:'/activitymrg/activityMrg/activityMrgAddList'});
+                        location.reload();
                     }else{
                         this.$message.warning(res.data.message)
                     }
@@ -511,40 +549,44 @@
                 this.regionId = value[num];
             },
             onchangeFile(event){ // 上传
+                this.qiniuToken();
                 let that = this;
-                let mydate = new Date()
-                var uuid = "YHTLQS"+mydate.getDay()+ mydate.getHours()+ mydate.getMinutes()+mydate.getSeconds()+mydate.getMilliseconds();
-                let file=event.target.files[0];
-                var formData = new FormData();
-                let observable  = qiniu.upload(file, uuid+'.jpg', that.qiniutoken)
-                let observer= {
-                    next(res){
-                      console.log(res,"上传")
-                        if(res.total.size>5*1024*1024){
+                setTimeout(()=>{
+                    let mydate = new Date()
+                    var uuid = "YHTLQS"+mydate.getDay()+ mydate.getHours()+ mydate.getMinutes()+mydate.getSeconds()+mydate.getMilliseconds();
+                    let file=event.target.files[0];
+                    var formData = new FormData();
+                    let observable  = qiniu.upload(file, uuid+'.jpg', that.qiniutoken)
+                    let observer= {
+                        next(res){
+                            console.log(res,"上传")
+                            if(res.total.size>5*1024*1024){
+                                that.$message({
+                                    message:'请上传小于5M的图片',
+                                    type: 'warning'
+                                });
+                            };
+                            // ...
+                        },
+                        error(err){
                             that.$message({
-                                message:'请上传小于5M的图片',
+                                message:'图片上传失败',
                                 type: 'warning'
                             });
-                        };
-                        // ...
-                    },
-                    error(err){
-                        that.$message({
-                            message:'图片上传失败',
-                            type: 'warning'
-                        });
-                        // ...
-                    },
-                    complete(res){
-                        that.bannerUrl="https://pub.qinius.butongtech.com/"+ res.key;
-                        that.$message({
-                            message:"上传完成",
-                            type: 'success'
-                        });
-                        // ...
+                            // ...
+                        },
+                        complete(res){
+                            that.bannerUrl="https://pub.qinius.butongtech.com/"+ res.key;
+                            that.$message({
+                                message:"上传完成",
+                                type: 'success'
+                            });
+                            // ...
+                        }
                     }
-                }
-                observable.subscribe(observer)
+                    observable.subscribe(observer)
+                },1000)
+
             },
         },
         mounted(){
@@ -781,9 +823,10 @@
         }
         .activityarrangeItem{
             width: 100%;
+            overflow-x: auto;
             min-height: 300px;
             .activityarrangeItemLeft{
-                width: 1400px;
+                width: 1600px;
                 padding: 20px;
                 >.el-table{
                     >.el-table__body-wrapper{
@@ -808,6 +851,10 @@
                                                 .liItem{
                                                     width: 140px;
                                                     float: left;
+                                                }
+                                                .liItem:nth-child(2), .liItem:nth-child(3){
+                                                    width:210px;
+                                                    height: 100%;
                                                 }
                                                 .liItem:nth-child(6){
                                                     width:200px;

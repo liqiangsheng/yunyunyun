@@ -35,6 +35,19 @@ Vue.filter('sex',function(input){
 
 });
 /**
+ * 发布状态
+ */
+Vue.filter('pubStatu',function(input){
+    if(input==false){
+        return '未发布'
+    }else if(input==true){
+        return '发布'
+    }else{
+        return '草稿'
+    }
+
+});
+/**
  * 活动状态
  */
 Vue.filter('activityState',function(sstartTime,endTime,signStartTime,signEndTime){

@@ -18,7 +18,7 @@
                 <li><span>联系人:</span>{{listData.linkMan}}</li>
                 <li><span>联系电话:</span>{{listData.linkPhone}}</li>
                 <li><span>活动时间:</span>{{$moment(listData.startTime).format("YYYY/MM/DD")}}-{{$moment(listData.endTime).format("YYYY/MM/DD")}}</li>
-                <li><span>开始时间:</span>{{$moment(listData.signStartTime).format("YYYY/MM/DD")}}-{{$moment(listData.signEndTime).format("YYYY/MM/DD")}}</li>
+                <li><span>报名时间:</span>{{$moment(listData.signStartTime).format("YYYY/MM/DD")}}-{{$moment(listData.signEndTime).format("YYYY/MM/DD")}}</li>
                 <li><span>详细地址:</span>{{listData.address}}</li>
                 <li><span>活动描述:</span>{{listData.summary}}</li>
                 <li><span>经度;</span>{{listData.longitude}}</li>
@@ -350,9 +350,7 @@
                 box-sizing: border-box;
                 overflow: hidden;
                 li{
-                    width: 340px;
-                    height: 50px;
-                    float: left;
+                    width: 80%;
                     margin-top: 10px;
                     span{
                         display: inline-block;

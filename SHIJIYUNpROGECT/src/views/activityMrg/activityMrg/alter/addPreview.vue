@@ -201,6 +201,14 @@
         }
     }
 </script>
+<style>
+    #htmlV h1{
+        width:100%;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 900;
+    }
+</style>
 <style lang="scss" scoped>
     #addpreview{
         width: 100%;

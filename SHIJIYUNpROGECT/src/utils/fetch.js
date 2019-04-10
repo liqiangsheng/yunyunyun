@@ -17,6 +17,7 @@ const service = axios.create({
 });
 // request拦截器
 service.interceptors.request.use(config => {
+     console.log(config,'config');
     let access_token = store.getters.access_token;
     if(config.url.replace(/[^?]/g,"").length>0){    //判断链接是否有参数
         isLocalhost('&access_token=')
@@ -24,10 +25,10 @@ service.interceptors.request.use(config => {
         isLocalhost('?access_token=')
     }
     function isLocalhost(tokenName){
-        if (window.location.href.indexOf('localhost') >= 0 || window.location.hostname === "127.0.0.1"|| window.location.hostname === "172.16.0.31") {
-            if (config.headers.token) {
+        if (window.location.href.indexOf('localhost') >= 0 || window.location.hostname === "127.0.0.1"|| window.location.hostname === "172.16.0.31"|| window.location.hostname === "172.16.0.59"|| window.location.hostname === "172.16.0.55") {//测试，本地
+            if (config.headers.token) { //有没有token字段 有不需要token //登录
                 config.url =  window._Host.LOGIN_API + window._Host.LOGIN_CONTEXT + config.url
-            } else {
+            } else {//有没有token字段 没有需要token //Ajax请求+'apis/'+'请求路径'+是拼接token还是直接token get/post之分
                 config.url =  window._Host.BASE_API + window._Host.BASE_CONTEXT + config.url + tokenName + access_token
             }
         }else {
