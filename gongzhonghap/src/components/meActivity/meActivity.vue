@@ -29,7 +29,7 @@
       </div>
       <div class="moreClick" v-show="!!message&&listData.length>0">{{message}}</div>
     </div>
-    <div class="lengthFalse" v-if="listData.length<=0" @click="pendingClick('201903201050174bf55665e3ce4b0495f5b752d8d7c390')">
+    <div class="lengthFalse" v-if="listData.length<=0">
       <img src="/static/images/queshengtu.png" alt="">
       <p>你{{name}}活动区目前空空也～</p>
     </div>

@@ -33,7 +33,8 @@
 </template>
 
 <script>
-  import Find from './alter/find2.vue';
+  import Find from './alter/find.vue';
+//  import Find from './alter/find2.vue';
   import Follow from './alter/follow.vue';
   import setPassword from './alter/setPassword.vue';
 import { Toast } from 'mint-ui';  //弹框

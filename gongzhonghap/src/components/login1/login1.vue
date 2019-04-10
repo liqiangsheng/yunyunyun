@@ -51,8 +51,8 @@ export default {
   },
   created(){
 
-    if(this.$store.state.multiActivityId){
-      InitializationData(this.$store.state.multiActivityId).then(res=>{
+    if(this.$router.history.current.query.id){
+      InitializationData(this.$router.history.current.query.id).then(res=>{
         this.infoData = res.data.data;
       })
     }else{

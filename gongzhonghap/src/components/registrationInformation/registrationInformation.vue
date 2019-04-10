@@ -51,7 +51,7 @@ export default {
        cityShow:false,  //城市显示
        userInfo:"", //登录信息
       loadDicTreeDta:[], //字典数据
-      listData:JSON.parse(sessionStorage.getItem("findByVersionToClient")), //数据
+      listData:[], //数据
       activityId:{}, //活动id
       userId:{}, //用户id
       componentData:{}, //传给组件的东西
@@ -63,24 +63,29 @@ export default {
   },
   created(){
 
-    this.listData.forEach((item,index)=>{
-      item.messageName = "请选择";
-      if(item.code == "activityId"){
-        this.activityId = item;
-        this.listData.splice(index,1)
-      }
-
-
-    })
-    this.listData.forEach((item,index)=>{
-      if(item.code == "userId"){
-        this.userId = item;
-        this.listData.splice(index,1)
-      }
-    })
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
     if(!this.userInfo ){
-      Toast("登录异常，请重新登录")
+      Toast("登录异常，请重新登录");
+      this.$router.push({path:'/login'})
+    }else {
+      findByVersionToClient(this.userInfo.data.access_token,this.$router.history.current.query.id).then(res=>{ //
+//          console.log(res,"数据")
+        if(res.status == true){
+          res.data.forEach((item,index)=>{
+            if(item.code == "activityId"){
+              this.activityId = item;
+              res.data.splice(index,1)
+            }
+            if(item.code == "userId"){
+              this.userId = item;
+              res.data.splice(index,1)
+            }
+          })
+          this.listData = res.data;
+        }else{
+          Toast("网络出错，请重试")
+        }
+      })
     }
 
   },

@@ -47,6 +47,7 @@ const Follow = resolve => require(['@/components/homeIndex1_0/alter/follow'], re
 const FindDetail = resolve => require(['@/components/homeIndex1_0/findDetail'], resolve); //作品详情发现的详情
 const PersonalMelonPages = resolve => require(['@/components/intelligentMatching/personalMelonPages'], resolve); //个人吃瓜页
 const Release = resolve => require(['@/components/release/release'], resolve); //发布
+const PaySueccss = resolve => require(['@/components/PayH5/paySueccss'], resolve); //发布
 
 Vue.use(Router)
 
@@ -69,6 +70,15 @@ export default new Router({
       meta:{
         isTrue:true,
         title:"发现",
+      }
+    },
+    {
+        path: '/paySueccss',
+      name: 'paySueccss',
+      component: PaySueccss,
+      meta:{
+        isTrue:true,
+        title:"支付成功",
       }
     },
     {

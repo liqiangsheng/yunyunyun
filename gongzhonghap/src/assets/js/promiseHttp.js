@@ -6,6 +6,49 @@ const activityEdition = "v1.0";
 const systemEdition= "v1.0";
 const operationEdition= "v1.0";
 const contentEdition= "v1.0";
+const wechatpayEdition= "v1.0";
+// http://172.16.0.59:10020/apis/wechatpay/v1.0/pubPay/getAppid
+//获取微信的appid
+export function pubPayGetAppid(token){
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/wechatpay/${wechatpayEdition}/pubPay/getAppid`;
+    axios.get(url,{headers:{'Authorization':'Bearer '+token}}).then(res=>{
+      resolve(res)
+    }).catch(res=>{
+      Toast(res)
+    })
+  })
+}
+//主动查询支付成功失败activityOrder/findOne
+export function activityOrderFindOne(orderId,token){   //orderId主动查询订单
+  return  new Promise((resolve,reject)=>{
+    let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/activityOrder/findOne?id=${orderId}`;
+    axios.get(url,{headers:{'Authorization':'Bearer '+token}}).then(res=>{
+      resolve(res)
+    }).catch(res=>{
+      Toast(res)
+    })
+  })
+}
+//获取微信支付参数POST /payWithWeixin/pubPrepay
+export function payWithWeixinPubPrepay(code,noteId,token){
+  let obj = {
+    paymentMode:'4',
+    // businessId:'2018120718572994e25c8d67744e659cd236cd1d510b1e',
+    noteId:noteId,
+    code,code
+  }
+  return  new Promise((resolve,reject)=>{
+    // http://172.16.0.59:10020/apis/wechatpay/v1.0/pubPay/test/prepay
+    //   let url = `https://dcloud.butongtech.com:20020/apis/wechatpay/v1.0/pubPay/test/prepay`;
+    let url = `${window.common.apiDomain20020}/apis/activity/${activityEdition}/payWithWeixin/pubPrepay`;
+    axios.post(url,obj,{headers:{'Authorization':'Bearer '+token}}).then(res=>{
+      resolve(res)
+    }).catch(res=>{
+      Toast(res)
+    })
+  })
+}
 // 字典缓存本地
 export function loadDicTree(id){
   return  new Promise((resolve,reject)=>{

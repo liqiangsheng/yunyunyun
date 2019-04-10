@@ -72,7 +72,7 @@ export default {
     }
   },
   created(){
-
+    console.log('二维码')
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"))
     let objListId = JSON.parse(localStorage.getItem("objListId"))
     console.log(objListId)

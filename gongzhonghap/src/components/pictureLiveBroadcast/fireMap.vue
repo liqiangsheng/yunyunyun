@@ -7,9 +7,9 @@
         <li v-for="(item,index) in objData" class="fireMapList" :style="'background:url('+item.advertiseImage.imageUrl+');background-size:100% 100%;width:'+300/375*screenWidh/100+'rem'" @click="goToPicture(item)">
         <!--<li v-for="(item,index) in objData" class="fireMapList" :style="'background:url(../../../static/images/bg0.png);background-size:100% 100%'">-->
            <div class="fireMapBox_box">
-              <h5>{{item.activityTitle}}</h5>
+              <h5>{{item.activityTitle?item.activityTitle:item.name}}</h5>
                <p>{{item.activitySummary}}</p>
-               <span>{{item.activityStartTime|formatTime}}</span>
+               <span>{{item.activityStartTime?item.activityStartTime:item.bookTime|formatTime}}</span>
               <div>进入火图</div>
            </div>
         </li>

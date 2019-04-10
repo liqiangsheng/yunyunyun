@@ -1,6 +1,6 @@
 <template>
     <div id="PayH5">
-        支付中...
+        <!--支付中...-->
           <!--<div class="PayH5Header">-->
               <!--<div class="selction">-->
                <!--请选择支付方式 :-->
@@ -26,29 +26,131 @@
 <script>
   import { Toast } from 'mint-ui';
   import {isWeixin} from '../../assets/js/common'
-  import {} from "../../assets/js/promiseHttp.js"
+  import { Indicator } from 'mint-ui';
+  import {payWithWeixinPubPrepay,activityOrderFindOne} from "../../assets/js/promiseHttp.js"
 export default {
   name: 'PayH5',
   data(){
     return{
+         code:'',
+          userInfo:{},
+           objList:{},//报名信息表
+          noteId:'',
           payArray:[
-//            {img:"/static/images/weixin.png",className:"weixin",alt:"微信支付",isShow:true,state:"weixin"},
-//            {img:"/static/images/aliPay.png",className:"alipay",alt:"支付宝支付",isShow:false,state:"alipay"},
+
           ],
-//       isWeixinSelction:true,
     }
   },
   created(){
-         let orderId = JSON.parse(localStorage.getItem('objListId'))
-          if(!!this.$Request.code){//请求支付的接口
-             console.log('微信授权成功过')
-          }else{
-            Toast('微信授权失败，请重试')
-          }
-//            this.isWeixinSelction = isWeixin(); //是不是微信
+
+         this.noteId = JSON.parse(localStorage.getItem('objListId'));
+        this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+        this.objList = JSON.parse(sessionStorage.getItem("objList"));
+    console.log(this.$Request.code)
+    console.log(this.userInfo)
+    console.log(this.objList,"objListobjListobjListobjListobjList")
+        this.code = this.$Request.code;
+         this.$nextTick(function () {
+           setTimeout(()=>{
+             if(!!this.$Request.code){//请求支付的接口
+               console.log('微信授权成功过')
+               this.patMent()
+//            this.onBridgeReady(this.$Request.code,orderId)
+             }else{
+               Toast('微信授权失败，请重试')
+             }
+           },100)
+         })
+
+
+  },
+  mouthed(){
+
 
   },
   methods:{
+    onBridgeReady(){ //微信支付
+      let that = this;
+      payWithWeixinPubPrepay(that.code,that.noteId,that.userInfo.data.access_token).then(res=>{//4为公总号
+        console.log(res,'4为公总号')
+          if(res.data.status == true){
+            let objData = res.data.data;
+            WeixinJSBridge.invoke(
+              'getBrandWCPayRequest', {
+                "appId":objData.appId,     //公众号名称，由商户传入
+                "timeStamp":objData.timeStamp,         //时间戳，自1970年以来的秒数
+                "nonceStr":objData.nonceStr, //随机串
+                "package":objData.package,
+                "signType":objData.signType,         //微信签名方式：
+                "paySign":objData.paySign //微信签名
+              },
+              function(res){
+                console.log(res,"9999999999999999999999999999")
+                // alert(res.err_code+res.err_desc+res.err_msg,"cuowu")
+                if(res.err_msg == "get_brand_wcpay_request:ok" ){
+//                  Toast("支付成功");
+                  Indicator.open('支付中，请等待...');
+                  let temp = setTimeout(()=>{
+                    activityOrderFindOne(that.objList.orderId,that.userInfo.data.access_token).then(res=>{
+                       console.log(res,"支付请求接口")
+                       if(res.data.status==true){
+                         console.log(res.data.data.activityOrderStatus,"支付成功,即将跳转生成门票")
+                             // case waitingPay = 1, //等待支付
+                             // waitingAccess = 2, //支付成功带参加
+                              // disable = 3, //支付已失效
+                              // access = 4, //已参加
+                              // waitingPrize = 5, //等待评价
+                              // end = 6, //已结束
+                              // done = 7,//已完成
+                              // quit = 8,//已退款
+                              // expire = 9 //已过期
+                            if(res.data.data.activityOrderStatus =='2'){ //支付成功，关闭定时器,去二维码生成页面
+                                Indicator.close();
+                              clearTimeout(temp);
+                              // 跳转
+                              that.$router.push({path:'/admission',query:{id:that.noteId}});
+                                Toast('支付成功,即将跳转生成门票');
+                            }
+                       }else{ //请求出现其他问题，关闭定时器，跳转到我的活动
+                         Indicator.close();
+                         clearTimeout(temp);
+                         setTimeout(()=>{
+                           that.$router.push({path:'/meActivity'})
+                         },1000)
+                         Toast(res.data.message+'，即将跳转到我的活动页面');
+
+                       }
+                    })
+                  },1000)
+
+                  // 使用以上方式判断前端返回,微信团队郑重提示：
+                  //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
+                }else if(res.err_msg="get_brand_wcpay_request:cancel"){
+                  alert("支付超时")
+                }else{
+                  alert("支付失败请重试")
+                }
+              });
+          }else {
+            Toast(res.data.message);
+            that.$router.push({path:'/meActivity'})
+          }
+      })
+
+    },
+    patMent(){ //微信支付
+       console.log(111111111111111111111111111)
+      if (typeof WeixinJSBridge == "undefined"){
+        if( document.addEventListener ){
+          document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady, false);
+        }else if (document.attachEvent){
+          document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady);
+          document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady);
+        }
+      }else{
+        this.onBridgeReady();
+      }
+    },
 
 //    weixinClick(){//微信公众号支付
 //
@@ -121,7 +223,7 @@ export default {
 
 <style scoped lang="less">
   #PayH5{
-    background: red;
+    background: #ffffff;
     position:absolute;
     left: 0;
     bottom: 0;

@@ -65,7 +65,14 @@
       this.$nextTick(function(){
         this.query(this.p,this.s);
       })
-
+//      window.onresize = () => {
+//        return (() => {
+//          console.log(1111111)
+//          this.itemWidth1= this.itemWidth();
+//          this.gutterWidth1= this.gutterWidth();
+//          this.$waterfall.resize
+//        })()
+//      }
     },
     methods:{//初始数据
         itemWidth(){

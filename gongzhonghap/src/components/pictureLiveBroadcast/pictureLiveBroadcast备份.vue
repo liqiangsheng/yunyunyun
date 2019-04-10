@@ -235,7 +235,7 @@ export default {
           let obj = {
             title:this.objDataTitle.name,
             desc:this.objDataTitle.remark,
-            url:"http://account.butongtech.com/index.html#/pictureLiveBroadcast?isBool=false&bookId="+this.$router.history.current.query.bookId+"&id="+this.$router.history.current.query.id,//id=20190101000004BUTONG00001&isBool=false&bookId=20190101000004BUTONG00001
+            url:"https://dcloud.butongtech.com/index.html#/pictureLiveBroadcast?isBool=false&bookId="+this.$router.history.current.query.bookId+"&id="+this.$router.history.current.query.id,//id=20190101000004BUTONG00001&isBool=false&bookId=20190101000004BUTONG00001
             imgUrl:!!this.objDataTitle.bannerImageList?this.objDataTitle.bannerImageList[0].imageUrl:'https://pub.qinius.butongtech.com/defultphoto.png',
           }
           wxShare.wxShare(res.data,obj)

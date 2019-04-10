@@ -15,7 +15,7 @@ Vue.use(VueLazyload, {
   loading: 'https://pub.qinius.butongtech.com/gongfang1.png',
   attempt: 1
 })
-//上线记得注释掉 调试用
+// 上线记得注释掉 调试用
 let vConsole = new VConsole() // 初始化
 Vue.use(vConsole)
 //touch事件

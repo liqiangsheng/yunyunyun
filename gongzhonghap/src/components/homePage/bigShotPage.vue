@@ -228,7 +228,7 @@
             let obj = {
               title:this.listData.name,
               desc:this.listData.engName,
-              url:"http://account.butongtech.com/index.html#/bigShotPage?id="+this.$router.history.current.query.id,
+              url:"https://dcloud.butongtech.com/index.html#/bigShotPage?id="+this.$router.history.current.query.id,
               imgUrl:this.listData.ownerUrl?this.listData.ownerUrl:'https://pub.qinius.butongtech.com/ios1024x1024%E6%A1%8C%E9%9D%A2%E5%9B%BE%E6%A0%87.png',
             }
             wxShare.wxShare(res.data,obj)

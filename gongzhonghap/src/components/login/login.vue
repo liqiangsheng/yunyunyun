@@ -102,7 +102,7 @@ export default {
       var ua = navigator.userAgent.toLowerCase();
       var isWeixin = ua.indexOf('micromessenger') != -1;
       if (isWeixin) {
-//        document.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + "wx1c2c5188fd27b150" + '&redirect_uri=' + encodeURI('http://account.butongtech.com') + '&response_type=code&scope=snsapi_userinfo&state=' + '123' + '#wechat_redirect')
+//        document.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + "wx1c2c5188fd27b150" + '&redirect_uri=' + encodeURI('https://dcloud.butongtech.com') + '&response_type=code&scope=snsapi_userinfo&state=' + '123' + '#wechat_redirect')
         document.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + "wx1c2c5188fd27b150" + '&redirect_uri=' + encodeURIComponent('https://dcloud.butongtech.com/#/homeIndex1_0') + '&response_type=code&scope=snsapi_userinfo&state=' + '123' + '#wechat_redirect')
 //        this.$Aiox.get(url).then(res=>{
 //          console,log(res,"res")

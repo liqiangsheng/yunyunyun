@@ -26,13 +26,23 @@
         </ul>
         <div class="pictureLiveBroadcast_center" v-show="tabState == 0" >
           <div class="pictureLiveBroadcast_center_fixed" @click="goBackTop" v-show="gotopShow">共 {{total}} 张 ▲</div>
-          <waterfall :col='col' :width="itemWidth1" :gutterWidth="gutterWidth1"  :data="data"  @loadmore="loadmore">
-            <template >
-              <div class="cell-item" v-for="(item,index) in data" @click="clickFn(item,index)">
-                <img v-lazy="item.imageUrl1":style="'height:'+(185/item.width)*item.height/100+'rem'"/>
-              </div>
-            </template>
-          </waterfall>
+          <!--<waterfall :col='col' :width="itemWidth1" :gutterWidth="gutterWidth1"  :data="data"  @loadmore="loadmore">-->
+            <!--<template >-->
+              <!--<div class="cell-item" v-for="(item,index) in data" @click="clickFn(item,index)">-->
+                <!--<img v-lazy="item.imageUrl1":style="'height:'+(185/item.width)*item.height/100+'rem'"/>-->
+              <!--</div>-->
+            <!--</template>-->
+          <!--</waterfall>-->
+          <ul class="left ul"></ul>
+          <ul class="right ul"></ul>
+          <ul class="list fl ul" v-show="false">
+            <li v-for="(item,index) in data" @click="clickFn(item,index)" :key="index">
+              <img :src=item.imageUrl1 alt="" />
+            </li>
+          </ul>
+          <div class="messageFoot" v-show="!!message">
+            {{message}}
+          </div>
         </div>
         <!--热门图片-->
         <ul class="pictureLiveBroadcast_ul" v-show="tabState == 1">
@@ -71,12 +81,14 @@
   import photoswipe from './photoswipe.vue'
   import wxShare from "../../assets/js/wxShare"
   import {activityImagesList,activityImagesBookFindOne,activityImageslistHot,shareInfoShareUrl} from "../../assets/js/promiseHttp.js"
+  import {dom} from "../../assets/js/common.js"
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
 export default {
   name: 'pictureLiveBroadcast',
   data(){
     return {
+      message:'',
       ObjData:{},//传个查看相册的对象
       photoswipeShow:false, //图播的放大缩小出现
       itemWidth1:null,
@@ -107,7 +119,7 @@ export default {
         pages:0, //总共多少页
         bookId:{
           p: 1, // request param//
-          s: 100, // request param//
+          s: 20, // request param//
           bookId:"",
         },//相册id
        }
@@ -126,15 +138,16 @@ export default {
         if(res.data.status == true){
 //            ?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim
           res.data.data.forEach((item,index)=>{
-            this.$Aiox.get(item.imageUrl+'?imageInfo').then(res=>{
-              item.width  = res.data.width;
-              item.height  = res.data.height;
-            })
+//            this.$Aiox.get(item.imageUrl+'?imageInfo').then(res=>{
+//              item.width  = res.data.width;
+//              item.height  = res.data.height;
+//            })
             item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
           })
           this.total =res.data.total;
           this.pages = Math.ceil(res.data.total/this.bookId.s)
           this.data = res.data.data;
+          dom(50);
         }else{
           Toast("网络出错了，请重试")
         }
@@ -204,7 +217,7 @@ export default {
       }else {
         that.fixedStyle='';
       }
-      if(e.target.scrollHeight==(e.target.scrollTop+e.target.offsetHeight)){
+      if(e.target.scrollHeight>=(e.target.scrollTop+e.target.offsetHeight+500)){
         that.getData();
       }
 
@@ -224,7 +237,7 @@ export default {
           let obj = {
             title:this.objDataTitle.name,
             desc:this.objDataTitle.remark,
-            url:"http://account.butongtech.com/index.html#/pictureLiveBroadcast?isBool=false&bookId="+this.$router.history.current.query.bookId+"&id="+this.$router.history.current.query.id,//id=20190101000004BUTONG00001&isBool=false&bookId=20190101000004BUTONG00001
+            url:"https://dcloud.butongtech.com/index.html#/pictureLiveBroadcast?isBool=false&bookId="+this.$router.history.current.query.bookId+"&id="+this.$router.history.current.query.id,//id=20190101000004BUTONG00001&isBool=false&bookId=20190101000004BUTONG00001
             imgUrl:!!this.objDataTitle.bannerImageList?this.objDataTitle.bannerImageList[0].imageUrl:'https://pub.qinius.butongtech.com/defultphoto.png',
           }
           wxShare.wxShare(res.data,obj)
@@ -241,15 +254,16 @@ export default {
         if(res.data.status == true){
 //            ?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim
           res.data.data.forEach((item,index)=>{
-            this.$Aiox.get(item.imageUrl+'?imageInfo').then(res=>{
-              item.width  = res.data.width;
-              item.height  = res.data.height;
-            })
+//            this.$Aiox.get(item.imageUrl+'?imageInfo').then(res=>{
+//              item.width  = res.data.width;
+//              item.height  = res.data.height;
+//            })
             item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
           })
           this.total =res.data.total;
           this.pages = Math.ceil(res.data.total/this.bookId.s)
           this.data = res.data.data;
+          dom(50);
         }else{
           Toast("网络出错了，请重试")
         }
@@ -311,47 +325,39 @@ export default {
       that.bookId.p++;
       if(that.pages<that.bookId.p){
         that.bookId.p = that.pages;
-        Toast("没有更多图片了");
+        this.message = "这是我的底线...";
         return;
       }else if(that.pages==that.bookId.p){
-        Indicator.open("加载中")
         activityImagesList(that.bookId).then(res=>{
           if(res.data.status == true){
             res.data.data.forEach((item,index)=>{
-              this.$Aiox.get(item.imageUrl+'?imageInfo').then(res=>{
-                item.width  = res.data.width;
-                item.height  = res.data.height;
-              })
+//              this.$Aiox.get(item.imageUrl+'?imageInfo').then(res=>{
+//                item.width  = res.data.width;
+//                item.height  = res.data.height;
+//              })
               item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
             })
-            setTimeout(()=>{
-              Indicator.close();
               that.data = that.data.concat(res.data.data);
-            },200)
-
+            this.message = "这是我的底线...";
+              dom(50);
           }else{
-            Indicator.close();
             Toast("网络出错了，请重试")
           }
         })
       }else if(that.pages>that.bookId.p){
-        Indicator.open("加载中")
         activityImagesList(that.bookId).then(res=>{
           if(res.data.status == true){
             res.data.data.forEach((item,index)=>{
-              this.$Aiox.get(item.imageUrl+'?imageInfo').then(res=>{
-                item.width  = res.data.width;
-                item.height  = res.data.height;
-              })
+//              this.$Aiox.get(item.imageUrl+'?imageInfo').then(res=>{
+//                item.width  = res.data.width;
+//                item.height  = res.data.height;
+//              })
               item.imageUrl1 =item.imageUrl+"?imageMogr2/auto-orient/thumbnail/750x/blur/1x0/quality/75/imageslim"
             })
-            setTimeout(()=>{
-              Indicator.close();
               that.data = that.data.concat(res.data.data);
-            },200)
-
+              dom(50);
+            this.message = "加载中...";
           }else{
-            Indicator.close();
             Toast("网络出错了，请重试")
           }
         })
@@ -431,6 +437,27 @@ export default {
   width: 100%;
   background: #ffffff;
   position: relative;
+  .ul{
+    width:calc(99% / 2);
+    float: left;
+  }
+  .left{
+    margin-right: 1%;
+  }
+  .ul img{
+    display: block;
+    width:100%;
+    min-height: 1.23rem;
+    margin-bottom: 0.03rem;
+  }
+  .messageFoot{
+    width: 100%;
+    height: 0.7rem;
+    line-height: 0.7rem;
+    color: rgba(5,5,5,0.3);
+    text-align: center;
+    float: left;
+  }
   .pictureLiveBroadcast_center_fixed{
     position: fixed;
     left: 0;
@@ -537,6 +564,7 @@ export default {
     overflow: hidden;
     background: #ffffff;
     padding-left: 0.1rem;
+    box-sizing: border-box;
     li{
       width: 1rem;
       height: 0.3rem;

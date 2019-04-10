@@ -110,6 +110,7 @@ export default {
   position: absolute;left: 0;top: 0;bottom: 0;
   right: 0;
   z-index:2;
+  overflow: hidden;
   .swiper-container{
     width: 100%;
     height: 100%;
@@ -130,7 +131,7 @@ export default {
     position: absolute;
     left: 1.5rem;
     bottom: 0.25rem;
-    z-index: 3;
+    z-index:9999999999;
     width: 0.75rem;
     height: 0.4rem;
     line-height: 0.4rem;

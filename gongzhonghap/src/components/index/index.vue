@@ -24,15 +24,15 @@
               <h5  class='homeBottomTitle' v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'> {{item.name}}</h5>
               <h5  class='homeBottomTitle' v-else> {{item.name}}</h5>
               <div class='homeBottomPrice'>
-                <span v-if="item.expenses !=0&&item.expenses >0" style="color: rgb(254, 95, 95)">¥{{item.expenses}}</span>
-                <span v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime >item.endTime" style='color:#c5c5c6'>免费</span>
-                <span v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'>免费</span>
+                <span v-if="item.payPrice !=0&&item.payPrice >0" style="color: rgb(254, 95, 95)">¥{{item.payPrice}}</span>
+                <span v-else-if="item.payPrice ==0&&item.payPrice<=0&&nowTime >item.endTime" style='color:#c5c5c6'>免费</span>
+                <span v-else-if="item.payPrice ==0&&item.payPrice<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'>免费</span>
                 <span v-else>免费</span>
               </div>
-              <div class='homeBottomdata' v-if="item.expenses ==0&&item.expenses<=0&&nowTime >item.endTime" style='color:#c5c5c6'>
+              <div class='homeBottomdata' v-if="item.payPrice ==0&&item.payPrice<=0&&nowTime >item.endTime" style='color:#c5c5c6'>
                 <span>{{item.startTime |formatTime}}</span> | <span>{{item.regionName}}</span>
               </div>
-              <div class='homeBottomdata' v-else-if="item.expenses ==0&&item.expenses<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'>
+              <div class='homeBottomdata' v-else-if="item.payPrice ==0&&item.payPrice<=0&&nowTime > item.signEndTime && nowTime < item.sstartTime" style='color:#c5c5c6'>
                 <span>{{item.startTime |formatTime}}</span> | <span>{{item.regionName}}</span>
               </div>
               <div class='homeBottomdata' v-else>
@@ -41,18 +41,21 @@
               <div class='homeBottomstate' v-if="nowTime >item.signStartTime && nowTime <item.signEndTime">
                 立即报名
               </div>
-              <div class='homeBottomstate' v-if="nowTime < item.signStartTime">
+              <div class='homeBottomstate' v-else-if="nowTime < item.signStartTime">
                 即将开始
               </div>
-              <div class='homeBottomstate' v-if="nowTime <= item.sendTime && nowTime >= item.sstartTime">
+              <div class='homeBottomstate' v-else-if="nowTime < item.endTime && nowTime > item.startTime">
                 正在进行
               </div>
-              <div class='homeBottomstate end' v-if="nowTime >item.endTime">
-                活动结束
-              </div>
-              <div class='homeBottomstate end' v-if="nowTime > item.signEndTime && nowTime < item.sstartTime">
+              <div class='homeBottomstate end' v-else-if="nowTime > item.signEndTime && nowTime <item.signStartTime">
                 报名结束
               </div>
+            <div class='homeBottomstate end' v-else-if="nowTime >item.endTime">
+              活动结束
+            </div>
+             <!--<div class='homeBottomstate end' v-else>-->
+               <!--活动结束-->
+              <!--</div>-->
         </li>
         <div class='messageFoot' v-if="message">
           {{message}}

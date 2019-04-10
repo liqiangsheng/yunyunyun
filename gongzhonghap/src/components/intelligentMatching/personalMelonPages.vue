@@ -168,7 +168,7 @@
               let obj = {
                 title:this.listData.name,
                 desc:this.listData.introduce,
-                url:"http://account.butongtech.com/index.html#/personalMelonPages?id="+this.$router.history.current.query.id,
+                url:"https://dcloud.butongtech.com/index.html#/personalMelonPages?id="+this.$router.history.current.query.id,
                 imgUrl:this.listData.ownerUrl,
               }
               wxShare.wxShare(res.data,obj)

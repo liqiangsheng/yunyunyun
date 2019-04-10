@@ -186,14 +186,14 @@ export default {
       }
     },
     share(){//分享
-      let url = "http://account.butongtech.com/"
+      let url = "https://dcloud.butongtech.com/"
       shareInfoShareUrl(encodeURIComponent(location.href.split('#')[0])).then(res=>{
 //      console.log(this.messageArr,"this.messageArr")
         if(res.status==true){
           let obj = {
             title:this.messageArr.title,
             desc:this.messageArr.summary,
-            url:"http://account.butongtech.com/index.html#/homeDetail?id="+this.$router.history.current.query.id,
+            url:"https://dcloud.butongtech.com/index.html#/homeDetail?id="+this.$router.history.current.query.id,
             imgUrl:this.messageArr.bannerDetailUrl,
           }
           wxShare.wxShare(res.data,obj)

@@ -43,14 +43,14 @@
             </div>
             <div class="homeBoxItemFour">
               <img src="/static/images/price.png" alt="">
-              <span style="color: #FE5F5F" v-if="objData.expenses>0">¥ {{objData.expenses.toFixed(2)}}</span>
+              <span style="color: #FE5F5F" v-if="objData.payPrice>0">¥ {{objData.payPrice.toFixed(2)}}</span>
               <span style="color:#21CB61" v-else="">免费</span>
 
             </div>
             <div class="homeBoxItemFive">
                  <div v-if="!!objData.hosts"><span>主办单位：</span> <span class="homeBoxItemFiveLeft" v-for="(item,index) in objData.hosts">{{item}}</span></div>
-                 <div v-if="!!objData.organizers"><span>承办单位：</span><span class="homeBoxItemFiveLeft" v-for="(item,index) in objData.organizers">{{item}}</span></div>
-                 <div v-if="!!objData.coOrganizers"><span>协办单位：</span><span class="homeBoxItemFiveLeft" v-for="(item,index) in objData.coOrganizers">{{item}}</span></div>
+                 <div v-if="!!objData.organizers&&objData.organizers.length>0"><span>承办单位：</span><span class="homeBoxItemFiveLeft" v-for="(item,index) in objData.organizers">{{item}}</span></div>
+                 <div v-if="!!objData.coOrganizers&&objData.coOrganizers.length>0"><span>协办单位：</span><span class="homeBoxItemFiveLeft" v-for="(item,index) in objData.coOrganizers">{{item}}</span></div>
 
             </div>
           </div>
@@ -229,14 +229,14 @@ export default {
            let obj = this.objData?this.objData:this.acivityArr;
            sessionStorage.setItem("activityInfo", JSON.stringify(obj)) //保存活动信息
            this.$store.dispatch("multiActivityId",obj.id) //保存选中的Id 在vueX
-           this.$router.push({path:"/multiActivity",})  //去选票
+           this.$router.push({path:"/multiActivity",query:{id:obj.id}})  //去选票
          }else{
            let obj = this.objData?this.objData:this.acivityArr;
            sessionStorage.setItem("activityInfo", JSON.stringify(obj)) //保存活动信息
            this.$store.dispatch("multiActivityId",obj.id) //保存选中的Id 在vueX
            Toast("你未登录，正在跳转登录页面...");
            setTimeout(()=>{
-             this.$router.push({path:"/login1"})
+             this.$router.push({path:"/login1",query:{id:obj.id}})
            },1000)
 
          }
@@ -537,7 +537,16 @@ export default {
 }
 </script>
 
+<style>
+  #htmlV  h1{
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 900;
+  }
+</style>
 <style scoped lang="less">
+
   #homeBox{
     width: 100%;
     overflow-y:auto ;

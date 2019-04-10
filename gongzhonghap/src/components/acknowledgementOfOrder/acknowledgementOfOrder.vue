@@ -54,7 +54,7 @@
 </template>
 
 <script>
-  import { insertSignupNoteAndOrder,activityOrderFindOneByNodeIdVo} from '../../assets/js/promiseHttp'; //数据
+  import { insertSignupNoteAndOrder,activityOrderFindOneByNodeIdVo,pubPayGetAppid} from '../../assets/js/promiseHttp'; //数据
   import { Toast } from 'mint-ui';  //弹框
 export default {
 
@@ -77,6 +77,7 @@ export default {
       backstageData:{} , //后台数据
       userID:"", //用户id
       matchingArrStr:"", //智能匹配
+      orderId:'', //订单Id
     }
   },
   created() {
@@ -86,20 +87,18 @@ export default {
       activityOrderFindOneByNodeIdVo(this.$router.history.current.query.id,this.userInfo.data.access_token).then(res=>{
          console.log(res,"我们都是我的活动")
         if(res.status==true){
+             this.orderId = res.data.orderId;
              this.ActivityInfo = res.data.activityInfoToMyVo;
-             this.buyData = res.data.activityOrderGoodsVoList;
+             this.buyData = [...res.data.activityOrderGoodsVoList,...res.data.activityOrderGoodsGroupVoList];
               let a=0,b=0,c=0;//价格计算赋值
               this.buyData.map((item,index)=>{
                 a += item.payPrice; //合计
                 b += item.originalPrice;//总额
-
               })
-              console.log(b-a)
               c = b-a;//立减
-              console.log(c)
-              this.Total=a;
-              this.orginTotal=b;
-              this.erectSubtraction=c;
+              this.Total=a.toFixed(2);
+              this.orginTotal=b.toFixed(2);
+              this.erectSubtraction=c.toFixed(2);
               if(this.Total>0){
                 this.nextValue = "付款";
               }else{
@@ -123,12 +122,10 @@ export default {
         b += item.originalPrice;//总额
 
       })
-      console.log(b-a)
       c = b-a;//立减
-      console.log(c)
-      this.Total=a;
-      this.orginTotal=b;
-      this.erectSubtraction=c;
+      this.Total=a.toFixed(2);
+      this.orginTotal=b.toFixed(2);
+      this.erectSubtraction=c.toFixed(2);
       if(this.Total>0){
         this.nextValue = "付款";
       }else{
@@ -138,44 +135,7 @@ export default {
 
   },
   methods:{
-    onBridgeReady(objData){ //微信支付
-      WeixinJSBridge.invoke(
-        'getBrandWCPayRequest', {
-          "appId":objData.appId,     //公众号名称，由商户传入
-          "timeStamp":objData.timeStamp,         //时间戳，自1970年以来的秒数
-          "nonceStr":objData.nonceStr, //随机串
-          "package":objData.package,
-          "signType":"MD5",         //微信签名方式：
-          "paySign":objData.paySign //微信签名
-        },
-        function(res){
-          // alert(res.err_code+res.err_desc+res.err_msg,"cuowu")
-          if(res.err_msg == "get_brand_wcpay_request:ok" ){
-            Toast("支付成功");
-            // 跳转
-            _this.$router.push({path:'/admission'})
-            // 使用以上方式判断前端返回,微信团队郑重提示：
-            //res.err_msg将在用户支付成功后返回ok，但并不保证它绝对可靠。
-          }else if(res.err_msg="get_brand_wcpay_request:cancel"){
-            alert("用户取消支付")
-          }else{
-            alert("支付失败请重试")
-          }
-        });
-    },
-    patMent(){ //微信支付
-      // console.log(111111111111111111111111111)
-      if (typeof WeixinJSBridge == "undefined"){
-        if( document.addEventListener ){
-          document.addEventListener('WeixinJSBridgeReady', this.onBridgeReady(), false);
-        }else if (document.attachEvent){
-          document.attachEvent('WeixinJSBridgeReady', this.onBridgeReady());
-          document.attachEvent('onWeixinJSBridgeReady', this.onBridgeReady());
-        }
-      }else{
-        this.onBridgeReady();
-      }
-    },
+
     explain(v){//付款说明  退款说明
       console.log(v)
       if (v=== "payment"){
@@ -188,6 +148,7 @@ export default {
     paymentClick(){ //下一步
       if(this.$router.history.current.query.id){ //待支付来的
         localStorage.setItem("objListId",JSON.stringify(this.$router.history.current.query.id))
+        sessionStorage.setItem("objList",JSON.stringify({orderId:this.orderId}))
         this.payMethod(this.$router.history.current.query.id);
       }else{ //正常报名流程来的
         let obj = {};
@@ -199,7 +160,7 @@ export default {
         })
 
         for (let i = 0; i < this.buyData.length; i++){
-          if (this.buyData[i].danId) { //单票
+          if (this.buyData[i].typeStr == 'dan') { //单票
             goodsListObj.id = this.buyData[i].id;
             this.buyData[i].sort = this.buyData[i].index;
             this.buyData[i].count = this.buyData[i].num;
@@ -230,33 +191,31 @@ export default {
         insertSignupNoteAndOrder(this.userInfo.data.access_token,obj).then(res=>{
           console.log(res,"sdhfsfgdfglh")
           if(res.status == true){
+            sessionStorage.setItem("objList",JSON.stringify(res.data))
+            localStorage.setItem("objListId",JSON.stringify(res.data.id))
             if (this.Total<=0){ //价格小于0去生成门票
-              sessionStorage.setItem("objList",JSON.stringify(res.data))
-              localStorage.setItem("objListId",JSON.stringify(res.data.id))
               this.$router.push({path:"/admission"})
             } else {//去支付页面
-              sessionStorage.setItem("objList",JSON.stringify(res.data))
-              localStorage.setItem("objListId",JSON.stringify(res.data.id))
-              this.payMethod(res.data.id);
+              this.payMethod(res.data.id,res.data.orderId);
 //            Toast("请选择免费活动")
 //            this.$store.dispatch("payId",res.data.id); //vuex保存支付Id
 //            this.$router.push({path:"/payH5"}) //去支付页面
             }
           }else{
-
             Toast("网络异常，请重试")
           }
         })
       }
 
     },
-     payMethod(v){//支付的方法
+     payMethod(id,orderId){//支付的方法
        let ua = window.navigator.userAgent.toLowerCase();
        if(ua.match(/MicroMessenger/i) == 'micromessenger'){
          //ios的ua中无miniProgram，但都有MicroMessenger（表示是微信浏览器）
          let JSonData = {
-           orderId:v,
-           token:this.userInfo.data.access_token
+           id:id,
+           orderId:orderId,
+           token:this.userInfo.data.access_token,
          }
          wx.miniProgram.getEnv((res)=>{
            if (res.miniprogram) {
@@ -264,14 +223,25 @@ export default {
              wx.miniProgram.navigateTo({url: '/pages/wxpay/wxpay?JSon='+JSON.stringify(JSonData)})
            } else {
              //先获取appid;在调取微信的授权
-             document.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + "wx1c2c5188fd27b150" + '&redirect_uri=' + encodeURIComponent('https://dcloud.butongtech.com/#/payH5') + '&response_type=code&scope=snsapi_base&state=' + '456' + '#wechat_redirect')
              alert("在微信里");
              //做微信支付
+             pubPayGetAppid(this.userInfo.data.access_token).then(res=>{
+                console.log(res)
+               if(res.data.status == true){
+                 document.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + res.data.data.appid + '&redirect_uri=' + encodeURIComponent('http://account.butongtech.com/#/payH5') + '&response_type=code&scope=snsapi_base&state=' + '456' + '#wechat_redirect')
+
+//                 document.location.replace('https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + res.data.data.appid + '&redirect_uri=' + encodeURIComponent('https://dcloud.butongtech.com/#/payH5') + '&response_type=code&scope=snsapi_base&state=' + '456' + '#wechat_redirect')
+               }else {
+                 Toast('获取微信appid失败')
+               }
+
+             })
+
            }
          })
        }else{
          //              做h5支付
-         alert('不在微信里');
+         alert('不是微信浏览器，请安装,');
        }
      }
   }

@@ -175,6 +175,20 @@ export function isWeixin(){  //判断是否是微信浏览器的函数
     }
 
 }
+export function dom(ss){
+  setTimeout(function(){
+    var aLi = document.querySelectorAll('.list li');
+    var oLeft = document.querySelector('.left');
+    var oRight = document.querySelector('.right');
+    for(var i=0;i<aLi.length;i++){
+      if(oLeft.offsetHeight > oRight.offsetHeight){
+        oRight.appendChild(aLi[i]);
+      }else{
+        oLeft.appendChild(aLi[i]);
+      }
+    }
+  },ss)
+}
 
 
 

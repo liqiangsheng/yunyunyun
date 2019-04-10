@@ -1,112 +1,97 @@
 <template>
   <div id="multiActivity">
      <div class="multiActivityItem">
-       <div class='multiActivityBoxHeader'>
+       <div class='multiActivityBoxHeader' v-if="!!listData&&listData!={}">
          <img :src='listData.bannerUrl'>
          <div>
            <div>{{listData.title}}</div>
-           <div v-if='listData.expenses>0'>￥{{listData.expenses}}</div>
-           <div  style='color:#21CB61'  v-if='listData.expenses<=0'>免费</div>
+           <div v-if='listData.payPrice>0'>￥{{listData.payPrice}}</div>
+           <div style='color:#21CB61'  v-else>免费</div>
            <div><img class="img" style='margin-right:10px;' src='/static/images/time.png'/>{{listData.startTime|formatTime}}<img class="img" style='margin:0 10px;' src='/static/images/position.png'/>{{listData.regionName}}</div>
 
          </div>
        </div>
         <!--单票-->
-        <div class="activityGoodsVoList" v-if="listData.activityGoodsVoList&&listData.activityGoodsVoList.length>0">
+        <div class="activityGoodsVoList" v-if="selectArr&&selectArr.length>0">
           <h5>单票</h5>
-          <div class="activityGoodsVoListItem" v-for="(item,index) in listData.activityGoodsVoList" @click="bgItemTap(index,'one')" :class="{active:item.bgItem == true}">
+          <div class="activityGoodsVoListItem" v-for="(item,index) in selectArr" v-if="item.typeStr=='dan'" @click="bgItemTap(item,index)" :class="{active:item.checked == true}">
               <h6>{{item.name}}</h6>
               <div class='time'>
                 <img src='/static/images/time.png' style='margin-right:0.1rem;'/>{{item.startTime|formatTime}}
               </div>
               <div class="originalPrice">
-                <div class='multiActivityBoxPrice' v-if="item.youhuijia>0">
+                <div class='multiActivityBoxPrice' v-if="item.payPrice>0">
                   优惠价¥
-                  <span>{{(item.originalPrice-item.youhuijia).toFixed(2)}} </span>
+                  <span>{{item.payPrice.toFixed(2)}} </span>
                 </div>
-                <div style='color:#999999' class='multiActivityBoxPrice1' v-if="item.youhuijia>0">
+                <div style='color:#999999' class='multiActivityBoxPrice1' v-if="item.payPrice>0">
                   原价¥
                   <div class='Oprice'>{{item.originalPrice.toFixed(2)}}
                     <span class='hr'></span>
                   </div>
                 </div>
-                <div style='color:rgba(254,95,95,1);display: inline-block' v-if="item.youhuijia<=0&&item.originalPrice>0">{{item.originalPrice.toFixed(2)}} </div>
-                <div style='color:#21CB61;display: inline-block' v-if='item.originalPrice==0'>免费 </div>
-                <div class='multiActivityBoxState1' v-if='item.remainingState=="已售完"&&item.bgItem==false'>
+                <div style='color:#21CB61;display: inline-block' v-if='item.payPrice==0||!item.payPrice'>免费 </div>
+                <div class='multiActivityBoxState' :class="{active:item.bntBj==false}"  v-if='item.checked==false'>
                   {{item.remainingState}}
                 </div>
-                <div class='multiActivityBoxState1' v-else-if='item.remainingState=="已购买"&&item.bgItem==false'>
-                  {{item.remainingState}}
-                </div>
-                <div class='multiActivityBoxState'  v-else-if='item.remainingState=="抢票中"&&item.bgItem==false'>
-                  {{item.remainingState}}
-                </div>
-                <div class='multiActivityBoxStateADD'  v-else-if='item.bgItem==true'>
+                <div class='multiActivityBoxStateADD'  v-else>
                   <img src="/static/images/reduce.png" alt="">
                   <input type="num" value="1" disabled="disabled"/>
                   <img style="opacity: 0.3;" src="/static/images/add.png" alt="">
                 </div>
               </div>
-            <div class="discount" v-if="item.youhuijia>0">
-              注：已优惠 <span style='color:#FE5F5F'>{{item.youhuijia.toFixed(2)}}</span>元
+            <div class="discount" v-if="(item.originalPrice-item.payPrice)<item.originalPrice&&(item.originalPrice-item.payPrice)>0">
+              注：已优惠 <span style='color:#FE5F5F'>{{(item.originalPrice-item.payPrice).toFixed(2)}}</span>元
+            </div>
+          </div>
+
+          <!--组合票-->
+          <h5  v-if="listData.activityGoodsGroupVoList&&listData.activityGoodsGroupVoList.length>0">组合票</h5>
+          <div class="activityGoodsVoListItem"  v-for="(item,index) in selectArr" v-if="item.typeStr=='duo'"@click="bgItemTap(item,index)" :class="{active:item.checked == true}">
+            <h6>{{item.name}}</h6>
+            <div class='time'>
+              <img src='/static/images/time.png' style='margin-right:0.1rem;'/>{{item.startTime|formatTime}}
+            </div>
+            <div class="originalPrice">
+              <div class='multiActivityBoxPrice' v-if="item.payPrice>0">
+                优惠价¥
+                <span>{{item.payPrice.toFixed(2)}} </span>
+              </div>
+              <div style='color:#999999' class='multiActivityBoxPrice1' v-if="item.payPrice>0">
+                原价¥
+                <div class='Oprice'>{{item.originalPrice.toFixed(2)}}
+                  <span class='hr'></span>
+                </div>
+              </div>
+              <div style='color:#21CB61;display: inline-block' v-if='item.payPrice==0||!item.payPrice'>免费 </div>
+                <div class='multiActivityBoxState' :class="{active:item.bntBj==false}"  v-if='item.checked==false'>
+                   {{item.remainingState}}
+                </div>
+                <div class='multiActivityBoxStateADD' v-else>
+                <img src="/static/images/reduce.png" alt="">
+                <input type="num" value="1" disabled="disabled"/>
+                <img style="opacity: 0.3;" src="/static/images/add.png" alt="">
+              </div>
+
+            </div>
+            <div class="discount" v-if="(item.originalPrice-item.payPrice)<item.originalPrice&&(item.originalPrice-item.payPrice)>0">
+              注：已优惠 <span style='color:#FE5F5F'>{{(item.originalPrice-item.payPrice).toFixed(2)}}</span>元
             </div>
           </div>
         </div>
 
-        <!--组合票-->
-       <div class="activityGoodsVoList" v-if="listData.activityGoodsGroupVoList&&listData.activityGoodsGroupVoList.length>0">
-         <h5>组合票</h5>
-         <div class="activityGoodsVoListItem"  v-for="(item,index) in listData.activityGoodsGroupVoList" @click="bgItemTap(index,'two')" :class="{active:item.bgItem == true}">
-           <h6>{{item.name}}</h6>
-           <div class='time'>
-             <img src='/static/images/time.png' style='margin-right:0.1rem;'/>{{item.startTime|formatTime}}
-           </div>
-           <div class="originalPrice">
-                 <div class='multiActivityBoxPrice' v-if="item.youhuijia>0">
-                   优惠价¥
-                   <span>{{(item.originalPrice-item.youhuijia).toFixed(2)}} </span>
-                 </div>
-                 <div style='color:#999999' class='multiActivityBoxPrice1' v-if="item.youhuijia>0">
-                   原价¥
-                   <div class='Oprice'>{{item.originalPrice.toFixed(2)}}
-                     <span class='hr'></span>
-                   </div>
-                 </div>
-                 <div style='color:rgba(254,95,95,1);display: inline-block' v-if="item.youhuijia<=0&&item.originalPrice>0">{{item.originalPrice.toFixed(2)}} </div>
-                 <div style='color:#21CB61;display: inline-block' v-if='item.originalPrice==0'>免费 </div>
-                 <div class='multiActivityBoxState1' v-if='item.remainingState=="已售完"&&item.bgItem==false'>
-                   {{item.remainingState}}
-                 </div>
-                 <div class='multiActivityBoxState1' v-else-if='item.remainingState=="已购买"&&item.bgItem==false'>
-                   {{item.remainingState}}
-                 </div>
-                 <div class='multiActivityBoxState'  v-else-if='item.remainingState=="抢票中"&&item.bgItem==false'>
-                   {{item.remainingState}}
-                 </div>
-             <div class='multiActivityBoxStateADD'  v-else-if='item.bgItem==true'>
-               <img src="/static/images/reduce.png" alt="">
-               <input type="num" value="1" disabled="disabled"/>
-               <img style="opacity: 0.3;" src="/static/images/add.png" alt="">
-             </div>
-
-           </div>
-           <div class="discount" v-if="item.youhuijia>0">
-             注：已优惠 <span style='color:#FE5F5F'>{{item.youhuijia}}</span>元
-           </div>
-         </div>
-       </div>
      </div>
     <div class="multiActivityFoot">
       <div class='footItem'>
-        <div class='total'>实付：<span style='color:#FE5F5F'>{{price}}</span></div>
+        <div class='total'>实付：<span style='color:#FE5F5F'>{{price.toFixed(2)}}</span></div>
         <div class='totalDiscount'>
-          <span>原价：¥{{numPrice}} </span>
-          <span>立减：¥{{reduceGo}}</span>
+          <span>原价：¥{{numPrice.toFixed(2)}} </span>
+          <span>立减：¥{{reduceGo.toFixed(2)}}</span>
         </div>
       </div>
       <div class='footItem1'  @click='nextClick'>
         <span >下一步 </span>
-        <span style='display:block'>(已选 {{selectArr.length}} 个活动)</span>
+        <span style='display:block'>(已选 {{total.length}} 个活动)</span>
       </div>
     </div>
 
@@ -116,73 +101,65 @@
 <script>
   import { Toast } from 'mint-ui';  //弹框
   import { Indicator } from 'mint-ui';
-  import {findOneWithGoods,findByVersionToClient} from "../../assets/js/promiseHttp"  //数据
+  import {findOneWithGoods} from "../../assets/js/promiseHttp"  //数据
 export default {
   name: 'multiActivity',
   data(){
     return{
      userInfo:"", //判断是不是登录的状态，
       listData:{}, //数据
-      selectArr:[], //选中的数组
+      selectArr:[], //门票存放
+      total:[], //购买数量的个数
       price:0, //实付
       numPrice:0, //原价
       reduceGo:0, //立减
     }
   },
   created(){
-
-      console.log(this.$store.state.multiActivityId)
-    this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    this.total = [];
+    console.log(this.$router.history.current.query.id)
+    this.userInfo = JSON.parse(localStorage.getItem("userInfo")); //登陆的信息
       if( this.userInfo){
-        if(!!this.$store.state.multiActivityId){
+        if(!!this.$router.history.current.query.id){
           var date = new Date();
           var nowTime = date.getTime();
-          console.log(nowTime,"dasdsakdkask")
-          findOneWithGoods(this.userInfo.data.access_token,this.$store.state.multiActivityId).then(res=>{
-             console.log(res,"dhalkfkal1")
+          findOneWithGoods(this.userInfo.data.access_token,this.$router.history.current.query.id).then(res=>{ //接口请求票据的信息
+//             console.log(res,"dhalkfkal1")
             if(res.status == true){
-               if( res.data.activityGoodsVoList&&res.data.activityGoodsVoList.length>0){
+               if( res.data.activityGoodsVoList&&res.data.activityGoodsVoList.length>0){ //单活动门票
                  res.data.activityGoodsVoList.forEach((item,index)=>{
-                   item.bgItem = false; // 背景框选中
-                   item.bntBj = false;// 按钮色
-                   item.stateBool = false;// 状态
-                   item.num = 0;// 选中的数量
-                   res.data.activityGoodsVoList[index].danId = res.data.activityGoodsVoList[index].id+"dan";
-                   res.data.activityGoodsVoList[index].youhuijia = res.data.activityGoodsVoList[index].originalPrice - res.data.activityGoodsVoList[index].payPrice;
-                   if (res.data.activityGoodsVoList[index].remaining<=0){
-                     res.data.activityGoodsVoList[index].remainingState = "已售完";
-                     res.data.activityGoodsVoList[index].bntBj = false;
-                   } else if (nowTime < res.data.startTime){  //活动的开始时间
-                     res.data.activityGoodsVoList[index].remainingState = "抢票中"
-                     res.data.activityGoodsVoList[index].bntBj = true;
-                   }else{
-                     res.data.activityGoodsVoList[index].remainingState = "抢票中"
-                     res.data.activityGoodsVoList[index].bntBj = false;
-                   }
+                   item.checked  = false; //是不是门票选中
+                   item.typeStr  = 'dan';
                  })
                }
-              if( res.data.activityGoodsGroupVoList&&res.data.activityGoodsGroupVoList.length>0){
+              if( res.data.activityGoodsGroupVoList&&res.data.activityGoodsGroupVoList.length>0){//组合活动门票
                 res.data.activityGoodsGroupVoList.forEach((item,index)=>{
-                  item.bgItem = false; // 背景框选中
-                  item.bntBj = false;// 按钮色
-                  item.stateBool = false;// 状态
-                  item.num = 0;// 选中的数量
-                  res.data.activityGoodsGroupVoList[index].duoId = res.data.activityGoodsGroupVoList[index].id + "duo";
-                  res.data.activityGoodsGroupVoList[index].youhuijia = res.data.activityGoodsGroupVoList[index].originalPrice - res.data.activityGoodsGroupVoList[index].payPrice;
-                  if (res.data.activityGoodsGroupVoList[index].remaining<=0){
-                    res.data.activityGoodsGroupVoList[index].remainingState = "已售完";
-                    res.data.activityGoodsGroupVoList[index].bntBj = false;
-                  } else if (nowTime < res.data.startTime){  //活动的开始时间
-                    res.data.activityGoodsGroupVoList[index].remainingState = "抢票中"
-                    res.data.activityGoodsGroupVoList[index].bntBj = true;
-                  }else{
-                    res.data.activityGoodsGroupVoList[index].remainingState = "抢票中"
-                    res.data.activityGoodsGroupVoList[index].bntBj = false;
-                  }
+                  item.checked  = false;//是不是门票选中
+                  item.typeStr  = 'duo';
                 })
               }
-              console.log(res.data,"daskdkas111k")
-               this.listData = res.data;
+              this.selectArr = [...res.data.activityGoodsVoList,...res.data.activityGoodsGroupVoList]; //所有门票
+              this.selectArr.forEach((item,index)=>{
+//                item.remaining = 20; 模拟数据
+//                item.startTime = 1552924800000;
+//                item.endTime =1556639999000;
+//                item.payPrice =59;
+                if (nowTime < item.startTime){  //活动的开始时间
+                  item.remainingState = "未开始";
+                  item.bntBj = false;
+                } else if (nowTime >= item.endTime){  //活动的开始时间
+                  item.remainingState = "已结束";
+                  item.bntBj = false;
+                }else if (item.remaining<=0||item.remaining==null){
+                  item.remainingState = "已售完";
+                  item.bntBj = false;
+                } else{
+                  item.remainingState = "抢票中"
+                  item.bntBj = true;
+                }
+              })
+//              console.log(this.selectArr,"daskdkas11k")
+               this.listData = res.data; //数据
             }else{
               Toast("网络出错，请重试")
             }
@@ -192,61 +169,28 @@ export default {
         }
       }else{
         Toast("登录异常，请重新登录")
+        this.$router.push({path:"/login"});
       }
 
   } ,
   methods:{
-    bgItemTap(i,v){ //点击每个票
-      let bgIndex = i;
-      let that = this;
-
-      if (v == "one"){ //点击的单票
-        if (that.listData.activityGoodsVoList[bgIndex].remainingState == "已售完"){
-          Toast("该活动已售完")
-          return;
-        }
-        that.listData.activityGoodsVoList[bgIndex].bgItem = !that.listData.activityGoodsVoList[bgIndex].bgItem;
-        if(that.listData.activityGoodsVoList[bgIndex].bgItem == true){
-          that.listData.activityGoodsVoList[bgIndex].num = 1;
-          that.listData.activityGoodsVoList[bgIndex].index = bgIndex;
-          that.selectArr.push(that.listData.activityGoodsVoList[bgIndex])
-        }else{
-          that.listData.activityGoodsVoList[bgIndex].index = bgIndex;
-          that.listData.activityGoodsVoList[bgIndex].num = 0;
-          console.log( that.selectArr,"dfskfkas")
-          that.selectArr.map((item,index)=>{
-            if (item.danId == that.listData.activityGoodsVoList[bgIndex].danId){
-              that.selectArr.splice(index,1)
-            }
-          })
-        }
-      }else{//点击的是多票
-        if ( that.listData.activityGoodsGroupVoList[bgIndex].remainingState == "已售完"){
-          Toast("该活动已售完")
-          return;
-
-        }
-        that.listData.activityGoodsGroupVoList[bgIndex].bgItem = !that.listData.activityGoodsGroupVoList[bgIndex].bgItem;
-        if (that.listData.activityGoodsGroupVoList[bgIndex].bgItem == true) {
-          that.listData.activityGoodsGroupVoList[bgIndex].num = 1;
-          that.listData.activityGoodsGroupVoList[bgIndex].index = bgIndex;
-          that.selectArr.push(that.listData.activityGoodsGroupVoList[bgIndex])
-        } else {
-          that.listData.activityGoodsGroupVoList[bgIndex].num = 0;
-          that.listData.activityGoodsGroupVoList[bgIndex].index = bgIndex;
-          that.selectArr.map((item, index) => {
-            if (item.duoId == that.listData.activityGoodsGroupVoList[bgIndex].duoId) {
-              that.selectArr.splice(index, 1)
-            }
-          })
-        }
+    bgItemTap(item,index){ //点击每个票
+      if (item.remainingState == "未开始")return Toast("该门票还未开售");
+      if (item.remainingState == "已结束")return Toast("该门票已售票结束");
+      if (item.remainingState == "已售完")return Toast("已门票售完");
+      item.checked = !item.checked;
+      if(item.checked==true){
+        this.total.push(item);
+      }else {
+        this.total.splice(index,1);
       }
-
-        let prices = 0, numPrices = 0, reduceGos = 0;
-        that.selectArr.map((item, index) => {
-          prices+= item.payPrice;
-          numPrices += item.originalPrice;
-          reduceGos += item.originalPrice - item.payPrice;
+      let prices = 0, numPrices = 0, reduceGos = 0;
+        this.selectArr.map((v, index) => {  //价格的计算
+          if(v.checked == true){
+            prices+= v.payPrice;
+            numPrices += v.originalPrice;
+            reduceGos += v.originalPrice - v.payPrice;
+          }
         })
         this.price = prices;
         this.numPrice = numPrices;
@@ -254,22 +198,19 @@ export default {
 
     },
     nextClick(){ //下一步
-      let that = this;
-      if (that.selectArr.length<=0){
-        Toast("请选择至少一场活动门票")
+      let that = this,menpaioArr = [];
+      that.selectArr.forEach((item,index)=>{ //把点中的门票选择出来保存本地后面备用
+        if(item.checked==true){
+            menpaioArr.push(item)
+        }
+      })
+//      console.log(menpaioArr,"menpaioArr")
+      if (menpaioArr.length<=0){
+        Toast("请选择至少一场活动门票");
         return;
       }else{
-        findByVersionToClient(this.userInfo.data.access_token,this.$store.state.multiActivityId).then(res=>{
-          console.log(res,"数据")
-          if(res.status == true){
-            sessionStorage.setItem("findByVersionToClient",JSON.stringify(res.data));
-            sessionStorage.setItem("buyData", JSON.stringify(that.selectArr))
-            that.$router.push({path:"/registrationInformation"})
-          }else{
-            Toast("网络出错，请重试")
-          }
-        })
-
+        sessionStorage.setItem("buyData", JSON.stringify(menpaioArr));
+        that.$router.push({path:"/registrationInformation",query:{id:this.$router.history.current.query.id}});//去填写报名表
       }
     },
   }
@@ -378,18 +319,6 @@ export default {
              top: 48%;
            }
         }
-        .multiActivityBoxState1{
-          width: 0.55rem;
-          height: 0.24rem;
-          border-radius:0.05rem;
-          text-align: center;
-          line-height: 0.24rem;
-          background:#FAFAFA;
-          color:#999999;
-          position: absolute;
-          right: 0.1rem;
-          top: 0.05rem;
-        }
         .multiActivityBoxState{
           width: 0.55rem;
           height: 0.24rem;
@@ -401,6 +330,10 @@ export default {
           position: absolute;
           right: 0.1rem;
           top: 0.05rem;
+        }
+        .multiActivityBoxState.active{
+          background: #cccccc;
+          color: #999999;
         }
 
       }
